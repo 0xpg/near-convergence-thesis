@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import {fieldAt,motionTime,selectPeople,labelAnchor,walkingPose,ditherAt,drift,depthBlur,bodyShape} from '../cinematic.mjs';
+import {fieldAt,motionTime,selectPeople,labelAnchor,walkingPose,ditherAt,drift,depthBlur,bodyShape,focusBox} from '../cinematic.mjs';
 for(const second of [0,.033,5,10,15,20,25,30,4800]) {
   const scene=fieldAt(second);
   assert.equal(scene.nodes.length,48);assert.equal(scene.focus.length,3);
@@ -66,3 +66,6 @@ assert.deepEqual(bodyShape(0),bodyShape(47));assert(crowd.every(node=>node.profi
 console.log('Consistent body shape and facing direction following travel passed.');
 
 for(const node of crowd)assert(Math.abs(node.cadence-(.005+((node.variant*.754877666)%1)*.003)*640)<1e-10);
+
+for(const width of [288,390,1440])for(const node of crowd){const box=focusBox(node,width,300);assert(box.x>=6&&box.x+100<=width-6);assert(box.y>=6&&box.boxY+box.boxHeight+20<=300);assert.equal(box.boxY-box.y,17);}
+console.log('Label title, figure box and description bounds passed.');

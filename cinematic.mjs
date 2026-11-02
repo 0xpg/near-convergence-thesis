@@ -35,6 +35,14 @@ export function depthBlur(depth){return Math.max(0,Math.abs(depth-.5)-.08)*19;}
 
 export function labelAnchor(x,width) { return Math.max(6,Math.min(width-106,x*width-10)); }
 
+export function focusBox(node,width,height){
+  const size=(.29+node.z*.62)*(width<600?.62:1);
+  const boxHeight=104*size;
+  const x=Math.max(6,Math.min(width-106,node.x*width-15*size*node.profile));
+  const y=Math.max(6,Math.min(height-boxHeight-38,node.y*height-52*size-17));
+  return {x,y,boxY:y+17,boxWidth:30*size*node.profile,boxHeight};
+}
+
 export function motionTime(seconds) {
   if(!Number.isFinite(seconds)||seconds<0)throw new RangeError('Time must be finite and nonnegative');
   return Math.floor(seconds/7)*4.8+Math.min(seconds%7,4.8);
@@ -123,12 +131,14 @@ if(typeof document!=='undefined') {
       ctx.strokeStyle='#566b5d';ctx.lineWidth=.45;ctx.globalAlpha=.04*lineStrength;
       for(const [a,b]of edges){ctx.beginPath();ctx.moveTo(nodes[a].x*width,nodes[a].y*height);ctx.lineTo(nodes[b].x*width,nodes[b].y*height);ctx.stroke();}
       ctx.globalAlpha=1;
+      const boxes=focus.map(node=>focusBox(node,width,height));
       for(let i=0;i<3;i++) {
-        const a=focus[i],b=focus[(i+1)%3];
+        const a=focus[i],box=boxes[i],next=boxes[(i+1)%3];
         ctx.globalAlpha=1;ctx.strokeStyle=colors[i];ctx.lineWidth=.75;
-        ctx.beginPath();ctx.moveTo(labelAnchor(a.x,width)+labelCenters[i],Math.max(6,Math.min(height-100,a.y*height-43))+7);ctx.lineTo(labelAnchor(b.x,width)+labelCenters[(i+1)%3],Math.max(6,Math.min(height-100,b.y*height-43))+7);ctx.stroke();
-        ctx.globalAlpha=1;ctx.strokeStyle=colors[i];ctx.lineWidth=attention===i?1.2:.6;ctx.strokeRect(a.x*width-10,a.y*height-24,20,44);
-        labels[i].style.transform=`translate(${labelAnchor(a.x,width)}px,${Math.max(6,Math.min(height-100,a.y*height-43))}px)`;
+        ctx.beginPath();ctx.moveTo(box.x+labelCenters[i],box.y+7);ctx.lineTo(next.x+labelCenters[(i+1)%3],next.y+7);ctx.stroke();
+        ctx.strokeStyle=colors[i];ctx.lineWidth=attention===i?1.2:.6;ctx.strokeRect(box.x,box.boxY,box.boxWidth,box.boxHeight);
+        labels[i].style.transform=`translate(${box.x}px,${box.y}px)`;
+        labels[i].querySelector('small').style.marginTop=(box.boxHeight+6)+'px';
         labels[i].style.opacity='1';labels[i].dataset.person=String(selected[i]);
       }
     }
