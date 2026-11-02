@@ -155,7 +155,7 @@ if(typeof document!=='undefined') {
     preference.addEventListener('change',()=>{playing=!preference.matches;sync();draw();});
     document.addEventListener('visibilitychange',sync);
     new IntersectionObserver(([entry])=>{visible=entry.isIntersecting;sync();}).observe(stage);
-    new ResizeObserver(()=>{const nextWidth=stage.clientWidth,nextHeight=Math.min(400,Math.max(260,stage.clientWidth*.3));if(nextWidth===width&&nextHeight===height)return;width=nextWidth;height=nextHeight;labelCenters=labels.map(label=>label.querySelector('span').offsetWidth/2);stage.style.height=height+'px';const dpr=Math.min(devicePixelRatio||1,2);canvas.width=Math.round(width*dpr);canvas.height=Math.round(height*dpr);ctx.setTransform(dpr,0,0,dpr,0,0);draw();stage.classList.add('is-ready');}).observe(stage);
+    new ResizeObserver(()=>{const nextWidth=stage.clientWidth,nextHeight=stage.clientHeight;if(nextWidth===width&&nextHeight===height)return;width=nextWidth;height=nextHeight;labelCenters=labels.map(label=>label.querySelector('span').offsetWidth/2);const dpr=Math.min(devicePixelRatio||1,2);canvas.width=Math.round(width*dpr);canvas.height=Math.round(height*dpr);ctx.setTransform(dpr,0,0,dpr,0,0);draw();stage.classList.add('is-ready');}).observe(stage);
     sync();
   }
 }
