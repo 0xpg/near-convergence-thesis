@@ -1,18 +1,26 @@
 export function walkingPose(frame) { const phase=(frame%16)/16*Math.PI*2; return {swing:Math.sin(phase),lift:Math.cos(phase)}; }
 
 export function ditherAt(x,y,variant,frame) {
-  const phase=frame/16*Math.PI*2;
-  const seed=(variant*.61803398875)%1;
-  const ny=(y-70)/(42+seed*16),nx=(x-38)/(18+((variant*.41421356237)%1)*14);
-  const twist=Math.sin(ny*3+phase+variant)*.25;
-  const u=nx+twist,v=ny;
-  const radii=[Math.hypot(u,v),Math.abs(u)+Math.abs(v),Math.max(Math.abs(u),Math.abs(v)),Math.abs(Math.hypot(u,v)-.55)*2.4,Math.min(Math.hypot(u*2.6,v),Math.hypot(u,v*2.6)),Math.sqrt(Math.abs(u*v))*1.6+Math.hypot(u,v)*.25];
-  const radius=radii[variant%6];
-  const angle=Math.atan2(ny,nx+twist);
-  const edge=.78+.19*Math.sin(angle*(2+variant%5)+phase+variant)+.09*Math.cos(angle*3-variant);
-  const density=Math.max(0,1-radius/edge)*(1.05+.25*Math.cos(nx*3+phase));
+  const seed=(variant*.61803398875)%1,{swing,lift}=walkingPose(frame);
+  const center=38,shoulder=8+seed*3,hip=5+seed*2,stride=swing*(10+seed*9);
+  const segment=(ax,ay,bx,by,r)=>{
+    const dx=bx-ax,dy=by-ay,t=Math.max(0,Math.min(1,((x-ax)*dx+(y-ay)*dy)/(dx*dx+dy*dy)));
+    return Math.hypot(x-ax-t*dx,y-ay-t*dy)/r;
+  };
+  const body=Math.hypot((x-center)/(9+seed*3),(y-57)/21);
+  const head=Math.hypot((x-center)/(6+seed*1.5),(y-23)/8);
+  let distance=Math.min(body,head,segment(center,30,center,41,3));
+  for(const side of [-1,1]){
+    const knee=center+side*hip+side*stride*.45,foot=center+side*hip+side*stride;
+    const footY=121-Math.max(0,side*lift)*7;
+    const elbow=center+side*(shoulder+4)-side*stride*.35,hand=center+side*(shoulder+3)-side*stride*.7;
+    distance=Math.min(distance,
+      segment(center+side*hip,74,knee,98,3.6),segment(knee,98,foot,footY,3),segment(foot,footY,foot+4,footY,2.7),
+      segment(center+side*shoulder,43,elbow,61,2.8),segment(elbow,61,hand,80,2.3));
+  }
+  const density=distance<1?Math.min(.97,.55+(1-distance)*.45):0;
   const threshold=((Math.sin(x*127.1+y*311.7+variant*74.7)*43758.5453)%1+1)%1;
-  return threshold<density*1.5;
+  return threshold<density;
 }
 
 export function labelAnchor(x,width) { return Math.max(6,Math.min(width-106,x*width-10)); }
@@ -90,8 +98,8 @@ if(typeof document!=='undefined') {
       ctx.globalAlpha=1;
       for(let i=0;i<3;i++) {
         const a=focus[i],b=focus[(i+1)%3];
-        ctx.globalAlpha=lineStrength;ctx.strokeStyle=colors[i]+(attention===i?'60':'24');ctx.lineWidth=.7;
-        ctx.beginPath();ctx.moveTo(a.x*width,a.y*height);ctx.lineTo(b.x*width,b.y*height);ctx.stroke();
+        ctx.globalAlpha=1;ctx.strokeStyle=colors[i];ctx.lineWidth=1.1;
+        ctx.beginPath();ctx.moveTo(labelAnchor(a.x,width)+28,Math.max(6,Math.min(height-100,a.y*height-43))+9);ctx.lineTo(labelAnchor(b.x,width)+28,Math.max(6,Math.min(height-100,b.y*height-43))+9);ctx.stroke();
         ctx.globalAlpha=1;ctx.strokeStyle=colors[i];ctx.lineWidth=attention===i?1.2:.6;ctx.strokeRect(a.x*width-10,a.y*height-24,20,44);
         labels[i].style.transform=`translate(${labelAnchor(a.x,width)}px,${Math.max(6,Math.min(height-100,a.y*height-43))}px)`;
         labels[i].style.opacity='1';labels[i].dataset.person=String(selected[i]);

@@ -56,4 +56,4 @@ for(const time of [0,1,10,100,10000])assert(drift(.4,-.02,time)>=0&&drift(.4,-.0
 assert(crowd.every((node,i)=>Array.from({length:6},(_,step)=>{const a=fieldAt(step*.5).nodes[i],b=fieldAt((step+1)*.5).nodes[i];return Math.hypot(b.x-a.x,b.y-a.y);}).reduce((a,b)=>a+b,0)>.02));
 const silhouettes=Array.from({length:72},(_,variant)=>Array.from({length:200},(_,i)=>Number(ditherAt(5+i%20*3,40+Math.floor(i/20)*3,variant,0))).join(''));
 assert.equal(new Set(silhouettes).size,72);
-console.log('Bounded independent travel and 72 distinct ASCII masks passed.');
+console.log('Bounded independent travel and 72 distinct dither masks passed.');
