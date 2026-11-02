@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "test": "node analysis/reproduce.mjs",
+    "test": "node analysis/reproduce.mjs && node scripts/check-scene.mjs",
     "build": "node analysis/reproduce.mjs && node scripts/build.mjs"
   },
   "engines": { "node": ">=20" }

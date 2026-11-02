@@ -16,13 +16,13 @@ function copy(relative) {
   } else { mkdirSync(path.dirname(target),{recursive:true}); copyFileSync(source,target); }
 }
 const pages=['index.html','thesis.html','explore.html','lab.html','report.html','research.html','methodology.html'];
-for(const file of [...pages,'fonts.css','landing.css','styles.css','app.mjs','report.pdf','assets','analysis/model.mjs','data']) copy(file);
+for(const file of [...pages,'fonts.css','landing.css','cinematic.mjs','styles.css','app.mjs','report.pdf','assets','analysis/model.mjs','data']) copy(file);
 for(const page of pages) {
 const html=readFileSync(path.join(root,page),'utf8');
 for(const [,url] of html.matchAll(/(?:href|src)="([^"]+)"/g)) {
   if(/^(https?:|mailto:|data:)/.test(url)) continue;
   const [target,fragment]=url.split('#');
-  const file=path.join(root,'dist',target||page);
+  const file=path.join(root,'dist',(target||page).split('?')[0]);
   if(!existsSync(file)) throw new Error('Missing local link: '+url);
   if(fragment && file.endsWith('.html') && !readFileSync(file,'utf8').includes('id="'+fragment+'"')) throw new Error('Missing section: '+page+' -> '+url);
 }
