@@ -5,7 +5,9 @@
   "type": "module",
   "scripts": {
     "test": "node analysis/reproduce.mjs && node scripts/check-scene.mjs",
-    "build": "node analysis/reproduce.mjs && node scripts/build.mjs"
+    "test:public": "node scripts/check-public.mjs",
+    "build": "node analysis/reproduce.mjs && node scripts/build.mjs",
+    "build:public": "node analysis/reproduce.mjs && node scripts/build.mjs --public"
   },
   "engines": { "node": ">=20" }
 }
