@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import {fieldAt,motionTime,selectPeople,labelAnchor,walkingPose} from '../cinematic.mjs';
+import {fieldAt,motionTime,selectPeople,labelAnchor,walkingPose,ditherAt} from '../cinematic.mjs';
 for(const second of [0,.033,5,10,15,20,25,30,3600]) {
   const scene=fieldAt(second);
   assert.equal(scene.nodes.length,72);assert.equal(scene.focus.length,3);
@@ -43,3 +43,8 @@ assert(new Set(crowd.map(node=>node.gait)).size>60);
 assert.equal(new Set(crowd.map(node=>node.direction)).size,2);
 assert(crowd.every(node=>node.profile>=.72&&node.profile<=1.02));
 console.log('Slower individual cadences, independent phases and varied directions passed.');
+
+const sample=frame=>Array.from({length:200},(_,i)=>ditherAt(5+i%20*3,40+Math.floor(i/20)*3,2,frame));
+assert.deepEqual(sample(0),sample(0));assert.notDeepEqual(sample(0),sample(4));
+assert(sample(0).some(Boolean)&&sample(0).some(value=>!value));
+console.log('Repeatable dither pattern, visible dots and changing abstract form passed.');
