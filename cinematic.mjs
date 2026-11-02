@@ -23,6 +23,8 @@ export function ditherAt(x,y,variant,frame) {
   return threshold<density;
 }
 
+export function depthBlur(depth){return Math.max(0,Math.abs(depth-.5)-.08)*19;}
+
 export function labelAnchor(x,width) { return Math.max(6,Math.min(width-106,x*width-10)); }
 
 export function motionTime(seconds) {
@@ -41,10 +43,10 @@ export function drift(start,velocity,time){
   return t<=1?t:2-t;
 }
 
-export function fieldAt(seconds,selected=[12,33,54]) {
+export function fieldAt(seconds,selected=[6,17,27]) {
   motionTime(seconds);
   const motion=seconds;
-  const nodes=Array.from({length:72},(_,i)=>{
+  const nodes=Array.from({length:36},(_,i)=>{
     const seed=(i*.61803398875)%1,depth=(i*.41421356237+.07)%1;
     const individuality=(i*.754877666)%1,cadence=4.5+individuality*3;
     return {x:.06+.88*drift(seed,(.009+individuality*.012)*(i%2?1:-1),motion)+Math.sin(motion*.4+i)*.015,y:.18+.60*drift(depth,(.014+seed*.018)*(i%3?1:-1),motion)+Math.cos(motion*.3+i)*.015,z:depth,variant:i,gait:(motion*cadence+i*2.718281828)%16,cadence,direction:seed<.5?-1:1,profile:.72+individuality*.30};
@@ -61,7 +63,7 @@ if(typeof document!=='undefined') {
     const colors=['#367b63','#a55561','#466d9f'];
     let width=0,height=0,time=0,last=0,request=0,playing=!preference.matches,visible=true,fieldFocused=false;
     let selected=selectPeople(fieldAt(0).nodes),nextSwitch=[1.4,2.1,2.8];
-    const sprites=Array.from({length:72},(_,variant)=>Array.from({length:8},(_,pose)=>{
+    const sprites=Array.from({length:36},(_,variant)=>Array.from({length:8},(_,pose)=>{
       const sprite=document.createElement('canvas');sprite.width=76;sprite.height=140;
       const pen=sprite.getContext('2d');
       pen.fillStyle='#2e4838';
@@ -85,7 +87,7 @@ if(typeof document!=='undefined') {
       for(const node of [...nodes].sort((a,b)=>a.z-b.z)) {
         const size=(.38+node.z*.87)*scale;
         ctx.globalAlpha=.43+(.5-Math.abs(node.z-.5))*.95;
-        ctx.filter=`blur(${Math.max(0,Math.abs(node.z-.5)-.12)*8}px)`;
+        ctx.filter=`blur(${depthBlur(node.z)}px)`;
         const pose=Math.floor(node.gait/2);
         ctx.save();ctx.translate(node.x*width,node.y*height);ctx.scale(node.profile,1);
         ctx.drawImage(sprites[node.variant][pose],-38*size,-70*size,76*size,140*size);ctx.restore();
