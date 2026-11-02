@@ -83,6 +83,12 @@ if(typeof document!=='undefined') {
       }
       return sprite;
     }));
+    const highlights=colors.map((color,index)=>{
+      const surface=document.createElement('canvas');surface.width=76;surface.height=140;
+      const pen=surface.getContext('2d'),gradient=pen.createLinearGradient(18,18,58,124);
+      gradient.addColorStop(0,color);gradient.addColorStop(.48,['#21b879','#ee687c','#517cde'][index]);gradient.addColorStop(1,['#d6e97a','#f5be80','#a4dce6'][index]);
+      return {surface,pen,gradient};
+    });
     const restingNodes=fieldAt(0).nodes;
     const edges=restingNodes.flatMap((origin,i)=>restingNodes.map((node,index)=>({index,distance:Math.hypot(node.x-origin.x,node.y-origin.y)})).filter(item=>item.index>i&&item.distance<.20).sort((a,b)=>a.distance-b.distance).slice(0,3).map(item=>[i,item.index]));
     function draw(){
@@ -101,7 +107,15 @@ if(typeof document!=='undefined') {
         ctx.filter=`blur(${depthBlur(node.z)}px)`;
         const pose=Math.floor(node.gait);
         ctx.save();ctx.translate(node.x*width,node.y*height);ctx.scale(node.direction*node.profile*build.width,build.height);
-        ctx.drawImage(sprites[node.variant][pose],-38*size,-70*size,76*size,140*size);ctx.restore();
+        let sprite=sprites[node.variant][pose];
+        const label=selected.indexOf(node.variant);
+        if(label!==-1){
+          const {surface,pen,gradient}=highlights[label];
+          pen.clearRect(0,0,76,140);pen.drawImage(sprite,0,0);
+          pen.globalCompositeOperation='source-in';pen.fillStyle=gradient;pen.fillRect(0,0,76,140);pen.globalCompositeOperation='source-over';
+          sprite=surface;ctx.globalAlpha=Math.max(ctx.globalAlpha,.92);
+        }
+        ctx.drawImage(sprite,-38*size,-70*size,76*size,140*size);ctx.restore();
       }
       ctx.filter='none';ctx.globalAlpha=1;
       const beat=time%7;
