@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import {fieldAt,motionTime,selectPeople,labelAnchor,walkingPose,ditherAt,drift,depthBlur} from '../cinematic.mjs';
+import {fieldAt,motionTime,selectPeople,labelAnchor,walkingPose,ditherAt,drift,depthBlur,bodyShape} from '../cinematic.mjs';
 for(const second of [0,.033,5,10,15,20,25,30,4800]) {
   const scene=fieldAt(second);
   assert.equal(scene.nodes.length,48);assert.equal(scene.focus.length,3);
@@ -59,3 +59,8 @@ assert.equal(new Set(silhouettes).size,48);
 console.log('Bounded independent travel and 48 distinct dither masks passed.');
 
 assert.equal(depthBlur(.5),0);assert(depthBlur(0)>7&&depthBlur(1)>7);
+
+assert.equal(new Set(crowd.map(node=>JSON.stringify(bodyShape(node.variant)))).size,3);
+for(const t of [0,5,30])for(const node of fieldAt(t).nodes){const next=fieldAt(t+.05).nodes[node.variant];if(Math.abs(next.x-node.x)>.00002)assert.equal(node.direction,Math.sign(next.x-node.x));}
+assert(bodyShape(0).height<bodyShape(2).height);assert(bodyShape(1).width>bodyShape(2).width);
+console.log('Three body builds and facing direction following travel passed.');

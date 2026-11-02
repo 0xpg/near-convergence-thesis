@@ -1,15 +1,19 @@
 export function walkingPose(frame) { const phase=(frame%16)/16*Math.PI*2; return {swing:Math.sin(phase),lift:Math.cos(phase)}; }
 
+export function bodyShape(variant){return [{width:.82,height:.76,weight:.9},{width:1.28,height:.96,weight:1.3},{width:1,height:1,weight:1}][variant%3];}
+
 export function ditherAt(x,y,variant,frame) {
   const seed=(variant*.61803398875)%1,{swing,lift}=walkingPose(frame);
-  const center=38,shoulder=8+seed*3,hip=5+seed*2,stride=swing*(10+seed*9);
+  const build=bodyShape(variant);
+  const center=38,shoulder=(8+seed*3)*build.weight,hip=(5+seed*2)*build.weight,stride=swing*(10+seed*9);
   const segment=(ax,ay,bx,by,r)=>{
+    r*=build.weight;
     const dx=bx-ax,dy=by-ay,t=Math.max(0,Math.min(1,((x-ax)*dx+(y-ay)*dy)/(dx*dx+dy*dy)));
     return Math.hypot(x-ax-t*dx,y-ay-t*dy)/r;
   };
-  const body=Math.hypot((x-center)/(9+seed*3),(y-57)/21);
+  const body=Math.hypot((x-center)/((9+seed*3)*build.weight),(y-57)/21);
   const head=Math.hypot((x-center)/(6+seed*1.5),(y-23)/8);
-  let distance=Math.min(body,head,segment(center,30,center,41,3));
+  let distance=Math.min(body,head,segment(center,30,center,41,3),segment(center+4,23,center+8,26,2));
   for(const side of [-1,1]){
     const knee=center+side*hip+side*stride*.45,foot=center+side*hip+side*stride;
     const footY=121-Math.max(0,side*lift)*7;
@@ -49,7 +53,9 @@ export function fieldAt(seconds,selected=[6,17,27]) {
   const nodes=Array.from({length:48},(_,i)=>{
     const seed=(i*.61803398875)%1,depth=(i*.41421356237+.07)%1;
     const individuality=(i*.754877666)%1,cadence=4.5+individuality*3;
-    return {x:.06+.88*drift(seed,(.009+individuality*.012)*(i%2?1:-1),motion)+Math.sin(motion*.4+i)*.015,y:.18+.60*drift(depth,(.014+seed*.018)*(i%3?1:-1),motion)+Math.cos(motion*.3+i)*.015,z:depth,variant:i,gait:(motion*cadence+i*2.718281828)%16,cadence,direction:seed<.5?-1:1,profile:.72+individuality*.30};
+    const velocity=(.009+individuality*.012)*(i%2?1:-1);
+    const dx=.88*(drift(seed,velocity,motion+.05)-drift(seed,velocity,motion))/.05+.006*Math.cos(motion*.4+i);
+    return {x:.06+.88*drift(seed,(.009+individuality*.012)*(i%2?1:-1),motion)+Math.sin(motion*.4+i)*.015,y:.18+.60*drift(depth,(.014+seed*.018)*(i%3?1:-1),motion)+Math.cos(motion*.3+i)*.015,z:depth,variant:i,gait:(motion*cadence+i*2.718281828)%16,cadence,direction:dx<0?-1:1,profile:.72+individuality*.30};
   });
   return {nodes,focus:selected.map(index=>nodes[index]),attention:Math.floor(seconds/5)%3};
 }
@@ -85,11 +91,11 @@ if(typeof document!=='undefined') {
       ctx.clearRect(0,0,width,height);
       const scale=width<600?.62:1;
       for(const node of [...nodes].sort((a,b)=>a.z-b.z)) {
-        const size=(.38+node.z*.87)*scale;
+        const build=bodyShape(node.variant),size=(.38+node.z*.87)*scale;
         ctx.globalAlpha=.43+(.5-Math.abs(node.z-.5))*.95;
         ctx.filter=`blur(${depthBlur(node.z)}px)`;
         const pose=Math.floor(node.gait/2);
-        ctx.save();ctx.translate(node.x*width,node.y*height);ctx.scale(node.profile,1);
+        ctx.save();ctx.translate(node.x*width,node.y*height);ctx.scale(node.direction*node.profile*build.width,build.height);
         ctx.drawImage(sprites[node.variant][pose],-38*size,-70*size,76*size,140*size);ctx.restore();
       }
       ctx.filter='none';ctx.globalAlpha=1;
