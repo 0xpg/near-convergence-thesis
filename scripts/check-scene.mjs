@@ -33,5 +33,13 @@ for(const width of [288,320,390,1440])for(const node of fieldAt(0).nodes){const 
 assert.deepEqual(walkingPose(0),walkingPose(16));
 assert(Math.abs(walkingPose(4).swing-1)<1e-12);
 assert(Math.abs(walkingPose(12).swing+1)<1e-12);
-assert.equal(Math.floor(motionTime(5)*14)%16,Math.floor(motionTime(6.5)*14)%16);
+assert.deepEqual(fieldAt(5).nodes.map(node=>node.gait),fieldAt(6.5).nodes.map(node=>node.gait));
 console.log("Opposing limb phases, closed walking cycle and still interval passed.");
+
+const crowd=fieldAt(0).nodes;
+assert(crowd.every(node=>node.cadence>=4.5&&node.cadence<=7.5));
+assert(new Set(crowd.map(node=>node.cadence)).size>60);
+assert(new Set(crowd.map(node=>node.gait)).size>60);
+assert.equal(new Set(crowd.map(node=>node.direction)).size,2);
+assert(crowd.every(node=>node.profile>=.72&&node.profile<=1.02));
+console.log('Slower individual cadences, independent phases and varied directions passed.');

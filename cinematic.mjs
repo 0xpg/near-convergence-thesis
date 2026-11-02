@@ -16,7 +16,8 @@ export function fieldAt(seconds,selected=[12,33,54]) {
   const motion=motionTime(seconds);
   const nodes=Array.from({length:72},(_,i)=>{
     const seed=(i*.61803398875)%1,depth=(i*.41421356237+.07)%1;
-    return {x:.04+seed*.92+Math.sin(motion*.13+i*1.7)*.014,y:.16+depth*.64+Math.cos(motion*.11+i)*.008,z:depth,variant:i%6};
+    const individuality=(i*.754877666)%1,cadence=4.5+individuality*3;
+    return {x:.04+seed*.92+Math.sin(motion*(.045+individuality*.035)+i*1.7)*(.009+individuality*.008),y:.16+depth*.64+Math.cos(motion*(.04+seed*.035)+i)*.006,z:depth,variant:i%6,gait:(motion*cadence+i*2.718281828)%16,cadence,direction:seed<.5?-1:1,profile:.72+individuality*.30};
   });
   return {nodes,focus:selected.map(index=>nodes[index]),attention:Math.floor(seconds/5)%3};
 }
@@ -32,7 +33,7 @@ if(typeof document!=='undefined') {
     let selected=selectPeople(fieldAt(0).nodes),nextSwitch=[4,5.3,6.6];
     const sprites=Array.from({length:6},(_,variant)=>Array.from({length:16},(_,pose)=>{
       const sprite=document.createElement('canvas');sprite.width=76;sprite.height=140;
-      const pen=sprite.getContext('2d'),{swing,lift}=walkingPose(pose);
+      const pen=sprite.getContext('2d'),gait=walkingPose(pose),swing=gait.swing*(.45+variant*.08),lift=gait.lift*.65;
       function limb(points,color,width){pen.strokeStyle=color;pen.lineWidth=width;pen.lineCap='round';pen.lineJoin='round';pen.beginPath();pen.moveTo(...points[0]);for(const point of points.slice(1))pen.lineTo(...point);pen.stroke();}
       const feet=[[33+swing*15,118-Math.max(0,lift)*7],[43-swing*15,118-Math.max(0,-lift)*7]];
       limb([[33,70],[33+swing*7,94],feet[0]],'#6c756d',7);
@@ -46,7 +47,7 @@ if(typeof document!=='undefined') {
       const body=pen.createLinearGradient(23,0,52,0);body.addColorStop(0,'#90978f');body.addColorStop(.45,variant%2?'#424c45':'#5d665e');body.addColorStop(1,'#303d33');
       pen.fillStyle=body;pen.beginPath();pen.moveTo(29,41);pen.quadraticCurveTo(38,35,47,41);pen.quadraticCurveTo(53,48,50,65);pen.lineTo(47,72);pen.quadraticCurveTo(38,78,29,72);pen.lineTo(26,65);pen.quadraticCurveTo(23,48,29,41);pen.fill();
       pen.fillStyle='#687269';pen.fillRect(34,31,8,10);
-      const head=pen.createLinearGradient(29,0,47,0);head.addColorStop(0,'#a1a69c');head.addColorStop(1,'#465249');pen.fillStyle=head;pen.beginPath();pen.ellipse(38,25,9,11,0,0,Math.PI*2);pen.fill();
+      const head=pen.createLinearGradient(29,0,47,0);head.addColorStop(0,'#a1a69c');head.addColorStop(1,'#465249');pen.fillStyle=head;pen.beginPath();pen.ellipse(38,25,7,9,0,0,Math.PI*2);pen.fill();
       return sprite;
     }));
     const restingNodes=fieldAt(0).nodes;
@@ -64,8 +65,9 @@ if(typeof document!=='undefined') {
         const size=(.26+node.z*.67)*scale;
         ctx.globalAlpha=.28+(.5-Math.abs(node.z-.5))*.9;
         ctx.filter=`blur(${Math.max(0,Math.abs(node.z-.5)-.12)*8}px)`;
-        const pose=Math.floor(motionTime(time)*14+node.variant*2)%16;
-        ctx.drawImage(sprites[node.variant][pose],node.x*width-38*size,node.y*height-70*size,76*size,140*size);
+        const pose=Math.floor(node.gait);
+        ctx.save();ctx.translate(node.x*width,node.y*height);ctx.scale(node.direction*node.profile,1);
+        ctx.drawImage(sprites[node.variant][pose],-38*size,-70*size,76*size,140*size);ctx.restore();
       }
       ctx.filter='none';ctx.globalAlpha=1;
       const beat=time%7;
