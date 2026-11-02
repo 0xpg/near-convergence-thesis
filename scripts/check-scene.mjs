@@ -7,7 +7,7 @@ for(const second of [0,.033,5,10,15,20,25,30,3600]) {
   for(const node of [...scene.nodes,...scene.focus]) {
     assert(Number.isFinite(node.x)&&node.x>0&&node.x<1);
     assert(Number.isFinite(node.y)&&node.y>0&&node.y<1);
-    assert(node.variant>=0&&node.variant<6);
+    assert(node.variant>=0&&node.variant<72);
   }
 }
 const regions=new Set(fieldAt(0).nodes.map(node=>Math.floor(node.x*3)+','+Math.floor(node.y*3)));
@@ -48,3 +48,6 @@ const sample=frame=>Array.from({length:200},(_,i)=>ditherAt(5+i%20*3,40+Math.flo
 assert.deepEqual(sample(0),sample(0));assert.notDeepEqual(sample(0),sample(4));
 assert(sample(0).some(Boolean)&&sample(0).some(value=>!value));
 console.log('Repeatable dither pattern, visible dots and changing abstract form passed.');
+
+assert.equal(new Set(crowd.map(node=>node.variant)).size,72);
+assert.notDeepEqual(sample(0),Array.from({length:200},(_,i)=>ditherAt(5+i%20*3,40+Math.floor(i/20)*3,17,0)));
