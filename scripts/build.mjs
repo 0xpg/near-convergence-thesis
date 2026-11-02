@@ -15,10 +15,12 @@ function copy(relative) {
     for(const name of readdirSync(source)) copy(path.join(relative,name));
   } else { mkdirSync(path.dirname(target),{recursive:true}); copyFileSync(source,target); }
 }
-for(const file of ['index.html','styles.css','app.mjs','methodology.html','report.pdf','assets','analysis/model.mjs','data']) copy(file);
-const html=readFileSync(path.join(root,'index.html'),'utf8');
+for(const file of ['index.html','landing.css','research.html','styles.css','app.mjs','methodology.html','report.pdf','assets','analysis/model.mjs','data']) copy(file);
+for(const page of ['index.html','research.html','methodology.html']) {
+const html=readFileSync(path.join(root,page),'utf8');
 for(const [,url] of html.matchAll(/(?:href|src)="([^"#]+)"/g)) {
   if(/^(https?:|mailto:|data:)/.test(url)) continue;
   if(!existsSync(path.join(root,'dist',url.split('#')[0]))) throw new Error('Missing local link: '+url);
+}
 }
 console.log('Built dist/: static site, documented snapshots, shared engine and synchronized report.');
