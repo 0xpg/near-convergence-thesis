@@ -1,0 +1,164 @@
+{
+  "snapshotVersion": "near-2026-10-28-v1",
+  "preparedDate": "2026-11-02",
+  "files": [
+    {
+      "file": "snapshots/daily.csv",
+      "sha256": "911a2ca06972d8ac0653c739c9db72a634327fa415de3193247bec633cfbb1fd",
+      "original": "intents_aligned_daily.csv"
+    },
+    {
+      "file": "snapshots/block.json",
+      "sha256": "f673904aa784228ba98905dddb38a838635eda939ab367917cba689578fca87a",
+      "original": "token/block.json"
+    },
+    {
+      "file": "snapshots/protocol.json",
+      "sha256": "bbeaf3e36f60c4a915ff9314e44a69695d23bbf13c9fedf88b8f19a6efda350e",
+      "original": "token/protocol_pinned.json"
+    },
+    {
+      "file": "snapshots/validators.json",
+      "sha256": "33a92e8faf11f37ab452ceb1c707973c85dac00fb172d90d03f2b2f1cc7c68c6",
+      "original": "token/validators.json"
+    },
+    {
+      "file": "snapshots/protocol-summary.json",
+      "sha256": "84c701d6d8553b0b9bdecf330863da85582083bc41283fa7ac6096deac42ab7b",
+      "original": "token/checked_summary.json"
+    },
+    {
+      "file": "snapshots/market.json",
+      "sha256": "3e41e3e0f2388b06413150a1aaae5d7e7c83fdd81c059f03fafcef6fb5bed7ad",
+      "original": "raw/coingecko_near.json"
+    },
+    {
+      "file": "snapshots/channels.json",
+      "sha256": "27c2fa258925d35a558c148ac62d428acdacf935ca0a8d0a67d08878dc029593",
+      "original": "dune_monitor/ecosystem/referral_mix_results.json"
+    },
+    {
+      "file": "snapshots/reconciliation.json",
+      "sha256": "c1cfb026e2e8ba922a32e4050b68897706ef276ab0268ee510320668d4c11570",
+      "original": "dune_monitor/ecosystem/reconciliation.json"
+    },
+    {
+      "file": "snapshots/receipt-analysis.json",
+      "sha256": "51bde6da149bc70b7cd9bc93876c0337afda7b01eaa34799236564a4ea0f817b",
+      "original": "dune_monitor/deep/economic_findings.json"
+    },
+    {
+      "file": "snapshots/adoption.json",
+      "sha256": "b9b3bc3d60fa97301302772183924ddc783d1bd8cb1581f29a2f452dbe48a907",
+      "original": "adoption_analysis.json"
+    },
+    {
+      "file": "snapshots/aligned-summary.json",
+      "sha256": "c28b70407349c72b7a9bac70a32a6a68a2bfa522baae4833ecb07c35adf0e3bd",
+      "original": "intents_aligned_summary.json"
+    },
+    {
+      "file": "snapshots/buyback-receipt-0.json",
+      "sha256": "8608a770f41521862ecb2d849c7aeef6ad52217d88cedb2740a223faa3cff822",
+      "original": "token/buyback_receipt_0.json"
+    },
+    {
+      "file": "snapshots/buyback-receipt-1.json",
+      "sha256": "a36e060a42e1fd58ba85a587ffeea934eb89f87d2b51b8e49e096a5150aff1ba",
+      "original": "token/buyback_receipt_1.json"
+    },
+    {
+      "file": "snapshots/llama-fees-summary.json",
+      "sha256": "249d381d08d3970206e6b1be08705c0e4db5eb6dbcccbbfa988a9ace4f97c3dd",
+      "original": "raw/llama-fees-summary.json"
+    },
+    {
+      "file": "snapshots/llama-revenue-summary.json",
+      "sha256": "2a956590f57386a00159efd30b1365a72e2437b28ce1218d17b1de0c79c70a78",
+      "original": "raw/llama-revenue-summary.json"
+    },
+    {
+      "file": "snapshots/llama-holders-summary.json",
+      "sha256": "ea438499ef5996f9ad98a94731a8ae9e609b83385b953349fd8197563f34f400",
+      "original": "raw/llama-holders-summary.json"
+    },
+    {
+      "file": "snapshots/llama-volume-summary.json",
+      "sha256": "aa207e473b6a1267981558fa212fcf3ff466d535a0fbc7b9ecf082d317facb54",
+      "original": "raw/llama-volume-summary.json"
+    },
+    {
+      "file": "snapshots/intents-api-manifest.json",
+      "sha256": "5baea85b99f566d727852bff9319585c1684b6dfb50039c6d711731130dbe52e",
+      "original": "raw/intents-api-manifest.json"
+    },
+    {
+      "file": "snapshots/current-quote.json",
+      "sha256": "35d35768513569f06be6674059f473e4b5c20b9908c0e36dcd417bcec3f092a2",
+      "source": "public network refresh",
+      "retrievedUtc": "2026-11-02T11:40:32.049738+00:00"
+    },
+    {
+      "file": "snapshots/current-status.json",
+      "sha256": "672d7b365d04b2e856d44fbe2450e9916cdc9e71f3549d393846c3d46f1ac57b",
+      "source": "public network refresh",
+      "retrievedUtc": "2026-11-02T11:40:32.049738+00:00"
+    },
+    {
+      "file": "snapshots/current-block.json",
+      "sha256": "058e835a03b93ef4150f8adee160192a7f5efdfd24afa4d2998c4080f3857e94",
+      "source": "public network refresh",
+      "retrievedUtc": "2026-11-02T11:40:32.049738+00:00"
+    },
+    {
+      "file": "snapshots/current-protocol.json",
+      "sha256": "7c2708d75f3e59dfe76e0b7d515df0c2b8d2cc2d08a123d402ec8124beac495e",
+      "source": "public network refresh",
+      "retrievedUtc": "2026-11-02T11:40:32.049738+00:00"
+    },
+    {
+      "file": "snapshots/intents-token-diff.rs.txt",
+      "sha256": "94b9fce9429fed24ad6619f45c5d386505326514a7773c28f8e8085d4c6a6591",
+      "original": "token/intents_deployed__contracts__defuse__core__src__intents__token_diff.rs",
+      "sourceCommit": "16d04f6ec4401263f8914638710260da50bb46b0",
+      "status": "Archived source reference; not compiled or executed; onchain metadata attribution is not reproduced WASM equivalence."
+    },
+    {
+      "file": "snapshots/intents-source-metadata.json",
+      "sha256": "2fa6fb0bb1e20c9a476548008eabe9ce43fd1da5bb26e90f264d201d0741e6c6",
+      "original": "token/intents_source_metadata.json",
+      "sourceCommit": "16d04f6ec4401263f8914638710260da50bb46b0",
+      "status": "Archived source reference; not compiled or executed; onchain metadata attribution is not reproduced WASM equivalence."
+    },
+    {
+      "file": "snapshots/intents-fee.json",
+      "sha256": "8c12673333544937e0c8196a17066e945633a8ea4516a662c585f60b9048fe50",
+      "original": "token/intents_fee.json",
+      "sourceCommit": "16d04f6ec4401263f8914638710260da50bb46b0",
+      "status": "Archived source reference; not compiled or executed; onchain metadata attribution is not reproduced WASM equivalence."
+    },
+    {
+      "file": "snapshots/intents-fee-collector.json",
+      "sha256": "f6deaa55eddf6f63b4f1c95d2f9cf0daee2b81b3f5a76ce9987820508b030ddf",
+      "original": "token/intents_fee_collector.json",
+      "sourceCommit": "16d04f6ec4401263f8914638710260da50bb46b0",
+      "status": "Archived source reference; not compiled or executed; onchain metadata attribution is not reproduced WASM equivalence."
+    },
+    {
+      "file": "queries/intents_fees.sql",
+      "sha256": "0f22cd18c5fb2e77c361aeec5299cc2b7c7906ee2fb572b45a331c4d8ad4a4c5",
+      "status": "Dated reproduction query"
+    },
+    {
+      "file": "queries/intents_volume.sql",
+      "sha256": "a119239b5ae3b4a3e87219c345635854b8499f15bd3dc131c97a0bff6458ed9a",
+      "status": "Rolling refresh reference"
+    },
+    {
+      "file": "queries/referral_mix.sql",
+      "sha256": "79fa1405bb0eec8c8de5535459a568cee04c6b6e4b759c644de482326b4513dd",
+      "status": "Dated reproduction query"
+    }
+  ],
+  "limits": "Preserved prior research acquisitions; hashes establish integrity, not source independence. Snapshots have different coverage and retrieval dates. No new network refresh performed."
+}

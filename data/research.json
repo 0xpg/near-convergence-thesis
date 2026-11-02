@@ -1,0 +1,242 @@
+{
+  "title": "The business is scaling. The token link remains conditional.",
+  "selectedThesis": "NEAR Intents shows reported commercial growth, but durable NEAR demand depends on retained economics and a verifiable route from service fees to lasting token demand.",
+  "stance": "Conditional; no price target or directional trading recommendation.",
+  "decision": "Chosen for measurable commercial significance, falsifiable cash-to-token steps and reproducible public snapshots. Supply reform is better evidenced mechanically but lacks demonstrated market disagreement; partner concentration is an important alternative explanation rather than a proven bearish outcome.",
+  "candidates": [
+    {
+      "name": "Distribution franchise with conditional token demand",
+      "claim": "Growth can create token demand if net commercial proceeds fund lasting purchases.",
+      "strength": "Operating flows and explicit mechanisms can be examined.",
+      "weakness": "Purchases, costs and custody incompletely reconciled.",
+      "selected": true
+    },
+    {
+      "name": "Supply reform and staking repricing",
+      "claim": "Lower issuance reduces ownership dilution if security participation holds.",
+      "strength": "Pinned protocol configuration and supply are primary observations.",
+      "weakness": "No event study or current pricing evidence proves overlooked repricing.",
+      "selected": false
+    },
+    {
+      "name": "Distribution leverage and margin fragility",
+      "claim": "Concentrated distribution can weaken retained fees despite volume growth.",
+      "strength": "Fee labels and route tariffs expose a falsifiable economic risk.",
+      "weakness": "No partner net margin or elasticity history proves compression.",
+      "selected": false
+    }
+  ],
+  "counterargument": "The market may value security, monetary demand, AI optionality and future distribution before present fees become material. Cheap gas can be a competitive advantage. Weak current burn therefore does not prove overvaluation. Conversely, a successful commercial routing business can reward operators and partners while NEAR holdings remain brief or discretionary.",
+  "falsifiers": [
+    "Reconcile external fee origin, purchases, end-period custody and disposals across repeated complete months.",
+    "Measure 30/60/90-day paying-customer cohorts with consistent labels and incentive adjustment; origin-account recurrence alone is insufficient.",
+    "Track route-weighted retained fees through partner renewals and stablecoin/same-asset mix changes.",
+    "Verify governance changes through active code/config and receipts, not ratification announcements."
+  ],
+  "sources": [
+    {
+      "id": "flows",
+      "title": "Aligned operating series",
+      "url": "https://api.llama.fi/summary/dexs/near-intents",
+      "snapshot": "data/snapshots/daily.csv",
+      "extraction": "Preserved raw API totalDataChart arrays, UTC date conversion and common-day alignment independently checked against every daily.csv cell by analysis/reproduce.mjs. Revenue API is a collection-wallet proxy, not profit.",
+      "period": "2026-09-23 to 2026-10-22; monthly comparisons April–September 2026",
+      "retrieved": "2026-10-25",
+      "independence": "DefiLlama and Dune share NEAR project feeds; not independent confirmations.",
+      "rawSources": [
+        "https://api.llama.fi/summary/fees/near-intents?dataType=dailyFees",
+        "https://api.llama.fi/summary/fees/near-intents?dataType=dailyRevenue",
+        "https://api.llama.fi/summary/dexs/near-intents"
+      ]
+    },
+    {
+      "id": "fees",
+      "title": "Official Intents fee schedule",
+      "url": "https://docs.near-intents.org/resources/fees",
+      "snapshot": null,
+      "extraction": "Published fee documentation read on the web on 2 November 2026. No official-page body preserved; SQL reference is for project fee datasets and is not a snapshot of this document.",
+      "period": "Current documentation; publication date unstated",
+      "retrieved": "2026-11-02",
+      "independence": "Protocol operator documentation.",
+      "queryReference": "data/queries/intents_fees.sql"
+    },
+    {
+      "id": "protocol",
+      "title": "Pinned mainnet protocol configuration",
+      "url": "https://rpc.mainnet.near.org",
+      "snapshot": "data/snapshots/protocol.json",
+      "extraction": "Saved JSON-RPC protocol config pinned to block 221,500,732; block header separately saved.",
+      "period": "2026-10-25 06:21:27 UTC",
+      "retrieved": "2026-10-25",
+      "independence": "One RPC provider; prior NearBlocks supply comparison differs by 1.485 NEAR at different timestamp."
+    },
+    {
+      "id": "governance",
+      "title": "Evolving NEAR Tokenomics",
+      "url": "https://near.org/blog/evolving-near-tokenomics",
+      "snapshot": null,
+      "extraction": "Official 24 February article reread on 2 November; buyback discretion and no holder entitlement explicitly disclosed.",
+      "period": "Published 2026-02-24",
+      "retrieved": "2026-11-02",
+      "independence": "Project claim and stated policy; no enforceable tokenholder entitlement established."
+    },
+    {
+      "id": "channels",
+      "title": "Dune distribution fee mix",
+      "url": "https://dune.com/queries/9019424/13064024",
+      "snapshot": "data/snapshots/channels.json",
+      "extraction": "Saved executed output; SQL in data/queries/referral_mix.sql aggregates labelled distribution fees.",
+      "period": "2026-09-27 to 2026-10-26 UTC",
+      "retrieved": "2026-10-27",
+      "independence": "Project-maintained source feed; labels not independently verified beneficial owners."
+    },
+    {
+      "id": "market",
+      "title": "Historical NEAR price reference",
+      "url": "https://api.coingecko.com/api/v3/coins/near",
+      "snapshot": "data/snapshots/market.json",
+      "extraction": "Saved vendor response; historical $4.44 multiplied by pinned total supply, not free float.",
+      "period": "2026-10-25T06:19:54Z",
+      "retrieved": "2026-10-25",
+      "independence": "Market vendor; not a 2 November live quote."
+    },
+    {
+      "id": "receipt",
+      "title": "Sampled buyback wallet deposit",
+      "url": "https://nearblocks.io/txns/HbuZpqWLE3D9ddcSGcYNGSLXMCMFhWWuygTqdrvLWRiZ",
+      "snapshot": "data/snapshots/buyback-receipt-0.json",
+      "extraction": "Saved successful transaction and receipts; native withdrawal enters named wallet.",
+      "period": "Receipt sample saved on 25 October",
+      "retrieved": "2026-10-25",
+      "independence": "Primary receipt; upstream purchase funding not traced."
+    },
+    {
+      "id": "dashboard",
+      "title": "NEAR economic monitor",
+      "url": "https://dune.com/0xpanatagama/near-economic-monitor",
+      "snapshot": "data/queries/",
+      "extraction": "Relevant existing dashboard with query links and frozen fallbacks; source refresh is separate from local model rerun.",
+      "period": "Rolling source queries; cached runs vary",
+      "retrieved": "2026-10-27",
+      "independence": "Existing project dashboard, not independently reindexed activity."
+    },
+    {
+      "id": "current-refresh",
+      "title": "Separate 2 November market and protocol refresh",
+      "url": "https://api.coingecko.com/api/v3/simple/price?ids=near&vs_currencies=usd&include_last_updated_at=true",
+      "snapshot": "data/current.json",
+      "extraction": "Read-only public CoinGecko quote and NEAR JSON-RPC final block plus configuration pinned to that block; original response bodies are preserved and hashed in data/manifest.json.",
+      "period": "Quote updated 2026-11-02 11:39:17 UTC; block 222,714,028 dated 11:40:11 UTC",
+      "retrieved": "2026-11-02",
+      "independence": "One market vendor and one RPC provider. These new observations do not replace the historical operating-model cutoff.",
+      "rpcSource": "https://rpc.mainnet.near.org",
+      "rawSnapshots": [
+        "data/snapshots/current-quote.json",
+        "data/snapshots/current-block.json",
+        "data/snapshots/current-protocol.json"
+      ]
+    },
+    {
+      "id": "bitwise-reference",
+      "title": "Bitwise Europe: The Investment Case for NEAR",
+      "url": "https://bitwiseinvestments.eu/blog/special-reports/the-investment-case-for-near/pdf/Near_investment_case_ENG.pdf",
+      "snapshot": null,
+      "extraction": "Context inherited from the existing research repository’s extracted-text review. The public publication link is retained for inspection; no private supplied PDF is redistributed and no fresh end-to-end PDF review is claimed here.",
+      "period": "Cover labelled Q2 2025; individual observations extend into July 2025; forecasts concern 2030",
+      "retrieved": "Prior research review dated 2026-10-25",
+      "independence": "Asset-manager interpretation and conditional forecasts, with commercial NEAR product exposure; not a source of validated tokenholder rights or current protocol parameters."
+    },
+    {
+      "id": "deployed-fee-source",
+      "title": "Metadata-attributed Intents fee handler",
+      "url": "https://github.com/near/intents/blob/16d04f6ec4401263f8914638710260da50bb46b0/contracts/defuse/core/src/intents/token_diff.rs#L56",
+      "snapshot": "data/snapshots/intents-token-diff.rs.txt",
+      "metadataSnapshot": "data/snapshots/intents-source-metadata.json",
+      "extraction": "Preserved prior RPC metadata response attributes version 0.4.5 to this source revision. Archived fee-handler source credits collected assets to internal collector balances. Live saved fee query reports 1 pip. Source was read as text; not compiled or executed.",
+      "period": "Protocol and metadata snapshot dated 2026-10-25",
+      "retrieved": "2026-10-25; archive reused 2026-11-02",
+      "independence": "Metadata reports a non-reproducible WASM build. No independent source-to-deployed-bytecode match is claimed."
+    }
+  ],
+  "claims": [
+    {
+      "id": "growth",
+      "title": "A service with commercial traction",
+      "claim": "Q3 reported Intents volume rose 56.68%, gross fees 54.86% and tracked wallet receipts 104.81% versus Q2.",
+      "sources": [
+        "flows"
+      ],
+      "method": "analysis/reproduce.mjs sums complete Apr–Jun and Jul–Sep UTC months; data/monthly.csv and outputs.growth.",
+      "limitations": "Project-derived totals; revised history possible; wallet receipts are not profit; two quarters do not prove durable organic demand.",
+      "falsifier": "Rising notional with deteriorating incentive-adjusted receipts or recurring-customer demand.",
+      "chart": "monthly"
+    },
+    {
+      "id": "capture",
+      "title": "The token link has unverified steps",
+      "claim": "Commercial fees can support token demand only after actual costs, funded purchases and subsequent retention are reconciled.",
+      "sources": [
+        "fees",
+        "governance",
+        "receipt",
+        "deployed-fee-source"
+      ],
+      "method": "analysis/model.mjs separates fees, tracked receipts, additional costs, purchase conversion and retained inventory.",
+      "limitations": "Costs/conversion/disposals unknown. Zero default credits no unverified purchases; does not assert no purchases occurred.",
+      "falsifier": "Audited receipt-to-purchase-to-custody records and repeated retained demand establish the missing link.",
+      "chart": "funnel"
+    },
+    {
+      "id": "scale",
+      "title": "Snapshot receipts are small against reference token value",
+      "claim": "Annualizing the saved 30-day receipts gives $27.071m, or 0.4655% of the $5.816bn 25 October total-supply value even if every receipt funds retained purchases.",
+      "sources": [
+        "flows",
+        "market",
+        "protocol"
+      ],
+      "method": "receipts × 365 / 30 divided by historical price × pinned total supply. Same shared calculate() used by browser and report.",
+      "limitations": "Hypothetical 100% conversion/retention; no economic rights or hurdle valuation inferred; reference value is not current market cap.",
+      "falsifier": "Substantially higher independently verified retained purchases, lower reference price or a demonstrated stock-demand mechanism.",
+      "chart": "scenario"
+    },
+    {
+      "id": "distribution",
+      "title": "Distribution concentration is a bargaining risk",
+      "claim": "Three source labels generated 88.25% of measured distribution fees over 27 September–26 October.",
+      "sources": [
+        "channels"
+      ],
+      "method": "analysis/reproduce.mjs parses frozen Dune output; sum named label shares.",
+      "limitations": "Label concentration is not customer or beneficial-owner concentration; negotiated margins unavailable.",
+      "falsifier": "Broader fee-source mix and stable retained bps through partner renewals.",
+      "chart": "channels"
+    },
+    {
+      "id": "issuance",
+      "title": "Issuance is distinct from external income",
+      "claim": "Pinned protocol config has 2.5% maximum annual issuance. Staking redistributes ownership and does not itself prove outside revenue.",
+      "sources": [
+        "protocol"
+      ],
+      "method": "Pinned config 1/40; header total supply × 2.5% = 32.747m NEAR annual ceiling.",
+      "limitations": "Maximum not realized issuance; does not mean all issued tokens sold; exact gas burn excluded.",
+      "falsifier": "Config activation changes, measured issuance mismatch, or independently reconciled external customer economics.",
+      "chart": "supply"
+    }
+  ],
+  "methodology": {
+    "offline": "node analysis/reproduce.mjs verifies snapshot hashes, rebuilds monthly totals and shared-engine outputs without credentials.",
+    "refresh": "The referral and gross-fee SQL files pin 27 September–26 October 2026 for the saved Dune comparison. The volume SQL is explicitly a rolling refresh reference. Source datasets may revise history even for fixed dates. Refresh separately into a new versioned snapshot, preserving dates, hashes and definitions. The offline API reconstruction uses preserved response bodies and requires no credentials.",
+    "hurdle": "Selected absorption hurdle is a user assumption about annual retained purchases relative to reference total-supply value. It is neither a discount rate nor a claimed market expectation.",
+    "cuts": "Operating 30-day window ends 22 October; monthly comparison ends 30 September; distribution ends 26 October; protocol and historical price are dated 25 October. Prepared 2 November 2026.",
+    "limits": "No current price attribution, full buyback origin audit, independent historical reindex, confidential partner margin, measured organic retention or exact net-supply census.",
+    "currentRefresh": "data/current.json separately records 2 November public CoinGecko quote and pinned RPC config/supply. Dated analytical model defaults intentionally unchanged."
+  },
+  "referenceProvenance": {
+    "inheritedWork": "The existing NEAR research repository supplied operating extracts, pinned RPC records, executed-query outputs, report-reading notes and earlier hypotheses. New code independently verifies the preserved raw operating arrays and reproduces selected transformations.",
+    "publicReference": "The Bitwise investment case helped identify competing mechanisms and assumptions. Its assumed future fee and revenue multiple were not imported as model facts. The later supplied staking report was considered through inherited research notes; no public publication URL was verified for that exact edition, so it is not a numerical source for this website.",
+    "reconciliation": "Earlier model labels that treated wallet receipts as net capture were narrowed to tracked wallet receipts. The website does not inherit an obligation to reach the earlier bullish or cautious conclusion.",
+    "privacy": "Private conversations and supplied PDFs are context only. Their bodies and personal filesystem locations are not distributed in this repository."
+  }
+}

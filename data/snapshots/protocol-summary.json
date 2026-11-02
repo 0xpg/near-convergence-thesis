@@ -1,0 +1,28 @@
+{
+  "block_height": 221500732,
+  "block_hash": "H2krnX3eBDLYqWM3Ute9CWruZhQK3Eg3RdsSynhbtoxK",
+  "timestamp_nanosec": "1792909287738989677",
+  "total_supply_NEAR": "1309898856.237707987011609783845833",
+  "current_validator_stake_NEAR": "593338645.166331345596970233074778",
+  "validator_count": 384,
+  "stake_fraction": "0.45296523646911093343962738518650189525679224595026",
+  "maximum_annual_issuance_NEAR_at_snapshot_supply": "32747471.405942699675290244596145825",
+  "observed_epoch_boundary_net_supply_increase_NEAR": "25640.734578386574540535496576",
+  "theoretical_validator_APR_before_performance_fees": "0.049672686088205673829477375066841544224468686525156",
+  "treasury_share_explanation": "Mainnet genesis version 29 invokes hardcoded 1/10 in pinned reward_calculator.rs, overriding config zero",
+  "protocol_fee_fraction": "0.000001",
+  "fee_collector": "7066024d3f20f94de601c003163367873cca78507eeca4df66d9be645f197f05",
+  "buyback_wallet_native_balance_NEAR": "2065117.765632454465127520725013",
+  "buyback_wallet_locked_NEAR": "0",
+  "verified_native_withdrawals": [
+    {
+      "tx": "HbuZpqWLE3D9ddcSGcYNGSLXMCMFhWWuygTqdrvLWRiZ",
+      "amount_NEAR": "224.844231219262160870042846"
+    },
+    {
+      "tx": "Fc2tAhTt4Uc9QmHVtsiXC3yKePBTuGUMzWquG36uA6At",
+      "amount_NEAR": "300.895945623938882516248293"
+    }
+  ],
+  "limits": "Wallet deposits are not proof of market purchases or permanent retirement. Stake snapshot is one epoch, not quarter average. APR is an upper-bound formula, not observed yield."
+}

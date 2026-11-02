@@ -1,0 +1,11 @@
+{
+  "name": "near-evidence",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node analysis/reproduce.mjs",
+    "build": "node analysis/reproduce.mjs && node scripts/build.mjs"
+  },
+  "engines": { "node": ">=20" }
+}

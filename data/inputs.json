@@ -1,0 +1,27 @@
+{
+  "snapshotVersion": "near-2026-10-28-v1",
+  "modelVersion": "1.0.0",
+  "window": {
+    "start": "2026-09-23",
+    "end": "2026-10-22",
+    "days": 30
+  },
+  "market": {
+    "priceUsd": 4.44,
+    "timestamp": "2026-10-25T06:19:54+00:00",
+    "status": "historical cached; not current market price"
+  },
+  "supplyNear": 1309898856.237708,
+  "volumeUsd": 4260019770.0,
+  "feesUsd": 6781998.0,
+  "walletReceiptsUsd": 2225003.0,
+  "maximumIssuancePct": 2.5,
+  "purchaseShareStatus": "unknown; zero default means no unverified purchases credited, not measured zero",
+  "gasStatus": "excluded from default: reported quarterly gas was not independently rebuilt into true burned supply",
+  "limitations": [
+    "30-day annualization is a scale comparison, not forecast.",
+    "Wallet receipts are not net income, independently reconciled purchases or permanent retirement.",
+    "Price and supply dates differ from operating window.",
+    "Supply issuance is a maximum annualized ceiling; no assumption all new tokens are sold."
+  ]
+}

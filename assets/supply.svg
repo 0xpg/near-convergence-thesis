@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE svg
+  PUBLIC '-//W3C//DTD SVG 1.0//EN'
+  'http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd'>
+<svg width="500" height="235" preserveAspectRatio="xMinYMin meet" viewBox="0 0 500 235" xmlns="http://www.w3.org/2000/svg" version="1.0" fill-rule="evenodd" xmlns:xlink="http://www.w3.org/1999/xlink">
+	<title>...</title>
+	<desc>...</desc>
+	<clipPath id="clip">
+		<rect x="0" y="0" width="500" height="235"/>
+	</clipPath>
+	<g id="group" transform="scale(1,-1) translate(0,-235)" style="clip-path: url(#clip)">
+		<g transform="">
+			<g transform="">
+				<path d="M 46,35 L 456,35 Z" style="stroke: rgb(86%,86%,83%); stroke-linecap: butt; stroke-width: 0.25;"/>
+				<path d="M 46,85.999428 L 456,85.999428 Z" style="stroke: rgb(86%,86%,83%); stroke-linecap: butt; stroke-width: 0.25;"/>
+				<path d="M 46,136.998856 L 456,136.998856 Z" style="stroke: rgb(86%,86%,83%); stroke-linecap: butt; stroke-width: 0.25;"/>
+				<path d="M 46,187.998284 L 456,187.998284 Z" style="stroke: rgb(86%,86%,83%); stroke-linecap: butt; stroke-width: 0.25;"/>
+				<g transform="">
+					<rect x="80.16666666666666" y="35.0" width="136.66666666666666" height="27.611977465612178" style="stroke: none; stroke-linecap: butt; stroke-width: 1; fill: rgb(65%,32%,18%); fill-rule: evenodd;"/>
+					<rect x="285.1666666666667" y="35.0" width="136.66666666666669" height="148.3050847457627" style="stroke: none; stroke-linecap: butt; stroke-width: 1; fill: rgb(8%,44%,41%); fill-rule: evenodd;"/>
+					<g transform="">
+						<g transform=" matrix(1,0,0,1,148.5,70.611977)">
+							<text x="-12.375" y="-4.4" style="font-family: Times-Roman; font-size: 11px;fill: rgb(9%,22%,22%); stroke:none;" transform="translate(0,-8) scale(1,-1)">27.07</text>
+						</g>
+						<g transform=" matrix(1,0,0,1,353.5,191.305085)">
+							<text x="-15.125" y="-4.4" style="font-family: Times-Roman; font-size: 11px;fill: rgb(9%,22%,22%); stroke:none;" transform="translate(0,-8) scale(1,-1)">145.40</text>
+						</g>
+					</g>
+				</g>
+				<g transform="">
+					<g transform="">
+						<path d="M 46,35 L 456,35 Z" style="stroke: rgb(60%,67%,64%); stroke-linecap: butt; stroke-width: 1;"/>
+					</g>
+					<g transform="">
+						<path d="M 46,35 L 46,30 Z" style="stroke: rgb(60%,67%,64%); stroke-linecap: butt; stroke-width: 1;"/>
+						<path d="M 251,35 L 251,30 Z" style="stroke: rgb(60%,67%,64%); stroke-linecap: butt; stroke-width: 1;"/>
+						<path d="M 456,35 L 456,30 Z" style="stroke: rgb(60%,67%,64%); stroke-linecap: butt; stroke-width: 1;"/>
+					</g>
+					<g transform="">
+						<g transform=" matrix(1,0,0,1,148.5,30)">
+							<text x="-52.68600000000001" y="-12.0" style="font-family: Helvetica; font-size: 12px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,-24) scale(1,-1)">All receipts retained</text>
+						</g>
+						<g transform=" matrix(1,0,0,1,353.5,30)">
+							<text x="-42.684" y="-12.0" style="font-family: Helvetica; font-size: 12px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,-24) scale(1,-1)">Issuance ceiling</text>
+						</g>
+					</g>
+				</g>
+				<g transform="">
+					<g transform="">
+						<path d="M 46,35 L 46,210 Z" style="stroke: rgb(60%,67%,64%); stroke-linecap: butt; stroke-width: 1;"/>
+					</g>
+					<g transform="">
+						<path d="M 46,35 L 41,35 Z" style="stroke: rgb(60%,67%,64%); stroke-linecap: butt; stroke-width: 1;"/>
+						<path d="M 46,85.999428 L 41,85.999428 Z" style="stroke: rgb(60%,67%,64%); stroke-linecap: butt; stroke-width: 1;"/>
+						<path d="M 46,136.998856 L 41,136.998856 Z" style="stroke: rgb(60%,67%,64%); stroke-linecap: butt; stroke-width: 1;"/>
+						<path d="M 46,187.998284 L 41,187.998284 Z" style="stroke: rgb(60%,67%,64%); stroke-linecap: butt; stroke-width: 1;"/>
+					</g>
+					<g transform="">
+						<g transform=" matrix(1,0,0,1,41,35)">
+							<text x="-6.1160000000000005" y="-4.4" style="font-family: Helvetica; font-size: 11px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,-8) scale(1,-1)">0</text>
+						</g>
+						<g transform=" matrix(1,0,0,1,41,85.999428)">
+							<text x="-12.232000000000001" y="-4.4" style="font-family: Helvetica; font-size: 11px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,-8) scale(1,-1)">50</text>
+						</g>
+						<g transform=" matrix(1,0,0,1,41,136.998856)">
+							<text x="-18.348" y="-4.4" style="font-family: Helvetica; font-size: 11px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,-8) scale(1,-1)">100</text>
+						</g>
+						<g transform=" matrix(1,0,0,1,41,187.998284)">
+							<text x="-18.348" y="-4.4" style="font-family: Helvetica; font-size: 11px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,-8) scale(1,-1)">150</text>
+						</g>
+					</g>
+				</g>
+			</g>
+			<text x="46" y="222" style="font-family: Helvetica; font-size: 10px;fill: rgb(29%,36%,35%); stroke:none;" transform="translate(0,444) scale(1,-1)">USD millions / annual scale at historical $4.44</text>
+		</g>
+	</g>
+</svg>

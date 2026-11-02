@@ -1,0 +1,386 @@
+{
+  "modelVersion": "1.0.0",
+  "snapshotVersion": "near-2026-10-28-v1",
+  "operatingWindow": {
+    "start": "2026-09-23",
+    "end": "2026-10-22",
+    "days": 30
+  },
+  "market": {
+    "priceUsd": 4.44,
+    "timestamp": "2026-10-25T06:19:54+00:00",
+    "status": "historical cached; not current market price"
+  },
+  "monthly": [
+    {
+      "month": "2026-04",
+      "volume": 1895540502,
+      "grossFees": 3207256,
+      "walletReceipts": 258740.05
+    },
+    {
+      "month": "2026-05",
+      "volume": 1995687999,
+      "grossFees": 3002309,
+      "walletReceipts": 619614
+    },
+    {
+      "month": "2026-06",
+      "volume": 2354692014,
+      "grossFees": 3111812,
+      "walletReceipts": 619475
+    },
+    {
+      "month": "2026-07",
+      "volume": 2205579711,
+      "grossFees": 3271913,
+      "walletReceipts": 504864
+    },
+    {
+      "month": "2026-08",
+      "volume": 2777327253,
+      "grossFees": 3836975,
+      "walletReceipts": 723262
+    },
+    {
+      "month": "2026-09",
+      "volume": 4803094377,
+      "grossFees": 7325792,
+      "walletReceipts": 1839513
+    }
+  ],
+  "growth": {
+    "volumePct": 56.67828813220175,
+    "feesPct": 54.85566134703059,
+    "receiptsPct": 104.80568193012414
+  },
+  "channels": [
+    {
+      "name": "swapkit",
+      "fees_usd": 3706085.999382995,
+      "share_pct": 56.81900450643439,
+      "first_date": "2026-09-27 00:00:00",
+      "last_date": "2026-10-26 00:00:00",
+      "retrieved_utc": "2026-10-27 06:29:34"
+    },
+    {
+      "name": "confidential intents",
+      "fees_usd": 1487696.0424870495,
+      "share_pct": 22.808269467127605,
+      "first_date": "2026-09-27 00:00:00",
+      "last_date": "2026-10-26 00:00:00",
+      "retrieved_utc": "2026-10-27 06:29:34"
+    },
+    {
+      "name": "zodl",
+      "fees_usd": 562646.0937139024,
+      "share_pct": 8.626079087096267,
+      "first_date": "2026-09-27 00:00:00",
+      "last_date": "2026-10-26 00:00:00",
+      "retrieved_utc": "2026-10-27 06:29:34"
+    },
+    {
+      "name": "Unlabelled",
+      "fees_usd": 238963.00095951548,
+      "share_pct": 3.6636062494637898,
+      "first_date": "2026-09-27 00:00:00",
+      "last_date": "2026-10-26 00:00:00",
+      "retrieved_utc": "2026-10-27 06:29:34"
+    },
+    {
+      "name": "Other",
+      "fees_usd": 178422.70015301605,
+      "share_pct": 2.7354465616103334,
+      "first_date": "2026-09-27 00:00:00",
+      "last_date": "2026-10-26 00:00:00",
+      "retrieved_utc": "2026-10-27 06:29:34"
+    },
+    {
+      "name": "vizor",
+      "fees_usd": 107168.72029033037,
+      "share_pct": 1.643032569168348,
+      "first_date": "2026-09-27 00:00:00",
+      "last_date": "2026-10-26 00:00:00",
+      "retrieved_utc": "2026-10-27 06:29:34"
+    },
+    {
+      "name": "rango",
+      "fees_usd": 90676.82240217477,
+      "share_pct": 1.3901908324728767,
+      "first_date": "2026-09-27 00:00:00",
+      "last_date": "2026-10-26 00:00:00",
+      "retrieved_utc": "2026-10-27 06:29:34"
+    },
+    {
+      "name": "e1a72603-64b3-4be1-8265-8bae5970d396",
+      "fees_usd": 64084.33659530012,
+      "share_pct": 0.9824942568538397,
+      "first_date": "2026-09-27 00:00:00",
+      "last_date": "2026-10-26 00:00:00",
+      "retrieved_utc": "2026-10-27 06:29:34"
+    },
+    {
+      "name": "trustwallet",
+      "fees_usd": 34684.843777326205,
+      "share_pct": 0.531762699305135,
+      "first_date": "2026-10-23 00:00:00",
+      "last_date": "2026-10-26 00:00:00",
+      "retrieved_utc": "2026-10-27 06:29:34"
+    },
+    {
+      "name": "leodex",
+      "fees_usd": 29580.860145711205,
+      "share_pct": 0.45351214899038755,
+      "first_date": "2026-09-27 00:00:00",
+      "last_date": "2026-10-26 00:00:00",
+      "retrieved_utc": "2026-10-27 06:29:34"
+    },
+    {
+      "name": "near-mobile",
+      "fees_usd": 22607.49599324651,
+      "share_pct": 0.3466016214770315,
+      "first_date": "2026-09-27 00:00:00",
+      "last_date": "2026-10-26 00:00:00",
+      "retrieved_utc": "2026-10-27 06:29:34"
+    }
+  ],
+  "baseline": {
+    "modelVersion": "1.0.0",
+    "snapshotVersion": "near-2026-10-28-v1",
+    "inputs": {
+      "volumeGrowthPct": 0,
+      "grossFeeBps": 15.920109215831173,
+      "receiptSharePct": 32.80748534576389,
+      "costSharePct": 0,
+      "purchaseSharePct": 0,
+      "retentionSharePct": 100,
+      "issuancePct": 2.5,
+      "priceUsd": 4.44,
+      "hurdlePct": 2,
+      "horizonYears": 1
+    },
+    "volume": 51830240535,
+    "grossFees": 82514309,
+    "walletReceipts": 27070869.83333333,
+    "purchaseBudget": 0,
+    "retainedPurchases": 0,
+    "issuanceNear": 32747471.4059427,
+    "referenceValue": 5815950921.695424,
+    "absorptionPctOfValue": 0,
+    "issuanceValueAtReferencePrice": 145398773.0423856,
+    "fundingOffsetPct": 0,
+    "netBps": 0,
+    "requiredVolume": null,
+    "purchaseShareStatus": "hypothetical, not observed",
+    "gasBurnNear": null,
+    "netSupplyGrowthNear": null
+  },
+  "illustrative": {
+    "modelVersion": "1.0.0",
+    "snapshotVersion": "near-2026-10-28-v1",
+    "inputs": {
+      "volumeGrowthPct": 0,
+      "grossFeeBps": 15.920109215831173,
+      "receiptSharePct": 32.80748534576389,
+      "costSharePct": 0,
+      "purchaseSharePct": 100,
+      "retentionSharePct": 100,
+      "issuancePct": 2.5,
+      "priceUsd": 4.44,
+      "hurdlePct": 2,
+      "horizonYears": 1
+    },
+    "volume": 51830240535,
+    "grossFees": 82514309,
+    "walletReceipts": 27070869.83333333,
+    "purchaseBudget": 27070869.83333333,
+    "retainedPurchases": 27070869.83333333,
+    "issuanceNear": 32747471.4059427,
+    "referenceValue": 5815950921.695424,
+    "absorptionPctOfValue": 0.46545904870603383,
+    "issuanceValueAtReferencePrice": 145398773.0423856,
+    "fundingOffsetPct": 18.61836194824135,
+    "netBps": 5.222987498013419,
+    "requiredVolume": 222705910129.30972,
+    "purchaseShareStatus": "hypothetical, not observed",
+    "gasBurnNear": null,
+    "netSupplyGrowthNear": null
+  },
+  "scenarios": [
+    {
+      "name": "No unverified purchases credited",
+      "modelVersion": "1.0.0",
+      "snapshotVersion": "near-2026-10-28-v1",
+      "inputs": {
+        "volumeGrowthPct": 0,
+        "grossFeeBps": 15.920109215831173,
+        "receiptSharePct": 32.80748534576389,
+        "costSharePct": 0,
+        "purchaseSharePct": 0,
+        "retentionSharePct": 100,
+        "issuancePct": 2.5,
+        "priceUsd": 4.44,
+        "hurdlePct": 2,
+        "horizonYears": 1
+      },
+      "volume": 51830240535,
+      "grossFees": 82514309,
+      "walletReceipts": 27070869.83333333,
+      "purchaseBudget": 0,
+      "retainedPurchases": 0,
+      "issuanceNear": 32747471.4059427,
+      "referenceValue": 5815950921.695424,
+      "absorptionPctOfValue": 0,
+      "issuanceValueAtReferencePrice": 145398773.0423856,
+      "fundingOffsetPct": 0,
+      "netBps": 0,
+      "requiredVolume": null,
+      "purchaseShareStatus": "hypothetical, not observed",
+      "gasBurnNear": null,
+      "netSupplyGrowthNear": null
+    },
+    {
+      "name": "100% of tracked receipts purchased and retained",
+      "modelVersion": "1.0.0",
+      "snapshotVersion": "near-2026-10-28-v1",
+      "inputs": {
+        "volumeGrowthPct": 0,
+        "grossFeeBps": 15.920109215831173,
+        "receiptSharePct": 32.80748534576389,
+        "costSharePct": 0,
+        "purchaseSharePct": 100,
+        "retentionSharePct": 100,
+        "issuancePct": 2.5,
+        "priceUsd": 4.44,
+        "hurdlePct": 2,
+        "horizonYears": 1
+      },
+      "volume": 51830240535,
+      "grossFees": 82514309,
+      "walletReceipts": 27070869.83333333,
+      "purchaseBudget": 27070869.83333333,
+      "retainedPurchases": 27070869.83333333,
+      "issuanceNear": 32747471.4059427,
+      "referenceValue": 5815950921.695424,
+      "absorptionPctOfValue": 0.46545904870603383,
+      "issuanceValueAtReferencePrice": 145398773.0423856,
+      "fundingOffsetPct": 18.61836194824135,
+      "netBps": 5.222987498013419,
+      "requiredVolume": 222705910129.30972,
+      "purchaseShareStatus": "hypothetical, not observed",
+      "gasBurnNear": null,
+      "netSupplyGrowthNear": null
+    },
+    {
+      "name": "Half purchased, half retained",
+      "modelVersion": "1.0.0",
+      "snapshotVersion": "near-2026-10-28-v1",
+      "inputs": {
+        "volumeGrowthPct": 0,
+        "grossFeeBps": 15.920109215831173,
+        "receiptSharePct": 32.80748534576389,
+        "costSharePct": 0,
+        "purchaseSharePct": 50,
+        "retentionSharePct": 50,
+        "issuancePct": 2.5,
+        "priceUsd": 4.44,
+        "hurdlePct": 2,
+        "horizonYears": 1
+      },
+      "volume": 51830240535,
+      "grossFees": 82514309,
+      "walletReceipts": 27070869.83333333,
+      "purchaseBudget": 13535434.916666664,
+      "retainedPurchases": 6767717.458333332,
+      "issuanceNear": 32747471.4059427,
+      "referenceValue": 5815950921.695424,
+      "absorptionPctOfValue": 0.11636476217650846,
+      "issuanceValueAtReferencePrice": 145398773.0423856,
+      "fundingOffsetPct": 4.654590487060338,
+      "netBps": 1.3057468745033547,
+      "requiredVolume": 890823640517.2389,
+      "purchaseShareStatus": "hypothetical, not observed",
+      "gasBurnNear": null,
+      "netSupplyGrowthNear": null
+    },
+    {
+      "name": "Growth with thin fees",
+      "modelVersion": "1.0.0",
+      "snapshotVersion": "near-2026-10-28-v1",
+      "inputs": {
+        "volumeGrowthPct": 50,
+        "grossFeeBps": 8,
+        "receiptSharePct": 32.80748534576389,
+        "costSharePct": 0,
+        "purchaseSharePct": 100,
+        "retentionSharePct": 100,
+        "issuancePct": 2.5,
+        "priceUsd": 4.44,
+        "hurdlePct": 2,
+        "horizonYears": 1
+      },
+      "volume": 77745360802.5,
+      "grossFees": 62196288.642,
+      "walletReceipts": 20405038.281833157,
+      "purchaseBudget": 20405038.281833157,
+      "retainedPurchases": 20405038.281833157,
+      "issuanceNear": 32747471.4059427,
+      "referenceValue": 5815950921.695424,
+      "absorptionPctOfValue": 0.35084612226894146,
+      "issuanceValueAtReferencePrice": 145398773.0423856,
+      "fundingOffsetPct": 14.03384489075766,
+      "netBps": 2.624598827661111,
+      "requiredVolume": 443187801533.7116,
+      "purchaseShareStatus": "hypothetical, not observed",
+      "gasBurnNear": null,
+      "netSupplyGrowthNear": null
+    },
+    {
+      "name": "Higher retained share",
+      "modelVersion": "1.0.0",
+      "snapshotVersion": "near-2026-10-28-v1",
+      "inputs": {
+        "volumeGrowthPct": 25,
+        "grossFeeBps": 15.920109215831173,
+        "receiptSharePct": 60,
+        "costSharePct": 10,
+        "purchaseSharePct": 100,
+        "retentionSharePct": 90,
+        "issuancePct": 2.5,
+        "priceUsd": 4.44,
+        "hurdlePct": 2,
+        "horizonYears": 1
+      },
+      "volume": 64787800668.75,
+      "grossFees": 103142886.24999999,
+      "walletReceipts": 61885731.74999999,
+      "purchaseBudget": 55697158.575,
+      "retainedPurchases": 50127442.7175,
+      "issuanceNear": 32747471.4059427,
+      "referenceValue": 5815950921.695424,
+      "absorptionPctOfValue": 0.861895903050145,
+      "issuanceValueAtReferencePrice": 145398773.0423856,
+      "fundingOffsetPct": 34.475836122005795,
+      "netBps": 7.737173078893952,
+      "requiredVolume": 150337878250.66537,
+      "purchaseShareStatus": "hypothetical, not observed",
+      "gasBurnNear": null,
+      "netSupplyGrowthNear": null
+    }
+  ],
+  "formulas": {
+    "volume": "snapshot volume × 365 / 30 × (1 + growth / 100)^years",
+    "grossFees": "annual volume × gross fee bps / 10,000",
+    "walletReceipts": "gross fees × receipt share / 100",
+    "retainedPurchases": "wallet receipts × (1 − additional cost share / 100) × purchase share / 100 × retention share / 100",
+    "issuance": "snapshot supply × issuance rate / 100 (annual ceiling)",
+    "absorption": "hypothetical retained purchases / (snapshot supply × reference price)",
+    "requiredVolume": "reference total value × selected absorption hurdle / retained purchases per dollar of notional"
+  },
+  "limits": [
+    "30-day annualization is a scale comparison, not forecast.",
+    "Wallet receipts are not net income, independently reconciled purchases or permanent retirement.",
+    "Price and supply dates differ from operating window.",
+    "Supply issuance is a maximum annualized ceiling; no assumption all new tokens are sold."
+  ]
+}

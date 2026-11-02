@@ -1,0 +1,202 @@
+{
+  "monthly": [
+    {
+      "month": "2026-04",
+      "days": 30,
+      "intents_median_daily_usd": "61117383.5",
+      "intents_average_daily_usd": "63184683.4",
+      "intents_top5_day_share_pct": "25.28017029941573888881220012",
+      "tvl_usd": "99405476",
+      "stablecoin_usd": "120546045",
+      "native_spot_usd": "153386527",
+      "rhea_spot_share_pct": "99.96869151356429108014160853",
+      "volume_usd": "1895540502",
+      "fees_usd": "3207256",
+      "revenue_usd": "258740.05",
+      "gross_fee_bps": "16.92000775829373441686554899",
+      "receipt_fee_share_pct": "8.067333882920477816550970674"
+    },
+    {
+      "month": "2026-05",
+      "days": 31,
+      "intents_median_daily_usd": "58342762",
+      "intents_average_daily_usd": "64377032.22580645161290322581",
+      "intents_top5_day_share_pct": "25.55852484233934605125618135",
+      "tvl_usd": "135129870",
+      "stablecoin_usd": "117190675",
+      "native_spot_usd": "520555730",
+      "rhea_spot_share_pct": "99.93175812318884665816664817",
+      "volume_usd": "1995687999",
+      "fees_usd": "3002309",
+      "revenue_usd": "619614",
+      "gross_fee_bps": "15.04397982803122523562361714",
+      "receipt_fee_share_pct": "20.63791568422837222950735584"
+    },
+    {
+      "month": "2026-06",
+      "days": 30,
+      "intents_median_daily_usd": "72964825",
+      "intents_average_daily_usd": "78489733.8",
+      "intents_top5_day_share_pct": "28.27355038543057631485218941",
+      "tvl_usd": "108806185",
+      "stablecoin_usd": "113355614",
+      "native_spot_usd": "593593996",
+      "rhea_spot_share_pct": "99.87754188807529650283053065",
+      "volume_usd": "2354692014",
+      "fees_usd": "3111812",
+      "revenue_usd": "619475",
+      "gross_fee_bps": "13.21536736651114322758305325",
+      "receipt_fee_share_pct": "19.90721161818258943663691765"
+    },
+    {
+      "month": "2026-07",
+      "days": 31,
+      "intents_median_daily_usd": "71130809",
+      "intents_average_daily_usd": "71147732.61290322580645161290",
+      "intents_top5_day_share_pct": "22.76802214381632022548107308",
+      "tvl_usd": "99581072",
+      "stablecoin_usd": "107884722",
+      "native_spot_usd": "493726655",
+      "rhea_spot_share_pct": "99.93478314432912276125744112",
+      "volume_usd": "2205579711",
+      "fees_usd": "3271913",
+      "revenue_usd": "504864",
+      "gross_fee_bps": "14.83470755412657130667629722",
+      "receipt_fee_share_pct": "15.43023912921890038029739788"
+    },
+    {
+      "month": "2026-08",
+      "days": 31,
+      "intents_median_daily_usd": "77921510",
+      "intents_average_daily_usd": "89591201.70967741935483870968",
+      "intents_top5_day_share_pct": "26.45801204039817917705069234",
+      "tvl_usd": "107287825",
+      "stablecoin_usd": "114318866",
+      "native_spot_usd": "366379285",
+      "rhea_spot_share_pct": "99.93084871051047550354818777",
+      "volume_usd": "2777327253",
+      "fees_usd": "3836975",
+      "revenue_usd": "723262",
+      "gross_fee_bps": "13.81535069680893668888791911",
+      "receipt_fee_share_pct": "18.84979704063748134923996117"
+    },
+    {
+      "month": "2026-09",
+      "days": 30,
+      "intents_median_daily_usd": "145238898.5",
+      "intents_average_daily_usd": "160103145.9",
+      "intents_top5_day_share_pct": "25.82427996708922465547463882",
+      "tvl_usd": "229369758",
+      "stablecoin_usd": "89464709",
+      "native_spot_usd": "1298454659",
+      "rhea_spot_share_pct": "99.93579213611955625475560021",
+      "volume_usd": "4803094377",
+      "fees_usd": "7325792",
+      "revenue_usd": "1839513",
+      "gross_fee_bps": "15.25223413281266865266928316",
+      "receipt_fee_share_pct": "25.11009048577955803276969917"
+    }
+  ],
+  "monthly_change_pct": {
+    "tvl_usd": "130.7415720236579320841439359",
+    "stablecoin_usd": "-25.78378743159926980598990203",
+    "native_spot_usd": "746.5245836096152043392963712",
+    "volume_usd": "153.3891716865040111920541806",
+    "fees_usd": "128.4130733561648960980975638",
+    "revenue_usd": "610.9502375067176496255604805"
+  },
+  "q3_hypothetical_additional_cost_3bp_usd": "2935800.4023",
+  "q3_receipts_less_hypothetical_cost_usd": "131838.5977",
+  "periods": {
+    "Q2_2026": {
+      "start": "2026-04-01",
+      "end": "2026-06-30",
+      "days": 91,
+      "volume_usd": "6245920515",
+      "fees_usd": "9321377",
+      "revenue_usd": "1497829.05",
+      "daily_volume_usd": "68636489.17582417582417582418",
+      "gross_fee_bps": "14.92394432111981495492982590",
+      "receipt_fee_share_pct": "16.06875303938463169121901195"
+    },
+    "Q3_2026": {
+      "start": "2026-07-01",
+      "end": "2026-09-30",
+      "days": 92,
+      "volume_usd": "9786001341",
+      "fees_usd": "14434680",
+      "revenue_usd": "3067639",
+      "daily_volume_usd": "106369579.7934782608695652174",
+      "gross_fee_bps": "14.75033519515639723025457942",
+      "receipt_fee_share_pct": "21.25186703134395774620566580"
+    },
+    "trailing_30d": {
+      "start": "2026-09-23",
+      "end": "2026-10-22",
+      "days": 30,
+      "volume_usd": "4260019770",
+      "fees_usd": "6781998",
+      "revenue_usd": "2225003",
+      "daily_volume_usd": "142000659",
+      "gross_fee_bps": "15.92010921583117441729619015",
+      "receipt_fee_share_pct": "32.80748534576388845882879942"
+    },
+    "trailing_7d": {
+      "start": "2026-10-16",
+      "end": "2026-10-22",
+      "days": 7,
+      "volume_usd": "860549573",
+      "fees_usd": "1200311",
+      "revenue_usd": "378709",
+      "daily_volume_usd": "122935653.2857142857142857143",
+      "gross_fee_bps": "13.94819122175080086873740160",
+      "receipt_fee_share_pct": "31.55090639009390066407789315"
+    }
+  },
+  "qoq_change_pct": {
+    "volume_usd": "56.67828813220175921499058650",
+    "fees_usd": "54.85566134703059429953321270",
+    "revenue_usd": "104.8056819301241353277264852"
+  },
+  "last_week_vs_30d_daily_volume_pct": "-13.42599805419615291061028506",
+  "execution_charge_groups_pct": [
+    "37.604912276510532408027818213776842687430706186099",
+    "35.17722943499688385144271970",
+    "27.21785828849258374052946208"
+  ],
+  "top3_named_referral_share_pct": "88.253353060658262",
+  "source_fee_gap_pct_of_dune": "2.237350113995632023644097903",
+  "subsidy_sensitivity": [
+    {
+      "assumed_subsidy_bps": 0,
+      "assumed_subsidy_usd": "0",
+      "revenue_less_assumed_subsidy_usd": "2225003"
+    },
+    {
+      "assumed_subsidy_bps": 1,
+      "assumed_subsidy_usd": "426001.977",
+      "revenue_less_assumed_subsidy_usd": "1799001.023"
+    },
+    {
+      "assumed_subsidy_bps": 3,
+      "assumed_subsidy_usd": "1278005.931",
+      "revenue_less_assumed_subsidy_usd": "946997.069"
+    },
+    {
+      "assumed_subsidy_bps": 5,
+      "assumed_subsidy_usd": "2130009.885",
+      "revenue_less_assumed_subsidy_usd": "94993.115"
+    }
+  ],
+  "sources": {
+    "intents_aligned_daily.csv": "911a2ca06972d8ac0653c739c9db72a634327fa415de3193247bec633cfbb1fd",
+    "intents_period_comparison.json": "34147399a403d503836bf6ab47c7354c7f824eeb6d4d76660c5112880c817222",
+    "dune_monitor\\deep\\economic_findings.json": "51bde6da149bc70b7cd9bc93876c0337afda7b01eaa34799236564a4ea0f817b",
+    "dune_monitor\\ecosystem\\referral_mix_results.json": "27c2fa258925d35a558c148ac62d428acdacf935ca0a8d0a67d08878dc029593",
+    "dune_monitor\\ecosystem\\reconciliation.json": "c1cfb026e2e8ba922a32e4050b68897706ef276ab0268ee510320668d4c11570",
+    "adoption_raw\\near-dex-overview.json": "a797d560c9cca752de4c00fd0ae831bc906621593e1c35474462b195c30af70b",
+    "adoption_raw\\manifest.json": "49f6031b5807eb75cc045ff4b78f7b84192a99a81007244146aa42d6bc1dc1a1",
+    "dune_monitor\\capital\\raw\\tvl.json": "1301216191cf4262be121f2b6c5e0be368e24c6d6ea2b7f1134302b0939c8343",
+    "dune_monitor\\capital\\raw\\stablecoin_history.json": "7c5d0f2d88a747d4e85a03a3b42b5513fa894b0c21ac77ff8c6773786eb732af"
+  }
+}

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE svg
+  PUBLIC '-//W3C//DTD SVG 1.0//EN'
+  'http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd'>
+<svg width="500" height="235" preserveAspectRatio="xMinYMin meet" viewBox="0 0 500 235" xmlns="http://www.w3.org/2000/svg" version="1.0" fill-rule="evenodd" xmlns:xlink="http://www.w3.org/1999/xlink">
+	<title>...</title>
+	<desc>...</desc>
+	<clipPath id="clip">
+		<rect x="0" y="0" width="500" height="235"/>
+	</clipPath>
+	<g id="group" transform="scale(1,-1) translate(0,-235)" style="clip-path: url(#clip)">
+		<g transform="">
+			<g transform="">
+				<path d="M 130,32 L 130,212 Z" style="stroke: rgb(86%,86%,83%); stroke-linecap: butt; stroke-width: 0.25;"/>
+				<path d="M 222.473237,32 L 222.473237,212 Z" style="stroke: rgb(86%,86%,83%); stroke-linecap: butt; stroke-width: 0.25;"/>
+				<path d="M 314.946475,32 L 314.946475,212 Z" style="stroke: rgb(86%,86%,83%); stroke-linecap: butt; stroke-width: 0.25;"/>
+				<path d="M 407.419712,32 L 407.419712,212 Z" style="stroke: rgb(86%,86%,83%); stroke-linecap: butt; stroke-width: 0.25;"/>
+				<g transform="">
+					<rect x="130.0" y="39.5" width="54.31252350810183" height="30.0" style="stroke: none; stroke-linecap: butt; stroke-width: 1; fill: rgb(8%,44%,41%); fill-rule: evenodd;"/>
+					<rect x="130.0" y="84.5" width="39.88407292906305" height="30.0" style="stroke: none; stroke-linecap: butt; stroke-width: 1; fill: rgb(8%,44%,41%); fill-rule: evenodd;"/>
+					<rect x="130.0" y="129.5" width="105.45772576713773" height="30.0" style="stroke: none; stroke-linecap: butt; stroke-width: 1; fill: rgb(8%,44%,41%); fill-rule: evenodd;"/>
+					<rect x="130.0" y="174.5" width="262.7118644067797" height="30.0" style="stroke: none; stroke-linecap: butt; stroke-width: 1; fill: rgb(8%,44%,41%); fill-rule: evenodd;"/>
+					<g transform="">
+						<g transform=" matrix(1,0,0,1,192.312524,54.5)">
+							<text x="-9.625" y="-4.4" style="font-family: Times-Roman; font-size: 11px;fill: rgb(9%,22%,22%); stroke:none;" transform="translate(0,-8) scale(1,-1)">11.7</text>
+						</g>
+						<g transform=" matrix(1,0,0,1,177.884073,99.5)">
+							<text x="-6.875" y="-4.4" style="font-family: Times-Roman; font-size: 11px;fill: rgb(9%,22%,22%); stroke:none;" transform="translate(0,-8) scale(1,-1)">8.6</text>
+						</g>
+						<g transform=" matrix(1,0,0,1,243.457726,144.5)">
+							<text x="-9.625" y="-4.4" style="font-family: Times-Roman; font-size: 11px;fill: rgb(9%,22%,22%); stroke:none;" transform="translate(0,-8) scale(1,-1)">22.8</text>
+						</g>
+						<g transform=" matrix(1,0,0,1,400.711864,189.5)">
+							<text x="-9.625" y="-4.4" style="font-family: Times-Roman; font-size: 11px;fill: rgb(9%,22%,22%); stroke:none;" transform="translate(0,-8) scale(1,-1)">56.8</text>
+						</g>
+					</g>
+				</g>
+				<g transform="">
+					<g transform="">
+						<path d="M 130,32 L 130,212 Z" style="stroke: rgb(60%,67%,64%); stroke-linecap: butt; stroke-width: 1;"/>
+					</g>
+					<g transform="">
+						<path d="M 130,32 L 125,32 Z" style="stroke: rgb(60%,67%,64%); stroke-linecap: butt; stroke-width: 1;"/>
+						<path d="M 130,77 L 125,77 Z" style="stroke: rgb(60%,67%,64%); stroke-linecap: butt; stroke-width: 1;"/>
+						<path d="M 130,122 L 125,122 Z" style="stroke: rgb(60%,67%,64%); stroke-linecap: butt; stroke-width: 1;"/>
+						<path d="M 130,167 L 125,167 Z" style="stroke: rgb(60%,67%,64%); stroke-linecap: butt; stroke-width: 1;"/>
+						<path d="M 130,212 L 125,212 Z" style="stroke: rgb(60%,67%,64%); stroke-linecap: butt; stroke-width: 1;"/>
+					</g>
+					<g transform="">
+						<g transform=" matrix(1,0,0,1,125,54.5)">
+							<text x="-64.69200000000001" y="-4.800000000000001" style="font-family: Helvetica; font-size: 12px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,-9) scale(1,-1)">Other labels</text>
+						</g>
+						<g transform=" matrix(1,0,0,1,125,99.5)">
+							<text x="-22.008000000000003" y="-4.800000000000001" style="font-family: Helvetica; font-size: 12px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,-9) scale(1,-1)">zodl</text>
+						</g>
+						<g transform=" matrix(1,0,0,1,125,144.5)">
+							<text x="-99.384" y="-4.800000000000001" style="font-family: Helvetica; font-size: 12px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,-9) scale(1,-1)">confidential intents</text>
+						</g>
+						<g transform=" matrix(1,0,0,1,125,189.5)">
+							<text x="-40.008" y="-4.800000000000001" style="font-family: Helvetica; font-size: 12px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,-9) scale(1,-1)">swapkit</text>
+						</g>
+					</g>
+				</g>
+				<g transform="">
+					<g transform="">
+						<path d="M 130,32 L 440,32 Z" style="stroke: rgb(60%,67%,64%); stroke-linecap: butt; stroke-width: 1;"/>
+					</g>
+					<g transform="">
+						<path d="M 130,32 L 130,27 Z" style="stroke: rgb(60%,67%,64%); stroke-linecap: butt; stroke-width: 1;"/>
+						<path d="M 222.473237,32 L 222.473237,27 Z" style="stroke: rgb(60%,67%,64%); stroke-linecap: butt; stroke-width: 1;"/>
+						<path d="M 314.946475,32 L 314.946475,27 Z" style="stroke: rgb(60%,67%,64%); stroke-linecap: butt; stroke-width: 1;"/>
+						<path d="M 407.419712,32 L 407.419712,27 Z" style="stroke: rgb(60%,67%,64%); stroke-linecap: butt; stroke-width: 1;"/>
+					</g>
+					<g transform="">
+						<g transform=" matrix(1,0,0,1,130,27)">
+							<text x="-3.0580000000000003" y="-11.0" style="font-family: Helvetica; font-size: 11px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,-22) scale(1,-1)">0</text>
+						</g>
+						<g transform=" matrix(1,0,0,1,222.473237,27)">
+							<text x="-6.1160000000000005" y="-11.0" style="font-family: Helvetica; font-size: 11px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,-22) scale(1,-1)">20</text>
+						</g>
+						<g transform=" matrix(1,0,0,1,314.946475,27)">
+							<text x="-6.1160000000000005" y="-11.0" style="font-family: Helvetica; font-size: 11px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,-22) scale(1,-1)">40</text>
+						</g>
+						<g transform=" matrix(1,0,0,1,407.419712,27)">
+							<text x="-6.1160000000000005" y="-11.0" style="font-family: Helvetica; font-size: 11px;fill: rgb(0%,0%,0%); stroke:none;" transform="translate(0,-22) scale(1,-1)">60</text>
+						</g>
+					</g>
+				</g>
+			</g>
+			<text x="130" y="222" style="font-family: Helvetica; font-size: 10px;fill: rgb(29%,36%,35%); stroke:none;" transform="translate(0,444) scale(1,-1)">Share of distribution fees / %</text>
+		</g>
+	</g>
+</svg>

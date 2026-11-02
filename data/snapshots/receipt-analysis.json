@@ -1,0 +1,50 @@
+{
+  "sources": [
+    {
+      "file": "dune_payer_results.json",
+      "query_id": 9013405,
+      "sha256": "b754371c24aa42eff1d088541d177ada54ab83be6c1a19899c64496853eff65a",
+      "period": "2026-10-25 UTC; receipt execution date"
+    },
+    {
+      "file": "dune_recurrence_results.json",
+      "query_id": 9013430,
+      "sha256": "ecb199a19e9aadd32a72bffbf6e7ec49be356510e7980dd4d647c7931ab17f36",
+      "period": "2026-10-18 and 2026-10-25 UTC"
+    }
+  ],
+  "execution_charge_near": "654.9721815322663",
+  "top_origin": "sweat-relayer.near",
+  "concentration_pct": {
+    "1": "37.604912276510532408027818213776842687430706186099",
+    "3": "54.374526948192535870520075179469340711589730947676",
+    "10": "72.782141711507416259470537917413895207388053065075"
+  },
+  "action_row_overcount_pct": "30.541483421276600",
+  "charged_origins_18_oct": "51810",
+  "charged_origins_25_oct": "49245",
+  "origins_on_both_dates": "32318",
+  "prior_origin_return_pct": "62.377919320594479830148619957537154989384288747346",
+  "incumbent_execution_charge_share_pct": "91.94281397745137",
+  "definitions": {
+    "execution_charge_near": "Sum receipt execution_tokens_burnt once per receipt executed on 25 October 2026 UTC, divided by 1e24; excludes transaction conversion charges.",
+    "origin": "Transaction origin account attributed to charged receipt; not necessarily beneficial user or ultimate economic payer.",
+    "concentration_pct": "Largest named 1 / 3 / 10 origin execution charges divided by full network execution charge; Other origins is the residual, excluded from ranking.",
+    "action_row_overcount_pct": "Excess charge from summing repeated receipt execution charges on action rows versus receipt-deduplicated charge, percent.",
+    "prior_origin_return_pct": "Accounts with charged receipts on both 18 and 25 October divided by accounts with charged receipts on 18 October.",
+    "incumbent_execution_charge_share_pct": "25 October execution charges attributed to origins also charged on 18 October; supplied executed query output."
+  },
+  "checks": [
+    "All published group charges reconcile to network total within 1e-9 NEAR",
+    "Charge shares sum 100 percent within 1e-9 percentage points",
+    "Reported missing and inconsistent receipt charge counts zero",
+    "Receipt/action/transaction count bounds hold",
+    "Recurrence count and rate reconcile; recurrence account total matches payer query"
+  ],
+  "limits": [
+    "Dune rounded numeric results checked with explicit tolerances; underlying full-network rows not independently reindexed.",
+    "Two selected dates establish account recurrence, not customer retention or organic demand.",
+    "No annualization. Gross receipt execution charges are not native supply burn, protocol net revenue or total customer transaction fees.",
+    "Incumbent charge share range checked, but not independently recomputed from underlying receipt rows."
+  ]
+}

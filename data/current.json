@@ -1,0 +1,18 @@
+{
+  "retrievedUtc": "2026-11-02T11:40:32.049738+00:00",
+  "priceUsd": 4.13,
+  "priceUpdatedUtc": "2026-11-02T11:39:17+00:00",
+  "priceSource": "https://api.coingecko.com/api/v3/simple/price?ids=near&vs_currencies=usd&include_last_updated_at=true",
+  "blockHeight": 222714028,
+  "blockHash": "66tjEvPa4phdoytK38XnZecFa3hhirx6oKS1YePiDV5a",
+  "blockUtc": "2026-11-02T11:40:11.434872+00:00",
+  "totalSupplyNear": "1310627303.6309018",
+  "protocolVersion": 86,
+  "maximumInflationFraction": [
+    1,
+    40
+  ],
+  "rpcSource": "https://rpc.mainnet.near.org",
+  "status": "Separately refreshed public observations. Model/report reference remains the Oct25 snapshot; quote and block timestamps differ.",
+  "validation": "Read-only public calls; not independently reindexed or externally reconciled this refresh."
+}
