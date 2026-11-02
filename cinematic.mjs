@@ -53,14 +53,12 @@ if(typeof document!=='undefined') {
     const colors=['#367b63','#a55561','#466d9f'];
     let width=0,height=0,time=0,last=0,request=0,playing=!preference.matches,visible=true,fieldFocused=false;
     let selected=selectPeople(fieldAt(0).nodes),nextSwitch=[1.4,2.1,2.8];
-    await document.fonts.load('400 10px Saans').catch(()=>{});
     const sprites=Array.from({length:72},(_,variant)=>Array.from({length:8},(_,pose)=>{
       const sprite=document.createElement('canvas');sprite.width=76;sprite.height=140;
       const pen=sprite.getContext('2d');
-      pen.fillStyle='#2e4838';pen.font='400 9px Saans,Arial,sans-serif';pen.textAlign='center';pen.textBaseline='middle';
-      const glyphs=['.:+x*','/|+=:',':#xo.','*+.:/','xo+|:',':=*+.'][variant%6];
-      for(let y=6;y<134;y+=7)for(let x=7;x<72;x+=6){
-        if(ditherAt(x,y,variant,pose*2))pen.fillText(glyphs[(Math.floor(x/6)+Math.floor(y/7)*3+variant)%glyphs.length],x,y);
+      pen.fillStyle='#2e4838';
+      for(let y=6;y<134;y+=3)for(let x=5;x<72;x+=3){
+        if(ditherAt(x,y,variant,pose*2))pen.fillRect(x,y,2,2);
       }
       return sprite;
     }));
