@@ -1,13 +1,13 @@
 import assert from 'node:assert/strict';
 import {fieldAt,motionTime,selectPeople,labelAnchor,walkingPose,ditherAt,drift,depthBlur} from '../cinematic.mjs';
-for(const second of [0,.033,5,10,15,20,25,30,3600]) {
+for(const second of [0,.033,5,10,15,20,25,30,4800]) {
   const scene=fieldAt(second);
-  assert.equal(scene.nodes.length,36);assert.equal(scene.focus.length,3);
+  assert.equal(scene.nodes.length,48);assert.equal(scene.focus.length,3);
   assert(scene.attention>=0&&scene.attention<3);
   for(const node of [...scene.nodes,...scene.focus]) {
     assert(Number.isFinite(node.x)&&node.x>0&&node.x<1);
     assert(Number.isFinite(node.y)&&node.y>0&&node.y<1);
-    assert(node.variant>=0&&node.variant<36);
+    assert(node.variant>=0&&node.variant<48);
   }
 }
 const regions=new Set(fieldAt(0).nodes.map(node=>Math.floor(node.x*3)+','+Math.floor(node.y*3)));
@@ -41,7 +41,7 @@ assert(crowd.every(node=>node.cadence>=4.5&&node.cadence<=7.5));
 assert(new Set(crowd.map(node=>node.cadence)).size>30);
 assert(new Set(crowd.map(node=>node.gait)).size>30);
 assert.equal(new Set(crowd.map(node=>node.direction)).size,2);
-assert(crowd.every(node=>node.profile>=.36&&node.profile<=1.02));
+assert(crowd.every(node=>node.profile>=.48&&node.profile<=1.02));
 console.log('Slower individual cadences, independent phases and varied directions passed.');
 
 const sample=frame=>Array.from({length:200},(_,i)=>ditherAt(5+i%20*3,40+Math.floor(i/20)*3,2,frame));
@@ -49,13 +49,13 @@ assert.deepEqual(sample(0),sample(0));assert.notDeepEqual(sample(0),sample(4));
 assert(sample(0).some(Boolean)&&sample(0).some(value=>!value));
 console.log('Repeatable dither pattern, visible dots and changing abstract form passed.');
 
-assert.equal(new Set(crowd.map(node=>node.variant)).size,36);
+assert.equal(new Set(crowd.map(node=>node.variant)).size,48);
 assert.notDeepEqual(sample(0),Array.from({length:200},(_,i)=>ditherAt(5+i%20*3,40+Math.floor(i/20)*3,17,0)));
 
 for(const time of [0,1,10,100,10000])assert(drift(.4,-.02,time)>=0&&drift(.4,-.02,time)<=1);
 assert(crowd.every((node,i)=>Array.from({length:6},(_,step)=>{const a=fieldAt(step*.5).nodes[i],b=fieldAt((step+1)*.5).nodes[i];return Math.hypot(b.x-a.x,b.y-a.y);}).reduce((a,b)=>a+b,0)>.02));
-const silhouettes=Array.from({length:36},(_,variant)=>Array.from({length:200},(_,i)=>Number(ditherAt(5+i%20*3,40+Math.floor(i/20)*3,variant,0))).join(''));
-assert.equal(new Set(silhouettes).size,36);
-console.log('Bounded independent travel and 36 distinct dither masks passed.');
+const silhouettes=Array.from({length:48},(_,variant)=>Array.from({length:200},(_,i)=>Number(ditherAt(5+i%20*3,40+Math.floor(i/20)*3,variant,0))).join(''));
+assert.equal(new Set(silhouettes).size,48);
+console.log('Bounded independent travel and 48 distinct dither masks passed.');
 
 assert.equal(depthBlur(.5),0);assert(depthBlur(0)>7&&depthBlur(1)>7);

@@ -46,7 +46,7 @@ export function drift(start,velocity,time){
 export function fieldAt(seconds,selected=[6,17,27]) {
   motionTime(seconds);
   const motion=seconds;
-  const nodes=Array.from({length:36},(_,i)=>{
+  const nodes=Array.from({length:48},(_,i)=>{
     const seed=(i*.61803398875)%1,depth=(i*.41421356237+.07)%1;
     const individuality=(i*.754877666)%1,cadence=4.5+individuality*3;
     return {x:.06+.88*drift(seed,(.009+individuality*.012)*(i%2?1:-1),motion)+Math.sin(motion*.4+i)*.015,y:.18+.60*drift(depth,(.014+seed*.018)*(i%3?1:-1),motion)+Math.cos(motion*.3+i)*.015,z:depth,variant:i,gait:(motion*cadence+i*2.718281828)%16,cadence,direction:seed<.5?-1:1,profile:.72+individuality*.30};
@@ -63,7 +63,7 @@ if(typeof document!=='undefined') {
     const colors=['#367b63','#a55561','#466d9f'];
     let width=0,height=0,time=0,last=0,request=0,playing=!preference.matches,visible=true,fieldFocused=false;
     let selected=selectPeople(fieldAt(0).nodes),nextSwitch=[1.4,2.1,2.8];
-    const sprites=Array.from({length:36},(_,variant)=>Array.from({length:8},(_,pose)=>{
+    const sprites=Array.from({length:48},(_,variant)=>Array.from({length:8},(_,pose)=>{
       const sprite=document.createElement('canvas');sprite.width=76;sprite.height=140;
       const pen=sprite.getContext('2d');
       pen.fillStyle='#2e4838';
