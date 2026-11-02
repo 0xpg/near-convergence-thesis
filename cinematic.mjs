@@ -31,16 +31,19 @@ export function ditherAt(x,y,variant,frame) {
   return threshold<density;
 }
 
-export function depthBlur(depth){return Math.max(0,Math.abs(depth-.5)-.08)*19;}
+export function depthBlur(depth,width=Infinity){return Math.max(0,Math.abs(depth-.5)-.08)*19*(width<600?1.45:1);}
 
 export function labelAnchor(x,width) { return Math.max(6,Math.min(width-106,x*width-10)); }
 
-export function focusBox(node,width,height){
+export function focusBox(node,width,height,labelWidth=32,descriptionWidth=100){
   const size=(.29+node.z*.62)*(width<600?.62:1);
   const boxHeight=104*size;
-  const x=Math.max(6,Math.min(width-106,node.x*width-15*size*node.profile));
+  const boxWidth=30*size*node.profile;
+  const x=Math.max(6,Math.min(width-boxWidth-6,node.x*width-boxWidth/2));
+  const labelX=Math.max(6,Math.min(width-labelWidth-6,x));
+  const descriptionX=Math.max(6,Math.min(width-descriptionWidth-6,x));
   const y=Math.max(6,Math.min(height-boxHeight-38,node.y*height-52*size-17));
-  return {x,y,boxY:y+17,boxWidth:30*size*node.profile,boxHeight};
+  return {x,y,labelX,descriptionX,boxY:y+17,boxWidth,boxHeight};
 }
 
 export function motionTime(seconds) {
@@ -79,7 +82,8 @@ if(typeof document!=='undefined') {
     const preference=matchMedia('(prefers-reduced-motion: reduce)');
     const labels=[...stage.querySelectorAll('[data-focus]')];
     const colors=['#367b63','#a55561','#466d9f'];
-    let labelCenters=[16,16,16];
+    let labelCenters=[16,16,16],descriptionWidths=[100,100,100];
+    function measureLabels(){labelCenters=labels.map(label=>label.querySelector('span').offsetWidth/2);descriptionWidths=labels.map(label=>label.querySelector('small').offsetWidth);}
     let width=0,height=0,time=0,last=0,request=0,playing=!preference.matches,visible=true,fieldFocused=false;
     let selected=selectPeople(fieldAt(0).nodes),nextSwitch=[1.4,2.1,2.8];
     const sprites=Array.from({length:48},(_,variant)=>Array.from({length:16},(_,pose)=>{
@@ -112,7 +116,7 @@ if(typeof document!=='undefined') {
       for(const node of [...nodes].sort((a,b)=>a.z-b.z)) {
         const build=bodyShape(node.variant),size=(.29+node.z*.62)*scale;
         ctx.globalAlpha=.43+(.5-Math.abs(node.z-.5))*.95;
-        ctx.filter=`blur(${depthBlur(node.z)}px)`;
+        ctx.filter=`blur(${depthBlur(node.z,width)}px)`;
         const pose=Math.floor(node.gait);
         ctx.save();ctx.translate(node.x*width,node.y*height);ctx.scale(node.direction*node.profile*build.width,build.height);
         let sprite=sprites[node.variant][pose];
@@ -131,14 +135,16 @@ if(typeof document!=='undefined') {
       ctx.strokeStyle='#566b5d';ctx.lineWidth=.45;ctx.globalAlpha=.04*lineStrength;
       for(const [a,b]of edges){ctx.beginPath();ctx.moveTo(nodes[a].x*width,nodes[a].y*height);ctx.lineTo(nodes[b].x*width,nodes[b].y*height);ctx.stroke();}
       ctx.globalAlpha=1;
-      const boxes=focus.map(node=>focusBox(node,width,height));
+      const boxes=focus.map((node,i)=>focusBox(node,width,height,labelCenters[i]*2,descriptionWidths[i]));
       for(let i=0;i<3;i++) {
         const a=focus[i],box=boxes[i],next=boxes[(i+1)%3];
         ctx.globalAlpha=1;ctx.strokeStyle=colors[i];ctx.lineWidth=.75;
-        ctx.beginPath();ctx.moveTo(box.x+labelCenters[i],box.y+7);ctx.lineTo(next.x+labelCenters[(i+1)%3],next.y+7);ctx.stroke();
+        ctx.beginPath();ctx.moveTo(box.labelX+labelCenters[i],box.y+7);ctx.lineTo(next.labelX+labelCenters[(i+1)%3],next.y+7);ctx.stroke();
         ctx.strokeStyle=colors[i];ctx.lineWidth=attention===i?1.2:.6;ctx.strokeRect(box.x,box.boxY,box.boxWidth,box.boxHeight);
-        labels[i].style.transform=`translate(${box.x}px,${box.y}px)`;
-        labels[i].querySelector('small').style.marginTop=(box.boxHeight+6)+'px';
+        labels[i].style.transform=`translate(${box.labelX}px,${box.y}px)`;
+        const description=labels[i].querySelector('small');
+        description.style.marginTop=(box.boxHeight+6)+'px';
+        description.style.transform=`translateX(${box.descriptionX-box.labelX}px)`;
         labels[i].style.opacity='1';labels[i].dataset.person=String(selected[i]);
       }
     }
@@ -155,7 +161,8 @@ if(typeof document!=='undefined') {
     preference.addEventListener('change',()=>{playing=!preference.matches;sync();draw();});
     document.addEventListener('visibilitychange',sync);
     new IntersectionObserver(([entry])=>{visible=entry.isIntersecting;sync();}).observe(stage);
-    new ResizeObserver(()=>{const nextWidth=stage.clientWidth,nextHeight=stage.clientHeight;if(nextWidth===width&&nextHeight===height)return;width=nextWidth;height=nextHeight;labelCenters=labels.map(label=>label.querySelector('span').offsetWidth/2);const dpr=Math.min(devicePixelRatio||1,2);canvas.width=Math.round(width*dpr);canvas.height=Math.round(height*dpr);ctx.setTransform(dpr,0,0,dpr,0,0);draw();stage.classList.add('is-ready');}).observe(stage);
+    new ResizeObserver(()=>{const nextWidth=stage.clientWidth,nextHeight=stage.clientHeight;if(nextWidth===width&&nextHeight===height)return;width=nextWidth;height=nextHeight;measureLabels();const dpr=Math.min(devicePixelRatio||1,2);canvas.width=Math.round(width*dpr);canvas.height=Math.round(height*dpr);ctx.setTransform(dpr,0,0,dpr,0,0);draw();stage.classList.add('is-ready');}).observe(stage);
+    document.fonts.ready.then(()=>{measureLabels();draw();});
     sync();
   }
 }

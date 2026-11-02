@@ -1,4 +1,4 @@
-import {mkdirSync,copyFileSync,readdirSync,readFileSync,lstatSync,existsSync,writeFileSync,rmSync} from 'node:fs';
+import {mkdirSync,copyFileSync,readdirSync,readFileSync,lstatSync,existsSync,rmSync} from 'node:fs';
 import {createHash} from 'node:crypto';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
@@ -13,7 +13,6 @@ if(path.dirname(outputPath)!==root||!['dist','dist-public'].includes(path.basena
 if(existsSync(outputPath)&&lstatSync(outputPath).isSymbolicLink())throw new Error('Build output must not be a symlink');
 rmSync(outputPath,{recursive:true,force:true});
 function copy(relative) {
-  if(publicBuild&&relative.replaceAll('\\','/')==='assets/fonts')return;
   const source=path.join(root,relative), target=path.join(root,output,relative);
   if(lstatSync(source).isSymbolicLink()) throw new Error('Symlinks are not build inputs');
   if(lstatSync(source).isDirectory()) {
@@ -23,7 +22,6 @@ function copy(relative) {
 }
 const pages=['index.html','thesis.html','explore.html','lab.html','report.html','research.html','methodology.html'];
 for(const file of [...pages,'fonts.css','landing.css','cinematic.mjs','styles.css','app.mjs','report.pdf','assets','analysis/model.mjs','data','_headers']) copy(file);
-if(publicBuild)writeFileSync(path.join(root,output,'fonts.css'),'/* Local trial fonts are excluded from public builds. */\n');
 for(const page of pages) {
 const html=readFileSync(path.join(root,page),'utf8');
 for(const [,url] of html.matchAll(/(?:href|src)="([^"]+)"/g)) {

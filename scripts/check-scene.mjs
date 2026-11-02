@@ -67,5 +67,13 @@ console.log('Consistent body shape and facing direction following travel passed.
 
 for(const node of crowd)assert(Math.abs(node.cadence-(.005+((node.variant*.754877666)%1)*.003)*640)<1e-10);
 
-for(const width of [288,390,1440])for(const node of crowd){const box=focusBox(node,width,300);assert(box.x>=6&&box.x+100<=width-6);assert(box.y>=6&&box.boxY+box.boxHeight+20<=300);assert.equal(box.boxY-box.y,17);}
+for(const width of [288,390,1440])for(const node of crowd){const box=focusBox(node,width,300);assert(box.x>=6&&box.x+box.boxWidth<=width-6);assert(box.descriptionX>=6&&box.descriptionX+100<=width-6);assert(box.labelX>=6&&box.labelX+32<=width-6);assert(box.y>=6&&box.boxY+box.boxHeight+20<=300);assert.equal(box.boxY-box.y,17);}
 console.log('Label title, figure box and description bounds passed.');
+
+const edgePerson={x:.86,y:.5,z:.5,profile:.9};
+const edgeBox=focusBox(edgePerson,358,260,32,90);
+assert(Math.abs(edgeBox.x+edgeBox.boxWidth/2-edgePerson.x*358)<1e-10);
+assert(edgeBox.descriptionX+90<=352);
+console.log('Right-edge figure remains centered while its caption stays within the mobile field.');
+
+assert.equal(depthBlur(.5,390),0);assert(depthBlur(.05,390)>depthBlur(.05,1440));
