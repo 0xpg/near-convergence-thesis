@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import {fieldAt,motionTime,selectPeople,labelAnchor} from '../cinematic.mjs';
+import {fieldAt,motionTime,selectPeople,labelAnchor,walkingPose} from '../cinematic.mjs';
 for(const second of [0,.033,5,10,15,20,25,30,3600]) {
   const scene=fieldAt(second);
   assert.equal(scene.nodes.length,72);assert.equal(scene.focus.length,3);
@@ -29,3 +29,9 @@ const nextSelection=selectPeople(fieldAt(0).nodes,()=>.5,selection);
 assert(nextSelection.every((person,index)=>person!==selection[index]));
 
 for(const width of [288,320,390,1440])for(const node of fieldAt(0).nodes){const x=labelAnchor(node.x,width);assert(x>=6&&x+100<=width-6);}
+
+assert.deepEqual(walkingPose(0),walkingPose(16));
+assert(Math.abs(walkingPose(4).swing-1)<1e-12);
+assert(Math.abs(walkingPose(12).swing+1)<1e-12);
+assert.equal(Math.floor(motionTime(5)*14)%16,Math.floor(motionTime(6.5)*14)%16);
+console.log("Opposing limb phases, closed walking cycle and still interval passed.");
