@@ -15,7 +15,7 @@ function copy(relative) {
     for(const name of readdirSync(source)) copy(path.join(relative,name));
   } else { mkdirSync(path.dirname(target),{recursive:true}); copyFileSync(source,target); }
 }
-for(const file of ['index.html','landing.css','research.html','styles.css','app.mjs','methodology.html','report.pdf','assets','analysis/model.mjs','data']) copy(file);
+for(const file of ['index.html','fonts.css','landing.css','research.html','styles.css','app.mjs','methodology.html','report.pdf','assets','analysis/model.mjs','data']) copy(file);
 for(const page of ['index.html','research.html','methodology.html']) {
 const html=readFileSync(path.join(root,page),'utf8');
 for(const [,url] of html.matchAll(/(?:href|src)="([^"#]+)"/g)) {
