@@ -5,12 +5,14 @@ export function ditherAt(x,y,variant,frame) {
   const seed=(variant*.61803398875)%1;
   const ny=(y-70)/(42+seed*16),nx=(x-38)/(18+((variant*.41421356237)%1)*14);
   const twist=Math.sin(ny*3+phase+variant)*.25;
-  const radius=Math.hypot(nx+twist,ny);
+  const u=nx+twist,v=ny;
+  const radii=[Math.hypot(u,v),Math.abs(u)+Math.abs(v),Math.max(Math.abs(u),Math.abs(v)),Math.abs(Math.hypot(u,v)-.55)*2.4,Math.min(Math.hypot(u*2.6,v),Math.hypot(u,v*2.6)),Math.sqrt(Math.abs(u*v))*1.6+Math.hypot(u,v)*.25];
+  const radius=radii[variant%6];
   const angle=Math.atan2(ny,nx+twist);
   const edge=.78+.19*Math.sin(angle*(2+variant%5)+phase+variant)+.09*Math.cos(angle*3-variant);
   const density=Math.max(0,1-radius/edge)*(1.05+.25*Math.cos(nx*3+phase));
   const threshold=((Math.sin(x*127.1+y*311.7+variant*74.7)*43758.5453)%1+1)%1;
-  return threshold<density;
+  return threshold<density*1.5;
 }
 
 export function labelAnchor(x,width) { return Math.max(6,Math.min(width-106,x*width-10)); }
@@ -22,16 +24,22 @@ export function motionTime(seconds) {
 export function selectPeople(nodes,random=Math.random,previous=[]) {
   return [[.12,.34],[.38,.62],[.66,.86]].map(([left,right],group)=>{
     const candidates=nodes.map((node,index)=>({node,index})).filter(({node,index})=>index!==previous[group]&&node.x>=left&&node.x<=right&&node.z>.25&&node.z<.72);
-    return candidates[Math.min(candidates.length-1,Math.floor(random()*candidates.length))].index;
+    const pool=candidates.length?candidates:nodes.map((node,index)=>({node,index})).filter(({index})=>index!==previous[group]);
+    return pool[Math.min(pool.length-1,Math.floor(random()*pool.length))].index;
   });
 }
+export function drift(start,velocity,time){
+  const t=((start+velocity*time)%2+2)%2;
+  return t<=1?t:2-t;
+}
+
 export function fieldAt(seconds,selected=[12,33,54]) {
   motionTime(seconds);
   const motion=seconds;
   const nodes=Array.from({length:72},(_,i)=>{
     const seed=(i*.61803398875)%1,depth=(i*.41421356237+.07)%1;
     const individuality=(i*.754877666)%1,cadence=4.5+individuality*3;
-    return {x:.04+seed*.92+Math.sin(motion*(.045+individuality*.035)+i*1.7)*(.009+individuality*.008),y:.16+depth*.64+Math.cos(motion*(.04+seed*.035)+i)*.006,z:depth,variant:i,gait:(motion*cadence+i*2.718281828)%16,cadence,direction:seed<.5?-1:1,profile:.72+individuality*.30};
+    return {x:.06+.88*drift(seed,(.009+individuality*.012)*(i%2?1:-1),motion)+Math.sin(motion*.4+i)*.015,y:.18+.60*drift(depth,(.014+seed*.018)*(i%3?1:-1),motion)+Math.cos(motion*.3+i)*.015,z:depth,variant:i,gait:(motion*cadence+i*2.718281828)%16,cadence,direction:seed<.5?-1:1,profile:.72+individuality*.30};
   });
   return {nodes,focus:selected.map(index=>nodes[index]),attention:Math.floor(seconds/5)%3};
 }
@@ -45,12 +53,14 @@ if(typeof document!=='undefined') {
     const colors=['#367b63','#a55561','#466d9f'];
     let width=0,height=0,time=0,last=0,request=0,playing=!preference.matches,visible=true,fieldFocused=false;
     let selected=selectPeople(fieldAt(0).nodes),nextSwitch=[1.4,2.1,2.8];
+    await document.fonts.load('400 10px Saans').catch(()=>{});
     const sprites=Array.from({length:72},(_,variant)=>Array.from({length:8},(_,pose)=>{
       const sprite=document.createElement('canvas');sprite.width=76;sprite.height=140;
       const pen=sprite.getContext('2d');
-      pen.fillStyle='#2e4838';
-      for(let y=6;y<134;y+=3)for(let x=5;x<72;x+=3){
-        if(ditherAt(x,y,variant,pose*2))pen.fillRect(x,y,2,2);
+      pen.fillStyle='#2e4838';pen.font='400 9px Saans,Arial,sans-serif';pen.textAlign='center';pen.textBaseline='middle';
+      const glyphs=['.:+x*','/|+=:',':#xo.','*+.:/','xo+|:',':=*+.'][variant%6];
+      for(let y=6;y<134;y+=7)for(let x=7;x<72;x+=6){
+        if(ditherAt(x,y,variant,pose*2))pen.fillText(glyphs[(Math.floor(x/6)+Math.floor(y/7)*3+variant)%glyphs.length],x,y);
       }
       return sprite;
     }));
@@ -71,7 +81,7 @@ if(typeof document!=='undefined') {
         ctx.globalAlpha=.43+(.5-Math.abs(node.z-.5))*.95;
         ctx.filter=`blur(${Math.max(0,Math.abs(node.z-.5)-.12)*8}px)`;
         const pose=Math.floor(node.gait/2);
-        ctx.save();ctx.translate(node.x*width,node.y*height);ctx.scale(node.direction*node.profile,1);
+        ctx.save();ctx.translate(node.x*width,node.y*height);ctx.scale(node.profile,1);
         ctx.drawImage(sprites[node.variant][pose],-38*size,-70*size,76*size,140*size);ctx.restore();
       }
       ctx.filter='none';ctx.globalAlpha=1;
@@ -85,7 +95,7 @@ if(typeof document!=='undefined') {
         ctx.globalAlpha=lineStrength;ctx.strokeStyle=colors[i]+(attention===i?'60':'24');ctx.lineWidth=.7;
         ctx.beginPath();ctx.moveTo(a.x*width,a.y*height);ctx.lineTo(b.x*width,b.y*height);ctx.stroke();
         ctx.globalAlpha=1;ctx.strokeStyle=colors[i];ctx.lineWidth=attention===i?1.2:.6;ctx.strokeRect(a.x*width-10,a.y*height-24,20,44);
-        labels[i].style.transform=`translate(${labelAnchor(a.x,width)}px,${a.y*height-43}px)`;
+        labels[i].style.transform=`translate(${labelAnchor(a.x,width)}px,${Math.max(6,Math.min(height-100,a.y*height-43))}px)`;
         labels[i].style.opacity='1';labels[i].dataset.person=String(selected[i]);
       }
     }

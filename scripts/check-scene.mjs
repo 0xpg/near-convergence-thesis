@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import {fieldAt,motionTime,selectPeople,labelAnchor,walkingPose,ditherAt} from '../cinematic.mjs';
+import {fieldAt,motionTime,selectPeople,labelAnchor,walkingPose,ditherAt,drift} from '../cinematic.mjs';
 for(const second of [0,.033,5,10,15,20,25,30,3600]) {
   const scene=fieldAt(second);
   assert.equal(scene.nodes.length,72);assert.equal(scene.focus.length,3);
@@ -51,3 +51,9 @@ console.log('Repeatable dither pattern, visible dots and changing abstract form 
 
 assert.equal(new Set(crowd.map(node=>node.variant)).size,72);
 assert.notDeepEqual(sample(0),Array.from({length:200},(_,i)=>ditherAt(5+i%20*3,40+Math.floor(i/20)*3,17,0)));
+
+for(const time of [0,1,10,100,10000])assert(drift(.4,-.02,time)>=0&&drift(.4,-.02,time)<=1);
+assert(crowd.every((node,i)=>Array.from({length:6},(_,step)=>{const a=fieldAt(step*.5).nodes[i],b=fieldAt((step+1)*.5).nodes[i];return Math.hypot(b.x-a.x,b.y-a.y);}).reduce((a,b)=>a+b,0)>.02));
+const silhouettes=Array.from({length:72},(_,variant)=>Array.from({length:200},(_,i)=>Number(ditherAt(5+i%20*3,40+Math.floor(i/20)*3,variant,0))).join(''));
+assert.equal(new Set(silhouettes).size,72);
+console.log('Bounded independent travel and 72 distinct ASCII masks passed.');
