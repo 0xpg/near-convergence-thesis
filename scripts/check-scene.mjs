@@ -37,7 +37,7 @@ assert.notDeepEqual(fieldAt(5).nodes.map(node=>node.gait),fieldAt(6.5).nodes.map
 console.log("Opposing limb phases, closed walking cycle and continuous walking passed.");
 
 const crowd=fieldAt(0).nodes;
-assert(crowd.every(node=>node.cadence>=4.5&&node.cadence<=7.5));
+assert(crowd.every(node=>node.cadence>=3.2&&node.cadence<=5.12));
 assert(new Set(crowd.map(node=>node.cadence)).size>30);
 assert(new Set(crowd.map(node=>node.gait)).size>30);
 assert.equal(new Set(crowd.map(node=>node.direction)).size,2);
@@ -53,14 +53,16 @@ assert.equal(new Set(crowd.map(node=>node.variant)).size,48);
 assert.notDeepEqual(sample(0),Array.from({length:200},(_,i)=>ditherAt(5+i%20*3,40+Math.floor(i/20)*3,17,0)));
 
 for(const time of [0,1,10,100,10000])assert(drift(.4,-.02,time)>=0&&drift(.4,-.02,time)<=1);
-assert(crowd.every((node,i)=>Array.from({length:6},(_,step)=>{const a=fieldAt(step*.5).nodes[i],b=fieldAt((step+1)*.5).nodes[i];return Math.hypot(b.x-a.x,b.y-a.y);}).reduce((a,b)=>a+b,0)>.02));
+assert(crowd.every((node,i)=>Array.from({length:6},(_,step)=>{const a=fieldAt(step*.5).nodes[i],b=fieldAt((step+1)*.5).nodes[i];return Math.hypot(b.x-a.x,b.y-a.y);}).reduce((a,b)=>a+b,0)>.008));
 const silhouettes=Array.from({length:48},(_,variant)=>Array.from({length:200},(_,i)=>Number(ditherAt(5+i%20*3,40+Math.floor(i/20)*3,variant,0))).join(''));
 assert.equal(new Set(silhouettes).size,48);
 console.log('Bounded independent travel and 48 distinct dither masks passed.');
 
 assert.equal(depthBlur(.5),0);assert(depthBlur(0)>7&&depthBlur(1)>7);
 
-assert.equal(new Set(crowd.map(node=>JSON.stringify(bodyShape(node.variant)))).size,3);
+assert.equal(new Set(crowd.map(node=>JSON.stringify(bodyShape(node.variant)))).size,1);
 for(const t of [0,5,30])for(const node of fieldAt(t).nodes){const next=fieldAt(t+.05).nodes[node.variant];if(Math.abs(next.x-node.x)>.00002)assert.equal(node.direction,Math.sign(next.x-node.x));}
-assert(bodyShape(0).height<bodyShape(2).height);assert(bodyShape(1).width>bodyShape(2).width);
-console.log('Three body builds and facing direction following travel passed.');
+assert.deepEqual(bodyShape(0),bodyShape(47));assert(crowd.every(node=>node.profile===.9));
+console.log('Consistent body shape and facing direction following travel passed.');
+
+for(const node of crowd)assert(Math.abs(node.cadence-(.005+((node.variant*.754877666)%1)*.003)*640)<1e-10);
