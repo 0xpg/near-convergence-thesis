@@ -48,3 +48,8 @@ header.shell{display:grid;grid-template-columns:1fr auto 1fr;gap:24px}.brand{jus
 .cover-summary .primary{min-height:36px;min-width:0;padding:0 16px;border-radius:18px}
 .cover-summary .secondary{min-height:36px}
 @media(pointer:coarse){.cover-summary .actions a{min-height:44px}}
+
+.cover-summary p{text-align:justify;text-align-last:left}
+.header-read,.cover-summary .actions a{transition:transform 180ms cubic-bezier(.23,1,.32,1),opacity 180ms cubic-bezier(.23,1,.32,1)}
+.header-read:active,.cover-summary .actions a:active{transform:translateY(1px) scale(.97);opacity:.88;transition-duration:120ms}
+@media(prefers-reduced-motion:reduce){.header-read,.cover-summary .actions a{transition:none}.header-read:active,.cover-summary .actions a:active{transform:none}}
