@@ -10,3 +10,5 @@ dist-public/
 .wrangler/
 
 .vite-public/
+
+dist-prototype/
