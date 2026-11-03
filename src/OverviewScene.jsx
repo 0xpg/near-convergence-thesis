@@ -5,7 +5,12 @@ import nearWordmark from '../assets/identity/near.svg';
 export const topics=[
   {title:'Revenue',children:['Fees generated','Protocol revenue','Revenue vs emissions','Wallet breakdown']},
   {title:'Ecosystem',children:['NEAR Intents','Base-chain activity','Token overview','Protocol']},
-  {title:'Products',children:['Blockchain','Near.com','NEAR Intents','NEAR AI','House of Stake']}
+  {title:'Products',children:['Blockchain','Near.com','NEAR Intents','NEAR AI','House of Stake']},
+  {title:'Capital & liquidity',children:['Stablecoin supply','Bridge flows','Capital deployment']},
+  {title:'DeFi markets',children:['DEX activity','Lending utilization','Liquidity depth']},
+  {title:'AI & agents',children:['Verified agent activity','Agent retention','Execution attribution']},
+  {title:'Developers',children:['Build activity','Contract deployment','Tooling']},
+  {title:'Validators',children:['Validator set','Stake concentration','Staking participation']}
 ];
 export default function OverviewScene(){
   const canvas=useRef(),field=useRef(),animation=useRef();
