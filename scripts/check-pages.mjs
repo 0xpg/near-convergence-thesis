@@ -22,7 +22,7 @@ try{
  }
  assert(rendered['research.html'].includes('id="model-controls"'));
  assert(rendered['thesis.html'].includes('NEAR overview'));
- assert(rendered['thesis.html'].includes('Select a category to focus'));
+ assert(rendered['thesis.html'].includes('Hover or touch a category'));
  assert(rendered['thesis.html'].includes('AI &amp; agents'));
  assert(!rendered['thesis.html'].includes('Snapshot ·'));
  assert.equal(renderToStaticMarkup(createElement(Story)),rendered['thesis.html'],'The topic geometry must remain deterministic');

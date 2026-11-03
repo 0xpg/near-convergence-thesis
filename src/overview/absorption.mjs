@@ -25,11 +25,11 @@ export function createParticles(mode=0){
 }
 
 export function particleAt(p,time,mode=0,selected=-1){
-  const active=selected<0?Math.floor(time/4)%10:selected;
-  if(p.core){const angle=p.a+Math.sin(time*.25+p.phase*TAU)*.055;return {x:320+Math.cos(angle)*p.r,y:320+Math.sin(angle)*p.r,alpha:.65+p.shade*.3,size:p.size};}
+  const active=selected;
+  if(p.core)return {x:320+Math.cos(p.a)*p.r,y:320+Math.sin(p.a)*p.r,alpha:.65+p.shade*.3,size:p.size};
   const focused=p.sector===active;
   let radius=p.r,angle=p.a,alpha=focused?1:(mode===2?.15:.68);
-  const flowing=(p.stream||(mode===2&&focused))&&(mode===1||focused);
+  const flowing=p.stream&&(mode===1||focused);
   if(flowing){
     const cycle=mode===1?8:6.8;
     const phase=(time*p.speed/cycle+p.phase)%1;
@@ -38,24 +38,17 @@ export function particleAt(p,time,mode=0,selected=-1){
     radius=p.r*(1-progress)+8*progress;
     angle+=Math.sin(progress*Math.PI)*(mode===1?.34:.07);
     alpha*=Math.min(1,phase*9,(1-phase)*12);
-  }else{
-    radius+=Math.sin(time*.4+p.phase*TAU)*1.2;
-    angle+=Math.sin(time*.22+p.phase*TAU)*.003;
-  }
-  if(mode===1&&!p.stream){
-    const breath=(1-Math.cos(time*TAU/9))/2;
-    radius*=1-breath*.15;
   }
   return {x:320+Math.cos(angle)*radius,y:320+Math.sin(angle)*radius,alpha,size:p.size};
 }
 
-export function startAbsorption(canvas,mode=0,onSelect,focusOnSelect=false){
+export function startAbsorption(canvas,mode=1,onSelect){
   modeCheck(mode);
   const initialMode=mode;
   const ctx=canvas.getContext('2d');if(!ctx)return {destroy(){},select(){}};
   const particles=createParticles(mode),positions=particles.map(p=>particleAt(p,0,mode));
   const motion=matchMedia('(prefers-reduced-motion: reduce)');
-  let frame=0,time=0,last=0,width=0,height=0,selected=-1,locked=false,stopped=false;
+  let frame=0,time=0,last=0,width=0,height=0,selected=-1,stopped=false;
   function draw(dt=0){
     ctx.clearRect(0,0,width,height);
     const scale=Math.min(width,height)/640;
@@ -72,7 +65,7 @@ export function startAbsorption(canvas,mode=0,onSelect,focusOnSelect=false){
       if(p.shade>.35)ctx.fillRect(x+s*.6,y+s*.58,s*.28,s*.30);
     }
     ctx.restore();ctx.globalAlpha=1;
-    canvas.dataset.animationTime=time.toFixed(3);canvas.dataset.direction=String(mode);canvas.dataset.selected=String(selected<0?Math.floor(time/4)%10:selected);
+    canvas.dataset.animationTime=time.toFixed(3);canvas.dataset.direction=String(mode);canvas.dataset.selected=String(selected);
   }
   function tick(now){
     if(stopped||document.hidden||motion.matches){frame=0;return;}
@@ -86,17 +79,17 @@ export function startAbsorption(canvas,mode=0,onSelect,focusOnSelect=false){
   function sectorAt(event){
     const rect=canvas.getBoundingClientRect(),scale=Math.min(rect.width,rect.height)/640;
     const x=(event.clientX-rect.left-rect.width/2)/scale,y=(event.clientY-rect.top-rect.height/2)/scale;
-    if(Math.hypot(x,y)<48||Math.hypot(x,y)>270)return -1;
+    if(Math.hypot(x,y)<48||Math.hypot(x,y)>300)return -1;
     return Math.round((Math.atan2(y,x)+Math.PI/2+TAU)/TAU*10)%10;
   }
-  function choose(index){selected=index;onSelect?.(index,locked);if(motion.matches)draw();}
-  function select(index){if(!Number.isInteger(index)||index< -1||index>9)throw new RangeError('Unknown category');locked=index>=0;mode=focusOnSelect&&locked?2:initialMode;choose(index);}
-  function move(event){if(!locked&&event.pointerType!=='touch')choose(sectorAt(event));}
-  function leave(){if(!locked)choose(-1);}
-  function click(event){const index=sectorAt(event);select(locked&&index===selected?-1:index);}
+  function select(index){if(!Number.isInteger(index)||index< -1||index>9)throw new RangeError('Unknown category');selected=index;mode=index>=0?2:initialMode;onSelect?.(index);if(motion.matches)draw();}
+  function move(event){select(sectorAt(event));}
+  function leave(){select(-1);}
+  function release(event){if(event.pointerType!=='mouse')leave();}
   function key(event){if(!['ArrowLeft','ArrowRight','Escape'].includes(event.key))return;event.preventDefault();select(event.key==='Escape'?-1:((selected<0?0:selected)+(event.key==='ArrowLeft'?9:1))%10);}
-  canvas.addEventListener('pointermove',move);canvas.addEventListener('pointerleave',leave);canvas.addEventListener('click',click);canvas.addEventListener('keydown',key);
+  const events={pointermove:move,pointerdown:move,pointerleave:leave,pointerup:release,pointercancel:leave,keydown:key};
+  for(const [name,handler] of Object.entries(events))canvas.addEventListener(name,handler);
   const observer=new ResizeObserver(resize);observer.observe(canvas);resize();
   motion.addEventListener('change',sync);document.addEventListener('visibilitychange',sync);sync();
-  return {select,destroy(){stopped=true;cancelAnimationFrame(frame);observer.disconnect();motion.removeEventListener('change',sync);document.removeEventListener('visibilitychange',sync);canvas.removeEventListener('pointermove',move);canvas.removeEventListener('pointerleave',leave);canvas.removeEventListener('click',click);canvas.removeEventListener('keydown',key);}};
+  return {select,destroy(){stopped=true;cancelAnimationFrame(frame);observer.disconnect();motion.removeEventListener('change',sync);document.removeEventListener('visibilitychange',sync);for(const [name,handler] of Object.entries(events))canvas.removeEventListener(name,handler);}};
 }
