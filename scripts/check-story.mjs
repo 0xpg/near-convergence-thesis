@@ -7,5 +7,7 @@ assert.equal(stepIndex(0,1,0),null);assert.equal(stepIndex(0,-1,3),0);assert.equ
 assert.throws(()=>stepIndex(0,4,3));assert.throws(()=>stepIndex(0,1,-1));
 assert.equal(sourceUrl('javascript:alert(1)'),null);assert.equal(sourceUrl('https://near.org/'),'https://near.org/');
 assert(!readFileSync('index.html','utf8').includes('<audio'));
-assert(readFileSync('src/Story.jsx','utf8').includes('id="story-next" type="button" disabled={!available'));
-console.log('Empty editorial state, bounded scene navigation, safe evidence URLs and no music passed.');
+assert(readFileSync('src/OverviewScene.jsx','utf8').includes('NEAR at a glance'));
+assert(!readFileSync('src/OverviewScene.jsx','utf8').includes('Continue'));
+assert(!readFileSync('src/OverviewScene.jsx','utf8').includes('proto-picker'));
+console.log('One overview scene, no slide-two navigation, safe evidence URLs and no music passed.');

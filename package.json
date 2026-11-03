@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "test": "node analysis/reproduce.mjs && node scripts/check-scene.mjs && node scripts/check-story.mjs && node scripts/check-react.mjs",
+    "test": "node analysis/reproduce.mjs && node scripts/check-scene.mjs && node scripts/check-story.mjs && node scripts/check-react.mjs && node scripts/check-overview.mjs",
     "test:public": "node scripts/check-public.mjs",
     "build": "node analysis/reproduce.mjs && node scripts/build.mjs",
     "build:public": "node analysis/reproduce.mjs && node scripts/build.mjs --public",
