@@ -49,9 +49,10 @@ export function particleAt(p,time,mode=0,selected=-1){
   return {x:320+Math.cos(angle)*radius,y:320+Math.sin(angle)*radius,alpha,size:p.size};
 }
 
-export function startAbsorption(canvas,mode=0,onSelect){
+export function startAbsorption(canvas,mode=0,onSelect,focusOnSelect=false){
   modeCheck(mode);
-  const ctx=canvas.getContext('2d');if(!ctx)return()=>{};
+  const initialMode=mode;
+  const ctx=canvas.getContext('2d');if(!ctx)return {destroy(){},select(){}};
   const particles=createParticles(mode),positions=particles.map(p=>particleAt(p,0,mode));
   const motion=matchMedia('(prefers-reduced-motion: reduce)');
   let frame=0,time=0,last=0,width=0,height=0,selected=-1,locked=false,stopped=false;
@@ -88,13 +89,14 @@ export function startAbsorption(canvas,mode=0,onSelect){
     if(Math.hypot(x,y)<48||Math.hypot(x,y)>270)return -1;
     return Math.round((Math.atan2(y,x)+Math.PI/2+TAU)/TAU*10)%10;
   }
-  function choose(index){selected=index;onSelect?.(index);if(motion.matches)draw();}
+  function choose(index){selected=index;onSelect?.(index,locked);if(motion.matches)draw();}
+  function select(index){if(!Number.isInteger(index)||index< -1||index>9)throw new RangeError('Unknown category');locked=index>=0;mode=focusOnSelect&&locked?2:initialMode;choose(index);}
   function move(event){if(!locked&&event.pointerType!=='touch')choose(sectorAt(event));}
   function leave(){if(!locked)choose(-1);}
-  function click(event){const index=sectorAt(event);locked=!(locked&&index===selected);choose(locked?index:-1);}
-  function key(event){if(!['ArrowLeft','ArrowRight','Escape'].includes(event.key))return;event.preventDefault();locked=event.key!=='Escape';choose(event.key==='Escape'?-1:((selected<0?0:selected)+(event.key==='ArrowLeft'?9:1))%10);}
+  function click(event){const index=sectorAt(event);select(locked&&index===selected?-1:index);}
+  function key(event){if(!['ArrowLeft','ArrowRight','Escape'].includes(event.key))return;event.preventDefault();select(event.key==='Escape'?-1:((selected<0?0:selected)+(event.key==='ArrowLeft'?9:1))%10);}
   canvas.addEventListener('pointermove',move);canvas.addEventListener('pointerleave',leave);canvas.addEventListener('click',click);canvas.addEventListener('keydown',key);
   const observer=new ResizeObserver(resize);observer.observe(canvas);resize();
   motion.addEventListener('change',sync);document.addEventListener('visibilitychange',sync);sync();
-  return()=>{stopped=true;cancelAnimationFrame(frame);observer.disconnect();motion.removeEventListener('change',sync);document.removeEventListener('visibilitychange',sync);canvas.removeEventListener('pointermove',move);canvas.removeEventListener('pointerleave',leave);canvas.removeEventListener('click',click);canvas.removeEventListener('keydown',key);};
+  return {select,destroy(){stopped=true;cancelAnimationFrame(frame);observer.disconnect();motion.removeEventListener('change',sync);document.removeEventListener('visibilitychange',sync);canvas.removeEventListener('pointermove',move);canvas.removeEventListener('pointerleave',leave);canvas.removeEventListener('click',click);canvas.removeEventListener('keydown',key);}};
 }

@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import {createParticles,particleAt} from '../src/prototypes/absorption.mjs';
+import {createParticles,particleAt,startAbsorption} from '../src/overview/absorption.mjs';
 const points=createParticles();
 assert.equal(points.length,1800);
 assert.deepEqual(points,createParticles());
@@ -15,3 +15,19 @@ assert(Math.max(...distances)-Math.min(...distances)>100,'Particles must travel 
 assert.notDeepEqual(particleAt(stream,2,0,stream.sector),particleAt(stream,2,1,stream.sector));
 assert(createParticles(1)[0].r>points[0].r,'Tidal needs a wider ring without enlarging its individual tiles');
 console.log('1,800 deterministic tiles: finite bounded positions, real inward travel and distinct motion directions passed.');
+globalThis.matchMedia=()=>({matches:true,addEventListener(){},removeEventListener(){}});
+globalThis.document={hidden:false,addEventListener(){},removeEventListener(){}};
+globalThis.ResizeObserver=class{observe(){}disconnect(){}};
+globalThis.cancelAnimationFrame=()=>{};
+globalThis.devicePixelRatio=1;
+const handlers=new Map(),context=Object.fromEntries(['clearRect','save','translate','scale','fillRect','restore','setTransform'].map(name=>[name,()=>{}]));
+const canvas={dataset:{},getContext:()=>context,getBoundingClientRect:()=>({width:640,height:640,left:0,top:0}),addEventListener:(name,handler)=>handlers.set(name,handler),removeEventListener:name=>handlers.delete(name)};
+let chosen;
+const scene=startAbsorption(canvas,1,(index,locked)=>chosen={index,locked},true);
+assert.equal(canvas.dataset.direction,'1');
+scene.select(3);assert.equal(canvas.dataset.direction,'2');assert.deepEqual(chosen,{index:3,locked:true});
+handlers.get('pointerleave')();assert.equal(canvas.dataset.selected,'3','Focus remains locked when the pointer leaves');
+scene.select(-1);assert.equal(canvas.dataset.direction,'1');assert.deepEqual(chosen,{index:-1,locked:false});
+assert.throws(()=>scene.select(10));
+scene.destroy();assert.equal(handlers.size,0);
+console.log('Tidal-to-Focus selection, locked focus, overview reset, invalid categories and event cleanup passed.');
