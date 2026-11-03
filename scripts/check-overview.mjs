@@ -8,4 +8,4 @@ assert.throws(()=>windowSeries(data.metrics[0],0));assert.equal(change([{value:0
 console.log('All four frozen metric headlines reconcile with series; windows, CSV export, dates and zero-base change passed.');
 
 assert.equal(indexAtSvgX(56,91),0);assert.equal(indexAtSvgX(419,91),45);assert.equal(indexAtSvgX(782,91),90);assert.equal(indexAtSvgX(-50,91),0);assert.equal(indexAtSvgX(900,91),90);
-
+assert.equal(indexAtSvgX(619,91,1200),45);assert.equal(indexAtSvgX(1182,91,1200),90);
