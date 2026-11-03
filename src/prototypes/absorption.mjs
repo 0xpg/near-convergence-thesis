@@ -16,7 +16,7 @@ export function createParticles(mode=0){
       const trail=index>=132;
       const spread=(random()+random()+random()-1.5);
       const a=center+spread*(trail?.23:.20);
-      const r=trail?35+random()*160:ring+(random()+random()-1)*32;
+      const r=(trail?35+random()*160:ring+(random()+random()-1)*32)*(mode===1?1.12:1);
       particles.push({id:particles.length,sector,a,r,phase:random(),speed:.8+random()*.4,size:trail?1.7+random()*2.2:3+random()*3.4,color:colors[sector],shade:random(),stream:trail||index%4===0,core:false});
     }
   }

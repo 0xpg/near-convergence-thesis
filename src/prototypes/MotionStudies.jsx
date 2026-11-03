@@ -4,13 +4,16 @@ import {startAbsorption} from './absorption.mjs';
 import './motion-studies.css';
 
 const names=['Archive','Tidal','Focus'];
+const topics=['Network activity','Accounts & users','Capital & liquidity','DeFi markets','Applications','Intents','AI & agents','Developers','Validators','Token economics'];
 function Study({mode}){
-  const canvas=useRef();
+  const canvas=useRef(),field=useRef();
+  const [size,setSize]=useState({width:640,height:640});
+  useLayoutEffect(()=>{const observer=new ResizeObserver(([entry])=>setSize({width:entry.contentRect.width,height:entry.contentRect.height}));observer.observe(field.current);return()=>observer.disconnect();},[]);
   useLayoutEffect(()=>startAbsorption(canvas.current,mode),[mode]);
-  return <main className={'motion-study motion-study-'+mode}><canvas ref={canvas} tabIndex="0" aria-label={`${names[mode]} particle motion study. Move over a cluster or touch it to draw particles toward the center. Use left and right keys to select clusters; Escape releases selection.`}/></main>;
+  return <main className={'motion-study motion-study-'+mode}><div ref={field} className="motion-field"><canvas ref={canvas} tabIndex="0" aria-label={`${names[mode]} particle motion study. Move over a cluster or touch it to draw particles toward the center. Use left and right keys to select clusters; Escape releases selection.`}/>{mode===1&&<div className="motion-topics" aria-label="NEAR overview categories">{topics.map((topic,index)=>{const angle=-Math.PI/2+index*Math.PI/5,radius=Math.min(size.width,size.height)*.465;return <span key={topic} style={{left:Math.max(64,Math.min(size.width-64,size.width/2+Math.cos(angle)*radius)),top:size.height/2+Math.sin(angle)*radius}}>{topic}</span>;})}</div>}</div></main>;
 }
 function App(){
-  const [current,setCurrent]=useState(()=>Math.max(0,Math.min(2,(parseInt(new URLSearchParams(location.search).get('v'),10)||1)-1))),[replay,setReplay]=useState(0);
+  const [current,setCurrent]=useState(()=>Math.max(0,Math.min(2,(parseInt(new URLSearchParams(location.search).get('v'),10)||2)-1))),[replay,setReplay]=useState(0);
   const picker=useRef(),highlight=useRef(),buttons=useRef([]);
   function choose(index){setCurrent(index);setReplay(n=>n+1);const url=new URL(location);url.searchParams.set('v',index+1);history.replaceState(null,'',url);}
   useLayoutEffect(()=>{function position(){const button=buttons.current[current];highlight.current.style.width=button.offsetWidth+'px';highlight.current.style.transform=`translateX(${button.offsetLeft}px)`;}position();window.addEventListener('resize',position);return()=>window.removeEventListener('resize',position);},[current]);
