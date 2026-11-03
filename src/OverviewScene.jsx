@@ -1,39 +1,85 @@
-import React,{useState,useRef,useId,useLayoutEffect} from 'react';
-import snapshot from './overview/snapshot.json';
-import provenance from './overview/provenance.json';
-import {windowSeries,change,csvFor,money,indexAtSvgX} from './overview/calculations.mjs';
+import React,{useEffect,useRef,useState} from 'react';
+import {categories} from './overview/taxonomy.mjs';
 
-const icons={defi_tvl:<><path d="M3 19V9l9-6 9 6v10M3 10h18M6 13v5m6-5v5m6-5v5M2 21h20"/></>,stablecoin_usd:<><ellipse cx="12" cy="6" rx="8" ry="3"/><path d="M4 6v12c0 4 16 4 16 0V6M4 12c0 4 16 4 16 0"/></>,volume:<><path d="M3 18V6m0 12h18M6 14l4-5 4 3 5-6"/></>,fees:<><path d="M5 3h14v18l-3-2-4 2-4-2-3 2V3M8 8h8m-8 4h8m-8 4h4"/></>};
-function Icon({id}){return <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">{icons[id]}</svg>;}
-function Download({metric,series}){function save(){const url=URL.createObjectURL(new Blob([csvFor(metric,series)],{type:'text/csv'}));const a=document.createElement('a');a.href=url;a.download=metric.id+'-'+snapshot.version+'.csv';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);}return <button onClick={save}>Export CSV</button>;}
-function Chart({metric,days,compact=false}){
- const uid=useId().replace(/:/g,'');const svgRef=useRef(null);const [size,setSize]=useState({width:800,height:260});useLayoutEffect(()=>{const svg=svgRef.current;const observer=new ResizeObserver(()=>{const width=Math.round(svg.clientWidth),height=Math.round(svg.clientHeight);if(width>0&&height>0)setSize(previous=>previous.width===width&&previous.height===height?previous:{width,height});});observer.observe(svg);return()=>observer.disconnect();},[]);const series=windowSeries(metric,days),[index,setIndex]=useState(null);const selected=series[Math.min(index??series.length-1,series.length-1)];
- const width=size.width,height=Math.max(size.height,100),left=56,right=18,top=22,bottom=32,max=Math.max(...series.map(row=>row.value))*1.08||1;
- const x=i=>left+i/(series.length-1||1)*(width-left-right),y=value=>height-bottom-value/max*(height-top-bottom);
- const colors={defi_tvl:['#256951','#5b997c','#a6cbb3'],stablecoin_usd:['#416d9d','#7f9fbe','#b8cadd'],volume:['#a66b35','#c3975d','#dfc197'],fees:['#965368','#bf879a','#dfb5be']}[metric.id];
- const path=series.map((row,i)=>(i?'L':'M')+x(i).toFixed(2)+','+y(row.value).toFixed(2)).join(' ');
- return <div className={'chart '+(compact?'compact':'')}><div className="chart-reading"><span>{selected.date}</span><strong>{money(selected.value)}</strong><span>{metric.kind==='flow'?'daily reported flow':'end-of-day stock'}</span></div><svg ref={svgRef} viewBox={`0 0 ${width} ${height}`} role="img" aria-label={`${metric.name}, last ${days} days, USD. Exact observations in table.`} onPointerMove={e=>{const matrix=e.currentTarget.getScreenCTM();if(!matrix)return;const point=new DOMPoint(e.clientX,e.clientY).matrixTransform(matrix.inverse());setIndex(indexAtSvgX(point.x,series.length,width));}} onPointerLeave={()=>setIndex(null)}>
- <defs><pattern id={'dots'+uid} width="8" height="8" patternUnits="userSpaceOnUse"><rect x="0" y="0" width="2" height="2" fill={colors[0]}/><rect x="4" y="0" width="2" height="2" fill={colors[1]}/><rect x="2" y="4" width="2" height="2" fill={colors[2]}/><rect x="6" y="4" width="2" height="2" fill={colors[0]} opacity=".55"/></pattern></defs>
- {[0,.5,1].map(t=><g key={t}><line x1={left} x2={width-right} y1={y(max*t)} y2={y(max*t)} className="gridline"/><text x={left-10} y={y(max*t)+4} textAnchor="end">{money(max*t)}</text></g>)}
- <g className="dither-reveal"><path d={path+` L${x(series.length-1)},${height-bottom} L${left},${height-bottom} Z`} fill={'url(#dots'+uid+')'}/><path d={path} className="chart-line" style={{stroke:colors[0]}}/></g>
- {index!==null&&<g><line className="crosshair" x1={x(index)} x2={x(index)} y1={top} y2={height-bottom}/><circle cx={x(index)} cy={y(selected.value)} r="5" className="chart-dot"/></g>}
- <text x={left} y={height-6}>{series[0].date}</text><text x={width-right} y={height-6} textAnchor="end">{series.at(-1).date}</text></svg>
- {!compact&&<label className="date-control">Inspect observation<input type="range" aria-label="Inspect chart date" aria-valuetext={selected.date+' · '+money(selected.value)+' USD'} min="0" max={series.length-1} value={index??series.length-1} onChange={e=>setIndex(Number(e.target.value))}/></label>}</div>;
+const sectorCache=new Map();
+function sectors(count){
+  if(sectorCache.has(count))return sectorCache.get(count);
+  const result=Array.from({length:count},(_,index)=>{
+    const layers=['','',''];
+    const center=-Math.PI/2+index*Math.PI*2/count,half=Math.PI/count*.76;
+    for(let y=-232;y<=232;y+=4)for(let x=-232;x<=232;x+=4){
+      const radius=Math.hypot(x,y),angle=Math.atan2(y,x);
+      const distance=Math.abs(Math.atan2(Math.sin(angle-center),Math.cos(angle-center)));
+      const noise=Math.sin(x*12.9898+y*78.233+index*37.719)*43758.5453;
+      const random=noise-Math.floor(noise);
+      const rim=214+Math.sin(angle*11+index)*10;
+      if(radius<44||radius>rim||distance>half)continue;
+      const density=radius>144?.68:.08+radius/1100;
+      if(random>density)continue;
+      const size=radius>144?1.6+random*3:1.2+random*1.5;
+      const layer=Math.min(2,Math.floor(random*4.4));
+      layers[layer]+=`M${x+320},${y+320}h${size.toFixed(1)}v${size.toFixed(1)}h-${size.toFixed(1)}z`;
+    }
+    return layers;
+  });
+  sectorCache.set(count,result);return result;
 }
-function MetricButton({metric,active,onClick,mini=false}){return <button className={'metric '+(active?'selected':'')+(mini?' mini':'')} aria-pressed={active} onClick={onClick}><span className="metric-name"><Icon id={metric.id}/>{metric.name}</span><strong>{money(metric.value)}</strong><small>{metric.kind==='stock'?'26 Oct · balance':'30D · reported flow'}</small></button>;}
-function Evidence({metric,days}){const [tab,setTab]=useState('Definition'),[page,setPage]=useState(0);const dialog=useRef(),series=windowSeries(metric,days),pageSize=6;function open(name){setTab(name);setPage(0);dialog.current.showModal();}return <div className="evidence"><div className="evidence-tabs">{['Definition','Observations','Sources'].map(name=><button key={name} onClick={()=>open(name)}>{name}</button>)}<Download metric={metric} series={series}/></div><dialog ref={dialog} className="evidence-dialog"><header><h2>{metric.name}</h2><button onClick={()=>dialog.current.close()}>Close</button></header><div className="evidence-tabs">{['Definition','Observations','Sources'].map(name=><button key={name} aria-pressed={tab===name} onClick={()=>{setTab(name);setPage(0);}}>{name}</button>)}</div>
- {tab==='Definition'&&<div className="evidence-copy"><p>{metric.definition}</p><p>{metric.limitation}</p><small>{metric.kind==='flow'?snapshot.flowWindow:'Balance observed on 26 Oct 2026'}. Frozen snapshot, not live.</small></div>}
- {tab==='Observations'&&<><table><caption>Daily USD · {days} observations maximum</caption><thead><tr><th>UTC date</th><th>USD</th></tr></thead><tbody>{series.slice(page*pageSize,(page+1)*pageSize).map(row=><tr key={row.date}><td>{row.date}</td><td>{row.value.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2})}</td></tr>)}</tbody></table><div className="pagination"><button disabled={page===0} onClick={()=>setPage(page-1)}>Previous</button><span>{page+1} / {Math.ceil(series.length/pageSize)}</span><button disabled={(page+1)*pageSize>=series.length} onClick={()=>setPage(page+1)}>Next</button></div><Download metric={metric} series={series}/></>}
- {tab==='Sources'&&<div className="evidence-copy"><p>{metric.source}. Not independent onchain verification.</p><a href={metric.query} target="_blank" rel="noopener noreferrer">Inspect related Dune query</a><p>{snapshot.version}</p><p>Query reruns can use different dates or revisions. CSV exports preserve the selected dated observations.</p><button onClick={()=>{const u=URL.createObjectURL(new Blob([JSON.stringify(provenance,null,2)],{type:'application/json'}));const a=document.createElement('a');a.href=u;a.download='source-fingerprints.json';a.click();setTimeout(()=>URL.revokeObjectURL(u),1000);}}>Export source fingerprints</button></div>}</dialog></div>;}
+function sectorHit(index,count){
+  const center=-Math.PI/2+index*Math.PI*2/count,half=Math.PI/count*.76;
+  const point=(radius,angle)=>`${320+Math.cos(angle)*radius},${320+Math.sin(angle)*radius}`;
+  return `M${point(40,center-half)}L${point(236,center-half)}A236,236 0 0 1 ${point(236,center+half)}L${point(40,center+half)}A40,40 0 0 0 ${point(40,center-half)}Z`;
+}
+function RadialMap({items,selected,onChoose,center,resetKey}){
+  const [hovered,setHovered]=useState(null);
+  useEffect(()=>setHovered(null),[resetKey]);
+  const focus=hovered??items.findIndex(item=>item.id===selected),paths=sectors(items.length);
+  return <div className="atlas-map" data-level={resetKey}>
+    <svg className="atlas-particles" viewBox="0 0 640 640" aria-hidden="true">
+      <g key={resetKey} className="atlas-reform">{items.map((item,index)=><g key={item.id} className="atlas-sector" style={{opacity:focus<0||focus===index?1:.12}} fill={item.color} onClick={()=>onChoose(item)} onPointerEnter={event=>{if(event.pointerType!=='touch')setHovered(index);}} onPointerLeave={()=>setHovered(null)}>
+        <path className="atlas-sector-hit" d={sectorHit(index,items.length)} fill="transparent"/>
+        {paths[index].map((path,layer)=><path pointerEvents="none" key={layer} d={path} opacity={[.3,.6,.94][layer]}/>)}
+      </g>)}</g>
+    </svg>
+    <div className="atlas-core" aria-hidden="true"><span>NEAR</span><small>{center}</small></div>
+    <div className="atlas-map-labels" aria-label={center+' topics'}>{items.map((item,index)=>{
+      const angle=-Math.PI/2+index*Math.PI*2/items.length;
+      const x=Math.max(16,Math.min(84,50+Math.cos(angle)*43));
+      const y=50+Math.sin(angle)*43;
+      return <button key={item.id} className={'atlas-map-label '+(focus===index?'is-focused':'')} style={{left:x+'%',top:y+'%','--topic-color':item.color}} aria-pressed={selected===item.id} onClick={()=>onChoose(item)} onPointerEnter={event=>{if(event.pointerType!=='touch')setHovered(index);}} onPointerLeave={()=>setHovered(null)} onFocus={()=>setHovered(index)} onBlur={()=>setHovered(null)}><span className="atlas-topic-dot" aria-hidden="true"/><span>{item.title}</span></button>;
+    })}</div>
+  </div>;
+}
 export default function OverviewScene(){
- const [id,setId]=useState('defi_tvl'),[days,setDays]=useState(90),[scope,setScope]=useState('All');
- const metric=snapshot.metrics.find(m=>m.id===id),series=windowSeries(metric,days),delta=change(series),visible=snapshot.metrics.filter(m=>scope==='All'||m.group===scope);
- function scopeChange(value){setScope(value);const next=snapshot.metrics.find(m=>value==='All'||m.group===value);if(!visible.find(m=>m.id===id)||value!=='All')setId(next.id);}
- const filters=<div className="scope" role="group" aria-label="Metric perimeter">{['All','Native ecosystem','Cross-chain service'].map(name=><button key={name} aria-pressed={scope===name} onClick={()=>scopeChange(name)}>{name}</button>)}</div>;
- const windowControls=<div className="windows" role="group" aria-label="Chart time window">{[30,90,180].map(n=><button key={n} aria-pressed={days===n} onClick={()=>setDays(n)}>{n}D</button>)}</div>;
- const inspector=<section className="inspector" aria-label="Selected metric" key={id}><div className="chart-heading"><div><span className="overline">{metric.group} · {metric.kind==='stock'?'capital stock':'service flow'}</span><h2>{metric.name}</h2></div>{windowControls}</div><Chart key={id+'-'+days} metric={metric} days={days}/><div className="chart-note"><span>{delta===null?'Change unavailable':`${delta>=0?'+':''}${delta.toFixed(1)}% ${metric.kind==='stock'?'balance change':'daily-value change'}`}</span><span>{series[0].date} – {series.at(-1).date}</span></div><Evidence key={id} metric={metric} days={days}/></section>;
- return <div className="overview direction-0"><a className="overview-skip" href="#main">Skip to overview</a><header className="overview-header"><a href="https://near-evidence.pages.dev/" className="wordmark">NEAR</a><span>Thesis · NEAR overview</span><span className="snapshot-date">Snapshot · {snapshot.cutoff}</span><a href="index.html">Close</a></header>
- <main id="main"><div className="intro"><p className="overline">The operating picture</p><h1>NEAR at a glance</h1><p className="deck">Native liquidity and cross-chain activity</p></div>
- <><div className="editorial-top">{filters}<p className="boundary">Balances and flows · never additive</p></div><div className="metric-strip">{visible.map(m=><MetricButton key={m.id} metric={m} active={id===m.id} onClick={()=>setId(m.id)}/>)}</div>{inspector}</>
- <footer className="overview-footer"><p>Historical snapshot · not a live feed</p><span>Overview</span><a href="report.html">Read the research report</a></footer></main></div>;
+  const [categoryId,setCategoryId]=useState(null),[groupId,setGroupId]=useState(null),[metricId,setMetricId]=useState(null),[detail,setDetail]=useState('Definition');
+  const heading=useRef(),firstRender=useRef(true);
+  const category=categories.find(item=>item.id===categoryId),group=category?.groups.find(item=>item.id===groupId),metric=group?.metrics.find(item=>item.id===metricId);
+  const level=metric?'metric':group?'group':category?'category':'overview';
+  const currentKey=[categoryId,groupId,metricId].join('/');
+  function reset(){setCategoryId(null);setGroupId(null);setMetricId(null);}
+  function back(){if(metric)setMetricId(null);else if(group)setGroupId(null);else reset();}
+  useEffect(()=>{if(firstRender.current){firstRender.current=false;return;}heading.current?.focus({preventScroll:true});},[currentKey]);
+  useEffect(()=>{function escape(event){if(event.key==='Escape'&&categoryId){event.preventDefault();back();}}document.addEventListener('keydown',escape);return()=>document.removeEventListener('keydown',escape);});
+  const options=category?(group?group.metrics:category.groups):categories;
+  const items=options.map(item=>({...item,color:item.color||category.color}));
+  function choose(item){if(!category){setCategoryId(item.id);setGroupId(null);setMetricId(null);}else if(!group){setGroupId(item.id);setMetricId(null);}else{setMetricId(item.id);setDetail('Definition');}}
+  const title=metric?.title||group?.title||category?.title||'The foundations of an AI economy';
+  const question=group?.question||category?.question||'If AI is to act, it needs rails for value. Explore NEAR’s network, capital and cross-chain services before testing that investment case.';
+  return <div className={'atlas atlas-level-'+level}>
+    <a className="atlas-skip" href="#atlas-main">Skip to overview</a>
+    <header className="atlas-header"><a className="atlas-wordmark" href="index.html" aria-label="NEAR research home">NEAR</a><nav aria-label="Main navigation"><a href="thesis.html" aria-current="page">Thesis</a><a href="lab.html">Scenario lab</a><a href="report.html">Report</a></nav><a className="atlas-close" href="index.html">Close</a></header>
+    <main id="atlas-main" className="atlas-main">
+      <section className="atlas-editorial" aria-label="Overview context">
+        <nav className="atlas-breadcrumbs" aria-label="Overview hierarchy"><button onClick={reset} aria-current={!category?'page':undefined}>Overview</button>{category&&<><span aria-hidden="true">/</span><button onClick={()=>{setGroupId(null);setMetricId(null);}} aria-current={!group?'page':undefined}>{category.title}</button></>}{group&&<><span aria-hidden="true">/</span><button onClick={()=>setMetricId(null)} aria-current={!metric?'page':undefined}>{group.title}</button></>}</nav>
+        <div className="atlas-copy"><p className="atlas-eyebrow">{metric?'Metric':group?'Metric group':category?'Category':'NEAR overview'}</p><h1 ref={heading} tabIndex="-1">{title}</h1>
+          {!metric?<p className="atlas-intro">{question}</p>:<div className="atlas-metric-detail">
+            <div className="atlas-detail-tabs" role="group" aria-label="Metric detail">{['Definition','Caveat','Source'].map(tab=><button key={tab} aria-pressed={detail===tab} onClick={()=>setDetail(tab)}>{tab}</button>)}</div>
+            <div className="atlas-detail-copy" aria-live="polite">{detail==='Definition'?<p>{metric.definition}</p>:detail==='Caveat'?<p>{metric.caveat}</p>:<><p>Planned reference</p><a href={metric.url} target="_blank" rel="noopener noreferrer">{metric.source}</a><small>Dune query and embedded chart are not connected yet.</small></>}</div>
+          </div>}
+        </div>
+        <div className="atlas-prompt">{category&&<button className="atlas-back" onClick={back}>Back</button>}<p>{metric?'Choose another metric to compare its definition.':group?'Choose a metric to inspect its definition.':category?'Choose a subcategory to see its metrics.':'Choose a category to open its structure.'}</p></div>
+      </section>
+      <section className="atlas-visual" aria-label="Interactive NEAR overview map"><RadialMap items={items} selected={metricId} onChoose={choose} center={group?'Metrics':category?'Subcategories':'Overview'} resetKey={[categoryId,groupId].join('/')}/></section>
+    </main>
+    <footer className="atlas-footer"><span>Topic map · not to scale · metrics not connected</span><span>Structure preview · sector size does not represent data</span></footer>
+  </div>;
 }

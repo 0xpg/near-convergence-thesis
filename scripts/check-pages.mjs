@@ -21,6 +21,11 @@ try{
   }
  }
  assert(rendered['research.html'].includes('id="model-controls"'));
- assert(rendered['thesis.html'].includes('NEAR at a glance'));
- console.log('All React pages render, IDs and local links resolve, UTF-8 text and single-slide overview preserved.');
+ assert(rendered['thesis.html'].includes('The foundations of an AI economy'));
+ assert(rendered['thesis.html'].includes('metrics not connected'));
+ assert(rendered['thesis.html'].includes('Intents &amp; AI'));
+ assert(!rendered['thesis.html'].includes('Snapshot ·'));
+ assert.equal(renderToStaticMarkup(createElement(Story)),rendered['thesis.html'],'The topic geometry must remain deterministic');
+ for(const [,d] of rendered['thesis.html'].matchAll(/<path[^>]*\bd="([^"]+)"/g))assert(!/NaN|Infinity/.test(d),'Invalid topic geometry');
+ console.log('All React pages render, IDs and local links resolve, UTF-8 text and text-only topic map preserved.');
 }finally{await server.close();}
