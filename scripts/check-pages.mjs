@@ -6,7 +6,7 @@ import {renderToStaticMarkup} from 'react-dom/server';
 const server=await createServer({server:{middlewareMode:true},appType:'custom'});
 try{
  const pages=await server.ssrLoadModule('/src/pages.jsx');
- const {default:Story}=await server.ssrLoadModule('/src/OverviewScene.jsx');
+ const {default:Story,topics}=await server.ssrLoadModule('/src/OverviewScene.jsx');
  const components={'index.html':pages.Landing,'lab.html':pages.Lab,'report.html':pages.Report,'research.html':pages.Research,'methodology.html':pages.Methodology,'thesis.html':Story};
  const rendered=Object.fromEntries(Object.entries(components).map(([file,Component])=>[file,renderToStaticMarkup(createElement(Component))]));
  for(const [page,html] of Object.entries(rendered)){
@@ -20,6 +20,9 @@ try{
    if(fragment&&rendered[file])assert(rendered[file].includes('id="'+fragment+'"'),'Missing anchor '+url);
   }
  }
+ assert.equal(topics.length,10);
+ assert.equal(new Set(topics.map(topic=>topic.title)).size,10);
+ for(const topic of topics){assert(topic.children.length>=2);assert.equal(new Set(topic.children).size,topic.children.length);assert(topic.children.every(title=>typeof title==='string'&&title.trim()));}
  assert(rendered['research.html'].includes('id="model-controls"'));
  assert(rendered['thesis.html'].includes('NEAR overview'));
  assert(rendered['thesis.html'].includes('Hover or touch a category'));
