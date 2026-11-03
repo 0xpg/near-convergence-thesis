@@ -26,7 +26,7 @@ export function createParticles(mode=0){
 
 export function particleAt(p,time,mode=0,selected=-1){
   const active=selected;
-  if(p.core)return {x:320+Math.cos(p.a)*p.r,y:320+Math.sin(p.a)*p.r,alpha:.65+p.shade*.3,size:p.size};
+  if(p.core)return {x:320+Math.cos(p.a)*p.r,y:320+Math.sin(p.a)*p.r,alpha:.10+p.shade*.08,size:p.size};
   const focused=p.sector===active;
   let radius=p.r,angle=p.a,alpha=focused?1:(mode===2?.15:.68);
   const flowing=p.stream&&(mode===1||focused);
