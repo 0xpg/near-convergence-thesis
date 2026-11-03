@@ -23,7 +23,4 @@ const rows=Array.from({length:height},(_,y)=>pixels.slice(y*width,(y+1)*width).j
 assert(rows.every(row=>row.length===width));
 assert(rows.join('').replace(/ /g,'').length>650);
 assert(rows.join('').split('#').length>2);
-const html=readFileSync(new URL('index.html',root),'utf8');
-assert(html.includes('<!-- ascii:start -->')&&html.includes('<!-- ascii:end -->'));
-writeFileSync(new URL('index.html',root),html.replace(/<!-- ascii:start -->[\s\S]*?<!-- ascii:end -->/,'<!-- ascii:start -->\n'+rows.map(row=>row.trimEnd()).join('\n')+'\n<!-- ascii:end -->'));
-console.log('Generated deterministic 90 × 51 ASCII surface; bounds, density and glyph checks passed.');
+console.log(rows.map(row=>row.trimEnd()).join('\n'));

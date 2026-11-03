@@ -4,10 +4,22 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "test": "node analysis/reproduce.mjs && node scripts/check-scene.mjs && node scripts/check-story.mjs",
+    "test": "node analysis/reproduce.mjs && node scripts/check-scene.mjs && node scripts/check-story.mjs && node scripts/check-react.mjs",
     "test:public": "node scripts/check-public.mjs",
     "build": "node analysis/reproduce.mjs && node scripts/build.mjs",
-    "build:public": "node analysis/reproduce.mjs && node scripts/build.mjs --public"
+    "build:public": "node analysis/reproduce.mjs && node scripts/build.mjs --public",
+    "dev": "node scripts/build.mjs --dev",
+    "preview": "vite preview --host 127.0.0.1",
+    "test:pages": "node scripts/check-pages.mjs"
   },
-  "engines": { "node": ">=20" }
+  "engines": {
+    "node": ">=22.12"
+  },
+  "dependencies": {
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1"
+  },
+  "devDependencies": {
+    "vite": "^8.3.5"
+  }
 }

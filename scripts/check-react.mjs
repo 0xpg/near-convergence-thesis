@@ -1,0 +1,12 @@
+import assert from 'node:assert/strict';
+import {readFileSync} from 'node:fs';
+import {calculate} from '../analysis/model.mjs';
+import {scenarioResult,presets} from '../src/widget-config.mjs';
+const snapshot=JSON.parse(readFileSync('data/inputs.json','utf8'));
+const baseline=calculate({},snapshot).inputs;
+assert.equal(scenarioResult(baseline,snapshot).retainedPurchases,0);
+const partial={...baseline,...presets.partial.inputs};
+assert.deepEqual(scenarioResult(partial,snapshot),calculate(partial,snapshot));
+for(const value of ['',null,undefined,0,100001,'no',Infinity])assert.throws(()=>scenarioResult({...baseline,priceUsd:value},snapshot));
+assert.deepEqual(scenarioResult({...baseline,...presets.unverified.inputs},snapshot),calculate({},snapshot));
+console.log('React scenario input validation, presets, shared-engine equality and reset baseline passed.');

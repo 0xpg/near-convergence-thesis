@@ -26,8 +26,8 @@ header.shell{display:grid;grid-template-columns:1fr auto 1fr;gap:24px}.brand{jus
 
 @media(min-width:901px){
   body{height:100svh;display:grid;grid-template-rows:80px minmax(0,1fr)}
-  body>header,body>main{width:100%;min-height:0}
-  body>main{height:100%;margin-block:0}
+  body>#root>header,body>#root>main{width:100%;min-height:0}
+  body>#root>main{height:100%;margin-block:0}
   .cinematic{height:100%;min-height:0;display:grid;grid-template-rows:minmax(0,1fr) auto}
   .field-stage{height:100%;min-height:0}
   .cover-copy{margin-top:0;padding-top:clamp(24px,5vh,64px);padding-bottom:clamp(24px,5vh,64px)}

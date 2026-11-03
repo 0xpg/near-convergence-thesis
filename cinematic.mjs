@@ -75,7 +75,7 @@ export function fieldAt(seconds,selected=[6,17,27]) {
   return {nodes,focus:selected.map(index=>nodes[index]),attention:Math.floor(seconds/5)%3};
 }
 
-if(typeof document!=='undefined') {
+export function startCinematic() {
   const canvas=document.getElementById('activity-field'), stage=document.getElementById('field-stage');
   const ctx=canvas?.getContext('2d');
   if(ctx&&stage) {
@@ -84,6 +84,7 @@ if(typeof document!=='undefined') {
     const colors=['#367b63','#a55561','#466d9f'];
     let labelCenters=[16,16,16],descriptionWidths=[100,100,100];
     function measureLabels(){labelCenters=labels.map(label=>label.querySelector('span').offsetWidth/2);descriptionWidths=labels.map(label=>label.querySelector('small').offsetWidth);}
+    let active=true;
     let width=0,height=0,time=0,last=0,request=0,playing=!preference.matches,visible=true,fieldFocused=false;
     let selected=selectPeople(fieldAt(0).nodes),nextSwitch=[1.4,2.1,2.8];
     const sprites=Array.from({length:48},(_,variant)=>Array.from({length:16},(_,pose)=>{
@@ -156,13 +157,17 @@ if(typeof document!=='undefined') {
       request=requestAnimationFrame(tick);
     }
     function sync(){cancelAnimationFrame(request);request=0;last=0;if(playing&&visible&&!document.hidden&&!fieldFocused)request=requestAnimationFrame(tick);}
-    stage.addEventListener('focusin',()=>{fieldFocused=!!stage.querySelector(':focus-visible');sync();});
-    stage.addEventListener('focusout',event=>{if(!stage.contains(event.relatedTarget)){fieldFocused=false;sync();}});
-    preference.addEventListener('change',()=>{playing=!preference.matches;sync();draw();});
+    const focusIn=()=>{fieldFocused=!!stage.querySelector(':focus-visible');sync();};
+    stage.addEventListener('focusin',focusIn);
+    const focusOut=event=>{if(!stage.contains(event.relatedTarget)){fieldFocused=false;sync();}};
+    stage.addEventListener('focusout',focusOut);
+    const motionChange=()=>{playing=!preference.matches;sync();draw();};
+    preference.addEventListener('change',motionChange);
     document.addEventListener('visibilitychange',sync);
-    new IntersectionObserver(([entry])=>{visible=entry.isIntersecting;sync();}).observe(stage);
-    new ResizeObserver(()=>{const nextWidth=stage.clientWidth,nextHeight=stage.clientHeight;if(nextWidth===width&&nextHeight===height)return;width=nextWidth;height=nextHeight;measureLabels();const dpr=Math.min(devicePixelRatio||1,2);canvas.width=Math.round(width*dpr);canvas.height=Math.round(height*dpr);ctx.setTransform(dpr,0,0,dpr,0,0);draw();stage.classList.add('is-ready');}).observe(stage);
-    document.fonts.ready.then(()=>{measureLabels();draw();});
+    const visibilityObserver=new IntersectionObserver(([entry])=>{visible=entry.isIntersecting;sync();});visibilityObserver.observe(stage);
+    const sizeObserver=new ResizeObserver(()=>{const nextWidth=stage.clientWidth,nextHeight=stage.clientHeight;if(nextWidth===width&&nextHeight===height)return;width=nextWidth;height=nextHeight;measureLabels();const dpr=Math.min(devicePixelRatio||1,2);canvas.width=Math.round(width*dpr);canvas.height=Math.round(height*dpr);ctx.setTransform(dpr,0,0,dpr,0,0);draw();stage.classList.add('is-ready');});sizeObserver.observe(stage);
+    document.fonts.ready.then(()=>{if(active){measureLabels();draw();}});
     sync();
+    return ()=>{active=false;cancelAnimationFrame(request);visibilityObserver.disconnect();sizeObserver.disconnect();stage.removeEventListener('focusin',focusIn);stage.removeEventListener('focusout',focusOut);preference.removeEventListener('change',motionChange);document.removeEventListener('visibilitychange',sync);labels.forEach(label=>label.querySelector('span').getAnimations().forEach(animation=>animation.cancel()));};
   }
 }
