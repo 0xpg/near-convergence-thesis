@@ -1,5 +1,6 @@
 const TAU=Math.PI*2;
-const colors=['#4c5947','#a07839','#645646','#526e69','#8b6d4b','#536f79','#9c754c','#6c6454','#66774e','#8e6252'];
+const colors=['#4c5947','#a07839','#536f79'];
+const CATEGORY_COUNT=colors.length;
 const clamp=value=>Math.max(0,Math.min(1,value));
 const smooth=value=>value*value*(3-2*value);
 function modeCheck(mode){if(!Number.isInteger(mode)||mode<0||mode>2)throw new RangeError('Unknown absorption direction');}
@@ -9,18 +10,18 @@ export function createParticles(mode=0){
   let seed=94817;
   const random=()=>{seed=(Math.imul(seed,1664525)+1013904223)>>>0;return seed/4294967296;};
   const particles=[];
-  for(let sector=0;sector<10;sector++){
-    const center=-Math.PI/2+sector*TAU/10;
+  for(let sector=0;sector<CATEGORY_COUNT;sector++){
+    const center=-Math.PI/2+sector*TAU/CATEGORY_COUNT;
     const ring=204+random()*23;
-    for(let index=0;index<162;index++){
-      const trail=index>=132;
+    for(let index=0;index<540;index++){
+      const trail=index>=440;
       const spread=(random()+random()+random()-1.5);
-      const a=center+spread*(trail?.23:.20);
+      const a=center+spread*(trail?.38:.36);
       const r=(trail?35+random()*160:ring+(random()+random()-1)*32)*(mode===1?1.12:1);
       particles.push({id:particles.length,sector,a,r,phase:random(),speed:.8+random()*.4,size:trail?1.7+random()*2.2:3+random()*3.4,color:colors[sector],shade:random(),stream:trail||index%4===0,core:false});
     }
   }
-  for(let index=0;index<180;index++)particles.push({id:particles.length,sector:index%10,a:random()*TAU,r:Math.sqrt(random())*26,phase:random(),speed:.8+random()*.4,size:2.3+random()*3.7,color:colors[index%10],shade:random(),stream:false,core:true});
+  for(let index=0;index<180;index++)particles.push({id:particles.length,sector:index%CATEGORY_COUNT,a:random()*TAU,r:Math.sqrt(random())*26,phase:random(),speed:.8+random()*.4,size:2.3+random()*3.7,color:colors[index%CATEGORY_COUNT],shade:random(),stream:false,core:true});
   return particles;
 }
 
@@ -48,7 +49,7 @@ export function startAbsorption(canvas,mode=1,onSelect){
   const ctx=canvas.getContext('2d');if(!ctx)return {destroy(){},select(){}};
   const particles=createParticles(mode),positions=particles.map(p=>particleAt(p,0,mode));
   const motion=matchMedia('(prefers-reduced-motion: reduce)');
-  let frame=0,time=0,last=0,width=0,height=0,selected=-1,stopped=false;
+  let frame=0,time=0,last=0,width=0,height=0,selected=-1,pinned=false,stopped=false;
   function draw(dt=0){
     ctx.clearRect(0,0,width,height);
     const scale=Math.min(width,height)/640;
@@ -80,14 +81,15 @@ export function startAbsorption(canvas,mode=1,onSelect){
     const rect=canvas.getBoundingClientRect(),scale=Math.min(rect.width,rect.height)/640;
     const x=(event.clientX-rect.left-rect.width/2)/scale,y=(event.clientY-rect.top-rect.height/2)/scale;
     if(Math.hypot(x,y)<48||Math.hypot(x,y)>300)return -1;
-    return Math.round((Math.atan2(y,x)+Math.PI/2+TAU)/TAU*10)%10;
+    return Math.round((Math.atan2(y,x)+Math.PI/2+TAU)/TAU*CATEGORY_COUNT)%CATEGORY_COUNT;
   }
-  function select(index){if(!Number.isInteger(index)||index< -1||index>9)throw new RangeError('Unknown category');selected=index;mode=index>=0?2:initialMode;onSelect?.(index);if(motion.matches)draw();}
+  function select(index,pin=false){if(!Number.isInteger(index)||index< -1||index>=CATEGORY_COUNT)throw new RangeError('Unknown category');if(pinned&&!pin)return;selected=index;pinned=pin&&index>=0;mode=index>=0?2:initialMode;onSelect?.(index);if(motion.matches)draw();}
   function move(event){select(sectorAt(event));}
+  function press(event){select(sectorAt(event),true);}
   function leave(){select(-1);}
   function release(event){if(event.pointerType!=='mouse')leave();}
-  function key(event){if(!['ArrowLeft','ArrowRight','Escape'].includes(event.key))return;event.preventDefault();select(event.key==='Escape'?-1:((selected<0?0:selected)+(event.key==='ArrowLeft'?9:1))%10);}
-  const events={pointermove:move,pointerdown:move,pointerleave:leave,pointerup:release,pointercancel:leave,keydown:key};
+  function key(event){if(!['ArrowLeft','ArrowRight','Escape'].includes(event.key))return;event.preventDefault();select(event.key==='Escape'?-1:((selected<0?0:selected)+(event.key==='ArrowLeft'?CATEGORY_COUNT-1:1))%CATEGORY_COUNT,true);}
+  const events={pointermove:move,pointerdown:press,pointerleave:leave,pointerup:release,pointercancel:leave,keydown:key};
   for(const [name,handler] of Object.entries(events))canvas.addEventListener(name,handler);
   const observer=new ResizeObserver(resize);observer.observe(canvas);resize();
   motion.addEventListener('change',sync);document.addEventListener('visibilitychange',sync);sync();

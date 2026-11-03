@@ -20,15 +20,15 @@ try{
    if(fragment&&rendered[file])assert(rendered[file].includes('id="'+fragment+'"'),'Missing anchor '+url);
   }
  }
- assert.equal(topics.length,10);
- assert.equal(new Set(topics.map(topic=>topic.title)).size,10);
+ assert.equal(topics.length,3);
+ assert.equal(new Set(topics.map(topic=>topic.title)).size,3);
  for(const topic of topics){assert(topic.children.length>=2);assert.equal(new Set(topic.children).size,topic.children.length);assert(topic.children.every(title=>typeof title==='string'&&title.trim()));}
  assert(rendered['research.html'].includes('id="model-controls"'));
  assert(rendered['thesis.html'].includes('NEAR overview'));
  assert(rendered['thesis.html'].includes('Hover or touch a category'));
- assert(rendered['thesis.html'].includes('AI &amp; agents'));
+ assert(rendered['thesis.html'].includes('Products'));
  assert(!rendered['thesis.html'].includes('Snapshot ·'));
  assert.equal(renderToStaticMarkup(createElement(Story)),rendered['thesis.html'],'The topic geometry must remain deterministic');
- assert.equal((rendered['thesis.html'].match(/aria-pressed="false"/g)||[]).length,10,'All ten categories start in overview mode');
+ assert.equal((rendered['thesis.html'].match(/aria-pressed="false"/g)||[]).length,3,'All three categories start in overview mode');
  console.log('All React pages render, IDs and local links resolve, UTF-8 text and text-only topic map preserved.');
 }finally{await server.close();}

@@ -90,7 +90,7 @@ export const sources=[
   {title:'DefiLlama · NEAR',url:llama,note:'Accessible chain overview informed capital and application categories. No current values are used here.'},
   {title:'DefiLlama · definitions',url:'https://docs.llama.fi/analysts/data-definitions',note:'Metric boundaries; adapter-specific treatment still needs verification.'},
   {title:'Token Terminal · NEAR',url:'https://tokenterminal.com/explorer/projects/near-protocol',note:'Overview, ecosystem, metrics and financial-statement navigation was visible. Underlying metric series and queries were not inspected.'},
-  {title:'DefiLlama · investor page',url:'https://investors.defillama.com/near',note:'Fetched page exposed an overview coming-soon message; no full investor dashboard was available for inspection.'},
+  {title:'DefiLlama · investor page',url:'https://investors.defillama.com/near',note:'Browser inspection on 4 November 2026 exposed Revenue, Ecosystem and Products. These headings informed the simplified map; API records and current values were not reproduced.'},
   {title:'NEAR · protocol documentation',url:`${near}/protocol/network/architecture`,note:'Primary definitions for transactions, receipts, gas, accounts and staking.'},
   {title:'NEAR Intents · documentation',url:intents,note:'Linked fee, agent, verifier, Explorer and status pages were readable. Explorer requires partner credentials and covers 1Click; no API records or Dune queries were inspected.'}
 ];
