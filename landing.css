@@ -44,3 +44,7 @@ header.shell{display:grid;grid-template-columns:1fr auto 1fr;gap:24px}.brand{jus
 .cover-summary .actions{align-items:center;gap:24px}.cover-summary .secondary{display:inline-flex;align-items:center;min-height:44px;font-size:13px}
 @media(hover:hover) and (pointer:fine){.header-read:hover::before,.cover-summary .actions a:hover::before{opacity:.4}}
 .header-read:active::before,.header-read:focus-visible::before,.cover-summary .actions a:active::before,.cover-summary .actions a:focus-visible::before{opacity:.4}
+
+.cover-summary .primary{min-height:36px;min-width:0;padding:0 16px;border-radius:18px}
+.cover-summary .secondary{min-height:36px}
+@media(pointer:coarse){.cover-summary .actions a{min-height:44px}}
