@@ -1,0 +1,11 @@
+import assert from 'node:assert/strict';
+import {readFileSync} from 'node:fs';
+import {stepIndex,sourceUrl} from '../story.mjs';
+import {frames} from '../story-frames.mjs';
+assert.equal(frames.length,0,'No editorial material is published until supplied');
+assert.equal(stepIndex(0,1,0),null);assert.equal(stepIndex(0,-1,3),0);assert.equal(stepIndex(0,1,3),1);assert.equal(stepIndex(2,1,3),2);assert.equal(stepIndex(2,-1,3),1);
+assert.throws(()=>stepIndex(0,4,3));assert.throws(()=>stepIndex(0,1,-1));
+assert.equal(sourceUrl('javascript:alert(1)'),null);assert.equal(sourceUrl('https://near.org/'),'https://near.org/');
+assert(!readFileSync('index.html','utf8').includes('<audio'));
+assert(readFileSync('thesis.html','utf8').includes('id="story-next" type="button" disabled'));
+console.log('Empty editorial state, bounded scene navigation, safe evidence URLs and no music passed.');

@@ -37,3 +37,8 @@ header.shell{display:grid;grid-template-columns:1fr auto 1fr;gap:24px}.brand{jus
 @media(hover:hover) and (pointer:fine){.header-read:hover::before,.cover-summary .actions a:hover::before{opacity:1}}
 .header-read:active::before,.header-read:focus-visible::before,.cover-summary .actions a:active::before,.cover-summary .actions a:focus-visible::before{opacity:1}
 @media(prefers-reduced-motion:reduce){.header-read::before,.cover-summary .actions a::before{transition:none}}
+
+.header-read,.cover-summary .primary{min-height:44px;min-width:96px;display:inline-flex;align-items:center;justify-content:center;padding:0 20px;border-radius:22px;font:500 13px/1 Saans,Arial,sans-serif;white-space:nowrap}
+.cover-summary .actions{align-items:center;gap:24px}.cover-summary .secondary{display:inline-flex;align-items:center;min-height:44px;font-size:13px}
+@media(hover:hover) and (pointer:fine){.header-read:hover::before,.cover-summary .actions a:hover::before{opacity:.4}}
+.header-read:active::before,.header-read:focus-visible::before,.cover-summary .actions a:active::before,.cover-summary .actions a:focus-visible::before{opacity:.4}

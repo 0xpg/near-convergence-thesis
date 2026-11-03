@@ -21,7 +21,7 @@ function copy(relative) {
   } else { mkdirSync(path.dirname(target),{recursive:true}); copyFileSync(source,target); }
 }
 const pages=['index.html','thesis.html','explore.html','lab.html','report.html','research.html','methodology.html'];
-for(const file of [...pages,'fonts.css','landing.css','cinematic.mjs','ambient.mjs','styles.css','app.mjs','report.pdf','assets','analysis/model.mjs','data','_headers']) copy(file);
+for(const file of [...pages,'fonts.css','landing.css','cinematic.mjs','story.mjs','story.css','story-frames.mjs','favicon.ico','styles.css','app.mjs','report.pdf','assets','analysis/model.mjs','data','_headers']) copy(file);
 for(const page of pages) {
 const html=readFileSync(path.join(root,page),'utf8');
 for(const [,url] of html.matchAll(/(?:href|src)="([^"]+)"/g)) {
