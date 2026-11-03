@@ -2,3 +2,5 @@ export function windowSeries(metric,days){if(![30,90,180].includes(days))throw n
 export function change(series){const first=series[0].value,last=series.at(-1).value;return first===0?null:(last/first-1)*100;}
 export function csvFor(metric,series){return 'date_utc,value_usd\n'+series.map(row=>row.date+','+row.value).join('\n')+'\n';}
 export const money=value=>new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',notation:'compact',maximumFractionDigits:2}).format(value);
+
+export function indexAtSvgX(x,count){return Math.max(0,Math.min(count-1,Math.round((x-56)/(800-56-18)*(count-1))));}
