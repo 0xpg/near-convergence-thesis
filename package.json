@@ -10,7 +10,9 @@
     "build:public": "node analysis/reproduce.mjs && node scripts/build.mjs --public",
     "dev": "node scripts/build.mjs --dev",
     "preview": "vite preview --host 127.0.0.1",
-    "test:pages": "node scripts/check-pages.mjs"
+    "test:pages": "node scripts/check-pages.mjs",
+    "build:motion": "vite build --config vite.motion.config.mjs && node -e \"require('node:fs').copyFileSync('_headers','dist-motion/_headers')\"",
+    "test:motion": "node scripts/check-absorption.mjs"
   },
   "engines": {
     "node": ">=22.12"
