@@ -8,3 +8,5 @@ assert.throws(()=>windowSeries(data.metrics[0],0));assert.equal(change([{value:0
 console.log('All four frozen metric headlines reconcile with series; windows, CSV export, dates and zero-base change passed.');
 
 assert.equal(indexAtSvgX(56,91),0);assert.equal(indexAtSvgX(419,91),45);assert.equal(indexAtSvgX(782,91),90);assert.equal(indexAtSvgX(-50,91),0);assert.equal(indexAtSvgX(900,91),90);
+
+const {beats}=await import('../src/prototypes/motion-frames.mjs');assert.equal(beats.length,6);assert.deepEqual(beats.filter(b=>b.metric).map(b=>b.metric),data.metrics.map(m=>m.id));assert.equal(beats.at(-1).metric,null);
