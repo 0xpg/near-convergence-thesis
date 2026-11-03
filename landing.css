@@ -19,7 +19,21 @@ header.shell{display:grid;grid-template-columns:1fr auto 1fr;gap:24px}.brand{jus
 .header-read:hover{background:#374b3f}.header-read:focus-visible{outline:2px solid #367b63;outline-offset:4px}.cover-copy{padding-top:clamp(48px,6vw,88px);padding-bottom:64px;align-items:center}
 @media(max-width:650px){header.shell{grid-template-columns:1fr auto;gap:16px}.brand{grid-column:1;grid-row:1;justify-self:start}header nav{grid-column:1 / -1;grid-row:2;justify-self:center}.header-read{grid-column:2;grid-row:1;padding:9px 13px}.cover-copy{padding-top:48px;padding-bottom:40px}}
 
-@media(min-width:901px){.cinematic{display:flex;flex-direction:column;min-height:calc(100svh - 80px)}.cover-copy{margin-top:auto;padding-top:72px;padding-bottom:64px}}
+
 
 .field-stage{height:clamp(260px,30vw,400px)}
-@media(min-width:901px){.field-stage{height:clamp(320px,calc(100svh - 380px),720px);flex-shrink:0}}
+
+
+@media(min-width:901px){
+  body{height:100svh;display:grid;grid-template-rows:80px minmax(0,1fr)}
+  body>header,body>main{width:100%;min-height:0}
+  body>main{height:100%;margin-block:0}
+  .cinematic{height:100%;min-height:0;display:grid;grid-template-rows:minmax(0,1fr) auto}
+  .field-stage{height:100%;min-height:0}
+  .cover-copy{margin-top:0;padding-top:clamp(24px,5vh,64px);padding-bottom:clamp(24px,5vh,64px)}
+}
+.header-read,.cover-summary .actions a{position:relative;isolation:isolate}
+.header-read::before,.cover-summary .actions a::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;border-radius:inherit;background-image:radial-gradient(circle,rgba(219,239,205,.65) .7px,transparent 1px),radial-gradient(circle,rgba(109,155,120,.45) .6px,transparent .9px);background-size:4px 4px,6px 6px;background-position:0 0,2px 1px;opacity:0;transition:opacity 140ms ease-out}
+@media(hover:hover) and (pointer:fine){.header-read:hover::before,.cover-summary .actions a:hover::before{opacity:1}}
+.header-read:active::before,.header-read:focus-visible::before,.cover-summary .actions a:active::before,.cover-summary .actions a:focus-visible::before{opacity:1}
+@media(prefers-reduced-motion:reduce){.header-read::before,.cover-summary .actions a::before{transition:none}}
