@@ -2,6 +2,7 @@ import React,{useLayoutEffect,useRef} from 'react';
 import OverviewScene from './OverviewScene.jsx';
 import InvestmentFramework from './InvestmentFramework.jsx';
 import DuneGlance from './DuneGlance.jsx';
+import KineticStatement from './KineticStatement.jsx';
 import {startTypeDither} from './overview/type-dither.mjs';
 import {startIntroField} from './overview/intro-field.mjs';
 
@@ -20,20 +21,18 @@ export default function ThesisPage(){
           <div className="thesis-resolve"><canvas ref={canvas} aria-hidden="true"/><h1 id="thesis-title" ref={heading}><span>Intelligence</span><span>meets execution.</span></h1></div>
         </div>
       </section>
-      <div className="thesis-green-chapter">
       <section className="thesis-proposition" aria-labelledby="thesis-proposition-title">
         <h2 id="thesis-proposition-title" className="tidal-sr">The convergence thesis</h2>
-        <p>AI can decide what to do. Acting on those decisions is a different problem.</p>
-        <p>NEAR’s proposition is to connect machine intent with execution across blockchain networks.</p>
-        <p>The thesis starts with that connection. The investment case depends on whether it creates lasting demand for NEAR.</p>
+        <KineticStatement text="Intelligence can choose an outcome. Execution makes it real."/>
+        <KineticStatement text="NEAR aims to connect machine intent with action across blockchain networks."/>
+        <KineticStatement text="The investment question is whether that activity creates durable token demand."/>
       </section>
       <InvestmentFramework/>
       <section className="thesis-proposition thesis-approach" aria-labelledby="approach-title">
         <h2 id="approach-title">From expectations to mechanisms</h2>
-        <p>Crypto markets price expectations. We look for the mechanisms that could turn those expectations into durable token demand.</p>
-        <p>For NEAR, that means starting with the architecture: what each layer does, who uses it, and where value can flow.</p>
+        <KineticStatement text="Crypto prices expectations. We look for the mechanisms behind durable token demand."/>
+        <KineticStatement text="Start with NEAR’s architecture: its layers, its users, and the path value takes."/>
       </section>
-      </div>
       <section id="network" className="thesis-network" aria-label="NEAR infrastructure map"><OverviewScene/></section>
       <DuneGlance/>
     </main>

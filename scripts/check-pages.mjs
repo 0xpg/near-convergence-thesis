@@ -34,9 +34,10 @@ try{
  assert(!rendered['thesis.html'].includes('Awaiting supplied data.'));
  assert(rendered['thesis.html'].indexOf('id="framework-title"')<rendered['thesis.html'].indexOf('id="approach-title"'));
  assert(rendered['thesis.html'].indexOf('id="approach-title"')<rendered['thesis.html'].indexOf('id="network"'));
- const {glanceCharts}=await server.ssrLoadModule('/src/DuneGlance.jsx');
- assert.equal(glanceCharts.length,4);assert.equal(new Set(glanceCharts.map(chart=>chart.id)).size,4);
- for(const chart of glanceCharts){assert(/^\d+$/.test(chart.query)&&/^\d+$/.test(chart.visualization));assert(chart.title&&chart.description);assert(rendered['thesis.html'].includes('https://dune.com/queries/'+chart.query+'/'+chart.visualization));assert(rendered['thesis.html'].includes('https://dune.com/embeds/'+chart.query+'/'+chart.visualization));}
+ const {glanceCharts,glanceGroups}=await server.ssrLoadModule('/src/DuneGlance.jsx');
+ assert.equal(glanceCharts.length,9);assert.equal(new Set(glanceCharts.map(chart=>chart.id)).size,9);assert.equal(glanceGroups.length,5);
+ for(const chart of glanceCharts){assert(/^\d+$/.test(chart.query)&&/^\d+$/.test(chart.visualization));assert(chart.title&&chart.description);}
+ for(const group of glanceGroups){for(const id of group.chartIds)assert(glanceCharts.some(chart=>chart.id===id));const chart=glanceCharts.find(chart=>chart.id===group.chartIds[0]);assert(rendered['thesis.html'].includes('https://dune.com/queries/'+chart.query+'/'+chart.visualization));assert(rendered['thesis.html'].includes('https://dune.com/embeds/'+chart.query+'/'+chart.visualization));}
  assert(!rendered['thesis.html'].includes('thesis-dither-art'));
  assert(!rendered['thesis.html'].includes('Skip to overview'));
  assert(!rendered['thesis.html'].includes('Architecture references'));
@@ -53,6 +54,6 @@ try{
  assert(rendered['thesis.html'].includes('Chain Signatures'));
  assert(!rendered['thesis.html'].includes('Snapshot ·'));
  assert.equal(renderToStaticMarkup(createElement(Story)),rendered['thesis.html'],'The topic geometry must remain deterministic');
- assert.equal((rendered['thesis.html'].match(/aria-pressed="false"/g)||[]).length,8,'All eight categories start in overview mode');
+ const topicMarkup=rendered['thesis.html'].match(/<div class="tidal-topics"[^>]*>(.*?)<\/div>/s)?.[1];assert(topicMarkup);assert.equal((topicMarkup.match(/aria-pressed="false"/g)||[]).length,8,'All eight categories start in overview mode');
  console.log('All React pages render, IDs and local links resolve, UTF-8 text and text-only topic map preserved.');
 }finally{await server.close();}
