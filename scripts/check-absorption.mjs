@@ -17,6 +17,7 @@ assert(createParticles(1)[0].r>points[0].r,'Tidal needs a wider ring without enl
 console.log('1,796 deterministic tiles: finite bounded positions, real inward travel and distinct motion directions passed.');
 globalThis.matchMedia=()=>({matches:true,addEventListener(){},removeEventListener(){}});
 globalThis.document={hidden:false,addEventListener(){},removeEventListener(){}};
+let visibility;globalThis.IntersectionObserver=class{constructor(fn){visibility=fn;}observe(){}disconnect(){}};
 globalThis.ResizeObserver=class{observe(){}disconnect(){}};
 globalThis.cancelAnimationFrame=()=>{};
 globalThis.devicePixelRatio=1;
@@ -42,3 +43,10 @@ scene.destroy();assert.equal(handlers.size,0);
 const stationary=createParticles(1).filter(p=>!p.stream);
 for(const p of stationary)assert.deepEqual(particleAt(p,0,1),particleAt(p,5,1),'Cluster anchors must remain still');
 console.log('Hover and immediate touch focus, persistent selection, explicit reset, stationary cluster anchors, invalid categories and cleanup passed.');
+
+globalThis.matchMedia=()=>({matches:false,addEventListener(){},removeEventListener(){}});
+let scheduled=0,tick;globalThis.requestAnimationFrame=fn=>{tick=fn;return ++scheduled;};
+const moving=startAbsorption(canvas,1);assert.equal(scheduled,1);
+visibility([{isIntersecting:false}]);tick(1000);assert.equal(scheduled,1,'Offscreen map must not keep scheduling animation');
+visibility([{isIntersecting:true}]);assert.equal(scheduled,2,'Map resumes when visible');moving.destroy();
+console.log('Network animation stops offscreen and resumes without changing its visual state.');

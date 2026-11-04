@@ -100,3 +100,5 @@ html{scroll-behavior:smooth}.thesis-page{font-family:Saans,Arial,sans-serif;colo
  }
 }
 @keyframes thesis-reading{0%{opacity:.25;filter:blur(3px);transform:translateY(16px)}25%,65%{opacity:1;filter:blur(0);transform:translateY(0)}100%{opacity:.2;filter:blur(4px);transform:translateY(-12px)}}
+
+.kinetic-statement{contain:layout}

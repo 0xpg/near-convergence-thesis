@@ -18,6 +18,10 @@ assert.equal(world.style.transform,after);assert.equal(scheduled,frames,'Automat
 let prevented=false;handlers.keydown({target:stage,key:'Home',preventDefault(){prevented=true;}});
 assert(prevented);assert(world.style.transform.includes('rotateY(0deg)'));
 handlers.pointerdown({type:'pointerdown',pointerType:'touch',clientX:200,pointerId:1,target:{closest:()=>null}});
-handlers.pointermove({clientX:100});assert(world.style.transform.includes('rotateY(-30deg)'));
+handlers.pointermove({clientX:100,pointerId:1});assert(world.style.transform.includes('rotateY(-30deg)'));
+const touchAngle=world.style.transform;
+handlers.pointerdown({type:'pointerdown',pointerType:'touch',isPrimary:false,clientX:900,pointerId:2,target:{closest:()=>null}});
+handlers.pointermove({clientX:1000,pointerId:2,isPrimary:false});assert.equal(world.style.transform,touchAngle,'A second finger must not replace the drag origin');
+handlers.lostpointercapture({type:'lostpointercapture',pointerId:1});handlers.pointermove({clientX:300,pointerId:1});assert.equal(world.style.transform,touchAngle,'Lost capture must end the gesture');
 scene.destroy();assert(disconnected);assert.equal(Object.keys(handlers).length,0);
 console.log('Framework: automatic depth orbit, continuous mouse handoff, touch rotation, keyboard reset and cleanup passed.');

@@ -20,3 +20,10 @@
 .thesis-page .thesis-data .dune-freshness{font:400 11px/1.5 Saans,Arial,sans-serif;color:#5c6861;margin:20px 0 0}
 @media(max-width:1100px){.thesis-data .thesis-data-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.glance-tile,.glance-capital,.glance-activity{grid-column:span 1}.glance-distribution{grid-column:span 2}}
 @media(max-width:640px){.thesis-page .thesis-data{margin-top:24px;padding:48px 24px}.thesis-page .thesis-data>header{display:block}.thesis-page .thesis-data>header>a{display:inline-block;margin-top:20px}.thesis-data .thesis-data-grid{grid-template-columns:minmax(0,1fr);gap:12px}.glance-tile,.glance-capital,.glance-activity,.glance-distribution{grid-column:auto}.glance-tile-head{padding:20px;min-height:0}.glance-chart,.glance-capital .glance-chart,.glance-activity .glance-chart{height:360px;flex-basis:360px}.glance-query{padding:16px 20px}}
+
+.glance-switch button{transition:transform 160ms cubic-bezier(.23,1,.32,1),background-color 120ms ease,color 120ms ease}
+.glance-switch button:active:not(:focus-visible){transform:scale(.97)}
+.glance-switch button:focus-visible{transition:none}
+@media(hover:hover) and (pointer:fine){.glance-switch button:hover:not([aria-pressed=true]){background:#293b320a;color:#293b32}}
+@media(max-width:640px),(pointer:coarse){.glance-switch button{min-height:44px;padding:10px 14px;font-size:12px}}
+@media(prefers-reduced-motion:reduce){.glance-switch button{transition:none}.glance-switch button:active{transform:none}}

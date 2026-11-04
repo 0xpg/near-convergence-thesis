@@ -21,3 +21,14 @@ const cells=Array.from({length:10},()=>({dataset:{},style:{},firstElementChild:{
 const stop=startKineticType({querySelectorAll:()=>cells,getBoundingClientRect:()=>({top:100,height:220})});
 await Promise.resolve();assert(cells.every(cell=>cell.style.width==='100px'));stop();assert(disconnected);assert.equal(listeners.size,0);
 console.log('Kinetic type reduced motion remains fully readable and cleans up listeners.');
+
+let scroll,raf;let widthWrites=0,top=100;
+globalThis.matchMedia=()=>({matches:false,addEventListener(){},removeEventListener(){}});
+globalThis.addEventListener=(name,fn)=>{if(name==='scroll')scroll=fn;};
+globalThis.requestAnimationFrame=fn=>{raf=fn;return 1;};
+const counted=Array.from({length:10},()=>{let width;return {dataset:{},style:{get width(){return width;},set width(value){width=value;widthWrites++;}},firstElementChild:{offsetWidth:100,style:{}}};});
+const finish=startKineticType({querySelectorAll:()=>counted,getBoundingClientRect:()=>({top,height:220})});
+await Promise.resolve();const initial=widthWrites;scroll();raf();assert.equal(widthWrites,initial,'Unchanged progress must not rewrite widths');
+top=120;scroll();raf();assert.equal(widthWrites,initial,'Readable hold must not rewrite unchanged word widths');
+top=1000;scroll();raf();const offscreen=widthWrites;top=1100;scroll();raf();assert.equal(widthWrites,offscreen,'Offscreen scroll must not keep rewriting widths');finish();
+console.log('Kinetic type skips unchanged width writes during holds and offscreen scrolling.');

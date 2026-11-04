@@ -48,6 +48,7 @@ export function startAbsorption(canvas,mode=1,onSelect){
   const initialMode=mode;
   const ctx=canvas.getContext('2d');if(!ctx)return {destroy(){},select(){}};
   const particles=createParticles(mode),positions=particles.map(p=>particleAt(p,0,mode));
+  let visible=true;
   const motion=matchMedia('(prefers-reduced-motion: reduce)');
   let frame=0,time=0,last=0,width=0,height=0,selected=-1,pinned=false,stopped=false;
   function draw(dt=0){
@@ -69,10 +70,10 @@ export function startAbsorption(canvas,mode=1,onSelect){
     canvas.dataset.animationTime=time.toFixed(3);canvas.dataset.direction=String(mode);canvas.dataset.selected=String(selected);
   }
   function tick(now){
-    if(stopped||document.hidden||motion.matches){frame=0;return;}
+    if(stopped||!visible||document.hidden||motion.matches){frame=0;return;}
     const dt=last?Math.min((now-last)/1000,.05):0;last=now;time+=dt;draw(dt);frame=requestAnimationFrame(tick);
   }
-  function sync(){cancelAnimationFrame(frame);frame=0;last=0;draw();if(!document.hidden&&!motion.matches)frame=requestAnimationFrame(tick);}
+  function sync(){if(stopped)return;cancelAnimationFrame(frame);frame=0;last=0;draw();if(visible&&!document.hidden&&!motion.matches)frame=requestAnimationFrame(tick);}
   function resize(){
     const rect=canvas.getBoundingClientRect();width=rect.width;height=rect.height;
     const dpr=Math.min(devicePixelRatio||1,2);canvas.width=Math.round(width*dpr);canvas.height=Math.round(height*dpr);ctx.setTransform(dpr,0,0,dpr,0,0);draw();
@@ -92,6 +93,7 @@ export function startAbsorption(canvas,mode=1,onSelect){
   const events={pointermove:move,pointerdown:press,pointerleave:leave,pointerup:release,pointercancel:leave,keydown:key};
   for(const [name,handler] of Object.entries(events))canvas.addEventListener(name,handler);
   const observer=new ResizeObserver(resize);observer.observe(canvas);resize();
+  const visibility=new IntersectionObserver(([entry])=>{visible=entry.isIntersecting;sync();});visibility.observe(canvas);
   motion.addEventListener('change',sync);document.addEventListener('visibilitychange',sync);sync();
-  return {select,destroy(){stopped=true;cancelAnimationFrame(frame);observer.disconnect();motion.removeEventListener('change',sync);document.removeEventListener('visibilitychange',sync);for(const [name,handler] of Object.entries(events))canvas.removeEventListener(name,handler);}};
+  return {select,destroy(){stopped=true;cancelAnimationFrame(frame);observer.disconnect();visibility.disconnect();motion.removeEventListener('change',sync);document.removeEventListener('visibilitychange',sync);for(const [name,handler] of Object.entries(events))canvas.removeEventListener(name,handler);}};
 }
