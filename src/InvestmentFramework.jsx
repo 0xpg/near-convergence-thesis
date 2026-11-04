@@ -37,7 +37,7 @@ export default function InvestmentFramework(){
         </div>
         <p id="framework-help" className="tidal-sr">Illustrative positioning, not a score. Move the mouse or drag to turn. Select a term to inspect it. Keyboard: left/right to turn, Home for front view.</p>
       </div>
-      <aside className="framework-detail" id="framework-detail" aria-live="polite"><p className="framework-kicker">The underwriting question</p><h3>{item.title}</h3><p>{item.claim}</p><dl><dt>Economic link</dt><dd>{item.mechanism}</dd><dt>Challenge it</dt><dd>{item.test}</dd></dl></aside>
+      <aside className="framework-detail" id="framework-detail" aria-live="polite"><p className="framework-kicker">The underwriting question</p>{item.id!=='near'&&<h3>{item.title}</h3>}<p>{item.claim}</p><dl><dt>Economic link</dt><dd>{item.mechanism}</dd><dt>Challenge it</dt><dd>{item.test}</dd></dl></aside>
     </div>
   </section>;
 }
