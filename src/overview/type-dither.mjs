@@ -6,9 +6,9 @@ export function typePoint(point,seconds){
 export function startTypeDither(canvas,heading){
   const pen=canvas.getContext('2d');if(!pen)return()=>{};
   const preference=matchMedia('(prefers-reduced-motion: reduce)');
-  let active=true,frame=0,points=[],width=0,height=0,start=null;
+  let active=true,visible=false,frame=0,points=[],width=0,height=0,start=null;
   function paint(now){
-    if(!active)return;
+    if(!active||!visible)return;
     if(start===null)start=now;
     const seconds=(now-start)/1000;
     pen.clearRect(0,0,width,height);pen.fillStyle='#416850';
@@ -18,6 +18,7 @@ export function startTypeDither(canvas,heading){
     if(seconds<3.1)frame=requestAnimationFrame(paint);
   }
   function build(){
+    if(!active||(!visible&&!preference.matches))return;
     cancelAnimationFrame(frame);start=null;
     const bounds=heading.getBoundingClientRect();width=bounds.width;height=bounds.height;
     const dpr=Math.min(devicePixelRatio||1,2);canvas.width=Math.round(width*dpr);canvas.height=Math.round(height*dpr);pen.setTransform(dpr,0,0,dpr,0,0);
@@ -32,6 +33,7 @@ export function startTypeDither(canvas,heading){
   }
   if(!preference.matches)heading.dataset.rendering='true';
   const observer=new ResizeObserver(()=>{if(active&&document.fonts.status==='loaded')build();});observer.observe(heading);
+  const visibility=new IntersectionObserver(([entry])=>{visible=entry.isIntersecting;if(visible&&document.fonts.status==='loaded')build();else if(!visible)cancelAnimationFrame(frame);});visibility.observe(heading);
   document.fonts.ready.then(()=>{if(active)build();});preference.addEventListener('change',build);
-  return()=>{active=false;cancelAnimationFrame(frame);observer.disconnect();preference.removeEventListener('change',build);};
+  return()=>{active=false;cancelAnimationFrame(frame);observer.disconnect();visibility.disconnect();preference.removeEventListener('change',build);};
 }

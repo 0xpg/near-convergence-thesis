@@ -7,9 +7,10 @@ import {startTypeDither} from './overview/type-dither.mjs';
 import {startIntroField} from './overview/intro-field.mjs';
 
 export default function ThesisPage(){
-  const heading=useRef(),canvas=useRef(),field=useRef();
+  const heading=useRef(),canvas=useRef(),field=useRef(),closing=useRef(),closingCanvas=useRef();
   useLayoutEffect(()=>startTypeDither(canvas.current,heading.current),[]);
   useLayoutEffect(()=>startIntroField(field.current),[]);
+  useLayoutEffect(()=>startTypeDither(closingCanvas.current,closing.current),[]);
   return <div className="thesis-page">
     <a className="tidal-skip" href="#network">Skip introduction</a>
     <header className="tidal-header thesis-header"><a className="tidal-brand" href="index.html" aria-label="NEAR research home">NEAR</a><nav aria-label="Main navigation"><a href="thesis.html" aria-current="page">Thesis</a><a href="lab.html">Scenario lab</a><a href="report.html">Report</a></nav><a className="tidal-close" href="index.html">Close</a></header>
@@ -36,7 +37,7 @@ export default function ThesisPage(){
       <section id="network" className="thesis-network" aria-label="NEAR infrastructure map"><OverviewScene/></section>
       <DuneGlance/>
       <section className="thesis-finale" aria-labelledby="finale-title">
-        <h2 id="finale-title">Convergence</h2>
+        <div className="thesis-finale-type"><div className="thesis-resolve"><canvas ref={closingCanvas} aria-hidden="true"/><h2 id="finale-title" ref={closing}><span>Convergence</span></h2></div></div>
         <div className="thesis-finale-action"><a href="report.html">Read the full report</a></div>
       </section>
     </main>

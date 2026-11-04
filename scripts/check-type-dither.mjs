@@ -6,7 +6,8 @@ assert.deepEqual(typePoint(point,2.5),{x:120,y:60,alpha:1});
 assert.equal(typePoint(point,3.2).alpha,0);
 for(let seconds=0;seconds<4;seconds+=.02){const at=typePoint(point,seconds);assert(Number.isFinite(at.x)&&Number.isFinite(at.y));assert(at.alpha>=0&&at.alpha<=1);assert(at.x>=-60&&at.x<=120);}
 console.log('Dithered type arrives at exact glyph positions, remains bounded and fades into readable text.');
-let disconnected=false;
+let disconnected=false,visibility;
+globalThis.IntersectionObserver=class{constructor(callback){visibility=callback;}observe(){}disconnect(){}};
 globalThis.matchMedia=()=>({matches:true,addEventListener(){},removeEventListener(){}});
 globalThis.document={fonts:{status:'loaded',ready:Promise.resolve()}};
 globalThis.ResizeObserver=class{observe(){}disconnect(){disconnected=true;}};
@@ -20,3 +21,17 @@ await Promise.resolve();
 assert.equal(heading.dataset.rendering,undefined);assert.equal(heading.dataset.resolved,'true');
 stop();assert(disconnected);
 console.log('Reduced motion keeps text visible without a frame loop; cleanup disconnects observation.');
+
+let scheduled=0,cancelled=0;
+globalThis.matchMedia=()=>({matches:false,addEventListener(){},removeEventListener(){}});
+globalThis.requestAnimationFrame=()=>++scheduled;
+globalThis.cancelAnimationFrame=()=>cancelled++;
+globalThis.getComputedStyle=()=>({fontWeight:'400',fontSize:'48px',letterSpacing:'-2px'});
+globalThis.document.createElement=()=>({getContext:()=>({measureText:()=>({fontBoundingBoxAscent:40,fontBoundingBoxDescent:8}),fillText(){},getImageData:()=>({data:[]})})});
+heading.querySelectorAll=()=>[{textContent:'Convergence',getBoundingClientRect:()=>({left:0,top:0,width:320,height:120})}];
+const stopVisible=startTypeDither(canvas,heading);
+await Promise.resolve();assert.equal(scheduled,0,'Offscreen type must wait for visibility');
+visibility([{isIntersecting:true}]);assert.equal(scheduled,1,'Entering view must start the dither reveal');
+const before=cancelled;visibility([{isIntersecting:false}]);assert(cancelled>before,'Leaving view must cancel animation');
+stopVisible();
+console.log('Dithered headings wait for viewport entry and cancel when hidden.');
