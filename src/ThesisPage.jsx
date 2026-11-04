@@ -35,6 +35,10 @@ export default function ThesisPage(){
       </section>
       <section id="network" className="thesis-network" aria-label="NEAR infrastructure map"><OverviewScene/></section>
       <DuneGlance/>
+      <section className="thesis-finale" aria-labelledby="finale-title">
+        <h2 id="finale-title">Convergence</h2>
+        <div className="thesis-finale-action"><a href="report.html">Read the full report</a></div>
+      </section>
     </main>
   </div>;
 }

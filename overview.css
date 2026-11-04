@@ -102,3 +102,13 @@ html{scroll-behavior:smooth}.thesis-page{font-family:Saans,Arial,sans-serif;colo
 @keyframes thesis-reading{0%{opacity:.25;filter:blur(3px);transform:translateY(16px)}25%,65%{opacity:1;filter:blur(0);transform:translateY(0)}100%{opacity:.2;filter:blur(4px);transform:translateY(-12px)}}
 
 .kinetic-statement{contain:layout}
+
+.thesis-finale{margin-top:40px;background:#fafaf8;color:#173b30}
+.thesis-finale h2{margin:0;padding:32px 3vw 0;font:400 16vw/1.05 Saans,Arial,sans-serif;letter-spacing:-.075em;text-align:center;white-space:nowrap}
+.thesis-finale-action{display:flex;justify-content:center;align-items:center;background:#173b30;padding:56px 24px 64px}
+.thesis-finale-action a{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:12px 22px;border:1px solid #fafaf8;border-radius:999px;background:#fafaf8;color:#173b30;text-decoration:none;font:400 14px/1.2 Saans,Arial,sans-serif;transition:transform 160ms cubic-bezier(.23,1,.32,1),background-color 160ms ease}
+.thesis-finale-action a:active:not(:focus-visible){transform:scale(.97)}
+.thesis-finale-action a:focus-visible{outline:2px solid #fafaf8;outline-offset:5px;transition:none}
+@media(hover:hover) and (pointer:fine){.thesis-finale-action a:hover{background:#dbe8df}}
+@media(max-width:600px){.thesis-finale{margin-top:24px}.thesis-finale h2{padding-top:24px}.thesis-finale-action{padding:40px 24px 48px}}
+@media(prefers-reduced-motion:reduce){.thesis-finale-action a{transition:none}.thesis-finale-action a:active{transform:none}}
