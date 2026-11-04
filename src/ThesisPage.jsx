@@ -15,7 +15,11 @@ export default function ThesisPage(){
           <div className="thesis-resolve"><canvas ref={canvas} aria-hidden="true"/><h1 id="thesis-title" ref={heading}><span>Intelligence</span><span>meets execution.</span></h1></div>
         </div>
       </section>
-      <section id="network" className="thesis-network" aria-label="NEAR network and evidence map"><OverviewScene/></section>
+      <section id="network" className="thesis-network" aria-label="NEAR infrastructure map"><OverviewScene/></section>
+      <section className="thesis-data" aria-labelledby="thesis-data-title">
+        <header><h2 id="thesis-data-title">NEAR in data</h2><p>Awaiting supplied data.</p></header>
+        <div className="thesis-data-grid" aria-hidden="true"><div/><div/><div/><div/></div>
+      </section>
     </main>
   </div>;
 }

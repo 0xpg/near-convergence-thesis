@@ -16,3 +16,30 @@ html{scroll-behavior:smooth}.thesis-page{font-family:Saans,Arial,sans-serif;colo
 }
 @keyframes thesis-arrive{from{opacity:.15;transform:translateY(48px)}to{opacity:1;transform:translateY(0)}}
 @media(max-width:760px){.thesis-network{margin-top:96px}}
+
+.tidal-page{position:relative}
+.tidal-editorial{position:absolute;z-index:2;width:216px;pointer-events:none}
+.tidal-editorial h2{font:400 26px/1.12 Saans,Arial,sans-serif;letter-spacing:-.035em;margin:0 0 16px;color:#293b32}
+.tidal-editorial p{font:400 13px/1.55 Saans,Arial,sans-serif;color:#5c6861;margin:0}
+.tidal-editorial a{display:inline-block;pointer-events:auto;font-size:11px;color:#5c6861;margin-top:16px;text-underline-offset:4px}
+.tidal-editorial-start{left:40px;top:32px}
+.tidal-editorial-end{right:40px;bottom:64px}
+.thesis-data{max-width:1440px;margin:160px auto 0;padding:0 48px 96px}
+.thesis-data header{display:flex;align-items:baseline;justify-content:space-between;gap:24px;margin-bottom:32px}
+.thesis-data h2{font:400 clamp(28px,4vw,48px)/1.1 Saans,Arial,sans-serif;letter-spacing:-.04em;margin:0}
+.thesis-data header p{font-size:13px;color:#5c6861;margin:0}
+.thesis-data-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.thesis-data-grid>div{min-height:240px;border:1px solid #293b321a;border-radius:4px;background-image:radial-gradient(#59746335 .6px,transparent .8px);background-size:5px 5px;background-repeat:repeat-x}
+.thesis-data-grid>div:first-child{grid-column:span 2;min-height:320px}
+.thesis-data-grid>div:last-child{grid-column:span 2}
+@media(max-width:1100px){
+ .thesis-network .tidal-page{height:auto;min-height:0;grid-template-rows:auto 640px auto 40px;overflow:visible}
+ .tidal-editorial{position:static;width:auto;margin:0 24px;pointer-events:auto}
+ .tidal-editorial-start{padding:0 0 32px;max-width:300px}
+ .tidal-editorial-end{padding:32px 0 48px;max-width:300px;justify-self:end}
+ .tidal-editorial h2{font-size:28px}.tidal-editorial h2 br{display:none}
+ .thesis-data{margin-top:96px;padding:0 24px 64px}
+ .thesis-data header{display:block;margin-bottom:24px}.thesis-data header p{margin-top:12px}
+ .thesis-data-grid{grid-template-columns:1fr;gap:12px}.thesis-data-grid>div:first-child,.thesis-data-grid>div:last-child{grid-column:auto}
+ .thesis-data-grid>div,.thesis-data-grid>div:first-child{min-height:220px}
+}

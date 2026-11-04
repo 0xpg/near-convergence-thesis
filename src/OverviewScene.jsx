@@ -3,14 +3,14 @@ import {startAbsorption} from './overview/absorption.mjs';
 import nearWordmark from '../assets/identity/near.svg';
 
 export const topics=[
-  {title:'Revenue',children:['Fees generated','Protocol revenue','Revenue vs emissions','Wallet breakdown']},
-  {title:'Ecosystem',children:['NEAR Intents','Base-chain activity','Token overview','Protocol']},
-  {title:'Products',children:['Blockchain','Near.com','NEAR Intents','NEAR AI','House of Stake']},
-  {title:'Capital & liquidity',children:['Stablecoin supply','Bridge flows','Capital deployment']},
-  {title:'DeFi markets',children:['DEX activity','Lending utilization','Liquidity depth']},
-  {title:'AI & agents',children:['Verified agent activity','Agent retention','Execution attribution']},
-  {title:'Developers',children:['Build activity','Contract deployment','Tooling']},
-  {title:'Validators',children:['Validator set','Stake concentration','Staking participation']}
+  {title:'Settlement',children:['Sharded execution','Transactions & finality','Gas & storage']},
+  {title:'Intents',children:['Intent requests','Solver competition','Settlement contracts']},
+  {title:'Chain Signatures',children:['Multi-chain signing','MPC network','Cross-chain execution']},
+  {title:'Accounts & access',children:['Named accounts','Access keys','Gas sponsorship']},
+  {title:'AI infrastructure',children:['Private inference','Agent tooling','Trusted execution environments']},
+  {title:'Applications',children:['near.com','Wallet integrations','Ecosystem applications']},
+  {title:'Developer tooling',children:['Smart contracts & SDKs','RPC & indexers','Testing tools']},
+  {title:'Security & governance',children:['Validators & staking','Protocol upgrades','House of Stake']}
 ];
 export default function OverviewScene(){
   const canvas=useRef(),field=useRef(),animation=useRef();
@@ -21,6 +21,7 @@ export default function OverviewScene(){
   return <div className={'tidal-page '+(selected>=0?'is-focused':'')} onKeyDown={event=>{if(event.key==='Escape'&&!event.defaultPrevented)choose(-1,true);}}>
     <a className="tidal-skip" href="#tidal-main">Skip to overview</a>
     <header className="tidal-header"><a className="tidal-brand" href="index.html" aria-label="NEAR research home">NEAR</a><nav aria-label="Main navigation"><a href="thesis.html" aria-current="page">Thesis</a><a href="lab.html">Scenario lab</a><a href="report.html">Report</a></nav><a className="tidal-close" href="index.html">Close</a></header>
+    <div className="tidal-editorial tidal-editorial-start"><h2>From intent <br/>to action.</h2><p>Execution, cross-chain coordination and AI tooling form different parts of the NEAR stack.</p></div>
     <section id="tidal-main" className="tidal-main"><h2 className="tidal-sr">NEAR overview</h2><div className="tidal-field" ref={field}>
       <canvas ref={canvas} tabIndex="0" aria-label="Animated NEAR category map. Hover to preview a category. Click or tap to keep it open. Left and right keys select categories; Escape restores the overview."/>
       <section className="tidal-premise" aria-label="Blockchain and AI convergence">
@@ -41,6 +42,7 @@ export default function OverviewScene(){
       <div className="tidal-topics" aria-label="NEAR overview categories">{topics.map((topic,index)=>{const angle=-Math.PI/2+index*Math.PI*2/topics.length,radius=Math.min(size.width,size.height)*.465;return <button key={topic.title} aria-pressed={selected===index} onPointerEnter={event=>{if(event.pointerType!=='touch')choose(index);}} onPointerDown={()=>choose(index,true)} onPointerLeave={()=>choose(-1)} onPointerUp={event=>{if(event.pointerType!=='mouse')choose(-1);}} onPointerCancel={()=>choose(-1)} onFocus={event=>{if(event.currentTarget.matches(':focus-visible'))choose(index);}} onBlur={()=>choose(-1)} onClick={()=>choose(index,true)} style={{left:Math.max(64,Math.min(size.width-64,size.width/2+Math.cos(angle)*radius)),top:size.height/2+Math.sin(angle)*radius}}>{topic.title}</button>;})}</div>
       {selected>=0&&<aside className="tidal-subtopics" aria-label={topics[selected].title+' subcategories'} aria-live="polite"><h2>{topics[selected].title}</h2><ul>{topics[selected].children.map(title=><li key={title}>{title}</li>)}</ul></aside>}
     </div></section>
+    <div className="tidal-editorial tidal-editorial-end"><h2>From architecture <br/>to evidence.</h2><p>Connecting these layers is the proposition. Usage, economics and token value capture need separate evidence.</p><a href="https://docs.near.org/" target="_blank" rel="noreferrer">Architecture references</a></div>
     <footer className="tidal-footer"><span aria-live="polite">{selected>=0?topics[selected].title+' · Focus':'Hover or touch a category'}</span>{selected>=0?<button onClick={()=>choose(-1,true)}>All categories</button>:<span>Topic map · not to scale</span>}</footer>
   </div>;
 }

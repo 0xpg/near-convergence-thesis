@@ -22,6 +22,10 @@ try{
   }
  }
  assert.equal(topics.length,8);
+ assert(!topics.some(topic=>['Revenue','Products','Ecosystem','Capital & liquidity','DeFi markets'].includes(topic.title)));
+ assert(rendered['thesis.html'].indexOf('id="network"')<rendered['thesis.html'].indexOf('id="thesis-data-title"'));
+ assert(rendered['thesis.html'].includes('Awaiting supplied data.'));
+ assert(!rendered['thesis.html'].includes('thesis-dither-art')); 
  assert.equal(new Set(topics.map(topic=>topic.title)).size,8);
  for(const topic of topics){assert(topic.children.length>=2);assert.equal(new Set(topic.children).size,topic.children.length);assert(topic.children.every(title=>typeof title==='string'&&title.trim()));}
  assert(rendered['research.html'].includes('id="model-controls"'));
@@ -31,9 +35,10 @@ try{
  assert(rendered['thesis.html'].indexOf('id="thesis-title"')<rendered['thesis.html'].indexOf('id="network"'));
  for(const removed of ['A different kind of network user','Explore the network before judging the investment case','NEAR’s thesis begins where AI decisions meet blockchain execution','From proposition to evidence','proto-picker'])assert(!rendered['thesis.html'].includes(removed));
  assert(rendered['thesis.html'].includes('Hover or touch a category'));
- assert(rendered['thesis.html'].includes('Products'));
+ assert(rendered['thesis.html'].includes('Chain Signatures'));
  assert(!rendered['thesis.html'].includes('Snapshot ·'));
  assert.equal(renderToStaticMarkup(createElement(Story)),rendered['thesis.html'],'The topic geometry must remain deterministic');
  assert.equal((rendered['thesis.html'].match(/aria-pressed="false"/g)||[]).length,8,'All eight categories start in overview mode');
  console.log('All React pages render, IDs and local links resolve, UTF-8 text and text-only topic map preserved.');
 }finally{await server.close();}
+
