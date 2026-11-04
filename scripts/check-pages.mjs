@@ -26,6 +26,10 @@ try{
  assert(rendered['thesis.html'].indexOf('id="network"')<rendered['thesis.html'].indexOf('id="thesis-data-title"'));
  assert(rendered['thesis.html'].includes('Awaiting supplied data.'));
  assert(!rendered['thesis.html'].includes('thesis-dither-art'));
+ assert(!rendered['thesis.html'].includes('Skip to overview'));
+ assert(!rendered['thesis.html'].includes('Architecture references'));
+ assert(rendered['thesis.html'].includes('NEAR at a glance'));
+ assert(rendered['thesis.html'].indexOf('id="thesis-proposition-title"')<rendered['thesis.html'].indexOf('id="network"'));
  assert.equal(new Set(topics.map(topic=>topic.title)).size,8);
  for(const topic of topics){assert(topic.children.length>=2);assert.equal(new Set(topic.children).size,topic.children.length);assert(topic.children.every(title=>typeof title==='string'&&title.trim()));}
  assert(rendered['research.html'].includes('id="model-controls"'));

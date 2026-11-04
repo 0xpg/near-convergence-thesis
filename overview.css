@@ -43,3 +43,17 @@ html{scroll-behavior:smooth}.thesis-page{font-family:Saans,Arial,sans-serif;colo
  .thesis-data-grid{grid-template-columns:1fr;gap:12px}.thesis-data-grid>div:first-child,.thesis-data-grid>div:last-child{grid-column:auto}
  .thesis-data-grid>div,.thesis-data-grid>div:first-child{min-height:220px}
 }
+
+.thesis-intro{display:grid;grid-template-rows:minmax(200px,1fr) auto;gap:32px;padding-top:24px}
+.thesis-intro-field{display:block;width:100%;height:clamp(200px,34svh,340px);align-self:center;pointer-events:none}
+.thesis-proposition{background:#173b30;color:#eef3ec;padding:clamp(96px,14vw,192px) max(48px,calc((100vw - 1344px)/2));margin-top:80px}
+.thesis-proposition p{font:400 clamp(30px,4.4vw,64px)/1.22 Saans,Arial,sans-serif;letter-spacing:-.035em;max-width:1200px;margin:0 0 96px}
+.thesis-proposition p:last-child{margin-bottom:0}
+@supports(animation-timeline:view()){
+ @media(prefers-reduced-motion:no-preference){
+  .thesis-proposition p{animation:thesis-reading linear both;animation-timeline:view();animation-range:entry 0% entry 100%}
+ }
+}
+@keyframes thesis-reading{from{opacity:.45;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+@media(max-width:760px){.thesis-intro{padding-top:24px;grid-template-rows:minmax(240px,1fr) auto;gap:40px}.thesis-intro-field{height:clamp(240px,36svh,320px)}.thesis-proposition{padding:88px 24px;margin-top:48px}.thesis-proposition p{margin-bottom:64px;line-height:1.28;letter-spacing:-.025em}}
+.thesis-page>.tidal-skip{z-index:9}
