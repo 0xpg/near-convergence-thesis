@@ -10,7 +10,7 @@ html{scroll-behavior:smooth}.thesis-page{font-family:Saans,Arial,sans-serif;colo
 
 /* The artwork stays in its own band, outside the reading area. */
 .thesis-intro{position:relative;isolation:isolate;overflow:hidden}
-.thesis-dither-art{position:absolute;right:3%;top:4%;width:min(72vw,920px);height:clamp(160px,38svh,340px);pointer-events:none;opacity:.7}
+.thesis-dither-art{position:absolute;right:0;top:0;width:min(96vw,1320px);height:clamp(180px,40svh,360px);pointer-events:none;opacity:1}
 .thesis-intro-copy{position:relative;z-index:1}
 .thesis-network{margin-top:clamp(96px,20svh,200px);border-top:0}
 @supports(animation-timeline:view()){
@@ -20,5 +20,8 @@ html{scroll-behavior:smooth}.thesis-page{font-family:Saans,Arial,sans-serif;colo
  }
 }
 @keyframes thesis-arrive{from{opacity:.15;transform:translateY(48px)}to{opacity:1;transform:translateY(0)}}
-@keyframes thesis-drift{from{transform:translateY(0);opacity:.7}to{transform:translateY(-48px);opacity:0}}
-@media(max-width:760px){.thesis-dither-art{right:-12%;top:8%;width:110%;height:clamp(140px,30svh,280px);opacity:.6}.thesis-network{margin-top:96px}}
+@keyframes thesis-drift{from{transform:translateY(0);opacity:1}to{transform:translateY(-48px);opacity:0}}
+@media(max-width:760px){.thesis-dither-art{right:-16%;top:5%;width:132%;height:clamp(180px,36svh,320px);opacity:.9}.thesis-network{margin-top:96px}}
+
+@media(prefers-reduced-motion:no-preference){.thesis-dither-weave{transform-origin:50% 50%;animation:thesis-weave-resolve 2200ms cubic-bezier(.23,1,.32,1) both}}
+@keyframes thesis-weave-resolve{from{opacity:0;transform:translateY(20px) scale(.94) rotate(-4deg)}to{opacity:1;transform:translateY(0) scale(1) rotate(0)}}
