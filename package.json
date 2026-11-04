@@ -4,15 +4,13 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "test": "node analysis/reproduce.mjs && node scripts/check-scene.mjs && node scripts/check-story.mjs && node scripts/check-react.mjs && node scripts/check-overview.mjs && node scripts/check-startup.mjs && node scripts/check-taxonomy.mjs && node scripts/check-absorption.mjs",
+    "test": "node analysis/reproduce.mjs && node scripts/check-scene.mjs && node scripts/check-story.mjs && node scripts/check-react.mjs && node scripts/check-overview.mjs && node scripts/check-startup.mjs && node scripts/check-taxonomy.mjs && node scripts/check-absorption.mjs && node scripts/check-type-dither.mjs",
     "test:public": "node scripts/check-public.mjs",
     "build": "node analysis/reproduce.mjs && node scripts/build.mjs",
     "build:public": "node analysis/reproduce.mjs && node scripts/build.mjs --public",
     "dev": "node scripts/build.mjs --dev",
     "preview": "vite preview --host 127.0.0.1",
-    "test:pages": "node scripts/check-pages.mjs",
-    "build:opening": "vite build --config vite.opening.config.mjs && node -e \"require('node:fs').copyFileSync('_headers','dist-opening/_headers')\"",
-    "test:opening": "node scripts/check-opening.mjs"
+    "test:pages": "node scripts/check-pages.mjs"
   },
   "engines": {
     "node": ">=22.12"

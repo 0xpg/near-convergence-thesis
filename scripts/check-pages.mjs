@@ -6,7 +6,8 @@ import {renderToStaticMarkup} from 'react-dom/server';
 const server=await createServer({server:{middlewareMode:true},appType:'custom'});
 try{
  const pages=await server.ssrLoadModule('/src/pages.jsx');
- const {default:Story,topics}=await server.ssrLoadModule('/src/OverviewScene.jsx');
+ const {default:Story}=await server.ssrLoadModule('/src/ThesisPage.jsx');
+ const {topics}=await server.ssrLoadModule('/src/OverviewScene.jsx');
  const components={'index.html':pages.Landing,'lab.html':pages.Lab,'report.html':pages.Report,'research.html':pages.Research,'methodology.html':pages.Methodology,'thesis.html':Story};
  const rendered=Object.fromEntries(Object.entries(components).map(([file,Component])=>[file,renderToStaticMarkup(createElement(Component))]));
  for(const [page,html] of Object.entries(rendered)){
@@ -25,6 +26,10 @@ try{
  for(const topic of topics){assert(topic.children.length>=2);assert.equal(new Set(topic.children).size,topic.children.length);assert(topic.children.every(title=>typeof title==='string'&&title.trim()));}
  assert(rendered['research.html'].includes('id="model-controls"'));
  assert(rendered['thesis.html'].includes('NEAR overview'));
+ assert(rendered['thesis.html'].includes('Intelligence'));
+ assert(rendered['thesis.html'].includes('meets execution.'));
+ assert(rendered['thesis.html'].indexOf('id="thesis-title"')<rendered['thesis.html'].indexOf('id="network"'));
+ for(const removed of ['A different kind of network user','Explore the network before judging the investment case','NEAR’s thesis begins where AI decisions meet blockchain execution','From proposition to evidence','proto-picker'])assert(!rendered['thesis.html'].includes(removed));
  assert(rendered['thesis.html'].includes('Hover or touch a category'));
  assert(rendered['thesis.html'].includes('Products'));
  assert(!rendered['thesis.html'].includes('Snapshot ·'));
