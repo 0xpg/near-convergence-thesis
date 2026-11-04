@@ -3,14 +3,14 @@ import {startAbsorption} from './overview/absorption.mjs';
 import nearWordmark from '../assets/identity/near.svg';
 
 export const topics=[
-  {title:'Settlement',children:['Sharded execution','Transactions & finality','Gas & storage']},
-  {title:'Intents',children:['Intent requests','Solver competition','Settlement contracts']},
-  {title:'Chain Signatures',children:['Multi-chain signing','MPC network','Cross-chain execution']},
-  {title:'Accounts & access',children:['Named accounts','Access keys','Gas sponsorship']},
-  {title:'AI infrastructure',children:['Private inference','Agent tooling','Trusted execution environments']},
-  {title:'Applications',children:['near.com','Wallet integrations','Ecosystem applications']},
-  {title:'Developer tooling',children:['Smart contracts & SDKs','RPC & indexers','Testing tools']},
-  {title:'Security & governance',children:['Validators & staking','Protocol upgrades','House of Stake']}
+  {title:'Settlement'},
+  {title:'Intents'},
+  {title:'Chain Signatures'},
+  {title:'Accounts & access'},
+  {title:'AI infrastructure'},
+  {title:'Applications'},
+  {title:'Developer tooling'},
+  {title:'Security & governance'}
 ];
 export default function OverviewScene(){
   const canvas=useRef(),field=useRef(),animation=useRef();
@@ -39,9 +39,8 @@ export default function OverviewScene(){
         </svg>
       </section>
       <div className="tidal-topics" aria-label="NEAR overview categories">{topics.map((topic,index)=>{const angle=-Math.PI/2+index*Math.PI*2/topics.length,radius=Math.min(size.width,size.height)*.465;return <button key={topic.title} aria-pressed={selected===index} onPointerEnter={event=>{if(event.pointerType!=='touch')choose(index);}} onPointerDown={()=>choose(index,true)} onPointerLeave={()=>choose(-1)} onPointerUp={event=>{if(event.pointerType!=='mouse')choose(-1);}} onPointerCancel={()=>choose(-1)} onFocus={event=>{if(event.currentTarget.matches(':focus-visible'))choose(index);}} onBlur={()=>choose(-1)} onClick={()=>choose(index,true)} style={{left:Math.max(64,Math.min(size.width-64,size.width/2+Math.cos(angle)*radius)),top:size.height/2+Math.sin(angle)*radius}}>{topic.title}</button>;})}</div>
-      {selected>=0&&<aside className="tidal-subtopics" aria-label={topics[selected].title+' subcategories'} aria-live="polite"><h2>{topics[selected].title}</h2><ul>{topics[selected].children.map(title=><li key={title}>{title}</li>)}</ul></aside>}
     </div></section>
     <div className="tidal-editorial tidal-editorial-end"><h2>From architecture <br/>to evidence.</h2><p>Connecting these layers is the proposition. Usage, economics and token value capture need separate evidence.</p></div>
-    <footer className="tidal-footer"><span aria-live="polite">{selected>=0?topics[selected].title+' · Focus':'Hover or touch a category'}</span>{selected>=0?<button onClick={()=>choose(-1,true)}>All categories</button>:<span>Topic map · not to scale</span>}</footer>
+    <footer className="tidal-footer">{selected>=0&&<button onClick={()=>choose(-1,true)}>All categories</button>}</footer>
   </div>;
 }

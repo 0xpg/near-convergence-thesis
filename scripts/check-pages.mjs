@@ -31,14 +31,13 @@ try{
  assert(rendered['thesis.html'].includes('NEAR at a glance'));
  assert(rendered['thesis.html'].indexOf('id="thesis-proposition-title"')<rendered['thesis.html'].indexOf('id="network"'));
  assert.equal(new Set(topics.map(topic=>topic.title)).size,8);
- for(const topic of topics){assert(topic.children.length>=2);assert.equal(new Set(topic.children).size,topic.children.length);assert(topic.children.every(title=>typeof title==='string'&&title.trim()));}
  assert(rendered['research.html'].includes('id="model-controls"'));
  assert(rendered['thesis.html'].includes('NEAR overview'));
  assert(rendered['thesis.html'].includes('Intelligence'));
  assert(rendered['thesis.html'].includes('meets execution.'));
  assert(rendered['thesis.html'].indexOf('id="thesis-title"')<rendered['thesis.html'].indexOf('id="network"'));
  for(const removed of ['A different kind of network user','Explore the network before judging the investment case','NEAR’s thesis begins where AI decisions meet blockchain execution','From proposition to evidence','proto-picker'])assert(!rendered['thesis.html'].includes(removed));
- assert(rendered['thesis.html'].includes('Hover or touch a category'));
+ for(const removed of ['Hover or touch a category','Topic map · not to scale','tidal-subtopics'])assert(!rendered['thesis.html'].includes(removed));
  assert(rendered['thesis.html'].includes('Chain Signatures'));
  assert(!rendered['thesis.html'].includes('Snapshot ·'));
  assert.equal(renderToStaticMarkup(createElement(Story)),rendered['thesis.html'],'The topic geometry must remain deterministic');
