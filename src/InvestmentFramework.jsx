@@ -1,4 +1,5 @@
-import React,{useRef,useState} from 'react';
+import React,{useLayoutEffect,useRef,useState} from 'react';
+import {startFrameworkMotion} from './overview/framework-motion.mjs';
 
 export const frameworkSources={
   velocity:{title:'Multicoin · Understanding Token Velocity',url:'https://multicoin.capital/2017/12/08/understanding-token-velocity/'},
@@ -20,21 +21,21 @@ export const frameworkItems=[
 ];
 
 export default function InvestmentFramework(){
-  const [selected,setSelected]=useState('near'),[angle,setAngle]=useState(0);
-  const drag=useRef(null),item=frameworkItems.find(item=>item.id===selected);
-  function turn(value){setAngle(Math.max(-65,Math.min(65,value)));}
+  const [selected,setSelected]=useState('near');
+  const stage=useRef(),world=useRef(),motion=useRef(),item=frameworkItems.find(item=>item.id===selected);
+  useLayoutEffect(()=>{motion.current=startFrameworkMotion(stage.current,world.current);return()=>motion.current.destroy();},[]);
   return <section className="investment-framework" aria-labelledby="framework-title">
     <header className="framework-heading"><p>Investment framework</p><h2 id="framework-title">Between network premium<br/>and token economics.</h2><p>NEAR sits at the intersection of two investment arguments. The link between them is what needs underwriting.</p></header>
     <div className="framework-layout">
       <div>
-        <div className="framework-stage" tabIndex="0" role="group" aria-label="Three-dimensional investment framework" aria-describedby="framework-help" onKeyDown={event=>{if(event.target!==event.currentTarget)return;if(event.key==='ArrowLeft'||event.key==='ArrowRight'){event.preventDefault();turn(angle+(event.key==='ArrowRight'?10:-10));}if(event.key==='Home'){event.preventDefault();turn(0);}}} onPointerDown={event=>{if(event.target.closest('button'))return;drag.current={x:event.clientX,angle};event.currentTarget.setPointerCapture(event.pointerId);}} onPointerMove={event=>{if(drag.current&&Math.abs(event.clientX-drag.current.x)>4)turn(drag.current.angle+(event.clientX-drag.current.x)*.24);}} onPointerUp={()=>{drag.current=null;}} onPointerCancel={()=>{drag.current=null;}}>
-          <div className="framework-world" style={{transform:`rotateX(${Math.min(14,Math.abs(angle)*.35)}deg) rotateY(${angle}deg)`}}>
+        <div className="framework-stage" ref={stage} tabIndex="0" role="group" aria-label="Three-dimensional investment framework" aria-describedby="framework-help">
+          <div className="framework-world" ref={world}>
             <div className="framework-axis axis-x"/><div className="framework-axis axis-y"/><div className="framework-axis axis-z"/>
             <span className="framework-end end-left">Network premium</span><span className="framework-end end-right">Token economics</span><span className="framework-end end-top">Existing mechanisms</span><span className="framework-end end-bottom">Future expectations</span><span className="framework-end end-back">Protocol value</span><span className="framework-end end-front">Token capture</span>
-            {frameworkItems.map(point=><button key={point.id} className={'framework-term '+(point.id==='near'?'framework-near':'')} aria-expanded={selected===point.id} aria-controls="framework-detail" onClick={()=>{setSelected(point.id);}} style={{left:`${50+point.x*42}%`,top:`${50-point.y*42}%`,transform:`translate(-50%,-50%) translateZ(${point.z*100}px)`}}>{point.title}</button>)}
+            {frameworkItems.map(point=><button key={point.id} className={'framework-term '+(point.id==='near'?'framework-near':'')} aria-expanded={selected===point.id} aria-controls="framework-detail" onClick={()=>{motion.current?.stop();setSelected(point.id);}} style={{left:`${50+point.x*42}%`,top:`${50-point.y*42}%`,transform:`translate(-50%,-50%) translateZ(${point.z*100}px)`}}>{point.title}</button>)}
           </div>
         </div>
-        <p id="framework-help" className="tidal-sr">Illustrative positioning, not a score. Drag sideways to turn. Select a term to inspect it. Keyboard: left/right to turn, Home for front view.</p>
+        <p id="framework-help" className="tidal-sr">Illustrative positioning, not a score. Move the mouse or drag to turn. Select a term to inspect it. Keyboard: left/right to turn, Home for front view.</p>
       </div>
       <aside className="framework-detail" id="framework-detail" aria-live="polite"><p className="framework-kicker">The underwriting question</p><h3>{item.title}</h3><p>{item.claim}</p><dl><dt>Economic link</dt><dd>{item.mechanism}</dd><dt>Challenge it</dt><dd>{item.test}</dd></dl></aside>
     </div>
