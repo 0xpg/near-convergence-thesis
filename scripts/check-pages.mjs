@@ -31,7 +31,11 @@ try{
  assert.equal(topics.length,8);
  assert(!topics.some(topic=>['Revenue','Products','Ecosystem','Capital & liquidity','DeFi markets'].includes(topic.title)));
  assert(rendered['thesis.html'].indexOf('id="network"')<rendered['thesis.html'].indexOf('id="thesis-data-title"'));
- assert(rendered['thesis.html'].includes('Awaiting supplied data.'));
+ assert(!rendered['thesis.html'].includes('Awaiting supplied data.'));
+ assert(rendered['thesis.html'].indexOf('id="framework-title"')<rendered['thesis.html'].indexOf('id="network"'));
+ const {glanceCharts}=await server.ssrLoadModule('/src/DuneGlance.jsx');
+ assert.equal(glanceCharts.length,4);assert.equal(new Set(glanceCharts.map(chart=>chart.id)).size,4);
+ for(const chart of glanceCharts){assert(/^\d+$/.test(chart.query)&&/^\d+$/.test(chart.visualization));assert(chart.title&&chart.description);assert(rendered['thesis.html'].includes('https://dune.com/queries/'+chart.query+'/'+chart.visualization));assert(rendered['thesis.html'].includes('https://dune.com/embeds/'+chart.query+'/'+chart.visualization));}
  assert(!rendered['thesis.html'].includes('thesis-dither-art'));
  assert(!rendered['thesis.html'].includes('Skip to overview'));
  assert(!rendered['thesis.html'].includes('Architecture references'));

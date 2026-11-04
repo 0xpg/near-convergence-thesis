@@ -1,6 +1,7 @@
 import React,{useLayoutEffect,useRef} from 'react';
 import OverviewScene from './OverviewScene.jsx';
 import InvestmentFramework from './InvestmentFramework.jsx';
+import DuneGlance from './DuneGlance.jsx';
 import {startTypeDither} from './overview/type-dither.mjs';
 import {startIntroField} from './overview/intro-field.mjs';
 
@@ -25,12 +26,9 @@ export default function ThesisPage(){
         <p>NEAR’s proposition is to connect machine intent with execution across blockchain networks.</p>
         <p>The thesis starts with that connection. The investment case depends on whether it creates lasting demand for NEAR.</p>
       </section>
-      <section id="network" className="thesis-network" aria-label="NEAR infrastructure map"><OverviewScene/></section>
       <InvestmentFramework/>
-      <section className="thesis-data" aria-labelledby="thesis-data-title">
-        <header><h2 id="thesis-data-title">NEAR at a glance</h2><p>Awaiting supplied data.</p></header>
-        <div className="thesis-data-grid" aria-hidden="true"><div/><div/><div/><div/></div>
-      </section>
+      <section id="network" className="thesis-network" aria-label="NEAR infrastructure map"><OverviewScene/></section>
+      <DuneGlance/>
     </main>
   </div>;
 }
