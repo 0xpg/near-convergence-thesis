@@ -21,11 +21,12 @@ try{
    if(fragment&&rendered[file])assert(rendered[file].includes('id="'+fragment+'"'),'Missing anchor '+url);
   }
  }
- const {frameworkItems}=await server.ssrLoadModule('/src/InvestmentFramework.jsx');
+ const {frameworkItems,frameworkSources}=await server.ssrLoadModule('/src/InvestmentFramework.jsx');
  assert.equal(new Set(frameworkItems.map(item=>item.id)).size,frameworkItems.length);
- for(const item of frameworkItems){assert(item.claim&&item.mechanism&&item.test&&item.sources.length);for(const axis of ['x','y','z'])assert(Number.isFinite(item[axis])&&Math.abs(item[axis])<=1);}
+ for(const item of frameworkItems){assert(item.claim&&item.mechanism&&item.test&&item.sources.length);for(const id of item.sources)assert.equal(new URL(frameworkSources[id].url).protocol,'https:');for(const axis of ['x','y','z'])assert(Number.isFinite(item[axis])&&Math.abs(item[axis])<=1);}
  const centre=frameworkItems.find(item=>item.id==='near');assert.deepEqual([centre.x,centre.y,centre.z],[0,0,0]);
- assert(rendered['thesis.html'].includes('Placement is editorial, not a score'));
+ assert(rendered['thesis.html'].includes('Illustrative positioning, not a score'));
+ for(const removed of ['Front view','Depth view','Framework and competing explanations','is-orbiting','framework-sources','>HYPE<'])assert(!rendered['thesis.html'].includes(removed));
  assert.equal(topics.length,8);
  assert(!topics.some(topic=>['Revenue','Products','Ecosystem','Capital & liquidity','DeFi markets'].includes(topic.title)));
  assert(rendered['thesis.html'].indexOf('id="network"')<rendered['thesis.html'].indexOf('id="thesis-data-title"'));

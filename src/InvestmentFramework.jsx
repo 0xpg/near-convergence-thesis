@@ -1,6 +1,6 @@
-import React,{useLayoutEffect,useRef,useState} from 'react';
+import React,{useRef,useState} from 'react';
 
-const sources={
+export const frameworkSources={
   velocity:{title:'Multicoin · Understanding Token Velocity',url:'https://multicoin.capital/2017/12/08/understanding-token-velocity/'},
   routing:{title:'a16z · App-token cash flows',url:'https://a16zcrypto.com/posts/article/application-tokens-economic-model-cash-flows/'},
   near:{title:'NEAR · Evolving Tokenomics',url:'https://www.near.org/blog/evolving-near-tokenomics'},
@@ -13,7 +13,6 @@ export const frameworkItems=[
   {id:'ai',title:'AI optionality',x:-.63,y:-.43,z:-.4,claim:'The AI convergence thesis is exposure to future adoption, not evidence of current tokenholder income.',mechanism:'Prospective paid demand for execution and infrastructure.',test:'Can agent-originated activity be attributed to recurring, unsubsidised payments?',sources:['near','velocity']},
   {id:'adoption',title:'Future adoption',x:-.72,y:-.8,z:.4,claim:'Future markets may expand a network’s opportunity. The size of that opportunity does not establish who captures its economics.',mechanism:'An adoption hypothesis, not a cash-flow entitlement.',test:'Do forecasts translate into retained users and net economic receipts?',sources:['routing','velocity']},
   {id:'fees',title:'Protocol fees',x:.52,y:.78,z:-.65,claim:'Fee generation is the start of the underwriting chain. Gross fees can be shared with suppliers, partners and other recipients.',mechanism:'User payments before recipient allocation.',test:'Can gross fees be reconciled to net protocol receipts and their recipients?',sources:['routing','hype']},
-  {id:'hype',title:'HYPE',x:.78,y:.52,z:.4,claim:'Hyperliquid documents automatic Assistance Fund conversion of eligible fees into HYPE and subsequent burning. Other fees reach HLP and deployers.',mechanism:'A documented token-purchase and supply-removal route; not a dividend.',test:'Do actual conversions and burns reconcile, and do net economics persist?',sources:['hype']},
   {id:'routing',title:'Fee routing',x:.72,y:.26,z:-.3,claim:'Who receives the money matters. Protocol receipts, supplier revenue and tokenholder economics are different quantities.',mechanism:'Trace fees from payer to recipient before attributing value.',test:'Do routing contracts and receipts support the claimed allocation?',sources:['routing','near']},
   {id:'buybacks',title:'Token purchases',x:.48,y:-.4,z:.6,claim:'Purchases create demand at execution. Their duration, funding, governance and final token disposition determine the stronger investment claim.',mechanism:'Buybacks, staking and burns have different supply effects.',test:'Are purchases completed and sustained? Are tokens burned, held, staked or redeployed?',sources:['near','hype']},
   {id:'treasury',title:'Treasury discretion',x:.77,y:-.77,z:-.4,claim:'NEAR’s tokenomics description allows governance to retain or redeploy receipts. It does not guarantee a specific supply-management mechanism.',mechanism:'Reinvestment or discretionary token-directed action.',test:'Do governance decisions and executed transactions establish durable token demand?',sources:['near']},
@@ -21,29 +20,23 @@ export const frameworkItems=[
 ];
 
 export default function InvestmentFramework(){
-  const [selected,setSelected]=useState('near'),[angle,setAngle]=useState(0),[orbit,setOrbit]=useState(true),[visible,setVisible]=useState(false),[frozen,setFrozen]=useState('none');
-  const stage=useRef(),orbitElement=useRef(),drag=useRef(null),item=frameworkItems.find(item=>item.id===selected);
-  useLayoutEffect(()=>{const observer=new IntersectionObserver(([entry])=>{if(entry.isIntersecting){setVisible(true);observer.disconnect();}},{threshold:.25});observer.observe(stage.current);return()=>observer.disconnect();},[]);
-  function freeze(){if(orbit&&orbitElement.current){setFrozen(getComputedStyle(orbitElement.current).transform);setOrbit(false);}}
-  function turn(value){setOrbit(false);setAngle(Math.max(-65,Math.min(65,value)));}
-  function view(value){setFrozen('none');turn(value);}
+  const [selected,setSelected]=useState('near'),[angle,setAngle]=useState(0);
+  const drag=useRef(null),item=frameworkItems.find(item=>item.id===selected);
+  function turn(value){setAngle(Math.max(-65,Math.min(65,value)));}
   return <section className="investment-framework" aria-labelledby="framework-title">
     <header className="framework-heading"><p>Investment framework</p><h2 id="framework-title">Between network premium<br/>and token economics.</h2><p>NEAR sits at the intersection of two investment arguments. The link between them is what needs underwriting.</p></header>
     <div className="framework-layout">
       <div>
-        <div className="framework-stage" ref={stage} tabIndex="0" role="group" aria-label="Three-dimensional investment framework" aria-describedby="framework-help" onKeyDown={event=>{if(event.target!==event.currentTarget)return;if(event.key==='ArrowLeft'||event.key==='ArrowRight'){event.preventDefault();freeze();turn(angle+(event.key==='ArrowRight'?10:-10));}if(event.key==='Home'){event.preventDefault();view(0);}}} onPointerDown={event=>{if(event.target.closest('button'))return;freeze();drag.current={x:event.clientX,angle};event.currentTarget.setPointerCapture(event.pointerId);}} onPointerMove={event=>{if(drag.current&&Math.abs(event.clientX-drag.current.x)>4)turn(drag.current.angle+(event.clientX-drag.current.x)*.24);}} onPointerUp={()=>{drag.current=null;}} onPointerCancel={()=>{drag.current=null;}}>
-          <div className="framework-world" style={{transform:`rotateX(${angle===0?0:14}deg) rotateY(${angle}deg)`}}><div ref={orbitElement} className={'framework-orbit '+(orbit&&visible?'is-orbiting':'')} style={{transform:frozen}}>
+        <div className="framework-stage" tabIndex="0" role="group" aria-label="Three-dimensional investment framework" aria-describedby="framework-help" onKeyDown={event=>{if(event.target!==event.currentTarget)return;if(event.key==='ArrowLeft'||event.key==='ArrowRight'){event.preventDefault();turn(angle+(event.key==='ArrowRight'?10:-10));}if(event.key==='Home'){event.preventDefault();turn(0);}}} onPointerDown={event=>{if(event.target.closest('button'))return;drag.current={x:event.clientX,angle};event.currentTarget.setPointerCapture(event.pointerId);}} onPointerMove={event=>{if(drag.current&&Math.abs(event.clientX-drag.current.x)>4)turn(drag.current.angle+(event.clientX-drag.current.x)*.24);}} onPointerUp={()=>{drag.current=null;}} onPointerCancel={()=>{drag.current=null;}}>
+          <div className="framework-world" style={{transform:`rotateX(${Math.min(14,Math.abs(angle)*.35)}deg) rotateY(${angle}deg)`}}>
             <div className="framework-axis axis-x"/><div className="framework-axis axis-y"/><div className="framework-axis axis-z"/>
             <span className="framework-end end-left">Network premium</span><span className="framework-end end-right">Token economics</span><span className="framework-end end-top">Existing mechanisms</span><span className="framework-end end-bottom">Future expectations</span><span className="framework-end end-back">Protocol value</span><span className="framework-end end-front">Token capture</span>
-            {frameworkItems.map(point=><button key={point.id} className={'framework-term '+(point.id==='near'?'framework-near':'')} aria-expanded={selected===point.id} aria-controls="framework-detail" onClick={()=>{setSelected(point.id);freeze();}} style={{left:`${50+point.x*42}%`,top:`${50-point.y*42}%`,transform:`translate(-50%,-50%) translateZ(${point.z*100}px)`}}>{point.title}</button>)}
-          </div></div>
+            {frameworkItems.map(point=><button key={point.id} className={'framework-term '+(point.id==='near'?'framework-near':'')} aria-expanded={selected===point.id} aria-controls="framework-detail" onClick={()=>{setSelected(point.id);}} style={{left:`${50+point.x*42}%`,top:`${50-point.y*42}%`,transform:`translate(-50%,-50%) translateZ(${point.z*100}px)`}}>{point.title}</button>)}
+          </div>
         </div>
-        <div className="framework-controls" aria-label="Map views"><button onClick={()=>view(0)}>Front view</button><button onClick={()=>view(-40)}>Depth view</button><button onClick={()=>{setAngle(0);setFrozen('none');setSelected('near');setOrbit(true);}}>Reset</button></div>
-        <p id="framework-help" className="framework-note">Drag sideways to turn. Select a term to inspect it. Keyboard: left/right to turn, Home for front view.</p>
+        <p id="framework-help" className="tidal-sr">Illustrative positioning, not a score. Drag sideways to turn. Select a term to inspect it. Keyboard: left/right to turn, Home for front view.</p>
       </div>
-      <aside className="framework-detail" id="framework-detail" aria-live="polite"><p className="framework-kicker">The underwriting question</p><h3>{item.title}</h3><p>{item.claim}</p><dl><dt>Economic link</dt><dd>{item.mechanism}</dd><dt>Challenge it</dt><dd>{item.test}</dd></dl><div className="framework-sources">{item.sources.map(id=><a key={id} href={sources[id].url} target="_blank" rel="noreferrer">{sources[id].title}</a>)}</div></aside>
+      <aside className="framework-detail" id="framework-detail" aria-live="polite"><p className="framework-kicker">The underwriting question</p><h3>{item.title}</h3><p>{item.claim}</p><dl><dt>Economic link</dt><dd>{item.mechanism}</dd><dt>Challenge it</dt><dd>{item.test}</dd></dl></aside>
     </div>
-    <p className="framework-note framework-method">Qualitative research map · source descriptions reviewed 5 November 2026. Placement is editorial, not a score, valuation or ranking. The depth axis separates protocol economics from token capture. No transaction-level reconciliation is claimed.</p>
-    <details className="framework-methodology"><summary>Framework and competing explanations</summary><p>Multicoin’s velocity framework asks why users would retain a token. a16z’s fee-routing model asks which stakeholders receive economic value. Together, these distinguish a useful network from an investable token; neither framework establishes a fair price for NEAR.</p><p>NEAR’s official description allows governance-led reinvestment and discretionary supply management. Hyperliquid’s documentation describes a more automatic route to token purchases and burning. Neither mechanism alone establishes an attractive valuation. Reinvestment can also be preferable to buying or burning tokens.</p><p>To move beyond this concept map, reconcile paid activity, net protocol receipts, completed token purchases, token disposition and net issuance over the same period. Official mechanism descriptions are evidence of design, not independent verification of executed flows.</p></details>
   </section>;
 }
