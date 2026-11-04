@@ -1,0 +1,22 @@
+import assert from 'node:assert/strict';
+import {typePoint,startTypeDither} from '../src/opening/type-dither.mjs';
+const point={x:120,y:60,dx:-180,dy:90,delay:.4};
+assert.equal(typePoint(point,0).alpha,0);
+assert.deepEqual(typePoint(point,2.5),{x:120,y:60,alpha:1});
+assert.equal(typePoint(point,3.2).alpha,0);
+for(let seconds=0;seconds<4;seconds+=.02){const at=typePoint(point,seconds);assert(Number.isFinite(at.x)&&Number.isFinite(at.y));assert(at.alpha>=0&&at.alpha<=1);assert(at.x>=-60&&at.x<=120);}
+console.log('Dithered type arrives at exact glyph positions, remains bounded and fades into readable text.');
+let disconnected=false;
+globalThis.matchMedia=()=>({matches:true,addEventListener(){},removeEventListener(){}});
+globalThis.document={fonts:{status:'loaded',ready:Promise.resolve()}};
+globalThis.ResizeObserver=class{observe(){}disconnect(){disconnected=true;}};
+globalThis.cancelAnimationFrame=()=>{};
+globalThis.requestAnimationFrame=()=>{throw new Error('Reduced motion must not start a particle animation');};
+globalThis.devicePixelRatio=1;
+const heading={dataset:{},getBoundingClientRect:()=>({width:320,height:120})};
+const canvas={getContext:()=>({setTransform(){},clearRect(){}})};
+const stop=startTypeDither(canvas,heading);
+await Promise.resolve();
+assert.equal(heading.dataset.rendering,undefined);assert.equal(heading.dataset.resolved,'true');
+stop();assert(disconnected);
+console.log('Reduced motion keeps text visible without a frame loop; cleanup disconnects observation.');
