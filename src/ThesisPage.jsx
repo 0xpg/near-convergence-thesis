@@ -20,6 +20,7 @@ export default function ThesisPage(){
           <div className="thesis-resolve"><canvas ref={canvas} aria-hidden="true"/><h1 id="thesis-title" ref={heading}><span>Intelligence</span><span>meets execution.</span></h1></div>
         </div>
       </section>
+      <div className="thesis-green-chapter">
       <section className="thesis-proposition" aria-labelledby="thesis-proposition-title">
         <h2 id="thesis-proposition-title" className="tidal-sr">The convergence thesis</h2>
         <p>AI can decide what to do. Acting on those decisions is a different problem.</p>
@@ -27,6 +28,12 @@ export default function ThesisPage(){
         <p>The thesis starts with that connection. The investment case depends on whether it creates lasting demand for NEAR.</p>
       </section>
       <InvestmentFramework/>
+      <section className="thesis-proposition thesis-approach" aria-labelledby="approach-title">
+        <h2 id="approach-title">From expectations to mechanisms</h2>
+        <p>Crypto markets price expectations. We look for the mechanisms that could turn those expectations into durable token demand.</p>
+        <p>For NEAR, that means starting with the architecture: what each layer does, who uses it, and where value can flow.</p>
+      </section>
+      </div>
       <section id="network" className="thesis-network" aria-label="NEAR infrastructure map"><OverviewScene/></section>
       <DuneGlance/>
     </main>
