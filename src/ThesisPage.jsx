@@ -21,11 +21,11 @@ export default function ThesisPage(){
           <div className="thesis-resolve"><canvas ref={canvas} aria-hidden="true"/><h1 id="thesis-title" ref={heading}><span>Intelligence</span><span>meets execution.</span></h1></div>
         </div>
       </section>
-      <section className="thesis-proposition" aria-labelledby="thesis-proposition-title">
+      <section className="thesis-proposition thesis-convergence" aria-labelledby="thesis-proposition-title">
         <h2 id="thesis-proposition-title" className="tidal-sr">The convergence thesis</h2>
-        <KineticStatement text="Intelligence can choose an outcome. Execution makes it real."/>
-        <KineticStatement text="NEAR aims to connect machine intent with action across blockchain networks."/>
-        <KineticStatement text="The investment question is whether that activity creates durable token demand."/>
+        <p>AI can decide what to do. Acting on those decisions is a different problem.</p>
+        <p>NEAR’s proposition is to connect machine intent with execution across blockchain networks.</p>
+        <p>The thesis starts with that connection. The investment case depends on whether it creates lasting demand for NEAR.</p>
       </section>
       <InvestmentFramework/>
       <section className="thesis-proposition thesis-approach" aria-labelledby="approach-title">

@@ -93,3 +93,10 @@ html{scroll-behavior:smooth}.thesis-page{font-family:Saans,Arial,sans-serif;colo
 .thesis-proposition{padding-top:48px;padding-bottom:48px}.thesis-approach h2{margin-bottom:20px}
 @media(max-width:760px){.kinetic-statement{min-height:240px;margin-bottom:16px;max-width:480px}.thesis-proposition .kinetic-statement p{font-size:30px;line-height:1.15;letter-spacing:-.035em}}
 @media(prefers-reduced-motion:reduce){.kinetic-cell[data-mark=true]{display:none}}
+
+@supports(animation-timeline:view()){
+ @media(prefers-reduced-motion:no-preference){
+  .thesis-convergence>p{animation:thesis-reading linear both;animation-timeline:view();animation-range:cover 0% cover 100%}
+ }
+}
+@keyframes thesis-reading{0%{opacity:.25;filter:blur(3px);transform:translateY(16px)}25%,65%{opacity:1;filter:blur(0);transform:translateY(0)}100%{opacity:.2;filter:blur(4px);transform:translateY(-12px)}}

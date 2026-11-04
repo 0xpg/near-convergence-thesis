@@ -26,6 +26,11 @@ try{
  for(const item of frameworkItems){assert(item.claim&&item.mechanism&&item.test&&item.sources.length);for(const id of item.sources)assert.equal(new URL(frameworkSources[id].url).protocol,'https:');for(const axis of ['x','y','z'])assert(Number.isFinite(item[axis])&&Math.abs(item[axis])<=1);}
  const centre=frameworkItems.find(item=>item.id==='near');assert.deepEqual([centre.x,centre.y,centre.z],[0,0,0]);
  assert(rendered['thesis.html'].includes('Illustrative positioning, not a score'));
+ const convergence=rendered['thesis.html'].split('id="thesis-proposition-title"')[1].split('class="investment-framework"')[0];
+ assert(convergence.includes('AI can decide what to do. Acting on those decisions is a different problem.'));
+ assert(convergence.includes('NEAR’s proposition is to connect machine intent with execution across blockchain networks.'));
+ assert(!convergence.includes('kinetic-cell'));
+ assert.equal((rendered['thesis.html'].match(/class="kinetic-statement"/g)||[]).length,2);
  assert(!rendered['thesis.html'].includes('<h3>NEAR</h3>'));
  for(const removed of ['Front view','Depth view','Framework and competing explanations','is-orbiting','framework-sources','>HYPE<'])assert(!rendered['thesis.html'].includes(removed));
  assert.equal(topics.length,8);
