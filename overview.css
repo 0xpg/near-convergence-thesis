@@ -51,9 +51,9 @@ html{scroll-behavior:smooth}.thesis-page{font-family:Saans,Arial,sans-serif;colo
 .thesis-proposition p:last-child{margin-bottom:0}
 @supports(animation-timeline:view()){
  @media(prefers-reduced-motion:no-preference){
-  .thesis-proposition p{animation:thesis-reading linear both;animation-timeline:view();animation-range:entry 0% entry 100%}
+  .thesis-proposition p{animation:thesis-reading linear both;animation-timeline:view();animation-range:cover 0% cover 100%}
  }
 }
-@keyframes thesis-reading{from{opacity:.45;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+@keyframes thesis-reading{0%{opacity:.25;filter:blur(3px);transform:translateY(16px)}25%,65%{opacity:1;filter:blur(0);transform:translateY(0)}100%{opacity:.2;filter:blur(4px);transform:translateY(-12px)}}
 @media(max-width:760px){.thesis-intro{padding-top:24px;grid-template-rows:minmax(240px,1fr) auto;gap:40px}.thesis-intro-field{height:clamp(240px,36svh,320px)}.thesis-proposition{padding:88px 24px;margin-top:48px}.thesis-proposition p{margin-bottom:64px;line-height:1.28;letter-spacing:-.025em}}
 .thesis-page>.tidal-skip{z-index:9}

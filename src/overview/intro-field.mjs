@@ -15,11 +15,10 @@ export function startIntroField(canvas){
   const pen=canvas.getContext('2d');if(!pen)return()=>{};
   const preference=matchMedia('(prefers-reduced-motion: reduce)');
   const started=performance.now();
-  let frame=0,active=true,width=0,height=0;
+  let frame=0,active=true,visible=true,width=0,height=0;
   function paint(now){
-    if(!active)return;
-    const progress=preference.matches?1:clamp((now-started)/4800);
-    const time=2.4*(1-(1-progress)**3);
+    if(!active||!visible)return;
+    const time=preference.matches?2.4:(now-started)/1000*.35;
     pen.clearRect(0,0,width,height);pen.fillStyle='#416850';
     for(let row=0;row<36;row++)for(let column=0;column<96;column++){
       const point=fieldPoint(column,row,time);
@@ -29,7 +28,7 @@ export function startIntroField(canvas){
       if((row+column)%3===0){pen.globalAlpha*=.35;pen.fillRect(x+3,y+3,1,1);}
     }
     pen.globalAlpha=1;
-    if(progress<1)frame=requestAnimationFrame(paint);
+    if(!preference.matches)frame=requestAnimationFrame(paint);
   }
   function resize(){
     cancelAnimationFrame(frame);
@@ -39,6 +38,7 @@ export function startIntroField(canvas){
     pen.setTransform(dpr,0,0,dpr,0,0);paint(performance.now());
   }
   const observer=new ResizeObserver(resize);observer.observe(canvas);
+  const visibility=new IntersectionObserver(([entry])=>{visible=entry.isIntersecting;cancelAnimationFrame(frame);if(visible)paint(performance.now());});visibility.observe(canvas);
   preference.addEventListener('change',resize);resize();
-  return()=>{active=false;cancelAnimationFrame(frame);observer.disconnect();preference.removeEventListener('change',resize);};
+  return()=>{active=false;cancelAnimationFrame(frame);observer.disconnect();visibility.disconnect();preference.removeEventListener('change',resize);};
 }
