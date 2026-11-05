@@ -24,6 +24,9 @@ try{
  const {frameworkItems,frameworkSources}=await server.ssrLoadModule('/src/InvestmentFramework.jsx');
  assert.equal(new Set(frameworkItems.map(item=>item.id)).size,frameworkItems.length);
  for(const item of frameworkItems){assert(item.claim&&item.mechanism&&item.test&&item.sources.length);for(const id of item.sources)assert.equal(new URL(frameworkSources[id].url).protocol,'https:');for(const axis of ['x','y','z'])assert(Number.isFinite(item[axis])&&Math.abs(item[axis])<=1);}
+ assert(frameworkItems.some(item=>item.id==='institutional'&&item.title==='Institutional demand'));
+ assert(!rendered['thesis.html'].includes('From expectations to mechanisms'));
+ assert(!rendered['thesis.html'].includes('NEAR is centred as the hypothesis'));
  const centre=frameworkItems.find(item=>item.id==='near');assert.deepEqual([centre.x,centre.y,centre.z],[0,0,0]);
  assert(rendered['thesis.html'].includes('Illustrative positioning, not a score'));
  const convergence=rendered['thesis.html'].split('id="thesis-proposition-title"')[1].split('class="investment-framework"')[0];

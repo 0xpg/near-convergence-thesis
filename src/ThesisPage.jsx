@@ -40,7 +40,7 @@ export default function ThesisPage(){
       </section>
       <InvestmentFramework/>
       <section className="thesis-proposition thesis-approach" aria-labelledby="approach-title">
-        <h2 id="approach-title">From expectations to mechanisms</h2>
+        <h2 id="approach-title" className="tidal-sr">Research approach</h2>
         <KineticStatement text="Crypto prices expectations. We look for the mechanisms behind durable token demand."/>
         <KineticStatement text="Start with NEAR’s architecture: its layers, its users, and the path value takes."/>
       </section>
