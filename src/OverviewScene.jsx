@@ -20,7 +20,7 @@ export default function OverviewScene(){
   function choose(index,pin=false){animation.current?.select(index,pin);}
   return <div className={'tidal-page '+(selected>=0?'is-focused':'')} onKeyDown={event=>{if(event.key==='Escape'&&!event.defaultPrevented)choose(-1,true);}}>
     <header className="tidal-header"><a className="tidal-brand" href="index.html" aria-label="NEAR research home">NEAR</a><nav aria-label="Main navigation"><a href="thesis.html" aria-current="page">Thesis</a><a href="lab.html">Scenario lab</a><a href="report.html">Report</a></nav><a className="tidal-close" href="index.html">Close</a></header>
-    <div className="tidal-editorial tidal-editorial-start"><h2>From intent <br/>to action.</h2><p>Execution, cross-chain coordination and AI tooling form different parts of the NEAR stack.</p></div>
+    <div className="tidal-editorial tidal-editorial-start"><h2>The systems <br/>behind the promise.</h2><p>Execution, coordination and AI infrastructure shape how NEAR could serve consumers and machines.</p></div>
     <section id="tidal-main" className="tidal-main"><h2 className="tidal-sr">NEAR overview</h2><div className="tidal-field" ref={field}>
       <canvas ref={canvas} tabIndex="0" aria-label="Animated NEAR category map. Hover to preview a category. Click or tap to keep it open. Left and right keys select categories; Escape restores the overview."/>
       <section className="tidal-premise" aria-label="Blockchain and AI convergence">
@@ -40,7 +40,6 @@ export default function OverviewScene(){
       </section>
       <div className="tidal-topics" aria-label="NEAR overview categories">{topics.map((topic,index)=>{const angle=-Math.PI/2+index*Math.PI*2/topics.length,radius=Math.min(size.width,size.height)*.465;return <button key={topic.title} aria-pressed={selected===index} onPointerEnter={event=>{if(event.pointerType!=='touch')choose(index);}} onPointerDown={()=>choose(index,true)} onPointerLeave={()=>choose(-1)} onPointerUp={event=>{if(event.pointerType!=='mouse')choose(-1);}} onPointerCancel={()=>choose(-1)} onFocus={event=>{if(event.currentTarget.matches(':focus-visible'))choose(index);}} onBlur={()=>choose(-1)} onClick={()=>choose(index,true)} style={{left:Math.max(64,Math.min(size.width-64,size.width/2+Math.cos(angle)*radius)),top:size.height/2+Math.sin(angle)*radius}}>{topic.title}</button>;})}</div>
     </div></section>
-    <div className="tidal-editorial tidal-editorial-end"><h2>From architecture <br/>to evidence.</h2><p>Connecting these layers is the proposition. Usage, economics and token value capture need separate evidence.</p></div>
-    <footer className="tidal-footer">{selected>=0&&<button onClick={()=>choose(-1,true)}>All categories</button>}</footer>
+    <div className="tidal-editorial tidal-editorial-end"><h2>A proposition <br/>to be tested.</h2><p>The next step is to ask whether these capabilities attract sustained use, committed capital and revenue.</p></div>
   </div>;
 }

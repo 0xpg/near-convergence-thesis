@@ -6,7 +6,7 @@
 
 .tidal-premise{isolation:isolate}.tidal-premise:before{content:"";position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:168px;height:168px;border-radius:50%;background:radial-gradient(circle,#fafaf8ed 0 48%,#fafaf8b0 62%,#fafaf800 76%);z-index:-1}.tidal-footer button{font:inherit;color:inherit;min-height:28px;padding:4px 10px;background:none;border:1px solid #293b3228;border-radius:4px;cursor:pointer}.tidal-footer button:focus-visible{outline:2px solid #436851;outline-offset:2px}@media(max-width:600px){.tidal-premise:before{width:152px;height:152px}}
 
-html{scroll-behavior:smooth}.thesis-page{font-family:Saans,Arial,sans-serif;color:#20372d}.thesis-header{position:sticky;top:0;z-index:8;height:64px;background:#fafaf8f5}.thesis-intro{min-height:calc(100svh - 64px);display:flex;align-items:flex-end;padding:80px 48px 64px}.thesis-intro-copy{width:100%;max-width:1440px;margin:0 auto}.thesis-intro-copy>p{font:400 16px/1.5 Saans,Arial,sans-serif;color:#5c6861;max-width:560px;margin:0 0 28px}.thesis-resolve{position:relative}.thesis-resolve canvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}.thesis-resolve h1{font:400 clamp(76px,10.5vw,152px)/.98 Saans,Arial,sans-serif;letter-spacing:-.055em;margin:0}.thesis-resolve h1 span{display:block;white-space:nowrap;transition:opacity 250ms ease}.thesis-resolve :is(h1,h2)[data-rendering=true] span{opacity:0}.thesis-resolve :is(h1,h2)[data-resolved=true] span{opacity:1}.thesis-network{scroll-margin-top:64px;border-top:1px solid #293b3212}.thesis-network .tidal-header{display:none}.thesis-network .tidal-page{height:calc(100svh - 64px);min-height:560px;grid-template-rows:minmax(0,1fr) 36px}@media(max-width:760px){.thesis-header{height:56px}.thesis-intro{min-height:calc(100svh - 56px);padding:64px 24px}.thesis-intro-copy>p{font-size:14px;line-height:1.5;max-width:340px;margin-bottom:24px}.thesis-resolve h1{font-size:clamp(34px,11.6vw,76px);line-height:1.04;letter-spacing:-.045em}.thesis-network{scroll-margin-top:56px}.thesis-network .tidal-page{height:calc(100svh - 56px);min-height:640px}}@media(max-width:600px){.thesis-network .tidal-page{grid-template-rows:minmax(0,1fr) 40px}}@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.thesis-resolve :is(h1,h2) span{opacity:1!important;transition:none}.thesis-resolve canvas{display:none}}
+html{scroll-behavior:smooth}.thesis-page{font-family:Saans,Arial,sans-serif;color:#20372d}.thesis-header{position:sticky;top:0;z-index:8;height:64px;background:#fafaf8f5}.thesis-intro{min-height:calc(100svh - 64px);display:flex;align-items:flex-end;padding:80px 48px 64px}.thesis-intro-copy{width:100%;max-width:1440px;margin:0 auto}.thesis-intro-copy>p{font:400 16px/1.5 Saans,Arial,sans-serif;color:#5c6861;max-width:560px;margin:0 0 28px}.thesis-resolve{position:relative}.thesis-resolve canvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}.thesis-resolve h1{font:400 clamp(76px,10.5vw,152px)/.98 Saans,Arial,sans-serif;letter-spacing:-.055em;margin:0}.thesis-resolve h1 span{display:block;white-space:nowrap;transition:opacity 250ms ease}.thesis-resolve :is(h1,h2)[data-rendering=true] span{opacity:0}.thesis-resolve :is(h1,h2)[data-resolved=true] span{opacity:1}.thesis-network{scroll-margin-top:64px;border-top:1px solid #293b3212}.thesis-network .tidal-header{display:none}.thesis-network .tidal-page{height:calc(100svh - 64px);min-height:560px;grid-template-rows:minmax(0,1fr)}@media(max-width:760px){.thesis-header{height:56px}.thesis-intro{min-height:calc(100svh - 56px);padding:64px 24px}.thesis-intro-copy>p{font-size:14px;line-height:1.5;max-width:340px;margin-bottom:24px}.thesis-resolve h1{font-size:clamp(34px,11.6vw,76px);line-height:1.04;letter-spacing:-.045em}.thesis-network{scroll-margin-top:56px}.thesis-network .tidal-page{height:calc(100svh - 56px);min-height:640px}}@media(max-width:600px){.thesis-network .tidal-page{grid-template-rows:minmax(0,1fr)}}@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.thesis-resolve :is(h1,h2) span{opacity:1!important;transition:none}.thesis-resolve canvas{display:none}}
 
  .thesis-network{margin-top:clamp(96px,20svh,200px);border-top:0}
 @supports(animation-timeline:view()){
@@ -23,7 +23,7 @@ html{scroll-behavior:smooth}.thesis-page{font-family:Saans,Arial,sans-serif;colo
 .tidal-editorial p{font:400 13px/1.55 Saans,Arial,sans-serif;color:#5c6861;margin:0}
 .tidal-editorial a{display:inline-block;pointer-events:auto;font-size:11px;color:#5c6861;margin-top:16px;text-underline-offset:4px}
 .tidal-editorial-start{left:40px;top:32px}
-.tidal-editorial-end{right:40px;bottom:64px}
+.tidal-editorial-end{right:40px;bottom:24px}
 .thesis-data{max-width:1440px;margin:160px auto 0;padding:0 48px 96px}
 .thesis-data header{display:flex;align-items:baseline;justify-content:space-between;gap:24px;margin-bottom:32px}
 .thesis-data h2{font:400 clamp(28px,4vw,48px)/1.1 Saans,Arial,sans-serif;letter-spacing:-.04em;margin:0}
@@ -33,10 +33,10 @@ html{scroll-behavior:smooth}.thesis-page{font-family:Saans,Arial,sans-serif;colo
 .thesis-data-grid>div:first-child{grid-column:span 2;min-height:320px}
 .thesis-data-grid>div:last-child{grid-column:span 2}
 @media(max-width:1100px){
- .thesis-network .tidal-page{height:auto;min-height:0;grid-template-rows:auto 640px auto 40px;overflow:visible}
+ .thesis-network .tidal-page{height:auto;min-height:0;grid-template-rows:auto 640px auto;overflow:visible}
  .tidal-editorial{position:static;width:auto;margin:0 24px;pointer-events:auto}
  .tidal-editorial-start{padding:0 0 32px;max-width:300px}
- .tidal-editorial-end{padding:32px 0 48px;max-width:300px;justify-self:end}
+ .tidal-editorial-end{padding:24px 0 32px;max-width:300px;justify-self:end}
  .tidal-editorial h2{font-size:28px}.tidal-editorial h2 br{display:none}
  .thesis-data{margin-top:96px;padding:0 24px 64px}
  .thesis-data header{display:block;margin-bottom:24px}.thesis-data header p{margin-top:12px}
@@ -126,3 +126,5 @@ html{scroll-behavior:smooth}.thesis-page{font-family:Saans,Arial,sans-serif;colo
 .thesis-convergence>ul li{font-weight:500}
 @media(prefers-reduced-motion:reduce){.thesis-convergence strong.is-ink-visible{animation:none}}
 @media(forced-colors:active){.thesis-convergence strong{animation:none!important;mask-image:none;color:CanvasText}}
+
+.thesis-chapter-divider{height:48px;background-color:#173b30;background-image:radial-gradient(#b5d6be42 .75px,transparent 1px);background-size:4px 4px}

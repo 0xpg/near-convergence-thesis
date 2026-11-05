@@ -37,6 +37,10 @@ try{
  assert(convergence.includes('<strong>Given these attributes, blockchain will be pivotal'));
  assert.equal((convergence.match(/<strong>/g)||[]).length,2);
  assert(!rendered['thesis.html'].includes('<p>Investment framework</p>'));
+ assert(!rendered['thesis.html'].includes('All categories'));
+ assert(rendered['thesis.html'].includes('thesis-chapter-divider'));
+ assert(rendered['thesis.html'].includes('The systems'));
+ assert(rendered['thesis.html'].includes('A proposition'));
  assert(convergence.includes('the “killer” use case that drives blockchain adoption.'));
  assert(!convergence.includes('AI can decide what to do.'));
  assert(!convergence.includes('kinetic-cell'));

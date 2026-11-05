@@ -42,9 +42,10 @@ export default function ThesisPage(){
       <section className="thesis-proposition thesis-approach" aria-labelledby="approach-title">
         <h2 id="approach-title" className="tidal-sr">Research approach</h2>
         <KineticStatement text="Crypto prices expectations. We look for the mechanisms behind durable token demand."/>
-        <KineticStatement text="Start with NEAR’s architecture: its layers, its users, and the path value takes."/>
+        <KineticStatement text="To understand what may endure, follow the systems that turn intention into economic activity."/>
       </section>
       <section id="network" className="thesis-network" aria-label="NEAR infrastructure map"><OverviewScene/></section>
+      <div className="thesis-chapter-divider" aria-hidden="true"/>
       <DuneGlance/>
       <section className="thesis-finale" aria-labelledby="finale-title">
         <div className="thesis-finale-type"><div className="thesis-resolve"><canvas ref={closingCanvas} aria-hidden="true"/><h2 id="finale-title" ref={closing}><span>Convergence</span></h2></div></div>
