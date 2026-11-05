@@ -56,6 +56,10 @@ try{
  const {glanceCharts,glanceGroups}=await server.ssrLoadModule('/src/DuneGlance.jsx');
  assert.deepEqual(glanceCharts.map(chart=>[chart.query,chart.visualization]),[['9074769','13123658'],['9074817','13123708'],['9074920','13123827'],['9074947','13123862'],['9074882','13123784'],['9074892','13123797'],['9074985','13123905'],['9074968','13123885'],['9075009','13123927']]);
  assert(rendered['thesis.html'].includes('https://dune.com/0xpanatagama/near-economic\"'));
+ assert(!rendered['thesis.html'].includes('<a class="glance-chart"'));
+ const chartFrames=rendered['thesis.html'].match(/<iframe[^>]+Dune visualization[^>]*>/g)||[];
+ assert.equal(chartFrames.length,5);
+ for(const frame of chartFrames){assert(!frame.includes('aria-hidden'));assert(!frame.includes('tabindex="-1"'));}
  assert.equal(glanceCharts.length,9);assert.equal(new Set(glanceCharts.map(chart=>chart.id)).size,9);assert.equal(glanceGroups.length,5);
  for(const chart of glanceCharts){assert(/^\d+$/.test(chart.query)&&/^\d+$/.test(chart.visualization));assert(chart.title&&chart.description);}
  for(const group of glanceGroups){for(const id of group.chartIds)assert(glanceCharts.some(chart=>chart.id===id));const chart=glanceCharts.find(chart=>chart.id===group.chartIds[0]);assert(rendered['thesis.html'].includes('https://dune.com/queries/'+chart.query+'/'+chart.visualization));assert(rendered['thesis.html'].includes('https://dune.com/embeds/'+chart.query+'/'+chart.visualization));}

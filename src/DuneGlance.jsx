@@ -32,9 +32,9 @@ export default function DuneGlance(){
           {group.chartIds.length>1&&<div className="glance-switch" role="group" aria-label={group.title+' metrics'}>{group.chartIds.map(id=>{const option=glanceCharts.find(chart=>chart.id===id);return <button key={id} aria-pressed={chart.id===id} aria-controls={'glance-'+group.id+'-chart'} onClick={()=>setSelected(previous=>({...previous,[group.id]:id}))}>{option.tab}</button>;})}</div>}
           <p>{chart.description}</p>
         </div>
-        <a className="glance-chart" id={'glance-'+group.id+'-chart'} href={query} rel="noreferrer" aria-label={'Open '+chart.title+' query on Dune'}>
-          <iframe key={chart.id} title={chart.title+' — Dune visualization'} src={`https://dune.com/embeds/${chart.query}/${chart.visualization}`} loading="lazy" referrerPolicy="no-referrer" tabIndex="-1" aria-hidden="true"/>
-        </a>
+        <div className="glance-chart" id={'glance-'+group.id+'-chart'}>
+          <iframe key={chart.id} title={chart.title+' — Dune visualization'} src={`https://dune.com/embeds/${chart.query}/${chart.visualization}`} loading="lazy" referrerPolicy="no-referrer"/>
+        </div>
         <a className="glance-query" href={query} rel="noreferrer" aria-label={'View '+chart.title+' query on Dune'}>View query on Dune</a>
       </article>;
     })}</div>
