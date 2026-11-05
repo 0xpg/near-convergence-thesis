@@ -9,4 +9,4 @@ assert.deepEqual(observed,nodes);
 update([{target:nodes[0],isIntersecting:true}]);assert(nodes[0].visible);assert(!nodes[1].visible);
 update([{target:nodes[0],isIntersecting:false},{target:nodes[1],isIntersecting:true}]);assert(!nodes[0].visible);assert(nodes[1].visible);
 stop();assert(disconnected);
-console.log('Bold sentences animate independently on entry, reset offscreen and disconnect on cleanup.');
+console.log('Dither motion runs only while visible and disconnects on cleanup; persistent text texture is controlled by CSS.');

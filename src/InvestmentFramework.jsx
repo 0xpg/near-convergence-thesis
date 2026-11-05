@@ -25,7 +25,7 @@ export default function InvestmentFramework(){
   const stage=useRef(),world=useRef(),motion=useRef(),item=frameworkItems.find(item=>item.id===selected);
   useLayoutEffect(()=>{motion.current=startFrameworkMotion(stage.current,world.current);return()=>motion.current.destroy();},[]);
   return <section className="investment-framework" aria-labelledby="framework-title">
-    <header className="framework-heading"><p>Investment framework</p><h2 id="framework-title">Between network premium<br/>and token economics.</h2><p>NEAR sits at the intersection of two investment arguments. The link between them is what needs underwriting.</p></header>
+    <header className="framework-heading"><h2 id="framework-title">Between network premium<br/>and token economics.</h2><p>NEAR sits at the intersection of two investment arguments. The link between them is what needs underwriting.</p></header>
     <div className="framework-layout">
       <div>
         <div className="framework-stage" ref={stage} tabIndex="0" role="group" aria-label="Three-dimensional investment framework" aria-describedby="framework-help">

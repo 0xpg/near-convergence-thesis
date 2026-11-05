@@ -53,7 +53,7 @@ html{scroll-behavior:smooth}.thesis-page{font-family:Saans,Arial,sans-serif;colo
 .thesis-page>.tidal-skip{z-index:9}
 
 .investment-framework{max-width:none;margin:160px auto 0;padding:96px max(48px,calc((100vw - 1344px)/2));background:#fafaf8;color:#293b32;font-family:Saans,Arial,sans-serif}
-.framework-heading{max-width:880px}.framework-heading>p:first-child,.framework-kicker{font-size:12px;color:#5c6861;margin:0 0 20px}
+.framework-heading{max-width:880px}.framework-kicker{font-size:12px;color:#5c6861;margin:0 0 20px}
 .framework-heading h2{font:400 clamp(32px,4.5vw,64px)/1.08 Saans,Arial,sans-serif;letter-spacing:-.045em;margin:0 0 24px}
 .framework-heading>p:last-child{font-size:16px;line-height:1.55;max-width:560px;color:#5c6861;margin:0}
 .framework-layout{display:grid;grid-template-columns:minmax(0,1.8fr) minmax(240px,1fr);gap:64px;align-items:center;margin-top:64px}
@@ -120,10 +120,9 @@ html{scroll-behavior:smooth}.thesis-page{font-family:Saans,Arial,sans-serif;colo
 .thesis-convergence>ul{padding-left:1.2em}.thesis-convergence>ul li{padding-left:.2em;margin-bottom:10px}
 .thesis-convergence>p:last-child{margin-bottom:0}
 
-@property --dither-ink{syntax:"<length>";inherits:false;initial-value:2.3px}
-.thesis-convergence strong{display:block;margin-top:.6em;font-weight:600;color:#d3f6df}
-.thesis-convergence strong.is-ink-visible{mask-image:radial-gradient(circle,#000 var(--dither-ink),transparent calc(var(--dither-ink) + .1px));mask-size:3px 3px;animation:dither-ink 1400ms steps(12,end) both}
-@keyframes dither-ink{0%{--dither-ink:.45px;mask-position:0 0}45%{--dither-ink:1px}100%{--dither-ink:2.3px;mask-position:6px 6px}}
+.thesis-convergence strong{display:block;margin-top:.6em;font-weight:600;color:#d3f6df;mask-image:radial-gradient(circle,#000 .85px,#0008 1px);mask-size:3px 3px}
+.thesis-convergence strong.is-ink-visible{animation:dither-ink 1600ms steps(6,end) infinite}
+@keyframes dither-ink{from{mask-position:0 0}to{mask-position:3px 3px}}
 .thesis-convergence>ul li{font-weight:500}
-@media(prefers-reduced-motion:reduce),(forced-colors:active){.thesis-convergence strong.is-ink-visible{animation:none;mask-image:none}}
-@media(forced-colors:active){.thesis-convergence strong{color:CanvasText}}
+@media(prefers-reduced-motion:reduce){.thesis-convergence strong.is-ink-visible{animation:none}}
+@media(forced-colors:active){.thesis-convergence strong{animation:none!important;mask-image:none;color:CanvasText}}
