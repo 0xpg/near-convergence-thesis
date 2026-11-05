@@ -2,15 +2,15 @@ import React,{useState} from 'react';
 import './dune-glance.css';
 
 export const glanceCharts=[
-  {id:'defi-capital',title:'DeFi capital',tab:'TVL',query:'9012791',visualization:'13057058',description:'USD value in tracked NEAR DeFi. Changes reflect prices and balances, not net deposits.'},
-  {id:'stablecoins',title:'Stablecoins on NEAR',tab:'Stablecoins',query:'9012810',visualization:'13057075',description:'Tracked stablecoin circulation in USD. A balance measure that can overlap DeFi TVL.'},
-  {id:'intents-volume',title:'Intents trading volume',tab:'Volume',query:'9019417',visualization:'13064021',description:'Daily cross-chain trading notional. Service activity, not NEAR token demand.'},
-  {id:'intents-fees',title:'Intents gross fees',tab:'Gross fees',query:'9019419',visualization:'13064023',description:'Protocol and distribution fees in USD. Gross fees are not tokenholder revenue.'},
-  {id:'defi-mix',title:'DeFi deployment by protocol',tab:'DeFi products',query:'9013583',visualization:'13057945',description:'Balances across tracked DeFi products. Excludes bridges and staking; product overlap may remain.'},
-  {id:'stablecoin-mix',title:'Stablecoin mix',tab:'Stablecoins',query:'9013584',visualization:'13057946',description:'Tracked USD stablecoin balances. Native and bridged forms may be aggregated.'},
-  {id:'chain-mix',title:'Intents volume by blockchain',tab:'Chains',query:'9019422',visualization:'13064026',description:'Reported source-chain labels over 30 completed UTC days. This is not NEAR L1 settlement volume.'},
-  {id:'token-mix',title:'Intents volume by token',tab:'Tokens',query:'9019421',visualization:'13064025',description:'Reported token-symbol mix over 30 completed UTC days, using source-provided labels.'},
-  {id:'distribution',title:'Fees by distribution channel',tab:'Channels',query:'9019424',visualization:'13064027',description:'Affiliate and distribution fees by referral label over 30 completed UTC days. Excludes separate protocol fees.'}
+  {id:'defi-capital',title:'DeFi capital',tab:'TVL',query:'9074769',visualization:'13123658',description:'USD value in tracked NEAR DeFi. Changes reflect prices and balances, not net deposits.'},
+  {id:'stablecoins',title:'Stablecoins on NEAR',tab:'Stablecoins',query:'9074817',visualization:'13123708',description:'Tracked stablecoin circulation in USD. A balance measure that can overlap DeFi TVL.'},
+  {id:'intents-volume',title:'Intents trading volume',tab:'Volume',query:'9074920',visualization:'13123827',description:'Daily cross-chain trading notional. Service activity, not NEAR token demand.'},
+  {id:'intents-fees',title:'Intents gross fees',tab:'Gross fees',query:'9074947',visualization:'13123862',description:'Protocol and distribution fees in USD. Gross fees are not tokenholder revenue.'},
+  {id:'defi-mix',title:'DeFi deployment by protocol',tab:'DeFi products',query:'9074882',visualization:'13123784',description:'Balances across tracked DeFi products. Excludes bridges and staking; product overlap may remain.'},
+  {id:'stablecoin-mix',title:'Stablecoin mix',tab:'Stablecoins',query:'9074892',visualization:'13123797',description:'Tracked USD stablecoin balances. Native and bridged forms may be aggregated.'},
+  {id:'chain-mix',title:'Intents volume by blockchain',tab:'Chains',query:'9074985',visualization:'13123905',description:'Reported source-chain labels over 30 completed UTC days. This is not NEAR L1 settlement volume.'},
+  {id:'token-mix',title:'Intents volume by token',tab:'Tokens',query:'9074968',visualization:'13123885',description:'Reported token-symbol mix over 30 completed UTC days, using source-provided labels.'},
+  {id:'distribution',title:'Fees by distribution channel',tab:'Channels',query:'9075009',visualization:'13123927',description:'Affiliate and distribution fees by referral label over 30 completed UTC days. Excludes separate protocol fees.'}
 ];
 export const glanceGroups=[
   {id:'capital',title:'Capital on NEAR',chartIds:['defi-capital','stablecoins']},
@@ -23,7 +23,7 @@ export const glanceGroups=[
 export default function DuneGlance(){
   const [selected,setSelected]=useState({});
   return <section className="thesis-data" aria-labelledby="thesis-data-title">
-    <header><div><h2 id="thesis-data-title">NEAR at a glance</h2><p>Capital, activity and the routes connecting them.</p></div><a href="https://dune.com/0xpanatagama/near-economic-monitor" rel="noreferrer">Dune dashboard</a></header>
+    <header><div><h2 id="thesis-data-title">NEAR at a glance</h2><p>Capital, Intents activity and distribution.</p></div><a href="https://dune.com/0xpanatagama/near-economic" rel="noreferrer">Dune dashboard</a></header>
     <div className="thesis-data-grid">{glanceGroups.map(group=>{
       const chart=glanceCharts.find(chart=>chart.id===(selected[group.id]||group.chartIds[0]));
       const query=`https://dune.com/queries/${chart.query}/${chart.visualization}`;
@@ -38,6 +38,6 @@ export default function DuneGlance(){
         <a className="glance-query" href={query} rel="noreferrer" aria-label={'View '+chart.title+' query on Dune'}>View query on Dune</a>
       </article>;
     })}</div>
-    <p className="dune-freshness">Charts are served by Dune. Freshness follows each query’s latest successful execution.</p>
+    <p className="dune-freshness">Dune charts show each query’s last successful run. Open the query to inspect its results and refresh time.</p>
   </section>;
 }
