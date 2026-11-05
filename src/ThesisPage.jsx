@@ -24,9 +24,17 @@ export default function ThesisPage(){
       </section>
       <section className="thesis-proposition thesis-convergence" aria-labelledby="thesis-proposition-title">
         <h2 id="thesis-proposition-title" className="tidal-sr">The convergence thesis</h2>
-        <p>AI can decide what to do. Acting on those decisions is a different problem.</p>
-        <p>NEAR’s proposition is to connect machine intent with execution across blockchain networks.</p>
-        <p>The thesis starts with that connection. The investment case depends on whether it creates lasting demand for NEAR.</p>
+        <p>AI is a tool that helps augment human work, a co-creator that helps shape and respond to inquiries and takes on aspects of human work. The full potential of generative AI is still unfolding as offerings improve and become integrated into ever more aspects of daily life.</p>
+        <p>As its influence grows, the importance of AI as an investment driver is undeniable. To capture the AI growth opportunity today, most investors buy shares of AI-aligned companies and related verticals. We believe there are asymmetric opportunities worth exploring in the digital asset realm, especially blockchain’s facilitation of machine-to-machine transactions.</p>
+        <p>Enabling these machine-to-machine transactions requires secure, autonomous, verifiable, and high-throughput record-keeping. We believe blockchains and crypto technologies are likely to become the foundational delivery layer for these transactions based on the following attributes:</p>
+        <ul>
+          <li>Autonomous Contract Creation / Fulfillment</li>
+          <li>Decentralized Identity Verification</li>
+          <li>Auditability</li>
+          <li>Access to Decentralized Computing &amp; Data</li>
+          <li>Speed and Fulfillment</li>
+        </ul>
+        <p>Given these attributes, blockchain will be pivotal in allowing generative AI to realize its potential for consumer transactions, and the growth of agentic AI is likely to become the “killer” use case that drives blockchain adoption.</p>
       </section>
       <InvestmentFramework/>
       <section className="thesis-proposition thesis-approach" aria-labelledby="approach-title">

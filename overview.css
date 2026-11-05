@@ -115,3 +115,7 @@ html{scroll-behavior:smooth}.thesis-page{font-family:Saans,Arial,sans-serif;colo
 @media(prefers-reduced-motion:reduce){.thesis-finale-action a{transition:none}.thesis-finale-action a:active{transform:none}}
 
 .thesis-finale h2 span{display:inline-block;transition:opacity 250ms ease}
+
+.thesis-convergence>p,.thesis-convergence>ul{font:400 clamp(20px,2vw,28px)/1.5 Saans,Arial,sans-serif;letter-spacing:-.015em;max-width:1120px;margin:0 auto 36px}
+.thesis-convergence>ul{padding-left:1.2em}.thesis-convergence>ul li{padding-left:.2em;margin-bottom:10px}
+.thesis-convergence>p:last-child{margin-bottom:0}
