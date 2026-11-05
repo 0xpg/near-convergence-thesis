@@ -119,3 +119,8 @@ html{scroll-behavior:smooth}.thesis-page{font-family:Saans,Arial,sans-serif;colo
 .thesis-convergence>p,.thesis-convergence>ul{font:400 clamp(20px,2vw,28px)/1.5 Saans,Arial,sans-serif;letter-spacing:-.015em;max-width:1120px;margin:0 auto 36px}
 .thesis-convergence>ul{padding-left:1.2em}.thesis-convergence>ul li{padding-left:.2em;margin-bottom:10px}
 .thesis-convergence>p:last-child{margin-bottom:0}
+
+.thesis-convergence strong{font-weight:600;color:#c7f2da}
+@supports(background-clip:text){.thesis-convergence strong{background-image:radial-gradient(circle,#173b30 .5px,transparent .7px),linear-gradient(110deg,#b7f5d4,#f2f6ed);background-size:3px 3px,100% 100%;background-clip:text;-webkit-background-clip:text;color:transparent;box-decoration-break:clone;-webkit-box-decoration-break:clone}}
+.thesis-convergence>ul li{font-weight:500}
+@media(forced-colors:active){.thesis-convergence strong{background:none;color:CanvasText}}
