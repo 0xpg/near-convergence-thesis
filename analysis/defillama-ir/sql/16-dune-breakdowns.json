@@ -1,0 +1,173 @@
+[
+  [
+    "section",
+    "label",
+    "value",
+    "unit",
+    "share_pct",
+    "period",
+    "retrieved_utc"
+  ],
+  [
+    "Reported fee channels",
+    "swapkit",
+    "42364200.07896329",
+    "USD",
+    "73.40743573012098",
+    "All-time (provider window)",
+    "2026-11-05 15:41:18"
+  ],
+  [
+    "Reported fee channels",
+    "zodl",
+    "3268567.909593608",
+    "USD",
+    "5.663678018369427",
+    "All-time (provider window)",
+    "2026-11-05 15:41:18"
+  ],
+  [
+    "Reported fee channels",
+    "confidential intents",
+    "3109988.382535783",
+    "USD",
+    "5.388896093562335",
+    "All-time (provider window)",
+    "2026-11-05 15:41:18"
+  ],
+  [
+    "Reported fee channels",
+    "zashi",
+    "2989791.9906393643",
+    "USD",
+    "5.180623332677368",
+    "All-time (provider window)",
+    "2026-11-05 15:41:18"
+  ],
+  [
+    "Reported fee channels",
+    "near-intents.intents-referral.near",
+    "1964708.276371867",
+    "USD",
+    "3.4043885227947865",
+    "All-time (provider window)",
+    "2026-11-05 15:41:18"
+  ],
+  [
+    "Reported fee channels",
+    "Others",
+    "978150.9182083491",
+    "USD",
+    "1.6949110458571737",
+    "All-time (provider window)",
+    "2026-11-05 15:41:18"
+  ],
+  [
+    "Reported fee channels",
+    "rango",
+    "788554.910503598",
+    "USD",
+    "1.366384678680819",
+    "All-time (provider window)",
+    "2026-11-05 15:41:18"
+  ],
+  [
+    "Reported fee channels",
+    "new.intents-referral.near",
+    "600573.4044414338",
+    "USD",
+    "1.0406558723068275",
+    "All-time (provider window)",
+    "2026-11-05 15:41:18"
+  ],
+  [
+    "Reported fee channels",
+    "aurora",
+    "288737.3159312607",
+    "USD",
+    "0.500315500413205",
+    "All-time (provider window)",
+    "2026-11-05 15:41:18"
+  ],
+  [
+    "Reported fee channels",
+    "vizor",
+    "281633.71943043557",
+    "USD",
+    "0.4880065980235675",
+    "All-time (provider window)",
+    "2026-11-05 15:41:18"
+  ],
+  [
+    "Reported fee channels",
+    "solswap.intents-referral.near",
+    "226858.66943778063",
+    "USD",
+    "0.3930940078069372",
+    "All-time (provider window)",
+    "2026-11-05 15:41:18"
+  ],
+  [
+    "Reported fee channels",
+    "e1a72603-64b3-4be1-8265-8bae5970d396",
+    "207856.6932617399",
+    "USD",
+    "0.360167944237035",
+    "All-time (provider window)",
+    "2026-11-05 15:41:18"
+  ],
+  [
+    "Reported fee channels",
+    "lifi",
+    "193650.47138247648",
+    "USD",
+    "0.3355518221899741",
+    "All-time (provider window)",
+    "2026-11-05 15:41:18"
+  ],
+  [
+    "Reported fee channels",
+    "swapkit-thorswap",
+    "186519.84751722997",
+    "USD",
+    "0.32319608758084417",
+    "All-time (provider window)",
+    "2026-11-05 15:41:18"
+  ],
+  [
+    "Reported fee channels",
+    "shapeshift",
+    "131860.9052717538",
+    "USD",
+    "0.22848468544218792",
+    "All-time (provider window)",
+    "2026-11-05 15:41:18"
+  ],
+  [
+    "Reported fee channels",
+    "thorwallet",
+    "129393.97411711494",
+    "USD",
+    "0.22421005993651927",
+    "All-time (provider window)",
+    "2026-11-05 15:41:18"
+  ],
+  [
+    "Revenue wallets",
+    "Intents Revenue (fefundsadmin + 1csfundsadmin)",
+    "4254933.274689495",
+    "NEAR",
+    "90.958097584013",
+    "Last 12 months (provider window)",
+    "2026-11-05 15:41:18"
+  ],
+  [
+    "Revenue wallets",
+    "Protocol Revenue (70% Burned)",
+    "422971.5932739612",
+    "NEAR",
+    "9.041902415987002",
+    "Last 12 months (provider window)",
+    "2026-11-05 15:41:18"
+  ]
+]

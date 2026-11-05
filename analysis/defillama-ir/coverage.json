@@ -1,0 +1,32 @@
+{
+  "dashboard": "https://dune.com/0xpanatagama/near-economic",
+  "scope": "Query-first replication of the public NEAR investor-relations feeds. No new IR metrics embedded in the website.",
+  "endpoints": [
+    "https://defillama.com/api/public/near/revenue",
+    "https://defillama.com/api/public/near/ecosystem"
+  ],
+  "authentication": "Neither endpoint required credentials in the captured requests or successful Dune executions.",
+  "implemented": {
+    "Revenue": ["All-time, YTD and 30-day fees and revenue in source NEAR-equivalent units", "Daily Intents fees and protocol fees", "Daily captured Intents revenue and provider-classified protocol fee burn", "Daily emissions, cumulative fees/revenue and revenue-to-emissions ratio", "Provider-window revenue wallets"],
+    "Intents": ["Volume, fees and swap histories", "Reported all-time, daily, 7-day and 30-day counters", "Reported 1-day, 7-day and 30-day unique-user KPIs", "Reported average trade size", "Token and blockchain composition over the last 30 available completed dates", "All-time reported fee-channel breakdown"],
+    "Base chain": ["Daily transactions and 7-day/30-day averages", "Daily active accounts, monthly active accounts and 30-day new accounts", "Daily account and gas-fee histories"],
+    "Token": ["Reported price, market capitalization, circulating, total and locked supply KPIs", "Price and supply histories"],
+    "Capital context": ["Existing standard-API TVL and stablecoin histories", "Existing tracked-product and stablecoin composition charts"]
+  },
+  "not_established_by_these_APIs": [
+    "Independent verification of real people, account ownership or the provider's unique-user methodology",
+    "Executed token purchases, burns or distributable tokenholder earnings inferred from revenue classifications",
+    "Live measured TPS capacity, finality, shard and AI-agent counts from the Products tab",
+    "Automatic discovery of every current DeFi product through one Dune LiveFetch call: the tested /protocols response exceeded Dune's 4 MiB limit",
+    "An availability or schema-stability contract for the public custom IR endpoints"
+  ],
+  "source_discrepancies": [
+    "Captured totalSwaps was 34,869,884 while cumulativeSwaps was 37,643,742. Both are retained, not forced to agree.",
+    "IR native transactions for 4 November were 706,690 versus 706,698 in the separate native Dune extraction.",
+    "Revenue histories ended 3 November; native and token histories ended 4 November, despite a 5 November source update timestamp.",
+    "Channel fees, gross fees and revenue-wallet receipts use different scopes and windows. They must not be substituted for one another."
+  ],
+  "reproduce_command": "python analysis/defillama-ir/sql/build_exact_ir.py",
+  "refresh": "Rerunning the Python analysis uses frozen, hashed JSON snapshots. Executing the saved Dune SQL refreshes the public source independently; new source snapshots and execution captures need a new validation record.",
+  "validation": "Source hashes, parallel date/value arrays, finite values, unique dates/series, fee/revenue KPI reconciliation, source supply identity, 41 executed scorecard values, daily execution samples, 25 visible composition rows and the complete 18-row wallet/channel capture. No independent onchain audit claimed."
+}

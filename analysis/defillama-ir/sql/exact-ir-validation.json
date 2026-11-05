@@ -1,0 +1,99 @@
+{
+  "sources": {
+    "revenue": {
+      "url": "https://defillama.com/api/public/near/revenue",
+      "status": 200,
+      "bytes": 516861,
+      "sha256": "0c0cba74d6bec3e30bd0120921fa11c08a308d8109530a6548b731f80da09de2",
+      "keys": [
+        "metadata",
+        "fees",
+        "revenue",
+        "emissions"
+      ]
+    },
+    "ecosystem": {
+      "url": "https://defillama.com/api/public/near/ecosystem",
+      "status": 200,
+      "bytes": 905010,
+      "sha256": "0b88fbb774c7be9085cfb6385c3dde3be1d1b908b7443667b0a2db9bc3b68029",
+      "keys": [
+        "intents",
+        "ecosystem",
+        "tokenEconomics"
+      ]
+    }
+  },
+  "queries": [
+    {
+      "file": "10_ir_revenue_daily.sql",
+      "title": "NEAR IR | Revenue and emissions",
+      "notes": "NEAR-equivalent fees converted at daily prices; net receipts plus provider 70% gas-burn classification. Not tokenholder cash income or verified purchases.",
+      "sha256": "1efa3e9e747ab781cfbf2c2d1557fe4af500382401da024c58653fcc9c1dc712"
+    },
+    {
+      "file": "13_ir_ecosystem_daily.sql",
+      "title": "NEAR IR | Base-chain and token history",
+      "notes": "Different columns have different units. Account identities and locked-supply methodology remain provider-defined.",
+      "sha256": "19be5981b722f87ac41c4769ad0b928dd548106be49f95af1ed979af1d1b4e94"
+    },
+    {
+      "file": "14_ir_intents_daily.sql",
+      "title": "NEAR IR | Intents activity history",
+      "notes": "Service notional, fees and swaps are separate measures. Gaps are NULL, not zero. Unique users are in the source scorecard, not summed daily counts.",
+      "sha256": "ef139242194306e94e139e15ead74af3cb74c37c0e420d578b3fdbb847a9c50b"
+    },
+    {
+      "file": "11_ir_revenue_scorecard.sql",
+      "title": "NEAR IR | Revenue scorecard",
+      "notes": "Original API fields and formatting. Revenue is the IR accounting definition, not distributable tokenholder earnings.",
+      "sha256": "7b0645b72980753834d22c8bb269eb1f1e7eac4b38cc1c83d4a312225fed08cb"
+    },
+    {
+      "file": "12_ir_ecosystem_scorecard.sql",
+      "title": "NEAR IR | Ecosystem scorecard",
+      "notes": "Provider-reported users, swaps and supply. totalSwaps and cumulativeSwaps differ; no entity deduplication or supply-methodology reconciliation claimed.",
+      "sha256": "356d992db81b4e350cf98b5ef0081ac83607ee8bac407aa184389e9f611c8692"
+    },
+    {
+      "file": "15_ir_intents_mix.sql",
+      "title": "NEAR IR | Intents token and chain mix",
+      "notes": "Token symbols and blockchain labels are source labels. All-time referral fees remain a separate measure; never infer fee share from volume share.",
+      "sha256": "bcdf2e0c56ac505ae95a14b1f65281e89640723ca0a4c06bba628fb843a403a9"
+    },
+    {
+      "file": "16_ir_wallets_channels.sql",
+      "title": "NEAR IR | Revenue wallets and fee channels",
+      "notes": "Two independent groups with different units and windows. Channel aggregate is not interchangeable with total Intents fees. Wallet labels are provider classifications, not verified receipts.",
+      "sha256": "a3de919ec378ec16f00e9907adefd337b890317880f0f5bc64de444229c94ce7"
+    }
+  ],
+  "source_updated_utc": "2026-11-05T00:05:58.910Z",
+  "revenue_latest_date": "2026-11-03",
+  "ecosystem_latest_date": "2026-11-04",
+  "source_discrepancies": {
+    "reported_total_swaps": 34869884,
+    "reported_cumulative_swaps": 37643742,
+    "difference_swaps": 2773858,
+    "native_transactions_latest_ir": 706690,
+    "native_transactions_latest_prior_dune": 706698
+  },
+  "limits": [
+    "Public custom endpoints have no stability contract found.",
+    "Dune LiveFetch still must succeed within its 5-second timeout.",
+    "No independent receipt-level audit of the IR metrics.",
+    "Products tab is editorial content, not a quantitative API series."
+  ],
+  "executed_dune_capture_checks": {
+    "11-dune-scorecard.json": 16,
+    "12-dune-scorecard.json": 25,
+    "13-dune-sample.json": 7,
+    "14-dune-sample.json": 7,
+    "10-dune-sample.json": 7,
+    "15-dune-mix.json": {
+      "visible_sample_rows": 25,
+      "complete_capture": false
+    },
+    "16-dune-breakdowns.json": 18
+  }
+}

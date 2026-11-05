@@ -1,0 +1,56 @@
+[
+  {
+    "file": "10_ir_revenue_daily.sql",
+    "title": "NEAR IR | Revenue and emissions",
+    "notes": "NEAR-equivalent fees converted at daily prices; net receipts plus provider 70% gas-burn classification. Not tokenholder cash income or verified purchases.",
+    "query": "9077309",
+    "visualization": "13126507",
+    "chart": "13126520",
+    "fees_chart": "13126541"
+  },
+  {
+    "file": "13_ir_ecosystem_daily.sql",
+    "title": "NEAR IR | Base-chain and token history",
+    "notes": "Different columns have different units. Account identities and locked-supply methodology remain provider-defined.",
+    "query": "9077345",
+    "visualization": "13126547"
+  },
+  {
+    "file": "14_ir_intents_daily.sql",
+    "title": "NEAR IR | Intents activity history",
+    "notes": "Service notional, fees and swaps are separate measures. Gaps are NULL, not zero. Unique users are in the source scorecard, not summed daily counts.",
+    "query": "9077358",
+    "visualization": "13126564",
+    "volume_chart": "13126575",
+    "swaps_chart": "13126584",
+    "fees_chart": "13126680"
+  },
+  {
+    "file": "11_ir_revenue_scorecard.sql",
+    "title": "NEAR IR | Revenue scorecard",
+    "notes": "Original API fields and formatting. Revenue is the IR accounting definition, not distributable tokenholder earnings.",
+    "query": "9077385",
+    "visualization": "13126596"
+  },
+  {
+    "file": "12_ir_ecosystem_scorecard.sql",
+    "title": "NEAR IR | Ecosystem scorecard",
+    "notes": "Provider-reported users, swaps and supply. totalSwaps and cumulativeSwaps differ; no entity deduplication or supply-methodology reconciliation claimed.",
+    "query": "9077390",
+    "visualization": "13126601"
+  },
+  {
+    "file": "15_ir_intents_mix.sql",
+    "title": "NEAR IR | Intents token and chain mix",
+    "notes": "Token symbols and blockchain labels are source labels. All-time referral fees remain a separate measure; never infer fee share from volume share.",
+    "query": "9077418",
+    "visualization": "13126629"
+  },
+  {
+    "file": "16_ir_wallets_channels.sql",
+    "title": "NEAR IR | Revenue wallets and fee channels",
+    "notes": "Two independent groups with different units and windows. Channel aggregate is not interchangeable with total Intents fees. Wallet labels are provider classifications, not verified receipts.",
+    "query": "9077421",
+    "visualization": "13126633"
+  }
+]

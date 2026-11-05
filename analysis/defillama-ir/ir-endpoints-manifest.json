@@ -1,0 +1,25 @@
+{
+  "revenue": {
+    "url": "https://defillama.com/api/public/near/revenue",
+    "status": 200,
+    "bytes": 516861,
+    "sha256": "0c0cba74d6bec3e30bd0120921fa11c08a308d8109530a6548b731f80da09de2",
+    "keys": [
+      "metadata",
+      "fees",
+      "revenue",
+      "emissions"
+    ]
+  },
+  "ecosystem": {
+    "url": "https://defillama.com/api/public/near/ecosystem",
+    "status": 200,
+    "bytes": 905010,
+    "sha256": "0b88fbb774c7be9085cfb6385c3dde3be1d1b908b7443667b0a2db9bc3b68029",
+    "keys": [
+      "intents",
+      "ecosystem",
+      "tokenEconomics"
+    ]
+  }
+}
