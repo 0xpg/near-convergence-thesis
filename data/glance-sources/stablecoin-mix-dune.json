@@ -1,0 +1,69 @@
+{
+  "query_id": 9013584,
+  "rows": [
+    [
+      "name",
+      "value_usd",
+      "share_pct",
+      "chart_group",
+      "retrieved_utc",
+      "source_url"
+    ],
+    [
+      "USDC",
+      "88055038.27565631",
+      "68.15494663343608",
+      "USDC",
+      "2026-10-27 06:01:42",
+      "https://stablecoins.llama.fi/stablecoins?includePrices=true"
+    ],
+    [
+      "USDT",
+      "39326218.280442916",
+      "30.438647926173626",
+      "USDT",
+      "2026-10-27 06:01:42",
+      "https://stablecoins.llama.fi/stablecoins?includePrices=true"
+    ],
+    [
+      "USN",
+      "808821.4877926551",
+      "0.6260310189624287",
+      "Other",
+      "2026-10-27 06:01:42",
+      "https://stablecoins.llama.fi/stablecoins?includePrices=true"
+    ],
+    [
+      "DAI",
+      "781656.1096135009",
+      "0.6050049091981994",
+      "Other",
+      "2026-10-27 06:01:42",
+      "https://stablecoins.llama.fi/stablecoins?includePrices=true"
+    ],
+    [
+      "FRAX",
+      "225964.5068060996",
+      "0.17489741875085948",
+      "Other",
+      "2026-10-27 06:01:42",
+      "https://stablecoins.llama.fi/stablecoins?includePrices=true"
+    ],
+    [
+      "TUSD",
+      "507.83279284078384",
+      "0.00039306458293075395",
+      "Other",
+      "2026-10-27 06:01:42",
+      "https://stablecoins.llama.fi/stablecoins?includePrices=true"
+    ],
+    [
+      "BUSD",
+      "102.10399674993697",
+      "0.00007902889585678982",
+      "Other",
+      "2026-10-27 06:01:42",
+      "https://stablecoins.llama.fi/stablecoins?includePrices=true"
+    ]
+  ]
+}

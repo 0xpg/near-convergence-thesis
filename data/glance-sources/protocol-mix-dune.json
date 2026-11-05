@@ -1,0 +1,194 @@
+{
+  "query_id": 9013583,
+  "rows": [
+    [
+      "name",
+      "value_usd",
+      "share_pct",
+      "chart_group",
+      "sector",
+      "retrieved_utc",
+      "source_url"
+    ],
+    [
+      "Rhea Lend",
+      "175331629.22644952",
+      "83.72998714733147",
+      "Rhea Lend",
+      "Lending",
+      "2026-10-27 06:02:05",
+      "https://api.llama.fi/tvl/rhea-lend"
+    ],
+    [
+      "Rhea Dex",
+      "27140480.18140093",
+      "12.960993214898458",
+      "Rhea Dex",
+      "Dexs",
+      "2026-10-27 06:02:05",
+      "https://api.llama.fi/tvl/rhea-dex"
+    ],
+    [
+      "KAIO",
+      "3994658.18791",
+      "1.9076573930633969",
+      "KAIO",
+      "RWA",
+      "2026-10-27 06:02:05",
+      "https://api.llama.fi/protocol/kaio"
+    ],
+    [
+      "Jumbo Exchange",
+      "1331197.6845465004",
+      "0.6357162453197664",
+      "Jumbo Exchange",
+      "Dexs",
+      "2026-10-27 06:02:05",
+      "https://api.llama.fi/tvl/jumbo-exchange"
+    ],
+    [
+      "Templar Protocol",
+      "675514.32567",
+      "0.32259328254536607",
+      "Other",
+      "Lending",
+      "2026-10-27 06:02:05",
+      "https://api.llama.fi/protocol/templar-protocol"
+    ],
+    [
+      "DewFinance",
+      "307088.59354053816",
+      "0.14665080170465056",
+      "Other",
+      "Onchain Capital Allocator",
+      "2026-10-27 06:02:05",
+      "https://api.llama.fi/tvl/dewfinance"
+    ],
+    [
+      "Phoenix Bonds",
+      "209031.41116520352",
+      "0.09982338866905809",
+      "Other",
+      "Yield Aggregator",
+      "2026-10-27 06:02:05",
+      "https://api.llama.fi/tvl/phoenix-bonds"
+    ],
+    [
+      "DeltaTrade",
+      "197075.86235",
+      "0.09411399126567574",
+      "Other",
+      "Dexs",
+      "2026-10-27 06:02:05",
+      "https://api.llama.fi/protocol/deltatrade"
+    ],
+    [
+      "Veax CLMM",
+      "68951.04861573715",
+      "0.03292771783312544",
+      "Other",
+      "Dexs",
+      "2026-10-27 06:02:05",
+      "https://api.llama.fi/tvl/veax-clmm"
+    ],
+    [
+      "Spin Spot",
+      "61923.01418596908",
+      "0.029571465255814007",
+      "Other",
+      "Dexs",
+      "2026-10-27 06:02:05",
+      "https://api.llama.fi/tvl/spin-spot"
+    ],
+    [
+      "Tonic",
+      "35832.53040918989",
+      "0.01711190002542469",
+      "Other",
+      "Dexs",
+      "2026-10-27 06:02:05",
+      "https://api.llama.fi/tvl/tonic"
+    ],
+    [
+      "Spin DOV",
+      "30215.632757879244",
+      "0.014429538775335026",
+      "Other",
+      "Options Vault",
+      "2026-10-27 06:02:05",
+      "https://api.llama.fi/tvl/spin-dov"
+    ],
+    [
+      "Spin Perps",
+      "9794.250663313565",
+      "0.004677264939446968",
+      "Other",
+      "Derivatives",
+      "2026-10-27 06:02:05",
+      "https://api.llama.fi/tvl/spin-perps"
+    ],
+    [
+      "Roketo",
+      "5599.3753671672",
+      "0.0026739934465587474",
+      "Other",
+      "Payments",
+      "2026-10-27 06:02:05",
+      "https://api.llama.fi/tvl/roketo"
+    ],
+    [
+      "Meme Cooking",
+      "2148.920853727086",
+      "0.0010262216592467415",
+      "Other",
+      "Launchpad",
+      "2026-10-27 06:02:05",
+      "https://api.llama.fi/tvl/meme-cooking"
+    ],
+    [
+      "LazyFi",
+      "67.92384258476166",
+      "0.00003243717343933466",
+      "Other",
+      "Gaming",
+      "2026-10-27 06:02:05",
+      "https://api.llama.fi/tvl/lazyfi"
+    ],
+    [
+      "Nearlend DAO",
+      "29.30799357310836",
+      "0.000013996093779639884",
+      "Other",
+      "Lending",
+      "2026-10-27 06:02:05",
+      "https://api.llama.fi/tvl/nearlend-dao"
+    ],
+    [
+      "MoreMarkets.xyz",
+      "0",
+      "0",
+      "Other",
+      "Yield",
+      "2026-10-27 06:02:05",
+      "https://api.llama.fi/protocol/moremarkets.xyz"
+    ],
+    [
+      "NEKO",
+      "0",
+      "0",
+      "Other",
+      "Farm",
+      "2026-10-27 06:02:05",
+      "https://api.llama.fi/tvl/neko"
+    ],
+    [
+      "PembRock Finance",
+      "0",
+      "0",
+      "Other",
+      "Yield",
+      "2026-10-27 06:02:05",
+      "https://api.llama.fi/tvl/pembrock-finance"
+    ]
+  ]
+}

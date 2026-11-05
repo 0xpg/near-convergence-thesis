@@ -1,0 +1,70 @@
+[
+  {
+    "file": "capital-history.csv",
+    "url": "https://api.llama.fi/v2/historicalChainTvl/Near",
+    "retrieved_utc": "2026-10-26",
+    "sha256": "5542dd12eb5302cc1d7579be850e1d67cc22623f9fc9d69db81445b87b1efd17",
+    "additional_url": "https://stablecoins.llama.fi/stablecoincharts/Near",
+    "extraction": "CSV produced by saved capital collector: TVL=tvl; stablecoins=sum(totalCirculatingUSD values), keyed by UTC date. This bundle validates the CSV, not underlying onchain balances."
+  },
+  {
+    "file": "protocol-mix-dune.json",
+    "url": "https://dune.com/queries/9013583",
+    "retrieved_utc": "2026-10-27 06:02:05 UTC",
+    "sha256": "b5390f5083be313dc57aec26a97b350f9533a8bc904cf17f23d797645cbdc281"
+  },
+  {
+    "file": "stablecoin-mix-dune.json",
+    "url": "https://dune.com/queries/9013584",
+    "retrieved_utc": "2026-10-27 06:01:42 UTC",
+    "sha256": "f140fd9abb9b978253303e6079ade5541129d50630e5fbad040f52d35fba873d"
+  },
+  {
+    "file": "intents-volume-api.json",
+    "url": "https://api.llama.fi/summary/dexs/near-intents",
+    "retrieved_utc": "2026-10-27",
+    "sha256": "4754f34df80ffaa29440170818854fb0078cfb87195637556a6b5190d2f78763"
+  },
+  {
+    "file": "intents-fees-api.json",
+    "url": "https://api.llama.fi/summary/fees/near-intents?dataType=dailyFees",
+    "retrieved_utc": "2026-10-27",
+    "sha256": "5914871dc8deb6acf494e06b8934475b5a03930a1b788c63fcbe5995eb349cb9"
+  },
+  {
+    "file": "intents-fees-dune.json",
+    "url": "https://dune.com/queries/9019419/13064017",
+    "retrieved_utc": "2026-10-27",
+    "sha256": "ff6aeb97eec965bd5a675946b7acbd9bca542484d9a63ec16f1d6c2d7c1728da"
+  },
+  {
+    "file": "chain-mix-dune.json",
+    "url": "https://dune.com/queries/9019422/13064020",
+    "retrieved_utc": "2026-10-27 06:29:07 UTC",
+    "sha256": "f149a261141a748af3e8f4ae2630172f51e0eb930b283d8631cc1d090f0e45d9"
+  },
+  {
+    "file": "token-mix-dune.json",
+    "url": "https://dune.com/queries/9019421/13064019",
+    "retrieved_utc": "2026-10-27 06:28:53 UTC",
+    "sha256": "30295402a7ec64be09e69f62208402e9f0430b391326d23907d3d7282cce3d17"
+  },
+  {
+    "file": "referral-mix-dune.json",
+    "url": "https://dune.com/queries/9019424/13064024",
+    "retrieved_utc": "2026-10-27 06:29:34 UTC",
+    "sha256": "27c2fa258925d35a558c148ac62d428acdacf935ca0a8d0a67d08878dc029593"
+  },
+  {
+    "file": "activity-dune.json",
+    "url": "https://dune.com/queries/9075785/13124768",
+    "retrieved_utc": "2026-11-05T11:03:32.695Z",
+    "sha256": "8e9be09e541bfe232522e45c3a52c8aebb1d568a7305e8e6c68067a15eb82539"
+  },
+  {
+    "file": "supply-dune.json",
+    "url": "https://dune.com/queries/9075773/13124756",
+    "retrieved_utc": "2026-11-05T11:03:32.697Z",
+    "sha256": "d989a12576290d7908b2d26094dfa2d38045d1395d4cd1167830a18eb55a65f4"
+  }
+]

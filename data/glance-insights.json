@@ -1,0 +1,304 @@
+{
+  "version": "glance-insights-2026-11-05-v2",
+  "methodology": "Frozen observations; rerunning calculations does not refresh sources. Date cutoffs differ by metric. Current Dune embeds can differ. No causal or tokenholder-income claim.",
+  "sources": [
+    {
+      "file": "capital-history.csv",
+      "url": "https://api.llama.fi/v2/historicalChainTvl/Near",
+      "retrieved_utc": "2026-10-26",
+      "sha256": "5542dd12eb5302cc1d7579be850e1d67cc22623f9fc9d69db81445b87b1efd17",
+      "additional_url": "https://stablecoins.llama.fi/stablecoincharts/Near",
+      "extraction": "CSV produced by saved capital collector: TVL=tvl; stablecoins=sum(totalCirculatingUSD values), keyed by UTC date. This bundle validates the CSV, not underlying onchain balances."
+    },
+    {
+      "file": "protocol-mix-dune.json",
+      "url": "https://dune.com/queries/9013583",
+      "retrieved_utc": "2026-10-27 06:02:05 UTC",
+      "sha256": "b5390f5083be313dc57aec26a97b350f9533a8bc904cf17f23d797645cbdc281"
+    },
+    {
+      "file": "stablecoin-mix-dune.json",
+      "url": "https://dune.com/queries/9013584",
+      "retrieved_utc": "2026-10-27 06:01:42 UTC",
+      "sha256": "f140fd9abb9b978253303e6079ade5541129d50630e5fbad040f52d35fba873d"
+    },
+    {
+      "file": "intents-volume-api.json",
+      "url": "https://api.llama.fi/summary/dexs/near-intents",
+      "retrieved_utc": "2026-10-27",
+      "sha256": "4754f34df80ffaa29440170818854fb0078cfb87195637556a6b5190d2f78763"
+    },
+    {
+      "file": "intents-fees-api.json",
+      "url": "https://api.llama.fi/summary/fees/near-intents?dataType=dailyFees",
+      "retrieved_utc": "2026-10-27",
+      "sha256": "5914871dc8deb6acf494e06b8934475b5a03930a1b788c63fcbe5995eb349cb9"
+    },
+    {
+      "file": "intents-fees-dune.json",
+      "url": "https://dune.com/queries/9019419/13064017",
+      "retrieved_utc": "2026-10-27",
+      "sha256": "ff6aeb97eec965bd5a675946b7acbd9bca542484d9a63ec16f1d6c2d7c1728da"
+    },
+    {
+      "file": "chain-mix-dune.json",
+      "url": "https://dune.com/queries/9019422/13064020",
+      "retrieved_utc": "2026-10-27 06:29:07 UTC",
+      "sha256": "f149a261141a748af3e8f4ae2630172f51e0eb930b283d8631cc1d090f0e45d9"
+    },
+    {
+      "file": "token-mix-dune.json",
+      "url": "https://dune.com/queries/9019421/13064019",
+      "retrieved_utc": "2026-10-27 06:28:53 UTC",
+      "sha256": "30295402a7ec64be09e69f62208402e9f0430b391326d23907d3d7282cce3d17"
+    },
+    {
+      "file": "referral-mix-dune.json",
+      "url": "https://dune.com/queries/9019424/13064024",
+      "retrieved_utc": "2026-10-27 06:29:34 UTC",
+      "sha256": "27c2fa258925d35a558c148ac62d428acdacf935ca0a8d0a67d08878dc029593"
+    },
+    {
+      "file": "activity-dune.json",
+      "url": "https://dune.com/queries/9075785/13124768",
+      "retrieved_utc": "2026-11-05T11:03:32.695Z",
+      "sha256": "8e9be09e541bfe232522e45c3a52c8aebb1d568a7305e8e6c68067a15eb82539"
+    },
+    {
+      "file": "supply-dune.json",
+      "url": "https://dune.com/queries/9075773/13124756",
+      "retrieved_utc": "2026-11-05T11:03:32.697Z",
+      "sha256": "d989a12576290d7908b2d26094dfa2d38045d1395d4cd1167830a18eb55a65f4"
+    }
+  ],
+  "insights": {
+    "defi-capital": {
+      "value": "$208.9m",
+      "headline": "DeFi capital fell 9.8% over 30 days.",
+      "date": "2026-10-26 UTC snapshot",
+      "limitation": "USD changes reflect prices and balances, not net deposits. The ending date was captured intraday and may be revised.",
+      "source": "https://api.llama.fi/v2/historicalChainTvl/Near",
+      "calculation": {
+        "method": "(ending balance / starting balance - 1) × 100",
+        "start": "2026-09-26",
+        "end": "2026-10-26",
+        "start_usd": "231545869",
+        "end_usd": "208927118",
+        "change_pct": "-9.76858326071021375034766869453412705885933987446781009079460"
+      }
+    },
+    "stablecoins": {
+      "value": "$128.6m",
+      "headline": "Stablecoin circulating value rose 49.9% over 30 days.",
+      "date": "2026-10-26 UTC snapshot",
+      "limitation": "Circulating value is a balance, not transfer volume; it can overlap DeFi TVL. The ending date was captured intraday and may be revised.",
+      "source": "https://stablecoins.llama.fi/stablecoincharts/Near",
+      "calculation": {
+        "method": "(ending balance / starting balance - 1) × 100",
+        "start": "2026-09-26",
+        "end": "2026-10-26",
+        "start_usd": "85746450",
+        "end_usd": "128571019.45",
+        "change_pct": "49.9432564846707939512364651831067058752869652329629973019290"
+      }
+    },
+    "intents-volume": {
+      "value": "$4.00bn",
+      "headline": "Reported Intents volume averaged $133.3m a day.",
+      "date": "2026-09-27–2026-10-26 · 30 completed UTC days",
+      "limitation": "Cross-chain service notional, not NEAR L1 settlement or NEAR token demand.",
+      "source": "https://api.llama.fi/summary/dexs/near-intents",
+      "calculation": {
+        "method": "Sum daily volume for 30 dates; divide by 30 for daily average",
+        "start": "2026-09-27",
+        "end": "2026-10-26",
+        "volume_usd": "4000245264",
+        "daily_average_usd": "133341508.8"
+      }
+    },
+    "intents-fees": {
+      "value": "$6.38m",
+      "headline": "Reported gross service fees over 30 completed UTC days.",
+      "date": "2026-09-27–2026-10-26 · 30 completed UTC days",
+      "limitation": "Not tokenholder revenue. The saved Dune aggregate is $6.53m with an unverified reporting window; it is not a reconciled same-period comparison.",
+      "source": "https://api.llama.fi/summary/fees/near-intents?dataType=dailyFees",
+      "calculation": {
+        "method": "Sum API dailyFees for 30 completed UTC dates. Retain saved Dune aggregate separately; its reporting window is unverified.",
+        "reporting_window_verified": false,
+        "captured_daily_dates": [
+          "2025-10-27",
+          "2025-10-28",
+          "2025-10-29",
+          "2025-10-30",
+          "2025-10-31",
+          "2025-11-01",
+          "2025-11-02",
+          "2025-11-03",
+          "2025-11-04",
+          "2025-11-05",
+          "2025-11-06",
+          "2025-11-07",
+          "2025-11-08",
+          "2025-11-09",
+          "2025-11-10",
+          "2025-11-11",
+          "2025-11-12",
+          "2025-11-13",
+          "2025-11-14",
+          "2025-11-15",
+          "2025-11-16",
+          "2025-11-17",
+          "2025-11-18",
+          "2025-11-19",
+          "2025-11-20"
+        ],
+        "comparison_api_start": "2026-09-27",
+        "comparison_api_end": "2026-10-26",
+        "gross_fees_usd": "6525345.832420264",
+        "distribution_fees_usd": "6522616.915900568",
+        "protocol_fees_residual_usd": "2728.916519696",
+        "api_fees_usd": "6379351",
+        "unverified_dune_source": "https://dune.com/queries/9019419/13064017",
+        "unaligned_aggregate_difference_usd": "145994.832420264"
+      }
+    },
+    "defi-mix": {
+      "value": "96.7%",
+      "headline": "Rhea Lend and Rhea Dex account for 96.7% of tracked balances.",
+      "date": "2026-10-27 06:02:05 UTC snapshot",
+      "limitation": "Share of the tracked product roster, not unique deposited dollars; intraday composition differs from daily chain TVL.",
+      "source": "https://dune.com/queries/9013583",
+      "calculation": {
+        "method": "Sum named balances / sum all tracked balances × 100",
+        "names": [
+          "Rhea Lend",
+          "Rhea Dex"
+        ],
+        "selected_usd": "202472109.40785045",
+        "total_usd": "209401237.47772183316502",
+        "share_pct": "96.6909803622299165827400279554277745177696435721423338585013"
+      }
+    },
+    "stablecoin-mix": {
+      "value": "98.6%",
+      "headline": "USDC and USDT account for 98.6% of tracked balances.",
+      "date": "2026-10-27 06:01:42 UTC snapshot",
+      "limitation": "Price-adjusted tracked balances; native and bridged forms may be aggregated.",
+      "source": "https://dune.com/queries/9013584",
+      "calculation": {
+        "method": "Sum named balances / sum all tracked balances × 100",
+        "names": [
+          "USDC",
+          "USDT"
+        ],
+        "selected_usd": "127381256.556099226",
+        "total_usd": "129198308.59710107232081",
+        "share_pct": "98.5935945596097246451080028239440735914813064311192342637730"
+      }
+    },
+    "chain-mix": {
+      "value": "45.9%",
+      "headline": "The Ethereum label accounts for 45.9% of reported Intents volume.",
+      "date": "2026-09-27–2026-10-26 · 30 completed UTC days",
+      "limitation": "Provider chain labels, not proof of NEAR L1 settlement or independent users.",
+      "source": "https://dune.com/queries/9019422/13064020",
+      "calculation": {
+        "method": "Sum named labels / sum all labels × 100",
+        "names": [
+          "eth"
+        ],
+        "start": "2026-09-27",
+        "end": "2026-10-26",
+        "selected_usd": "1835167314.243033",
+        "total_usd": "4000245263.40417918",
+        "share_pct": "45.8763699074121062035104268536927063296479933819753052342350"
+      }
+    },
+    "token-mix": {
+      "value": "63.3%",
+      "headline": "USDT and USDC account for 63.3% of reported Intents volume.",
+      "date": "2026-09-27–2026-10-26 · 30 completed UTC days",
+      "limitation": "Provider token-symbol labels may combine distinct assets or contracts.",
+      "source": "https://dune.com/queries/9019421/13064019",
+      "calculation": {
+        "method": "Sum named labels / sum all labels × 100",
+        "names": [
+          "USDT",
+          "USDC"
+        ],
+        "start": "2026-09-27",
+        "end": "2026-10-26",
+        "selected_usd": "2530631723.4240155",
+        "total_usd": "4000245263.404175448",
+        "share_pct": "63.2619141274969963050941490233655774811681728760465110922581"
+      }
+    },
+    "distribution": {
+      "value": "56.8%",
+      "headline": "The swapkit label accounts for 56.8% of distribution fees.",
+      "date": "2026-09-27–2026-10-26 · 30 completed UTC days",
+      "limitation": "Fee share, not volume or user share. Referral labels are not beneficial-owner identities; excludes separate protocol fees.",
+      "source": "https://dune.com/queries/9019424/13064024",
+      "calculation": {
+        "method": "Sum named labels / sum all labels × 100",
+        "names": [
+          "swapkit"
+        ],
+        "start": "2026-09-27",
+        "end": "2026-10-26",
+        "selected_usd": "3706085.999382995",
+        "total_usd": "6522616.915900567610",
+        "share_pct": "56.8190045064343848421552067220982972956375136465297473182974"
+      }
+    },
+    "base-activity": {
+      "value": "596,970",
+      "headline": "Observed transactions per day across seven completed UTC dates.",
+      "date": "2026-10-29–2026-11-04 · 7 completed UTC days",
+      "limitation": "Receipt-date transaction counts include all outcomes. A transaction can appear on multiple dates; origin accounts include relayers, not people.",
+      "source": "https://dune.com/queries/9075785/13124768",
+      "calculation": {
+        "method": "Deduplicate transaction hashes per receipt-execution date; average seven daily counts",
+        "start": "2026-10-29",
+        "end": "2026-11-04",
+        "daily_average_transactions": "596970",
+        "daily_transactions": {
+          "2026-10-29": "649105",
+          "2026-10-30": "691428",
+          "2026-10-31": "502650",
+          "2026-11-01": "509356",
+          "2026-11-02": "522365",
+          "2026-11-03": "597188",
+          "2026-11-04": "706698"
+        },
+        "latest_transactions": "706698",
+        "latest_origin_accounts": "79164",
+        "missing_origin_transactions": 0,
+        "inconsistent_origin_transactions": 0
+      }
+    },
+    "total-supply": {
+      "value": "1.311bn NEAR",
+      "headline": "Total native supply at the observed finalized block.",
+      "date": "2026-11-05T10:56:32+00:00",
+      "limitation": "Total supply is not circulating, unlocked or liquid supply. One RPC observation; no independent provider reconciliation.",
+      "source": "https://dune.com/queries/9075773/13124756",
+      "calculation": {
+        "method": "Finalized block header total_supply / 10^24; pin block_id to reproduce",
+        "block_height": "223156404",
+        "block_hash": "8gZsuGk7ArSP8bfnzBNPpUy8TEmpLst3RiMjRtAVTP7L",
+        "timestamp_nanosec": "1793876192989704205",
+        "total_supply_yoctonear": "1310884624973014749817910636802365",
+        "total_supply_near": "1310884624.973014749817910636802365",
+        "pinned_rpc_request": {
+          "jsonrpc": "2.0",
+          "id": "token-overview",
+          "method": "block",
+          "params": {
+            "block_id": 223156404
+          }
+        }
+      }
+    }
+  }
+}

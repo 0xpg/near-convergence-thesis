@@ -1,0 +1,22 @@
+{
+  "rows": [
+    [
+      "block_hash",
+      "block_height",
+      "timestamp_nanosec",
+      "total_supply_yoctonear",
+      "total_supply_near",
+      "rpc_error"
+    ],
+    [
+      "8gZsuGk7ArSP8bfnzBNPpUy8TEmpLst3RiMjRtAVTP7L",
+      "223156404",
+      "1793876192989704205",
+      "1310884624973014749817910636802365",
+      "1310884624.9730148",
+      ""
+    ]
+  ],
+  "url": "https://dune.com/queries/9075773/13124756",
+  "captured_utc": "2026-11-05T11:03:32.697Z"
+}
