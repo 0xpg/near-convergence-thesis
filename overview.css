@@ -120,7 +120,10 @@ html{scroll-behavior:smooth}.thesis-page{font-family:Saans,Arial,sans-serif;colo
 .thesis-convergence>ul{padding-left:1.2em}.thesis-convergence>ul li{padding-left:.2em;margin-bottom:10px}
 .thesis-convergence>p:last-child{margin-bottom:0}
 
-.thesis-convergence strong{font-weight:600;color:#c7f2da}
-@supports(background-clip:text){.thesis-convergence strong{background-image:radial-gradient(circle,#173b30 .5px,transparent .7px),linear-gradient(110deg,#b7f5d4,#f2f6ed);background-size:3px 3px,100% 100%;background-clip:text;-webkit-background-clip:text;color:transparent;box-decoration-break:clone;-webkit-box-decoration-break:clone}}
+@property --dither-ink{syntax:"<length>";inherits:false;initial-value:2.3px}
+.thesis-convergence strong{display:block;margin-top:.6em;font-weight:600;color:#d3f6df}
+.thesis-convergence strong.is-ink-visible{mask-image:radial-gradient(circle,#000 var(--dither-ink),transparent calc(var(--dither-ink) + .1px));mask-size:3px 3px;animation:dither-ink 1400ms steps(12,end) both}
+@keyframes dither-ink{0%{--dither-ink:.45px;mask-position:0 0}45%{--dither-ink:1px}100%{--dither-ink:2.3px;mask-position:6px 6px}}
 .thesis-convergence>ul li{font-weight:500}
-@media(forced-colors:active){.thesis-convergence strong{background:none;color:CanvasText}}
+@media(prefers-reduced-motion:reduce),(forced-colors:active){.thesis-convergence strong.is-ink-visible{animation:none;mask-image:none}}
+@media(forced-colors:active){.thesis-convergence strong{color:CanvasText}}

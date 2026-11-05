@@ -27,10 +27,13 @@ try{
  const centre=frameworkItems.find(item=>item.id==='near');assert.deepEqual([centre.x,centre.y,centre.z],[0,0,0]);
  assert(rendered['thesis.html'].includes('Illustrative positioning, not a score'));
  const convergence=rendered['thesis.html'].split('id="thesis-proposition-title"')[1].split('class="investment-framework"')[0];
- assert(convergence.includes('AI is a tool that helps <strong>augment human work</strong>'));
- assert(convergence.includes('blockchain’s facilitation of <strong>machine-to-machine transactions</strong>'));
+ assert(convergence.includes('AI is a tool that helps augment human work'));
+ assert(convergence.includes('blockchain’s facilitation of machine-to-machine transactions'));
  assert.equal((convergence.match(/<li>/g)||[]).length,5);
- assert(convergence.includes('the <strong>“killer” use case</strong> that drives blockchain adoption.'));
+ assert(convergence.includes('<strong>We believe there are asymmetric opportunities'));
+ assert(convergence.includes('<strong>Given these attributes, blockchain will be pivotal'));
+ assert.equal((convergence.match(/<strong>/g)||[]).length,2);
+ assert(convergence.includes('the “killer” use case that drives blockchain adoption.'));
  assert(!convergence.includes('AI can decide what to do.'));
  assert(!convergence.includes('kinetic-cell'));
  assert.equal((rendered['thesis.html'].match(/class="kinetic-statement"/g)||[]).length,2);

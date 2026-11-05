@@ -1,0 +1,12 @@
+import assert from 'node:assert/strict';
+import {startDitherEmphasis} from '../src/overview/dither-emphasis.mjs';
+let update,disconnected=false;const observed=[];
+globalThis.IntersectionObserver=class{constructor(callback,options){update=callback;assert.equal(options.threshold,.25);}observe(target){observed.push(target);}disconnect(){disconnected=true;}};
+const nodes=[0,1].map(()=>({visible:false,classList:{toggle(name,on){assert.equal(name,'is-ink-visible');nodes[this.index].visible=on;},index:0}}));
+nodes.forEach((node,index)=>node.classList.index=index);
+const stop=startDitherEmphasis({querySelectorAll:selector=>{assert.equal(selector,'strong');return nodes;}});
+assert.deepEqual(observed,nodes);
+update([{target:nodes[0],isIntersecting:true}]);assert(nodes[0].visible);assert(!nodes[1].visible);
+update([{target:nodes[0],isIntersecting:false},{target:nodes[1],isIntersecting:true}]);assert(!nodes[0].visible);assert(nodes[1].visible);
+stop();assert(disconnected);
+console.log('Bold sentences animate independently on entry, reset offscreen and disconnect on cleanup.');
