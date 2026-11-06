@@ -1,0 +1,360 @@
+{
+  "dashboard": "https://dune.com/0xpanatagama/near-economic",
+  "reviewed_on": "2026-11-06",
+  "status": "saved; checked after reload",
+  "website_changed": false,
+  "refresh": "Saved query results have independent execution times; rerun to refresh. Source feeds can lag.",
+  "visualizations": [
+    {
+      "query": "9074882",
+      "visualization": "13123784",
+      "title": "DeFi Deployment by ProtocolNEAR Economic",
+      "column": "Revenue & capital",
+      "layout": {
+        "height": 424,
+        "index": 0,
+        "width": 625,
+        "x": 281,
+        "y": 4526
+      }
+    },
+    {
+      "query": "9074892",
+      "visualization": "13123797",
+      "title": "Stablecoin MixNEAR Economic",
+      "column": "Revenue & capital",
+      "layout": {
+        "height": 424,
+        "index": 1,
+        "width": 625,
+        "x": 281,
+        "y": 4974
+      }
+    },
+    {
+      "query": "9077309",
+      "visualization": "13129719",
+      "title": "Cumulative fees and captured revenue · NEARNEAR IR | Revenue and emissions",
+      "column": "Revenue & capital",
+      "layout": {
+        "height": 424,
+        "index": 2,
+        "width": 625,
+        "x": 281,
+        "y": 942
+      }
+    },
+    {
+      "query": "9077345",
+      "visualization": "13129732",
+      "title": "Daily active accountsNEAR IR | Base-chain and token history",
+      "column": "Ecosystem & Intents",
+      "layout": {
+        "height": 200,
+        "index": 3,
+        "width": 625,
+        "x": 930,
+        "y": 494
+      }
+    },
+    {
+      "query": "9077309",
+      "visualization": "13129736",
+      "title": "Fee sources · Intents and protocolNEAR IR | Revenue and emissions",
+      "column": "Revenue & capital",
+      "layout": {
+        "height": 424,
+        "index": 4,
+        "width": 625,
+        "x": 281,
+        "y": 1390
+      }
+    },
+    {
+      "query": "9077345",
+      "visualization": "13129757",
+      "title": "NEAR priceNEAR IR | Base-chain and token history",
+      "column": "Ecosystem & Intents",
+      "layout": {
+        "height": 200,
+        "index": 5,
+        "width": 625,
+        "x": 930,
+        "y": 718
+      }
+    },
+    {
+      "query": "9077309",
+      "visualization": "13129739",
+      "title": "Revenue components · receipts and gas burnNEAR IR | Revenue and emissions",
+      "column": "Revenue & capital",
+      "layout": {
+        "height": 424,
+        "index": 6,
+        "width": 625,
+        "x": 281,
+        "y": 1838
+      }
+    },
+    {
+      "query": "9077345",
+      "visualization": "13129731",
+      "title": "Daily transactionsNEAR IR | Base-chain and token history",
+      "column": "Ecosystem & Intents",
+      "layout": {
+        "height": 200,
+        "index": 7,
+        "width": 625,
+        "x": 930,
+        "y": 942
+      }
+    },
+    {
+      "query": "9077309",
+      "visualization": "13126520",
+      "title": "Revenue versus emissions · NEARNEAR IR | Revenue and emissions",
+      "column": "Revenue & capital",
+      "layout": {
+        "height": 424,
+        "index": 8,
+        "width": 625,
+        "x": 281,
+        "y": 2734
+      }
+    },
+    {
+      "query": "9077309",
+      "visualization": "13126541",
+      "title": "Fees versus captured revenue · NEARNEAR IR | Revenue and emissions",
+      "column": "Revenue & capital",
+      "layout": {
+        "height": 424,
+        "index": 9,
+        "width": 625,
+        "x": 281,
+        "y": 3182
+      }
+    },
+    {
+      "query": "9077345",
+      "visualization": "13129713",
+      "title": "Base-chain transactions · dailyNEAR IR | Base-chain and token history",
+      "column": "Ecosystem & Intents",
+      "layout": {
+        "height": 424,
+        "index": 10,
+        "width": 625,
+        "x": 930,
+        "y": 2062
+      }
+    },
+    {
+      "query": "9077345",
+      "visualization": "13129714",
+      "title": "Active and new accounts · dailyNEAR IR | Base-chain and token history",
+      "column": "Ecosystem & Intents",
+      "layout": {
+        "height": 424,
+        "index": 11,
+        "width": 625,
+        "x": 930,
+        "y": 2510
+      }
+    },
+    {
+      "query": "9077345",
+      "visualization": "13129717",
+      "title": "Total and circulating supply · NEARNEAR IR | Base-chain and token history",
+      "column": "Ecosystem & Intents",
+      "layout": {
+        "height": 424,
+        "index": 12,
+        "width": 625,
+        "x": 930,
+        "y": 2958
+      }
+    },
+    {
+      "query": "9077358",
+      "visualization": "13126575",
+      "title": "Intents volume · USDNEAR IR | Intents activity history",
+      "column": "Ecosystem & Intents",
+      "layout": {
+        "height": 424,
+        "index": 13,
+        "width": 625,
+        "x": 930,
+        "y": 3406
+      }
+    },
+    {
+      "query": "9077358",
+      "visualization": "13126584",
+      "title": "Intents swaps · dailyNEAR IR | Intents activity history",
+      "column": "Ecosystem & Intents",
+      "layout": {
+        "height": 424,
+        "index": 14,
+        "width": 625,
+        "x": 930,
+        "y": 3854
+      }
+    },
+    {
+      "query": "9077358",
+      "visualization": "13126680",
+      "title": "Intents fees · USDNEAR IR | Intents activity history",
+      "column": "Ecosystem & Intents",
+      "layout": {
+        "height": 424,
+        "index": 15,
+        "width": 625,
+        "x": 930,
+        "y": 4302
+      }
+    },
+    {
+      "query": "9074769",
+      "visualization": "13123658",
+      "title": "DeFi Capital on NEARNEAR Economic",
+      "column": "Revenue & capital",
+      "layout": {
+        "height": 424,
+        "index": 16,
+        "width": 625,
+        "x": 281,
+        "y": 3630
+      }
+    },
+    {
+      "query": "9074817",
+      "visualization": "13123708",
+      "title": "Stablecoin Capital on NEARNEAR Economic",
+      "column": "Revenue & capital",
+      "layout": {
+        "height": 424,
+        "index": 17,
+        "width": 625,
+        "x": 281,
+        "y": 4078
+      }
+    },
+    {
+      "query": "9080248",
+      "visualization": "13129747",
+      "title": "Revenue mix · last 12 monthsNEAR IR | Revenue wallet composition",
+      "column": "Revenue & capital",
+      "layout": {
+        "height": 424,
+        "index": 18,
+        "width": 625,
+        "x": 281,
+        "y": 5422
+      }
+    },
+    {
+      "query": "9080255",
+      "visualization": "13129759",
+      "title": "Intents fee channels · all time USDNEAR IR | Intents fee channels",
+      "column": "Ecosystem & Intents",
+      "layout": {
+        "height": 424,
+        "index": 19,
+        "width": 625,
+        "x": 930,
+        "y": 4750
+      }
+    },
+    {
+      "query": "9080261",
+      "visualization": "13129769",
+      "title": "Intents blockchain mix · last 30 source datesNEAR IR | Intents blockchain mix",
+      "column": "Ecosystem & Intents",
+      "layout": {
+        "height": 424,
+        "index": 20,
+        "width": 625,
+        "x": 930,
+        "y": 5646
+      }
+    },
+    {
+      "query": "9077345",
+      "visualization": "13129715",
+      "title": "Base-chain gas fees · NEARNEAR IR | Base-chain and token history",
+      "column": "Ecosystem & Intents",
+      "layout": {
+        "height": 424,
+        "index": 21,
+        "width": 625,
+        "x": 930,
+        "y": 5198
+      }
+    },
+    {
+      "query": "9080259",
+      "visualization": "13129763",
+      "title": "Intents token mix · last 30 source datesNEAR IR | Intents token mix",
+      "column": "Ecosystem & Intents",
+      "layout": {
+        "height": 424,
+        "index": 22,
+        "width": 625,
+        "x": 930,
+        "y": 1614
+      }
+    },
+    {
+      "query": "9077345",
+      "visualization": "13129716",
+      "title": "NEAR price · USDNEAR IR | Base-chain and token history",
+      "column": "Ecosystem & Intents",
+      "layout": {
+        "height": 424,
+        "index": 23,
+        "width": 625,
+        "x": 930,
+        "y": 1166
+      }
+    },
+    {
+      "query": "9077309",
+      "visualization": "13129722",
+      "title": "Captured revenue · all timeNEAR IR | Revenue and emissions",
+      "column": "Revenue & capital",
+      "layout": {
+        "height": 200,
+        "index": 24,
+        "width": 625,
+        "x": 281,
+        "y": 494
+      }
+    },
+    {
+      "query": "9077309",
+      "visualization": "13129725",
+      "title": "Total fees · all timeNEAR IR | Revenue and emissions",
+      "column": "Revenue & capital",
+      "layout": {
+        "height": 200,
+        "index": 25,
+        "width": 625,
+        "x": 281,
+        "y": 718
+      }
+    },
+    {
+      "query": "9077309",
+      "visualization": "13129720",
+      "title": "Revenue coverage of emissions · %NEAR IR | Revenue and emissions",
+      "column": "Revenue & capital",
+      "layout": {
+        "height": 424,
+        "index": 26,
+        "width": 625,
+        "x": 281,
+        "y": 2286
+      }
+    }
+  ]
+}

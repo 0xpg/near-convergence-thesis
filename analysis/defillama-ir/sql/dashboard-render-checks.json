@@ -1,0 +1,190 @@
+{
+  "reviewed_on": "2026-11-06",
+  "charts": [
+    {
+      "index": 0,
+      "href": "/queries/9074882/13123784",
+      "tables": 0,
+      "error": false
+    },
+    {
+      "index": 1,
+      "href": "/queries/9074892/13123797",
+      "tables": 0,
+      "error": false
+    },
+    {
+      "index": 2,
+      "href": "/queries/9077309/13129719",
+      "tables": 0,
+      "error": false
+    },
+    {
+      "index": 3,
+      "href": "/queries/9077345/13129732",
+      "tables": 0,
+      "error": false
+    },
+    {
+      "index": 4,
+      "href": "/queries/9077309/13129736",
+      "tables": 0,
+      "error": false
+    },
+    {
+      "index": 5,
+      "href": "/queries/9077345/13129757",
+      "tables": 0,
+      "error": false
+    },
+    {
+      "index": 6,
+      "href": "/queries/9077309/13129739",
+      "tables": 0,
+      "error": false
+    },
+    {
+      "index": 7,
+      "href": "/queries/9077345/13129731",
+      "tables": 0,
+      "error": false
+    },
+    {
+      "index": 8,
+      "href": "/queries/9077309/13126520",
+      "tables": 0,
+      "error": false
+    },
+    {
+      "index": 9,
+      "href": "/queries/9077309/13126541",
+      "tables": 0,
+      "error": false
+    },
+    {
+      "index": 10,
+      "href": "/queries/9077345/13129713",
+      "tables": 0,
+      "error": false
+    },
+    {
+      "index": 11,
+      "href": "/queries/9077345/13129714",
+      "tables": 0,
+      "error": false
+    },
+    {
+      "index": 12,
+      "href": "/queries/9077345/13129717",
+      "tables": 0,
+      "error": false
+    },
+    {
+      "index": 13,
+      "href": "/queries/9077358/13126575",
+      "tables": 0,
+      "error": false
+    },
+    {
+      "index": 14,
+      "href": "/queries/9077358/13126584",
+      "tables": 0,
+      "error": false
+    },
+    {
+      "index": 15,
+      "href": "/queries/9077358/13126680",
+      "tables": 0,
+      "error": false
+    },
+    {
+      "index": 16,
+      "href": "/queries/9074769/13123658",
+      "tables": 0,
+      "error": false
+    },
+    {
+      "index": 17,
+      "href": "/queries/9074817/13123708",
+      "tables": 0,
+      "error": false
+    },
+    {
+      "index": 18,
+      "href": "/queries/9080248/13129747",
+      "tables": 0,
+      "error": false
+    },
+    {
+      "index": 19,
+      "href": "/queries/9080255/13129759",
+      "tables": 0,
+      "error": false
+    },
+    {
+      "index": 20,
+      "href": "/queries/9080261/13129769",
+      "tables": 0,
+      "error": false
+    },
+    {
+      "index": 21,
+      "href": "/queries/9077345/13129715",
+      "tables": 0,
+      "error": false
+    },
+    {
+      "index": 22,
+      "href": "/queries/9080259/13129763",
+      "tables": 0,
+      "error": false
+    },
+    {
+      "index": 23,
+      "href": "/queries/9077345/13129716",
+      "tables": 0,
+      "error": false
+    },
+    {
+      "index": 24,
+      "href": "/queries/9077309/13129722",
+      "tables": 0,
+      "error": false
+    },
+    {
+      "index": 25,
+      "href": "/queries/9077309/13129725",
+      "tables": 0,
+      "error": false
+    },
+    {
+      "index": 26,
+      "href": "/queries/9077309/13129720",
+      "tables": 0,
+      "error": false
+    }
+  ],
+  "interactions": {
+    "transactions_range": "7D changed visible window to 28 Oct–4 Nov 2026; All restored",
+    "account_legend": "One series hidden and restored"
+  },
+  "limits": [
+    "Rendered chart checks do not independently verify the provider onchain accounting.",
+    "Query refresh times and data cutoffs differ."
+  ],
+  "responsive": {
+    "desktop": {
+      "width": 1600,
+      "height": 900,
+      "widgets": 30,
+      "charts": 27,
+      "columns": 2
+    },
+    "mobile": {
+      "width": 390,
+      "height": 844,
+      "horizontal_overflow": false,
+      "notes_fit": true
+    }
+  }
+}

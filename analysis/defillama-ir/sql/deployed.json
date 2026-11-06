@@ -52,5 +52,33 @@
     "notes": "Two independent groups with different units and windows. Channel aggregate is not interchangeable with total Intents fees. Wallet labels are provider classifications, not verified receipts.",
     "query": "9077421",
     "visualization": "13126633"
+  },
+  {
+    "file": "17_ir_revenue_wallet_mix.sql",
+    "title": "NEAR IR | Revenue wallet composition",
+    "query": "9080248",
+    "visualization": "13129747",
+    "notes": "Last 12 months, NEAR equivalents; provider accounting, not tokenholder distributions. Reuses query 9077421."
+  },
+  {
+    "file": "18_ir_fee_channel_mix.sql",
+    "title": "NEAR IR | Intents fee channels",
+    "query": "9080255",
+    "visualization": "13129759",
+    "notes": "All-time referral fees in USD; source window and total differ from total Intents fees. Reuses query 9077421."
+  },
+  {
+    "file": "19_ir_token_mix.sql",
+    "title": "NEAR IR | Intents token mix",
+    "query": "9080259",
+    "visualization": "13129763",
+    "notes": "Token dimension only, last 30 available dates. Reuses query 9077418."
+  },
+  {
+    "file": "20_ir_blockchain_mix.sql",
+    "title": "NEAR IR | Intents blockchain mix",
+    "query": "9080261",
+    "visualization": "13129769",
+    "notes": "Blockchain dimension only; not additive with token volume. Reuses query 9077418."
   }
 ]
