@@ -38,23 +38,39 @@ export const glanceGroups=[
   {id:'distribution',title:'Distribution',chartIds:['ir-channels']}
 ];
 
-export default function DuneGlance(){
+const categories={capital:'Liquidity',revenue:'Economics',issuance:'Economics',network:'Network',token:'Market',activity:'Intents',composition:'Liquidity',reach:'Intents',distribution:'Intents'};
+
+const takeaways={
+  capital:'Stablecoin balances expanded while DeFi TVL contracted over the same 30 days. More transferable capital has not yet translated into a larger DeFi capital base.',
+  revenue:'Intents generated 87.3% of cumulative fees in the source history. Cross-chain services sit at the centre of the observed fee base; how much value NEAR retains becomes the investment question.',
+  issuance:'Captured revenue covered 16.4% of issuance across the observed 30 days. The revenue-linked argument still depends on substantial expansion in paid demand.',
+  network:'A busy base chain can support distribution without generating large gas receipts. The stronger economic case would pair sustained activity with growing demand for higher-value services.',
+  token:'The market prices the network’s future before that future is earned. Sustained service revenue would give investors a firmer basis for judging how much of that expectation is justified.',
+  activity:'Intents gives NEAR a route to serve trading across networks, beyond its own DeFi capital base. The next test is whether that reach supports recurring fees and lasting token demand.',
+  composition:'Rhea Lend and Rhea Dex hold 96.7% of tracked product balances. DeFi traction is concentrated: expansion across more products would make the capital base less dependent on a single ecosystem franchise.',
+  reach:'ETH and USDT are the largest labels in their respective Intents volume mixes. NEAR’s opportunity includes coordinating capital already held elsewhere, rather than requiring every user to migrate assets.',
+  distribution:'The swapkit label accounts for 73.4% of reported channel fees across the source history. Distribution is economically important, but dependence on a leading channel makes retention and bargaining power central to the case.'
+};
+
+export default function DuneGlance({insights=evidence.insights}={}){
   const [selected,setSelected]=useState({});
   return <section className="thesis-data" aria-labelledby="thesis-data-title">
     <header><div><h2 id="thesis-data-title">NEAR at a glance</h2><p>Activity, capital and the economics connecting them.</p></div><a href="https://dune.com/0xpanatagama/near-economic" rel="noreferrer">Dune dashboard</a></header>
     <div className="thesis-data-grid">{glanceGroups.map(group=>{
       const chart=glanceCharts.find(chart=>chart.id===(selected[group.id]||group.chartIds[0]));
-      const insight=evidence.insights[chart.id];
+      const insight=insights[chart.id];
       const query=`https://dune.com/queries/${chart.query}/${chart.visualization}`;
       return <article className={'glance-tile glance-'+group.id} key={group.id} aria-labelledby={'glance-'+group.id+'-title'}>
-        <div className="glance-tile-head"><h3 id={'glance-'+group.id+'-title'}>{group.title}</h3>
+        <div className="glance-tile-head"><span className="glance-category">{categories[group.id]}</span><h3 id={'glance-'+group.id+'-title'}>{group.title}</h3>
           {group.chartIds.length>1&&<div className="glance-switch" role="group" aria-label={group.title+' metrics'}>{group.chartIds.map(id=>{const option=glanceCharts.find(chart=>chart.id===id);return <button key={id} aria-pressed={chart.id===id} aria-controls={'glance-'+group.id+'-chart'} onClick={()=>setSelected(previous=>({...previous,[group.id]:id}))}>{option.tab}</button>;})}</div>}
-          {insight?<div className="glance-insight" aria-live="polite"><strong>{insight.value}</strong><p className="glance-observation">{insight.headline}</p><details><summary>Evidence & calculation</summary><p>{insight.date}</p><p>{chart.description} {insight.limitation}</p><p>{insight.calculation.method}</p><a href={insight.source} rel="noreferrer">Source</a>{insight.snapshot&&<a href={insight.snapshot} download>Download source snapshot</a>}<a href="data/glance-insights.json" download>Download calculations</a></details></div>:<p>{chart.description}</p>}
+          {insight?<div className="glance-insight" aria-live="polite"><strong>{insight.value}</strong><p className="glance-observation">{insight.headline}</p></div>:<p role="status">Snapshot insight unavailable. The chart and source query remain available.</p>}
+
         </div>
         <div className="glance-chart" id={'glance-'+group.id+'-chart'}>
           <iframe key={chart.id} title={chart.title+' — Dune visualization'} src={`https://dune.com/embeds/${chart.query}/${chart.visualization}`} loading="lazy" referrerPolicy="no-referrer"/>
         </div>
-        <a className="glance-query" href={query} rel="noreferrer" aria-label={'View '+chart.title+' query on Dune'}>View query on Dune</a>
+        {insight&&<blockquote className="glance-takeaway">{takeaways[group.id]}</blockquote>}
+        <footer className="glance-footer">{insight&&<details><summary>Evidence & calculation</summary><p>{insight.date}</p><p>{chart.description} {insight.limitation}</p><p>{insight.calculation.method}</p><a href={insight.source} rel="noreferrer">Source</a>{insight.snapshot&&<a href={insight.snapshot} download>Download source snapshot</a>}<a href="data/glance-insights.json" download>Download calculations</a></details>}<a className="glance-query" href={query} rel="noreferrer" aria-label={'View '+chart.title+' query on Dune'}>View query on Dune</a></footer>
       </article>;
     })}</div>
     <p className="dune-freshness">Insight dates are in the evidence details. Dune charts show each query’s last successful run and may contain newer data. Changing a chart’s internal time window does not recalculate the snapshot insight.</p>

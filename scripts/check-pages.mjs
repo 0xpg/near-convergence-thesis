@@ -53,7 +53,11 @@ try{
  assert(!rendered['thesis.html'].includes('Awaiting supplied data.'));
  assert(rendered['thesis.html'].indexOf('id="framework-title"')<rendered['thesis.html'].indexOf('id="approach-title"'));
  assert(rendered['thesis.html'].indexOf('id="approach-title"')<rendered['thesis.html'].indexOf('id="network"'));
- const {glanceCharts,glanceGroups}=await server.ssrLoadModule('/src/DuneGlance.jsx');
+ const {default:DuneGlance,glanceCharts,glanceGroups}=await server.ssrLoadModule('/src/DuneGlance.jsx');
+ const missingInsights=renderToStaticMarkup(createElement(DuneGlance,{insights:{}}));
+ assert(!missingInsights.includes('class="glance-takeaway"'),'Missing evidence must not retain an investment interpretation');
+ assert(missingInsights.includes('Snapshot insight unavailable.'),'Missing is distinct from zero');
+ assert(!existsSync('dist-public/scripts/glance-stress.html'),'Stress fixtures must stay local');
  const dashboardVisuals=JSON.parse(readFileSync('analysis/defillama-ir/sql/dashboard-visuals.json','utf8')).visualizations;
  const counters=new Set(['13129722','13129725','13129731','13129732','13129757']);
  assert.deepEqual(new Set(glanceCharts.map(c=>c.query+'/'+c.visualization)),new Set(dashboardVisuals.filter(v=>!counters.has(v.visualization)).map(v=>v.query+'/'+v.visualization)));
@@ -68,6 +72,13 @@ try{
  for(const chart of glanceCharts){assert(insightData.insights[chart.id]);const snapshot=insightData.insights[chart.id].snapshot;if(snapshot)assert(existsSync('dist/'+snapshot));}assert(!rendered['thesis.html'].includes('Network fundamentals'));
  for(const insight of Object.values(insightData.insights)){assert(insight.value&&insight.headline&&insight.date&&insight.limitation&&insight.calculation.method);assert.equal(new URL(insight.source).protocol,'https:');}
  assert(rendered['thesis.html'].includes('Download calculations'));
+ const glanceTiles=rendered['thesis.html'].match(/<article class="glance-tile[\s\S]*?<\/article>/g)||[];
+ assert.equal(glanceTiles.length,9);
+ for(const tile of glanceTiles){
+  assert(tile.indexOf('class="glance-chart"')<tile.indexOf('class="glance-takeaway"'),'Interpretation follows its chart');
+  assert.equal((tile.match(/<details>/g)||[]).length,1,'Evidence stays local to its card');
+ }
+ assert(readFileSync('src/dune-glance.css','utf8').includes('gap:24px;align-items:start'),'Evidence must not stretch neighbouring cards');
  assert(rendered['thesis.html'].includes('does not recalculate the snapshot insight'));
  for(const chart of glanceCharts){assert(/^\d+$/.test(chart.query)&&/^\d+$/.test(chart.visualization));assert(chart.title&&chart.description);}
  for(const group of glanceGroups){for(const id of group.chartIds)assert(glanceCharts.some(chart=>chart.id===id));const chart=glanceCharts.find(chart=>chart.id===group.chartIds[0]);assert(rendered['thesis.html'].includes('https://dune.com/queries/'+chart.query+'/'+chart.visualization));assert(rendered['thesis.html'].includes('https://dune.com/embeds/'+chart.query+'/'+chart.visualization));}
