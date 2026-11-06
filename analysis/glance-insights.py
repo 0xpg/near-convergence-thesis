@@ -190,7 +190,9 @@ def build():
         return result
 
     def ir_add(key, value, headline, payload, snapshot, inputs, method, limitation):
-        cutoff = inputs['end']
+        cutoff = (inputs['start'] + '–' if 'start' in inputs else '') + inputs['end']
+        if 'window' in inputs:
+            cutoff = inputs['window'] + ' · as of ' + cutoff
         add(key, value, headline, cutoff + ' UTC · frozen source observation', limitation,
             'https://defillama.com/api/public/near/' + payload,
             dict(method=method, **inputs))

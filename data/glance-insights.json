@@ -315,7 +315,7 @@
     "ir-fees": {
       "value": "1.26m NEAR",
       "headline": "Fees generated across the last 30 completed source dates.",
-      "date": "2026-11-03 UTC · frozen source observation",
+      "date": "2026-10-05–2026-11-03 UTC · frozen source observation",
       "limitation": "NEAR-equivalent provider accounting: wallet receipts plus the source’s gas-burn classification. Not tokenholder cash income or independently verified buybacks.",
       "source": "https://defillama.com/api/public/near/revenue",
       "calculation": {
@@ -330,7 +330,7 @@
     "ir-revenue": {
       "value": "440.2k NEAR",
       "headline": "Captured revenue over 30 completed source dates.",
-      "date": "2026-11-03 UTC · frozen source observation",
+      "date": "2026-10-05–2026-11-03 UTC · frozen source observation",
       "limitation": "NEAR-equivalent provider accounting: wallet receipts plus the source’s gas-burn classification. Not tokenholder cash income or independently verified buybacks.",
       "source": "https://defillama.com/api/public/near/revenue",
       "calculation": {
@@ -387,7 +387,7 @@
     "ir-coverage": {
       "value": "16.4%",
       "headline": "Captured revenue covered this share of issuance across 30 source dates.",
-      "date": "2026-11-03 UTC · frozen source observation",
+      "date": "2026-10-05–2026-11-03 UTC · frozen source observation",
       "limitation": "NEAR-equivalent provider accounting: wallet receipts plus the source’s gas-burn classification. Not tokenholder cash income or independently verified buybacks.",
       "source": "https://defillama.com/api/public/near/revenue",
       "calculation": {
@@ -402,7 +402,7 @@
     "ir-wallets": {
       "value": "91.0%",
       "headline": "Intents receipts dominate the source’s trailing-year revenue mix.",
-      "date": "2026-11-03 UTC · frozen source observation",
+      "date": "Last 12 months, provider-defined · as of 2026-11-03 UTC · frozen source observation",
       "limitation": "NEAR-equivalent provider accounting: wallet receipts plus the source’s gas-burn classification. Not tokenholder cash income or independently verified buybacks.",
       "source": "https://defillama.com/api/public/near/revenue",
       "calculation": {
@@ -539,7 +539,7 @@
     "ir-chains": {
       "value": "45.8%",
       "headline": "ETH is the largest blockchain label in the 30-day Intents volume mix.",
-      "date": "2026-11-03 UTC · frozen source observation",
+      "date": "2026-10-05–2026-11-03 UTC · frozen source observation",
       "limitation": "Token and blockchain mixes describe the same activity; do not add them. Labels are provider-defined, not verified entities.",
       "source": "https://defillama.com/api/public/near/ecosystem",
       "calculation": {
@@ -556,7 +556,7 @@
     "ir-tokens": {
       "value": "42.0%",
       "headline": "USDT is the largest token label in the 30-day Intents volume mix.",
-      "date": "2026-11-03 UTC · frozen source observation",
+      "date": "2026-10-05–2026-11-03 UTC · frozen source observation",
       "limitation": "Token and blockchain mixes describe the same activity; do not add them. Labels are provider-defined, not verified entities.",
       "source": "https://defillama.com/api/public/near/ecosystem",
       "calculation": {
@@ -573,7 +573,7 @@
     "ir-channels": {
       "value": "73.4%",
       "headline": "swapkit accounts for this share of reported channel fees.",
-      "date": "2026-11-03 UTC · frozen source observation",
+      "date": "All time, provider-defined · as of 2026-11-03 UTC · frozen source observation",
       "limitation": "All-time referral-fee mix, not user or volume share. Its total differs from the source’s total Intents fees.",
       "source": "https://defillama.com/api/public/near/ecosystem",
       "calculation": {
