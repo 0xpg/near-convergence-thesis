@@ -1,5 +1,5 @@
 {
-  "version": "glance-insights-2026-11-05-v2",
+  "version": "glance-insights-2026-11-06-v3",
   "methodology": "Frozen observations; rerunning calculations does not refresh sources. Date cutoffs differ by metric. Current Dune embeds can differ. No causal or tokenholder-income claim.",
   "sources": [
     {
@@ -69,6 +69,18 @@
       "url": "https://dune.com/queries/9075773/13124756",
       "retrieved_utc": "2026-11-05T11:03:32.697Z",
       "sha256": "d989a12576290d7908b2d26094dfa2d38045d1395d4cd1167830a18eb55a65f4"
+    },
+    {
+      "file": "ir-revenue.json",
+      "url": "https://defillama.com/api/public/near/revenue",
+      "retrieved_utc": "2026-11-05",
+      "sha256": "0c0cba74d6bec3e30bd0120921fa11c08a308d8109530a6548b731f80da09de2"
+    },
+    {
+      "file": "ir-ecosystem.json",
+      "url": "https://defillama.com/api/public/near/ecosystem",
+      "retrieved_utc": "2026-11-05",
+      "sha256": "0b88fbb774c7be9085cfb6385c3dde3be1d1b908b7443667b0a2db9bc3b68029"
     }
   ],
   "insights": {
@@ -299,6 +311,280 @@
           }
         }
       }
+    },
+    "ir-fees": {
+      "value": "1.26m NEAR",
+      "headline": "Fees generated across the last 30 completed source dates.",
+      "date": "2026-11-03 UTC · frozen source observation",
+      "limitation": "NEAR-equivalent provider accounting: wallet receipts plus the source’s gas-burn classification. Not tokenholder cash income or independently verified buybacks.",
+      "source": "https://defillama.com/api/public/near/revenue",
+      "calculation": {
+        "method": "Sum daily Intents fees + protocol fees across the stated 30-date window. The separately reported 30-day KPI differs; its window is not reconciled.",
+        "end": "2026-11-03",
+        "start": "2026-10-05",
+        "fees_near": "1262178.9077965308481",
+        "provider_30d_kpi_near": "1175505.2127025374"
+      },
+      "snapshot": "data/glance-sources/ir-revenue.json"
+    },
+    "ir-revenue": {
+      "value": "440.2k NEAR",
+      "headline": "Captured revenue over 30 completed source dates.",
+      "date": "2026-11-03 UTC · frozen source observation",
+      "limitation": "NEAR-equivalent provider accounting: wallet receipts plus the source’s gas-burn classification. Not tokenholder cash income or independently verified buybacks.",
+      "source": "https://defillama.com/api/public/near/revenue",
+      "calculation": {
+        "method": "Sum daily Intents receipts + provider-classified gas burn across the stated window. The separately reported 30-day KPI differs; its window is not reconciled.",
+        "end": "2026-11-03",
+        "start": "2026-10-05",
+        "revenue_near": "440181.84449993108915",
+        "provider_30d_kpi_near": "416353.12606634304"
+      },
+      "snapshot": "data/glance-sources/ir-revenue.json"
+    },
+    "ir-fee-sources": {
+      "value": "87.3%",
+      "headline": "Intents accounts for this share of cumulative fees in NEAR equivalents.",
+      "date": "2026-11-03 UTC · frozen source observation",
+      "limitation": "NEAR-equivalent provider accounting: wallet receipts plus the source’s gas-burn classification. Not tokenholder cash income or independently verified buybacks.",
+      "source": "https://defillama.com/api/public/near/revenue",
+      "calculation": {
+        "method": "Cumulative Intents fees / cumulative total fees × 100.",
+        "end": "2026-11-03",
+        "intents_fees_near": "30528998.52437263246964033",
+        "total_fees_near": "34983567.2201111659431973757"
+      },
+      "snapshot": "data/glance-sources/ir-revenue.json"
+    },
+    "ir-cumulative": {
+      "value": "7.37m NEAR",
+      "headline": "Cumulative captured revenue, alongside total fees of 34.98m NEAR.",
+      "date": "2026-11-03 UTC · frozen source observation",
+      "limitation": "NEAR-equivalent provider accounting: wallet receipts plus the source’s gas-burn classification. Not tokenholder cash income or independently verified buybacks.",
+      "source": "https://defillama.com/api/public/near/revenue",
+      "calculation": {
+        "method": "Sum each daily revenue component across the complete source history.",
+        "end": "2026-11-03",
+        "revenue_near": "7373143.469208940597883960",
+        "fees_near": "34983567.2201111659431973757"
+      },
+      "snapshot": "data/glance-sources/ir-revenue.json"
+    },
+    "ir-emissions": {
+      "value": "77.6k NEAR",
+      "headline": "Latest daily issuance exceeded captured revenue by this amount.",
+      "date": "2026-11-03 UTC · frozen source observation",
+      "limitation": "NEAR-equivalent provider accounting: wallet receipts plus the source’s gas-burn classification. Not tokenholder cash income or independently verified buybacks.",
+      "source": "https://defillama.com/api/public/near/revenue",
+      "calculation": {
+        "method": "Daily emissions − daily captured revenue. This accounting comparison is not net supply issuance.",
+        "end": "2026-11-03",
+        "emissions_near": "89777.73288994448",
+        "revenue_near": "12143.4412495992982"
+      },
+      "snapshot": "data/glance-sources/ir-revenue.json"
+    },
+    "ir-coverage": {
+      "value": "16.4%",
+      "headline": "Captured revenue covered this share of issuance across 30 source dates.",
+      "date": "2026-11-03 UTC · frozen source observation",
+      "limitation": "NEAR-equivalent provider accounting: wallet receipts plus the source’s gas-burn classification. Not tokenholder cash income or independently verified buybacks.",
+      "source": "https://defillama.com/api/public/near/revenue",
+      "calculation": {
+        "method": "Sum revenue / sum emissions × 100; not the average of daily percentages.",
+        "end": "2026-11-03",
+        "start": "2026-10-05",
+        "revenue_near": "440181.84449993108915",
+        "emissions_near": "2690685.46134289304"
+      },
+      "snapshot": "data/glance-sources/ir-revenue.json"
+    },
+    "ir-wallets": {
+      "value": "91.0%",
+      "headline": "Intents receipts dominate the source’s trailing-year revenue mix.",
+      "date": "2026-11-03 UTC · frozen source observation",
+      "limitation": "NEAR-equivalent provider accounting: wallet receipts plus the source’s gas-burn classification. Not tokenholder cash income or independently verified buybacks.",
+      "source": "https://defillama.com/api/public/near/revenue",
+      "calculation": {
+        "method": "Named wallet classification / sum all revenue wallet classifications × 100.",
+        "end": "2026-11-03",
+        "window": "Last 12 months, provider-defined",
+        "label": "Intents Revenue (fefundsadmin + 1csfundsadmin)",
+        "selected_near": "4254933.274689495",
+        "total_near": "4677904.8679634562"
+      },
+      "snapshot": "data/glance-sources/ir-revenue.json"
+    },
+    "ir-transactions": {
+      "value": "706,690",
+      "headline": "Transactions on the latest completed source date.",
+      "date": "2026-11-04 UTC · frozen source observation",
+      "limitation": "Provider-reported base-chain transactions, not unique users or Intents swaps.",
+      "source": "https://defillama.com/api/public/near/ecosystem",
+      "calculation": {
+        "method": "Read the latest daily Transactions observation.",
+        "end": "2026-11-04",
+        "inputs": {
+          "Transactions": "706690"
+        }
+      },
+      "snapshot": "data/glance-sources/ir-ecosystem.json"
+    },
+    "ir-accounts": {
+      "value": "79,164",
+      "headline": "Active accounts on the latest completed source date.",
+      "date": "2026-11-04 UTC · frozen source observation",
+      "limitation": "Accounts can include bots, relayers and multiple identities belonging to one entity.",
+      "source": "https://defillama.com/api/public/near/ecosystem",
+      "calculation": {
+        "method": "Read the latest daily Active Accounts observation; do not sum daily counts into monthly unique accounts.",
+        "end": "2026-11-04",
+        "inputs": {
+          "Active Accounts": "79164"
+        }
+      },
+      "snapshot": "data/glance-sources/ir-ecosystem.json"
+    },
+    "ir-gas": {
+      "value": "947 NEAR",
+      "headline": "Base-chain gas fees on the latest completed source date.",
+      "date": "2026-11-04 UTC · frozen source observation",
+      "limitation": "Native gas fees only; separate from cross-chain Intents service fees.",
+      "source": "https://defillama.com/api/public/near/ecosystem",
+      "calculation": {
+        "method": "Read the latest Gas Fees observation, denominated in NEAR.",
+        "end": "2026-11-04",
+        "inputs": {
+          "Gas Fees": "946.6273410096428"
+        }
+      },
+      "snapshot": "data/glance-sources/ir-ecosystem.json"
+    },
+    "ir-price": {
+      "value": "$3.8326",
+      "headline": "NEAR’s price at the source cutoff.",
+      "date": "2026-11-04 UTC · frozen source observation",
+      "limitation": "A historical provider price, not a live quote or a valuation conclusion.",
+      "source": "https://defillama.com/api/public/near/ecosystem",
+      "calculation": {
+        "method": "Read the latest Price observation, denominated in USD.",
+        "end": "2026-11-04",
+        "inputs": {
+          "Price": "3.83259177"
+        }
+      },
+      "snapshot": "data/glance-sources/ir-ecosystem.json"
+    },
+    "ir-supply": {
+      "value": "61.0m NEAR",
+      "headline": "The gap between total and circulating supply at the source cutoff.",
+      "date": "2026-11-04 UTC · frozen source observation",
+      "limitation": "Provider supply definitions; the difference is not a verified vesting or tradable-float estimate.",
+      "source": "https://defillama.com/api/public/near/ecosystem",
+      "calculation": {
+        "method": "Total Supply − Circulating Supply on the same source date.",
+        "end": "2026-11-04",
+        "inputs": {
+          "Total Supply": "1310833180.3943324",
+          "Circulating Supply": "1249836992.159308"
+        }
+      },
+      "snapshot": "data/glance-sources/ir-ecosystem.json"
+    },
+    "ir-volume": {
+      "value": "$137.9m",
+      "headline": "Intents trading notional on the latest completed source date.",
+      "date": "2026-11-03 UTC · frozen source observation",
+      "limitation": "Cross-chain service volume, not NEAR L1 settlement or token demand.",
+      "source": "https://defillama.com/api/public/near/ecosystem",
+      "calculation": {
+        "method": "Read the latest Daily Volume observation in USD.",
+        "end": "2026-11-03",
+        "inputs": {
+          "Daily Volume": "137911779.3028735"
+        }
+      },
+      "snapshot": "data/glance-sources/ir-ecosystem.json"
+    },
+    "ir-swaps": {
+      "value": "72,753",
+      "headline": "Intents swaps on the latest completed source date.",
+      "date": "2026-11-03 UTC · frozen source observation",
+      "limitation": "Swaps are not users. The source’s totalSwaps and cumulativeSwaps fields disagree.",
+      "source": "https://defillama.com/api/public/near/ecosystem",
+      "calculation": {
+        "method": "Read the latest Daily Swaps observation; cumulative fields are not used.",
+        "end": "2026-11-03",
+        "inputs": {
+          "Daily Swaps": "72753"
+        }
+      },
+      "snapshot": "data/glance-sources/ir-ecosystem.json"
+    },
+    "ir-intents-fees": {
+      "value": "$9,319",
+      "headline": "Intents service fees on the latest completed source date.",
+      "date": "2026-11-03 UTC · frozen source observation",
+      "limitation": "Gross service fees in USD, not revenue paid to NEAR holders.",
+      "source": "https://defillama.com/api/public/near/ecosystem",
+      "calculation": {
+        "method": "Read the latest Daily Fees observation in USD.",
+        "end": "2026-11-03",
+        "inputs": {
+          "Daily Fees": "9318.822439285068"
+        }
+      },
+      "snapshot": "data/glance-sources/ir-ecosystem.json"
+    },
+    "ir-chains": {
+      "value": "45.8%",
+      "headline": "ETH is the largest blockchain label in the 30-day Intents volume mix.",
+      "date": "2026-11-03 UTC · frozen source observation",
+      "limitation": "Token and blockchain mixes describe the same activity; do not add them. Labels are provider-defined, not verified entities.",
+      "source": "https://defillama.com/api/public/near/ecosystem",
+      "calculation": {
+        "method": "Sum named label volume / sum all labels × 100 over the stated 30-day window.",
+        "start": "2026-10-05",
+        "end": "2026-11-03",
+        "label": "ETH",
+        "selected_usd": "1816923830.146492514",
+        "total_usd": "3970607021.4214432903438901",
+        "observed_dates": 30
+      },
+      "snapshot": "data/glance-sources/ir-ecosystem.json"
+    },
+    "ir-tokens": {
+      "value": "42.0%",
+      "headline": "USDT is the largest token label in the 30-day Intents volume mix.",
+      "date": "2026-11-03 UTC · frozen source observation",
+      "limitation": "Token and blockchain mixes describe the same activity; do not add them. Labels are provider-defined, not verified entities.",
+      "source": "https://defillama.com/api/public/near/ecosystem",
+      "calculation": {
+        "method": "Sum named label volume / sum all labels × 100 over the stated 30-day window.",
+        "start": "2026-10-05",
+        "end": "2026-11-03",
+        "label": "USDT",
+        "selected_usd": "1666486027.321017726",
+        "total_usd": "3970607021.421443202792744384",
+        "observed_dates": 30
+      },
+      "snapshot": "data/glance-sources/ir-ecosystem.json"
+    },
+    "ir-channels": {
+      "value": "73.4%",
+      "headline": "swapkit accounts for this share of reported channel fees.",
+      "date": "2026-11-03 UTC · frozen source observation",
+      "limitation": "All-time referral-fee mix, not user or volume share. Its total differs from the source’s total Intents fees.",
+      "source": "https://defillama.com/api/public/near/ecosystem",
+      "calculation": {
+        "method": "Named channel fees / sum all reported channel fees × 100.",
+        "end": "2026-11-03",
+        "window": "All time, provider-defined",
+        "label": "swapkit",
+        "selected_usd": "42364200.07896329",
+        "total_usd": "57711047.46760708519"
+      },
+      "snapshot": "data/glance-sources/ir-ecosystem.json"
     }
   }
 }

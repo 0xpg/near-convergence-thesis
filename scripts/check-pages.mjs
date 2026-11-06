@@ -54,15 +54,18 @@ try{
  assert(rendered['thesis.html'].indexOf('id="framework-title"')<rendered['thesis.html'].indexOf('id="approach-title"'));
  assert(rendered['thesis.html'].indexOf('id="approach-title"')<rendered['thesis.html'].indexOf('id="network"'));
  const {glanceCharts,glanceGroups}=await server.ssrLoadModule('/src/DuneGlance.jsx');
- assert.deepEqual(glanceCharts.map(chart=>[chart.query,chart.visualization]),[['9074769','13123658'],['9074817','13123708'],['9074920','13123827'],['9074947','13123862'],['9074882','13123784'],['9074892','13123797'],['9074985','13123905'],['9074968','13123885'],['9075009','13123927']]);
+ const dashboardVisuals=JSON.parse(readFileSync('analysis/defillama-ir/sql/dashboard-visuals.json','utf8')).visualizations;
+ const counters=new Set(['13129722','13129725','13129731','13129732','13129757']);
+ assert.deepEqual(new Set(glanceCharts.map(c=>c.query+'/'+c.visualization)),new Set(dashboardVisuals.filter(v=>!counters.has(v.visualization)).map(v=>v.query+'/'+v.visualization)));
  assert(rendered['thesis.html'].includes('https://dune.com/0xpanatagama/near-economic\"'));
  assert(!rendered['thesis.html'].includes('<a class="glance-chart"'));
  const chartFrames=rendered['thesis.html'].match(/<iframe[^>]+Dune visualization[^>]*>/g)||[];
- assert.equal(chartFrames.length,5);
+ assert.equal(chartFrames.length,9);
  for(const frame of chartFrames){assert(!frame.includes('aria-hidden'));assert(!frame.includes('tabindex="-1"'));}
- assert.equal(glanceCharts.length,9);assert.equal(new Set(glanceCharts.map(chart=>chart.id)).size,9);assert.equal(glanceGroups.length,5);
+ assert.equal(glanceCharts.length,22);assert.equal(new Set(glanceCharts.map(chart=>chart.id)).size,22);assert.equal(glanceGroups.length,9);
+ assert.equal(glanceGroups.flatMap(group=>group.chartIds).length,22);
  const insightData=JSON.parse(readFileSync('data/glance-insights.json','utf8'));
- for(const chart of glanceCharts)assert(insightData.insights[chart.id]);assert(!rendered['thesis.html'].includes('Network fundamentals'));
+ for(const chart of glanceCharts){assert(insightData.insights[chart.id]);const snapshot=insightData.insights[chart.id].snapshot;if(snapshot)assert(existsSync('dist/'+snapshot));}assert(!rendered['thesis.html'].includes('Network fundamentals'));
  for(const insight of Object.values(insightData.insights)){assert(insight.value&&insight.headline&&insight.date&&insight.limitation&&insight.calculation.method);assert.equal(new URL(insight.source).protocol,'https:');}
  assert(rendered['thesis.html'].includes('Download calculations'));
  assert(rendered['thesis.html'].includes('does not recalculate the snapshot insight'));

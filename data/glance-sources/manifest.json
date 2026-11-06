@@ -66,5 +66,17 @@
     "url": "https://dune.com/queries/9075773/13124756",
     "retrieved_utc": "2026-11-05T11:03:32.697Z",
     "sha256": "d989a12576290d7908b2d26094dfa2d38045d1395d4cd1167830a18eb55a65f4"
+  },
+  {
+    "file": "ir-revenue.json",
+    "url": "https://defillama.com/api/public/near/revenue",
+    "retrieved_utc": "2026-11-05",
+    "sha256": "0c0cba74d6bec3e30bd0120921fa11c08a308d8109530a6548b731f80da09de2"
+  },
+  {
+    "file": "ir-ecosystem.json",
+    "url": "https://defillama.com/api/public/near/ecosystem",
+    "retrieved_utc": "2026-11-05",
+    "sha256": "0b88fbb774c7be9085cfb6385c3dde3be1d1b908b7443667b0a2db9bc3b68029"
   }
 ]
