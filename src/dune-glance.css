@@ -25,7 +25,7 @@
 .glance-footer{padding:18px 28px;border-top:1px solid #293b3210;display:flex;align-items:baseline;justify-content:space-between;gap:16px;flex-wrap:wrap}
 .glance-footer details{font:400 12px/1.6 Saans,Arial,sans-serif;flex:1;min-width:0;flex-basis:160px}
 .glance-footer summary{cursor:pointer;color:#436851;width:fit-content}
-.glance-footer details p{color:#5c6861;margin:12px 0}
+.glance-footer details p{color:#5c6861;margin:12px 0;text-align:justify;text-align-last:start;hyphens:auto}
 .glance-footer details a{display:inline-block;color:#436851;margin:8px 16px 0 0;text-underline-offset:3px}
 .glance-query{display:block;padding:0;font:400 12px/1.4 Saans,Arial,sans-serif;color:#436851;text-underline-offset:4px;border:0}
 .glance-switch button:focus-visible,.glance-chart iframe:focus-visible,.glance-query:focus-visible,.glance-footer summary:focus-visible{outline:2px solid #436851;outline-offset:3px;border-radius:3px}
