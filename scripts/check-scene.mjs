@@ -2,8 +2,8 @@ import assert from 'node:assert/strict';
 import {fieldAt,motionTime,selectPeople,labelAnchor,walkingPose,ditherAt,drift,depthBlur,bodyShape,focusBox} from '../cinematic.mjs';
 for(const second of [0,.033,5,10,15,20,25,30,4800]) {
   const scene=fieldAt(second);
-  assert.equal(scene.nodes.length,48);assert.equal(scene.focus.length,3);
-  assert(scene.attention>=0&&scene.attention<3);
+  assert.equal(scene.nodes.length,48);assert.equal(scene.focus.length,4);
+  assert(scene.attention>=0&&scene.attention<4);
   for(const node of [...scene.nodes,...scene.focus]) {
     assert(Number.isFinite(node.x)&&node.x>0&&node.x<1);
     assert(Number.isFinite(node.y)&&node.y>0&&node.y<1);
@@ -20,7 +20,7 @@ console.log('Scene geometry, repeatability, motion and invalid-time checks passe
 assert.equal(motionTime(5),motionTime(6.5));
 assert(motionTime(8)>motionTime(7));
 const selection=selectPeople(fieldAt(0).nodes,()=>.5);
-assert.equal(new Set(selection).size,3);
+assert.equal(new Set(selection).size,4);
 assert.deepEqual(fieldAt(0,selection).focus,selection.map(index=>fieldAt(0).nodes[index]));
 assert.notDeepEqual(selectPeople(fieldAt(0).nodes,()=>0),selectPeople(fieldAt(0).nodes,()=>.99));
 console.log('Still intervals, distinct selections and real-person label binding passed.');

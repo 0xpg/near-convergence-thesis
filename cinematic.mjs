@@ -51,7 +51,7 @@ export function motionTime(seconds) {
   return Math.floor(seconds/7)*4.8+Math.min(seconds%7,4.8);
 }
 export function selectPeople(nodes,random=Math.random,previous=[]) {
-  return [[.12,.34],[.38,.62],[.66,.86]].map(([left,right],group)=>{
+  return [[.08,.26],[.30,.48],[.52,.70],[.74,.92]].map(([left,right],group)=>{
     const candidates=nodes.map((node,index)=>({node,index})).filter(({node,index})=>index!==previous[group]&&node.x>=left&&node.x<=right&&node.z>.25&&node.z<.72);
     const pool=candidates.length?candidates:nodes.map((node,index)=>({node,index})).filter(({index})=>index!==previous[group]);
     return pool[Math.min(pool.length-1,Math.floor(random()*pool.length))].index;
@@ -62,7 +62,7 @@ export function drift(start,velocity,time){
   return t<=1?t:2-t;
 }
 
-export function fieldAt(seconds,selected=[6,17,27]) {
+export function fieldAt(seconds,selected=[6,17,27,40]) {
   motionTime(seconds);
   const motion=seconds;
   const nodes=Array.from({length:48},(_,i)=>{
@@ -72,7 +72,7 @@ export function fieldAt(seconds,selected=[6,17,27]) {
     const dx=.88*(drift(seed,velocity,motion+.05)-drift(seed,velocity,motion))/.05;
     return {x:.06+.88*drift(seed,(.005+individuality*.003)*(i%2?1:-1),motion),y:.18+.60*drift(depth,(i%5===0?.003:0)*(i%3?1:-1),motion),z:depth,variant:i,gait:(motion*cadence+i*2.718281828)%16,cadence,direction:dx<0?-1:1,profile:.9};
   });
-  return {nodes,focus:selected.map(index=>nodes[index]),attention:Math.floor(seconds/5)%3};
+  return {nodes,focus:selected.map(index=>nodes[index]),attention:Math.floor(seconds/5)%selected.length};
 }
 
 const spriteAtlas=Array.from({length:48},()=>[]);
@@ -99,21 +99,18 @@ export function startCinematic() {
   if(ctx&&stage) {
     const preference=matchMedia('(prefers-reduced-motion: reduce)');
     const labels=[...stage.querySelectorAll('[data-focus]')];
-    const colors=['#367b63','#a55561','#466d9f'];
-    let labelCenters=[16,16,16],descriptionWidths=[100,100,100];
+    const colors=['#367b63','#a55561','#466d9f','#9a7428'];
+    let labelCenters=[16,16,16,16],descriptionWidths=[100,100,100,100];
     function measureLabels(){labelCenters=labels.map(label=>label.querySelector('span').offsetWidth/2);descriptionWidths=labels.map(label=>label.querySelector('small').offsetWidth);}
     let active=true;
     let width=0,height=0,time=0,last=0,request=0,playing=!preference.matches,visible=true,fieldFocused=false;
-    let selected=selectPeople(fieldAt(0).nodes),nextSwitch=[1.4,2.1,2.8];
+    let selected=selectPeople(fieldAt(0).nodes),nextSwitch=[1.4,2.1,2.8,3.5];
     const highlights=colors.map((color,index)=>{
       const surface=document.createElement('canvas');surface.width=76;surface.height=140;
       const pen=surface.getContext('2d'),gradient=pen.createLinearGradient(18,18,58,124);
-      gradient.addColorStop(0,color);gradient.addColorStop(.48,['#21b879','#ee687c','#517cde'][index]);gradient.addColorStop(1,['#d6e97a','#f5be80','#a4dce6'][index]);
+      gradient.addColorStop(0,color);gradient.addColorStop(.48,['#21b879','#ee687c','#517cde','#d9a23a'][index]);gradient.addColorStop(1,['#d6e97a','#f5be80','#a4dce6','#f2dc96'][index]);
       return {surface,pen,gradient};
     });
-    // Depth blur is fixed per figure, so each blurred pose is rasterized once into a per-figure strip and reused.
-    // Canvas blur radii are bitmap pixels (unaffected by the transform), so the strip blur is rescaled to its own resolution.
-    // Strongly blurred figures carry no fine detail, so their strips are stored at half the device resolution.
     const canvasBlur=supportsCanvasBlur();
     let pixelRatio=1,blurCacheWidth=0,blurCache=new Map();
     function blurredSprite(node,pose,size,blur,build){
@@ -140,7 +137,7 @@ export function startCinematic() {
     function draw(){
       stage.dataset.animationTime=time.toFixed(2);stage.dataset.renderer="canvas-2d";
       const initial=fieldAt(time);
-      if(playing&&!fieldFocused)for(let i=0;i<3;i++)if(time>=nextSwitch[i]){
+      if(playing&&!fieldFocused)for(let i=0;i<labels.length;i++)if(time>=nextSwitch[i]){
         const options=selectPeople(initial.nodes,Math.random,selected);selected[i]=options[i];nextSwitch[i]=time+2+Math.random()*1.2;
         labels[i].querySelector('span').animate([{transform:'translateX(-2px)',opacity:.45,textShadow:'2px 0 #a55561,-2px 0 #466d9f'},{transform:'translateX(2px)',opacity:1},{transform:'translateX(0)',opacity:1,textShadow:'none'}],{duration:260,easing:'steps(3,end)'});
       }
@@ -176,10 +173,10 @@ export function startCinematic() {
       for(const [a,b]of edges){ctx.beginPath();ctx.moveTo(nodes[a].x*width,nodes[a].y*height);ctx.lineTo(nodes[b].x*width,nodes[b].y*height);ctx.stroke();}
       ctx.globalAlpha=1;
       const boxes=focus.map((node,i)=>focusBox(node,width,height,labelCenters[i]*2,descriptionWidths[i]));
-      for(let i=0;i<3;i++) {
-        const a=focus[i],box=boxes[i],next=boxes[(i+1)%3];
+      for(let i=0;i<labels.length;i++) {
+        const a=focus[i],box=boxes[i],next=boxes[(i+1)%labels.length];
         ctx.globalAlpha=1;ctx.strokeStyle=colors[i];ctx.lineWidth=.75;
-        ctx.beginPath();ctx.moveTo(box.labelX+labelCenters[i],box.y+7);ctx.lineTo(next.labelX+labelCenters[(i+1)%3],next.y+7);ctx.stroke();
+        ctx.beginPath();ctx.moveTo(box.labelX+labelCenters[i],box.y+7);ctx.lineTo(next.labelX+labelCenters[(i+1)%labels.length],next.y+7);ctx.stroke();
         ctx.strokeStyle=colors[i];ctx.lineWidth=attention===i?1.2:.6;ctx.strokeRect(box.x,box.boxY,box.boxWidth,box.boxHeight);
         labels[i].style.transform=`translate(${box.labelX}px,${box.y}px)`;
         const description=labels[i].querySelector('small');
