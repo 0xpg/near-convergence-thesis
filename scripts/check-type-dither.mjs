@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import {typePoint,startTypeDither} from '../src/overview/type-dither.mjs';
+import {typePoint,startTypeDither} from '../src/overview/type-dither.ts';
 const point={x:120,y:60,dx:-180,dy:90,delay:.4};
 assert.equal(typePoint(point,0).alpha,0);
 assert.deepEqual(typePoint(point,2.5),{x:120,y:60,alpha:1});

@@ -1,4 +1,4 @@
-export function startDitherEmphasis(section){
+export function startDitherEmphasis(section:HTMLElement){
   const observer=new IntersectionObserver(entries=>{
     for(const entry of entries)entry.target.classList.toggle('is-ink-visible',entry.isIntersecting);
   },{threshold:.25});

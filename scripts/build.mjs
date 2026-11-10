@@ -23,7 +23,7 @@ function copy(relative) {
     mkdirSync(target,{recursive:true});for(const name of readdirSync(source))copy(path.join(relative,name));
   }else{mkdirSync(path.dirname(target),{recursive:true});copyFileSync(source,target);}
 }
-for(const file of ['styles','favicon.ico','report.pdf','assets','analysis/model.mjs','data','_headers'])copy(file);
+for(const file of ['styles','favicon.ico','report.pdf','assets','analysis/model.mjs','data','_headers','_redirects'])copy(file);
 if(process.argv.includes('--dev')){
   const server=await createServer();await server.listen();server.printUrls();
 }else{

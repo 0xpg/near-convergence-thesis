@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import {wordReveal,startKineticType} from '../src/overview/kinetic-type.mjs';
+import {wordReveal,startKineticType} from '../src/overview/kinetic-type.ts';
 assert.equal(wordReveal(0,10,0),0);
 assert(wordReveal(0,10,.2)>wordReveal(8,10,.2));
 for(let index=0;index<10;index++){

@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import {fieldPoint,startIntroField} from '../src/overview/intro-field.mjs';
+import {fieldPoint,startIntroField} from '../src/overview/intro-field.ts';
 let moved=0;
 for(let row=0;row<36;row++)for(let column=0;column<96;column++){
   for(const time of [0,1.2,2.4]){

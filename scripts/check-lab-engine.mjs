@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import {DEFAULTS,PRESETS,run,sanitize,compressionIndex,coverageGrid,supplyPath,flywheel} from '../src/lab/engine.mjs';
+import {DEFAULTS,PRESETS,run,sanitize,compressionIndex,coverageGrid,supplyPath,flywheel} from '../src/lab/engine.ts';
 
 const close=(a,b,tolerance=1e-9)=>Math.abs(a-b)<=tolerance*Math.max(1,Math.abs(a),Math.abs(b));
 const base=run(DEFAULTS);

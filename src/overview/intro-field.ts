@@ -11,8 +11,9 @@ export function fieldPoint(column,row,time){
   };
 }
 
-export function startIntroField(canvas){
-  const pen=canvas.getContext('2d');if(!pen)return()=>{};
+export function startIntroField(canvas:HTMLCanvasElement){
+  const context=canvas.getContext('2d');if(!context)return()=>{};
+  const pen:CanvasRenderingContext2D=context;
   const preference=matchMedia('(prefers-reduced-motion: reduce)');
   const started=performance.now();
   let frame=0,active=true,visible=true,width=0,height=0;

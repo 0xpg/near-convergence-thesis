@@ -139,3 +139,6 @@ html{scroll-behavior:smooth}.thesis-page{font-family:Saans,Arial,sans-serif;colo
 @media(max-width:600px){.end-back.face-flip{transform:translate(-50%,-100%) translateZ(-120px) rotateY(-90deg)}.end-front.face-flip{transform:translate(-50%,-100%) translateZ(120px) rotateY(-90deg)}}
 @media(max-width:600px){.framework-world{--axis-depth:116px}.framework-flow{font-size:11px}}
 .thesis-page:not(.lab-page) main :is(p,li,dd):not(.thesis-approach *){text-align:justify}
+.lab-page .tidal-header .tidal-close,.thesis-page .tidal-header .tidal-close{display:inline-flex;align-items:center;min-height:32px;padding:0 14px;border-radius:16px;background:#e6e8e4;color:#4d5952;font-size:12px;transition:background-color 180ms ease}
+.lab-page .tidal-header .tidal-close:hover,.thesis-page .tidal-header .tidal-close:hover{background:#dcdfda}
+@media(max-width:760px){.lab-page .tidal-header .tidal-close,.thesis-page .tidal-header .tidal-close{display:none}}

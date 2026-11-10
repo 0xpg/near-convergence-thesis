@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import {startFrameworkMotion} from '../src/overview/framework-motion.mjs';
+import {startFrameworkMotion} from '../src/overview/framework-motion.ts';
 let visible,callback,scheduled=0,disconnected=false;
 const handlers={},world={style:{}},stage={addEventListener(name,fn){handlers[name]=fn;},removeEventListener(name){delete handlers[name];},setPointerCapture(){}};
 globalThis.matchMedia=()=>({matches:false,addEventListener(){},removeEventListener(){}});

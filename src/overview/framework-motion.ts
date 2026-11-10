@@ -1,6 +1,8 @@
-export function startFrameworkMotion(stage,world){
+type Pointer={x:number,angle:number,id:number|undefined,down:boolean};
+
+export function startFrameworkMotion(stage:HTMLElement,world:HTMLElement){
   const preference=matchMedia('(prefers-reduced-motion: reduce)');
-  let angle=0,manual=false,visible=false,frame=0,start=null,pointer=null;
+  let angle=0,manual=false,visible=false,frame=0,start:number|null=null,pointer:Pointer|null=null;
   function draw(value){
     angle=Math.max(-75,Math.min(75,value));
     world.style.transform=`rotateX(${Math.min(14,Math.abs(angle)*.35)}deg) rotateY(${angle}deg)`;
@@ -8,8 +10,8 @@ export function startFrameworkMotion(stage,world){
   function stop(){manual=true;cancelAnimationFrame(frame);}
   function animate(now){
     if(manual||!visible||preference.matches)return;
-    if(start===null)start=now;
-    draw(Math.sin((now-start)/1000*.4)*48);
+    const origin=start??(start=now);
+    draw(Math.sin((now-origin)/1000*.4)*48);
     frame=requestAnimationFrame(animate);
   }
   function begin(event){

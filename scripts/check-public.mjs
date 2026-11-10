@@ -9,4 +9,6 @@ for(const font of ['Saans-TRIAL-Regular.otf','Saans-TRIAL-Medium.otf','Saans-TRI
 assert.deepEqual(readFileSync('dist-public/report.pdf'),readFileSync('report.pdf'));
 console.log('Clean public output, supplied font integrity and PDF integrity passed.');
 
-for(const page of ['index','thesis','lab','research','methodology']){const html=readFileSync('dist-public/'+page+'.html','utf8');assert(html.includes('id="root"'));assert(!html.includes('/src/main.jsx'));assert(/assets\/main-[^"]+\.js/.test(html));}
+const html=readFileSync('dist-public/index.html','utf8');assert(html.includes('id="root"'));assert(!html.includes('/src/main.tsx'));assert(/assets\/index-[^"]+\.js/.test(html));
+for(const page of ['thesis','lab','research','methodology'])assert(!existsSync('dist-public/'+page+'.html'),'Pages are routed from index.html');
+const redirects=readFileSync('dist-public/_redirects','utf8');for(const page of ['thesis','lab','research','methodology'])assert(redirects.includes('/'+page+'.html /'+page+' 301')&&redirects.includes('/'+page+' /index.html 200'));

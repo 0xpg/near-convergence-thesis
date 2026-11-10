@@ -1,8 +1,13 @@
-import {useEffect,useLayoutEffect,useMemo,useRef,useState} from 'react';
-import {MOCK,DEFAULTS,LIMITS,PRESETS,TRADING_DAYS,run,sanitize,compressionIndex,coverageGrid,supplyPath,flywheel} from './engine.mjs';
-import {startScenarioField} from './scenario-field.mjs';
-import {startTypeDither} from '../overview/type-dither.mjs';
-import {DitherCanvas,ditherRect,ditherArea,ditherLine,text,rule,handle,clamp,logScale,INK,MUTED,RULE,GREEN,SOFT,RED,AMBER,BLUE} from './dither.jsx';
+import {useEffect,useLayoutEffect,useMemo,useRef,useState,type CSSProperties,type ReactNode} from 'react';
+import {MOCK,DEFAULTS,LIMITS,PRESETS,TRADING_DAYS,run,sanitize,compressionIndex,coverageGrid,supplyPath,flywheel,type Inputs,type InputKey} from './engine.ts';
+
+type Result=ReturnType<typeof run>;
+type Update=(patch:Partial<Inputs>)=>void;
+type ModelProps={result:Result,inputs:Inputs,update:Update};
+type Point=[number,number];
+import {startScenarioField} from './scenario-field.ts';
+import {startTypeDither} from '../overview/type-dither.ts';
+import {DitherCanvas,ditherRect,ditherArea,ditherLine,text,rule,handle,clamp,logScale,INK,MUTED,RULE,GREEN,SOFT,RED,AMBER,BLUE} from './dither.tsx';
 
 const money=value=>!Number.isFinite(value)?'Not reachable':new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',notation:'compact',maximumFractionDigits:value>=1e9?2:1}).format(value);
 const number=value=>!Number.isFinite(value)?'—':new Intl.NumberFormat('en-US',{notation:'compact',maximumFractionDigits:1}).format(value);
@@ -10,7 +15,7 @@ const pct=(value,digits=1)=>`${Number.isFinite(value)?value.toFixed(digits):'—
 const times=(value,digits=1)=>!Number.isFinite(value)?'∞':`${value.toFixed(digits)}x`;
 const nice=value=>{if(!(value>0))return value;const magnitude=10**Math.floor(Math.log10(value));return Math.round(value/magnitude*10)/10*magnitude;};
 
-const FORMAT={
+const FORMAT:Record<InputKey,(value:number)=>string>={
   volumeMultiple:value=>times(value),compression:value=>value.toFixed(2),
   shareStable:pct,shareMajors:pct,bpsStable:value=>`${value} bps`,bpsMajors:value=>`${value} bps`,bpsLong:value=>`${value} bps`,
   partnerPayout:pct,costs:value=>pct(value,0),buybackAllocation:value=>pct(value,0),burnShare:value=>pct(value,0),
@@ -20,7 +25,7 @@ const FORMAT={
   targetMultiple:value=>times(value,0),
   solverElasticity:value=>value.toFixed(2),qualityElasticity:value=>value.toFixed(2),responsiveness:value=>value.toFixed(2),distributionGrowth:value=>pct(value)
 };
-const LABEL={
+const LABEL:Partial<Record<InputKey,string>>={
   volumeMultiple:'Crypto-native volume',compression:'Fee compression elasticity',
   bpsStable:'Stablecoin route fee',bpsMajors:'Majors route fee',bpsLong:'Long-tail route fee',
   partnerPayout:'Partner payout share',costs:'Other costs',buybackAllocation:'Buyback allocation',burnShare:'Share of buybacks burned',
@@ -35,18 +40,21 @@ function readHash(){
   try{const match=location.hash.match(/^#s=(.+)$/);return match?sanitize(JSON.parse(decodeURIComponent(match[1]))):null;}catch{return null;}
 }
 
-function Slider({name,value,onChange}){
+function Slider({name,value,onChange}:{name:InputKey,value:number,onChange:Update}){
   const [min,max,step]=LIMITS[name],log=step==='log';
+  const stepValue=typeof step==='number'?step:1;
   const position=log?Math.log(value/min)/Math.log(max/min)*1000:value;
   const fill=(log?position/1000:(value-min)/(max-min))*100;
   return <label className="lab-slider">
     <span className="lab-slider-head"><span>{LABEL[name]}</span><output>{FORMAT[name](value)}</output></span>
-    <input type="range" min={log?0:min} max={log?1000:max} step={log?1:step} value={position} aria-valuetext={FORMAT[name](value)} style={{'--fill':`${fill}%`}}
+    <input type="range" min={log?0:min} max={log?1000:max} step={log?1:stepValue} value={position} aria-valuetext={FORMAT[name](value)} style={{'--fill':`${fill}%`} as CSSProperties}
       onChange={event=>{const raw=Number(event.target.value);onChange({[name]:log?nice(min*(max/min)**(raw/1000)):raw});}}/>
   </label>;
 }
 
-function Card({wide,category,title,value,headline,legend,caption,table,sliders,inputs,update,actions,children}){
+type CardProps={wide?:boolean,category:string,title:string,value:ReactNode,headline:ReactNode,legend?:[string,string][],caption:ReactNode,table:ReactNode[][],sliders?:InputKey[],inputs:Inputs,update:Update,actions?:ReactNode,children?:ReactNode};
+
+function Card({wide,category,title,value,headline,legend,caption,table,sliders,inputs,update,actions,children}:CardProps){
   return <figure className={'lab-card'+(wide?' is-wide':'')}>
     <div className="lab-card-head">
       <div className="lab-card-meta"><span>{category}</span><span className="lab-mock">Mock data</span></div>
@@ -56,17 +64,17 @@ function Card({wide,category,title,value,headline,legend,caption,table,sliders,i
     <div className="lab-card-chart">{children}{legend&&<ul className="lab-legend">{legend.map(([name,color])=><li key={name}><i style={{color}}/>{name}</li>)}</ul>}</div>
     {(sliders?.length||actions)&&<div className="lab-card-controls">{sliders?.map(name=><Slider key={name} name={name} value={inputs[name]} onChange={update}/>)}{actions}</div>}
     <figcaption>{caption}</figcaption>
-    <table className="tidal-sr"><caption>{title}</caption><tbody>{table.map(row=><tr key={row[0]}>{row.map((cell,index)=>index?<td key={index}>{cell}</td>:<th key={index} scope="row">{cell}</th>)}</tr>)}</tbody></table>
+    <table className="tidal-sr"><caption>{title}</caption><tbody>{table.map(row=><tr key={String(row[0])}>{row.map((cell,index)=>index?<td key={index}>{cell}</td>:<th key={index} scope="row">{cell}</th>)}</tr>)}</tbody></table>
   </figure>;
 }
 
-function RouteMix({result,update,inputs}){
+function RouteMix({result,update,inputs}:ModelProps){
   const target=useRef(0);
   const colors={stable:BLUE,majors:GREEN,long:AMBER};
-  const feeShare=route=>result.cryptoFees?route.fees/result.cryptoFees*100:0;
+  const feeShare=(route:Result['routes'][number])=>result.cryptoFees?route.fees/result.cryptoFees*100:0;
   const long=result.routes[2],blended=result.cryptoVolume?result.cryptoFees/result.cryptoVolume*10000:0;
   const draw=(pen,width)=>{
-    const left=54,bar=width-left,rows=[['Volume',route=>route.sharePct,22],['Fees',feeShare,128]];
+    const left=54,bar=width-left,rows:[string,(route:Result['routes'][number])=>number,number][]=[['Volume',route=>route.sharePct,22],['Fees',feeShare,128]];
     const edges=rows.map(([,share])=>{let x=left;return result.routes.map(route=>{const start=x;x+=bar*share(route)/100;return [start,x];});});
     for(let index=0;index<3;index++){
       const [a0,a1]=edges[0][index],[b0,b1]=edges[1][index];
@@ -95,8 +103,8 @@ function RouteMix({result,update,inputs}){
   </Card>;
 }
 
-function Waterfall({result,update,inputs}){
-  const steps=[
+function Waterfall({result,update,inputs}:ModelProps){
+  const steps:[string,number,'total'|'loss',string][]=[
     ['Gross\nfees',result.grossFees,'total',GREEN],['Partner\npayouts',result.payouts,'loss',RED],['Other\ncosts',result.otherCosts,'loss',RED],
     ['Retained\nrevenue',result.retained,'total',INK],['Not used\nfor buybacks',result.retained-result.buybackUsd,'loss',RED],['Buybacks',result.buybackUsd,'total',GREEN],['Burned',result.tokensBurned*inputs.price,'total',AMBER]
   ];
@@ -123,7 +131,7 @@ function Waterfall({result,update,inputs}){
   </Card>;
 }
 
-function Compression({inputs,update}){
+function Compression({inputs,update}:{inputs:Inputs,update:Update}){
   const target=useRef('end');const e=inputs.compression;
   const frame=(width,height)=>({left:30,right:width-14,top:12,bottom:height-30});
   const draw=(pen,width,height)=>{
@@ -154,7 +162,7 @@ function Compression({inputs,update}){
 }
 
 const GRID_MULTIPLES=[.5,1,2,3,5,7,10],GRID_PAYOUTS=[95,85,75,65,55,45];
-function CoverageGrid({inputs,update}){
+function CoverageGrid({inputs,update}:{inputs:Inputs,update:Update}){
   const cells=useMemo(()=>coverageGrid(inputs,GRID_MULTIPLES,GRID_PAYOUTS),[inputs]);
   const covered=cells.flat().filter(value=>value>=100).length;
   const layout=(width,height)=>{const left=40,bottom=height-30,gap=3;return {left,bottom,gap,cellW:(width-left-gap*6)/7,cellH:(bottom-gap*5)/6};};
@@ -193,9 +201,9 @@ function CoverageGrid({inputs,update}){
   </Card>;
 }
 
-function DemandFrontier({result,inputs,update}){
+function DemandFrontier({result,inputs,update}:ModelProps){
   const target=useRef(1),scale=logScale(1e7,1e12);
-  const bars=[['Crypto-native',result.cryptoVolume,GREEN,result.cryptoFees],['Institutional',result.institutionalVolume,AMBER,result.institutionalFees],['Agents',result.agentVolume,RED,result.agentFees]];
+  const bars:[string,number,string,number][]=[['Crypto-native',result.cryptoVolume,GREEN,result.cryptoFees],['Institutional',result.institutionalVolume,AMBER,result.institutionalFees],['Agents',result.agentVolume,RED,result.agentFees]];
   const newShare=result.volume?(result.institutionalVolume+result.agentVolume)/result.volume*100:0,newFees=result.grossFees?(result.institutionalFees+result.agentFees)/result.grossFees*100:0;
   const frame=(width,height)=>({left:44,bottom:height-34,top:16,column:(width-44)/3});
   const draw=(pen,width,height)=>{
@@ -224,7 +232,7 @@ function DemandFrontier({result,inputs,update}){
   </Card>;
 }
 
-function AgentFlow({result,inputs,update}){
+function AgentFlow({result,inputs,update}:ModelProps){
   const xScale=logScale(100,1e6),yScale=logScale(1e4,1e12);
   const perAgent=inputs.intentsPerAgent*inputs.agentNotional*365*inputs.eligibleShare/100;
   const others=result.cryptoVolume+result.institutionalVolume,goal=others/9,needed=perAgent>0?goal/perAgent:Infinity;
@@ -233,7 +241,7 @@ function AgentFlow({result,inputs,update}){
     const {left,right,top,bottom}=frame(width,height),x=n=>left+xScale.to(n,right-left),y=v=>bottom-yScale.to(clamp(v,1e4,1e12),bottom-top);
     for(const tick of [1e4,1e6,1e8,1e10,1e12]){rule(pen,left,y(tick),right,y(tick),RULE,[2,3]);text(pen,money(tick).replace('.0',''),0,y(tick)+4,{size:9.5});}
     for(const tick of [100,1e3,1e4,1e5,1e6])text(pen,number(tick),x(tick),bottom+16,{align:'center',size:10});
-    const line=[100,1e3,1e4,1e5,1e6].map(n=>[x(n),y(n*perAgent)]);
+    const line=[100,1e3,1e4,1e5,1e6].map((n):Point=>[x(n),y(n*perAgent)]);
     ditherArea(pen,line,bottom,.32,RED);ditherLine(pen,line,RED,1.5);
     rule(pen,left,y(goal),right,y(goal),INK,[4,3]);text(pen,`10% of total volume · ${money(goal)}`,left+4,y(goal)-6,{size:10,color:INK});
     if(needed>=100&&needed<=1e6){rule(pen,x(needed),y(goal),x(needed),bottom,INK,[2,3]);pen.fillStyle=INK;pen.beginPath();pen.arc(x(needed),y(goal),4,0,Math.PI*2);pen.fill();}
@@ -249,7 +257,7 @@ function AgentFlow({result,inputs,update}){
   </Card>;
 }
 
-function TokenCapture({result,inputs,update}){
+function TokenCapture({result,inputs,update}:ModelProps){
   const draw=(pen,width,height)=>{
     const max=Math.max(result.issuanceTokens,result.tokensBought,1),side=Math.min(height-46,width/2-36),size=tokens=>side*Math.sqrt(tokens/max);
     const blocks=[[result.issuanceTokens,width*.27],[result.tokensBought,width*.73]],base=height-40;
@@ -272,15 +280,15 @@ function TokenCapture({result,inputs,update}){
   </Card>;
 }
 
-function SupplyPath({inputs,update}){
+function SupplyPath({inputs,update}:{inputs:Inputs,update:Update}){
   const rows=useMemo(()=>supplyPath(inputs),[inputs]);
-  const last=rows.at(-1),growth=(last.withBurn/rows[0].withBurn-1)*100;
+  const last=rows[rows.length-1],growth=(last.withBurn/rows[0].withBurn-1)*100;
   const frame=(width,height)=>{const values=rows.flatMap(row=>[row.withBurn,row.issuanceOnly]),spread=Math.max(...values)-Math.min(...values),min=Math.min(...values)-spread*.12-1e6,max=Math.max(...values)+spread*.12+1e6;return {left:46,right:width-12,top:10,bottom:height-28,min,max};};
   const draw=(pen,width,height)=>{
     const {left,right,top,bottom,min,max}=frame(width,height),x=year=>left+year/5*(right-left),y=v=>bottom-(v-min)/(max-min)*(bottom-top);
     for(const tick of [min,(min+max)/2,max]){rule(pen,left,y(tick),right,y(tick),RULE,[2,3]);text(pen,number(tick),0,y(tick)+4,{size:9.5});}
     rows.forEach(row=>text(pen,`Y${row.year}`,x(row.year),bottom+16,{align:'center',size:10}));
-    const issuance=rows.map(row=>[x(row.year),y(row.issuanceOnly)]),burn=rows.map(row=>[x(row.year),y(row.withBurn)]);
+    const issuance=rows.map((row):Point=>[x(row.year),y(row.issuanceOnly)]),burn=rows.map((row):Point=>[x(row.year),y(row.withBurn)]);
     ditherArea(pen,burn,bottom,.22,GREEN);ditherLine(pen,issuance,SOFT,1.2);ditherLine(pen,burn,INK,1.6);
     handle(pen,x(5),y(last.issuanceOnly),SOFT);
   };
@@ -293,14 +301,14 @@ function SupplyPath({inputs,update}){
   </Card>;
 }
 
-function ReverseValuation({result,inputs,update}){
+function ReverseValuation({result,inputs,update}:ModelProps){
   const target=useRef('cap'),xScale=logScale(2,150);
   const range=()=>{const low=Math.min(result.retained*2||1e6,result.marketCap)/2,high=Math.max(result.retained*150,result.marketCap)*2;return logScale(low,high);};
   const frame=(width,height)=>({left:46,right:width-10,top:10,bottom:height-30});
   const draw=(pen,width,height)=>{
     const {left,right,top,bottom}=frame(width,height),yScale=range(),x=m=>left+xScale.to(m,right-left),y=v=>bottom-yScale.to(v,bottom-top);
     for(const tick of [2,10,30,100])text(pen,`${tick}x`,x(tick),bottom+16,{align:'center',size:10});
-    const line=[2,5,10,30,60,150].map(m=>[x(m),y(Math.max(result.retained*m,1))]);
+    const line=[2,5,10,30,60,150].map((m):Point=>[x(m),y(Math.max(result.retained*m,1))]);
     ditherArea(pen,line,bottom,.28,GREEN);ditherLine(pen,line,GREEN,1.5);
     rule(pen,left,y(result.marketCap),right,y(result.marketCap),INK,[4,3]);text(pen,`Market cap ${money(result.marketCap)}`,left+4,y(result.marketCap)-6,{size:10,color:INK});
     if(result.impliedMultiple>=2&&result.impliedMultiple<=150){pen.fillStyle=RED;pen.beginPath();pen.arc(x(result.impliedMultiple),y(result.marketCap),4.5,0,Math.PI*2);pen.fill();}
@@ -321,12 +329,12 @@ function ReverseValuation({result,inputs,update}){
   </Card>;
 }
 
-function Flywheel({inputs,update}){
+function Flywheel({inputs,update}:{inputs:Inputs,update:Update}){
   const rows=useMemo(()=>flywheel(inputs),[inputs]);
   const [progress,setProgress]=useState(12);const animation=useRef(0);
   useEffect(()=>()=>cancelAnimationFrame(animation.current),[]);
   const replay=()=>{cancelAnimationFrame(animation.current);if(matchMedia('(prefers-reduced-motion: reduce)').matches){setProgress(12);return;}const start=performance.now();const step=now=>{const value=Math.min(12,(now-start)/2400*12);setProgress(value);if(value<12)animation.current=requestAnimationFrame(step);};animation.current=requestAnimationFrame(step);};
-  const last=rows.at(-1);
+  const last=rows[rows.length-1];
   const frame=(width,height)=>({left:30,right:width-12,top:12,bottom:height-28});
   const draw=(pen,width,height)=>{
     const {left,right,top,bottom}=frame(width,height),max=Math.max(2,...rows.flatMap(row=>[row.flow,row.solvers/MOCK.solvers,row.retainedIndex]))*1.08;
@@ -334,7 +342,7 @@ function Flywheel({inputs,update}){
     for(const tick of [0,1,Math.round(max)]){rule(pen,left,y(tick),right,y(tick),tick===1?'#293b3240':RULE,[2,3]);text(pen,`${tick}x`,0,y(tick)+4,{size:10});}
     [0,3,6,9,12].forEach(round=>text(pen,`R${round}`,x(round),bottom+16,{align:'center',size:10}));
     const visible=rows.filter(row=>row.round<=progress);
-    const series=(key,transform=value=>value)=>visible.map(row=>[x(row.round),y(transform(row[key]))]);
+    const series=(key:'flow'|'solvers'|'retainedIndex',transform=(value:number)=>value)=>visible.map((row):Point=>[x(row.round),y(transform(row[key]))]);
     ditherArea(pen,series('flow'),bottom,.4,GREEN);ditherLine(pen,series('flow'),GREEN,1.6);
     ditherLine(pen,series('solvers',value=>value/MOCK.solvers),BLUE,1.3);ditherLine(pen,series('retainedIndex'),INK,1.8);
     const head=visible.at(-1);if(head)handle(pen,x(head.round),y(head.flow),GREEN);
@@ -351,10 +359,10 @@ function Flywheel({inputs,update}){
   </Card>;
 }
 
-function LabHero({result}){
-  const field=useRef(),heading=useRef(),canvas=useRef();
+function LabHero({result}:{result:Result}){
+  const field=useRef<HTMLCanvasElement>(null),heading=useRef<HTMLHeadingElement>(null),canvas=useRef<HTMLCanvasElement>(null);
   useEffect(()=>startScenarioField(field.current),[]);
-  useLayoutEffect(()=>startTypeDither(canvas.current,heading.current),[]);
+  useLayoutEffect(()=>canvas.current&&heading.current?startTypeDither(canvas.current,heading.current):undefined,[]);
   return <section className="lab-hero" aria-labelledby="lab-title">
     <div className="lab-hero-copy">
       <div className="thesis-resolve"><canvas ref={canvas} aria-hidden="true"/><h1 id="lab-title" ref={heading}><span>Test the</span><span>token economics.</span></h1></div>
@@ -372,11 +380,11 @@ function LabHero({result}){
 }
 
 export default function LabExperience(){
-  const [inputs,setInputs]=useState(()=>readHash()||{...DEFAULTS});
+  const [inputs,setInputs]=useState<Inputs>(()=>readHash()||{...DEFAULTS});
   const [preset,setPreset]=useState(()=>readHash()?'':'base');
   const [copied,setCopied]=useState(false);
   const result=useMemo(()=>run(inputs),[inputs]);
-  const update=patch=>{setInputs(previous=>sanitize({...previous,...patch}));setPreset('');};
+  const update:Update=patch=>{setInputs(previous=>sanitize({...previous,...patch}));setPreset('');};
   const choose=name=>{setInputs(sanitize({...DEFAULTS,...PRESETS[name].inputs}));setPreset(name);};
   useEffect(()=>{
     const changed=Object.fromEntries(Object.entries(inputs).filter(([key,value])=>value!==DEFAULTS[key]));
@@ -395,7 +403,7 @@ export default function LabExperience(){
     <section id="lab" className="lab-console" aria-label="Scenario console">
       <div className="lab-console-controls">
         <div className="lab-presets" role="group" aria-label="Assumption sets">{Object.entries(PRESETS).map(([name,option])=><button key={name} type="button" aria-pressed={preset===name} onClick={()=>choose(name)}>{option.label}</button>)}</div>
-        <div className="lab-console-sliders">{['volumeMultiple','compression','partnerPayout','buybackAllocation','burnShare','price','issuancePct','targetMultiple'].map(name=><Slider key={name} name={name} value={inputs[name]} onChange={update}/>)}</div>
+        <div className="lab-console-sliders">{(['volumeMultiple','compression','partnerPayout','buybackAllocation','burnShare','price','issuancePct','targetMultiple'] as InputKey[]).map(name=><Slider key={name} name={name} value={inputs[name]} onChange={update}/>)}</div>
         <div className="lab-console-actions"><button type="button" onClick={()=>choose('base')}>Reset</button><button type="button" onClick={exportScenario}>Export JSON</button><button type="button" onClick={share}>{copied?'Link copied':'Copy scenario link'}</button></div>
       </div>
       <div className="lab-console-results" aria-live="polite">

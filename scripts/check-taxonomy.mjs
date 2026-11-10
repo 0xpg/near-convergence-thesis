@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import {categories} from '../src/overview/taxonomy.mjs';
+import {categories} from '../src/overview/taxonomy.ts';
 
 const ids=new Set();
 let metrics=0;

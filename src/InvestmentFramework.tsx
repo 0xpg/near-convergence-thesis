@@ -1,5 +1,5 @@
 import React,{useLayoutEffect,useRef,useState} from 'react';
-import {startFrameworkMotion} from './overview/framework-motion.mjs';
+import {startFrameworkMotion} from './overview/framework-motion.ts';
 
 export const frameworkSources={
   institutional:{title:'SEC · Crypto asset exchange-traded products',url:'https://www.sec.gov/newsroom/speeches-statements/cf-crypto-asset-exchange-traded-products-070125'},
@@ -32,13 +32,13 @@ const depth=point=>point.axis?`calc(${point.z} * var(--axis-depth))`:`${point.z*
 
 export default function InvestmentFramework(){
   const [selected,setSelected]=useState('near');
-  const stage=useRef(),world=useRef(),motion=useRef(),item=frameworkItems.find(item=>item.id===selected);
-  useLayoutEffect(()=>{motion.current=startFrameworkMotion(stage.current,world.current);return()=>motion.current.destroy();},[]);
+  const stage=useRef<HTMLDivElement>(null),world=useRef<HTMLDivElement>(null),motion=useRef<ReturnType<typeof startFrameworkMotion>|null>(null),item=frameworkItems.find(item=>item.id===selected)??frameworkItems[frameworkItems.length-1];
+  useLayoutEffect(()=>{if(!stage.current||!world.current)return;const current=startFrameworkMotion(stage.current,world.current);motion.current=current;return()=>current.destroy();},[]);
   return <section className="investment-framework" aria-labelledby="framework-title">
     <header className="framework-heading"><h2 id="framework-title">What endures in an age<br/>of abundance?</h2><p>We believe NEAR sits between two emerging sources of demand—autonomous economic activity and institutional order flow—and the revenue its infrastructure can capture from both.</p></header>
     <div className="framework-layout">
       <div>
-        <div className="framework-stage" ref={stage} tabIndex="0" role="group" aria-label="Three-dimensional investment framework" aria-describedby="framework-help">
+        <div className="framework-stage" ref={stage} tabIndex={0} role="group" aria-label="Three-dimensional investment framework" aria-describedby="framework-help">
           <div className="framework-world" ref={world}>
             <div className="framework-axis axis-x"/><div className="framework-axis axis-y"/><div className="framework-axis axis-z"/>
             <span className="framework-end end-left">Network premium</span><span className="framework-end end-right">Token economics</span><span className="framework-end end-top">Existing mechanisms</span><span className="framework-end end-bottom">Future expectations</span><span className="framework-end end-back">Protocol value</span><span className="framework-end end-back face-flip" aria-hidden="true">Protocol value</span><span className="framework-end end-front">Token capture</span><span className="framework-end end-front face-flip" aria-hidden="true">Token capture</span>

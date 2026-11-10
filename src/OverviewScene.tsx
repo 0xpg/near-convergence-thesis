@@ -1,5 +1,5 @@
 import React,{useLayoutEffect,useRef,useState} from 'react';
-import {startAbsorption} from './overview/absorption.mjs';
+import {startAbsorption} from './overview/absorption.ts';
 import nearWordmark from '../assets/identity/near.svg';
 
 export const topics=[
@@ -15,16 +15,16 @@ export const topics=[
   {title:'Security & governance'}
 ];
 export default function OverviewScene(){
-  const canvas=useRef(),field=useRef(),animation=useRef();
+  const canvas=useRef<HTMLCanvasElement>(null),field=useRef<HTMLDivElement>(null),animation=useRef<ReturnType<typeof startAbsorption>|null>(null);
   const [size,setSize]=useState({width:640,height:640}),[selected,setSelected]=useState(-1);
-  useLayoutEffect(()=>{const observer=new ResizeObserver(([entry])=>setSize({width:entry.contentRect.width,height:entry.contentRect.height}));observer.observe(field.current);return()=>observer.disconnect();},[]);
-  useLayoutEffect(()=>{const scene=startAbsorption(canvas.current,1,setSelected);animation.current=scene;return()=>{animation.current=null;scene.destroy();};},[]);
-  function choose(index,pin=false){animation.current?.select(index,pin);}
+  useLayoutEffect(()=>{const observer=new ResizeObserver(([entry])=>setSize({width:entry.contentRect.width,height:entry.contentRect.height}));if(field.current)observer.observe(field.current);return()=>observer.disconnect();},[]);
+  useLayoutEffect(()=>{if(!canvas.current)return;const scene=startAbsorption(canvas.current,1,setSelected);animation.current=scene;return()=>{animation.current=null;scene.destroy();};},[]);
+  function choose(index:number,pin=false){animation.current?.select(index,pin);}
   return <div className={'tidal-page '+(selected>=0?'is-focused':'')} onKeyDown={event=>{if(event.key==='Escape'&&!event.defaultPrevented)choose(-1,true);}}>
-    <header className="tidal-header"><a className="tidal-brand" href="index.html" aria-label="NEAR research home">NEAR</a><nav aria-label="Main navigation"><a href="thesis.html" aria-current="page">Thesis</a><a href="lab.html">Scenario lab</a></nav><a className="tidal-close" href="index.html">Home</a></header>
+    <header className="tidal-header"><a className="tidal-brand" href="/" aria-label="NEAR research home">NEAR</a><nav aria-label="Main navigation"><a href="/thesis" aria-current="page">Thesis</a><a href="/lab">Scenario lab</a></nav><a className="tidal-close" href="/">Home</a></header>
     <div className="tidal-editorial tidal-editorial-start"><h2>The systems <br/>behind the promise.</h2><p>Execution, coordination, liquidity and settlement shape how NEAR could serve autonomous agents and institutional markets alike.</p></div>
     <section id="tidal-main" className="tidal-main"><h2 className="tidal-sr">NEAR overview</h2><div className="tidal-field" ref={field}>
-      <canvas ref={canvas} tabIndex="0" aria-label="Animated NEAR category map. Hover to preview a category. Click or tap to keep it open. Left and right keys select categories; Escape restores the overview."/>
+      <canvas ref={canvas} tabIndex={0} aria-label="Animated NEAR category map. Hover to preview a category. Click or tap to keep it open. Left and right keys select categories; Escape restores the overview."/>
       <section className="tidal-premise" aria-label="Blockchain and AI convergence">
         <img src={nearWordmark} alt="NEAR" width="64" height="16"/>
         <svg className="tidal-convergence" viewBox="0 0 224 112" role="img" aria-label="Blockchain and AI converge in a shared intersection">

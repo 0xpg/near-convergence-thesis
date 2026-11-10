@@ -6,13 +6,15 @@ export const MOCK=Object.freeze({
   spreadBps:9
 });
 
-export const ROUTES=Object.freeze([
+export type RouteSpec={id:string,name:string,share:'shareStable'|'shareMajors'|null,bps:'bpsStable'|'bpsMajors'|'bpsLong'};
+
+export const ROUTES:readonly RouteSpec[]=Object.freeze([
   {id:'stable',name:'Stablecoin routes',share:'shareStable',bps:'bpsStable'},
   {id:'majors',name:'Majors',share:'shareMajors',bps:'bpsMajors'},
   {id:'long',name:'Long-tail',share:null,bps:'bpsLong'}
 ]);
 
-export const DEFAULTS=Object.freeze({
+const defaultInputs={
   volumeMultiple:1,compression:.4,
   shareStable:38,shareMajors:44,bpsStable:3,bpsMajors:14,bpsLong:35,
   partnerPayout:73.7,costs:0,buybackAllocation:93,burnShare:0,
@@ -21,9 +23,13 @@ export const DEFAULTS=Object.freeze({
   agents:10000,intentsPerAgent:4,agentNotional:80,eligibleShare:40,agentBps:12,
   targetMultiple:30,
   solverElasticity:.5,qualityElasticity:.3,responsiveness:.8,distributionGrowth:4
-});
+};
 
-export const LIMITS=Object.freeze({
+export type Inputs=typeof defaultInputs;
+export type InputKey=keyof Inputs;
+export const DEFAULTS:Readonly<Inputs>=Object.freeze(defaultInputs);
+
+export const LIMITS:Readonly<Record<InputKey,[number,number,number|'log']>>=Object.freeze({
   volumeMultiple:[0,10,.1],compression:[0,1,.05],
   shareStable:[0,100,1],shareMajors:[0,100,1],bpsStable:[0,60,.5],bpsMajors:[0,60,.5],bpsLong:[0,60,.5],
   partnerPayout:[0,100,.1],costs:[0,50,1],buybackAllocation:[0,100,1],burnShare:[0,100,1],
@@ -45,9 +51,9 @@ export const PRESETS=Object.freeze({
 
 export const TRADING_DAYS=250;
 
-export function sanitize(inputs){
-  const clean={...DEFAULTS};
-  for(const key of Object.keys(DEFAULTS)){
+export function sanitize(inputs?:Partial<Record<InputKey,unknown>>|null):Inputs{
+  const clean:Inputs={...DEFAULTS};
+  for(const key of Object.keys(DEFAULTS) as InputKey[]){
     const value=Number(inputs?.[key]);
     if(!Number.isFinite(value))continue;
     const [min,max]=LIMITS[key];
@@ -105,8 +111,8 @@ export function coverageGrid(inputs,multiples,payouts){
 }
 
 export function supplyPath(inputs,years=5){
-  const result=run(inputs),rows=[];
-  let withBurn=MOCK.supply,issuanceOnly=MOCK.supply;
+  const result=run(inputs),rows:{year:number,withBurn:number,issuanceOnly:number}[]=[];
+  let withBurn:number=MOCK.supply,issuanceOnly:number=MOCK.supply;
   for(let year=0;year<=years;year++){
     rows.push({year,withBurn,issuanceOnly});
     issuanceOnly+=issuanceOnly*result.inputs.issuancePct/100;
@@ -116,7 +122,7 @@ export function supplyPath(inputs,years=5){
 }
 
 export function flywheel(inputs,rounds=12){
-  const a=sanitize(inputs),base=run(a),rows=[];
+  const a=sanitize(inputs),base=run(a),rows:{round:number,flow:number,solvers:number,spreadBps:number,retainedIndex:number}[]=[];
   let flow=1,previousQuality=1;
   for(let round=0;round<=rounds;round++){
     const solvers=MOCK.solvers*flow**a.solverElasticity;

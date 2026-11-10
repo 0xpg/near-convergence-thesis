@@ -1,6 +1,8 @@
 export function walkingPose(frame) { const phase=(frame%16)/16*Math.PI*2; return {swing:Math.sin(phase),lift:Math.cos(phase)}; }
 
-export function bodyShape(){return {width:1,height:1,weight:1};}
+export function bodyShape(_variant?:number){return {width:1,height:1,weight:1};}
+
+const context2d=(canvas:HTMLCanvasElement)=>canvas.getContext('2d') as CanvasRenderingContext2D;
 
 export function ditherAt(x,y,variant,frame) {
   const seed=.5,{swing,lift}=walkingPose(frame);
@@ -50,7 +52,7 @@ export function motionTime(seconds) {
   if(!Number.isFinite(seconds)||seconds<0)throw new RangeError('Time must be finite and nonnegative');
   return Math.floor(seconds/7)*4.8+Math.min(seconds%7,4.8);
 }
-export function selectPeople(nodes,random=Math.random,previous=[]) {
+export function selectPeople(nodes,random=Math.random,previous:number[]=[]) {
   return [[.08,.26],[.30,.48],[.52,.70],[.74,.92]].map(([left,right],group)=>{
     const candidates=nodes.map((node,index)=>({node,index})).filter(({node,index})=>index!==previous[group]&&node.x>=left&&node.x<=right&&node.z>.25&&node.z<.72);
     const pool=candidates.length?candidates:nodes.map((node,index)=>({node,index})).filter(({index})=>index!==previous[group]);
@@ -75,11 +77,11 @@ export function fieldAt(seconds,selected=[6,17,27,40]) {
   return {nodes,focus:selected.map(index=>nodes[index]),attention:Math.floor(seconds/5)%selected.length};
 }
 
-const spriteAtlas=Array.from({length:48},()=>[]);
+const spriteAtlas:HTMLCanvasElement[][]=Array.from({length:48},()=>[]);
 export function humanSprite(variant,pose){
   if(spriteAtlas[variant][pose])return spriteAtlas[variant][pose];
   const sprite=document.createElement('canvas');sprite.width=76;sprite.height=140;
-  const pen=sprite.getContext('2d');pen.fillStyle='#2e4838';
+  const pen=context2d(sprite);pen.fillStyle='#2e4838';
   for(let y=6;y<134;y+=2)for(let x=5;x<72;x+=2)if(ditherAt(x,y,variant,pose))pen.fillRect(x,y,1.5,1.5);
   spriteAtlas[variant][pose]=sprite;return sprite;
 }
@@ -88,26 +90,28 @@ function supportsCanvasBlur(){
   try{
     if(!('filter' in CanvasRenderingContext2D.prototype))return false;
     const probe=document.createElement('canvas');probe.width=9;probe.height=9;
-    const pen=probe.getContext('2d');pen.filter='blur(2px)';pen.fillRect(4,4,1,1);
+    const pen=context2d(probe);pen.filter='blur(2px)';pen.fillRect(4,4,1,1);
     return pen.getImageData(1,4,1,1).data[3]>0;
   }catch{return false;}
 }
 
 export function startCinematic() {
-  const canvas=document.getElementById('activity-field'), stage=document.getElementById('field-stage');
-  const ctx=canvas?.getContext('2d');
-  if(ctx&&stage) {
+  const field=document.getElementById('activity-field') as HTMLCanvasElement|null, host=document.getElementById('field-stage');
+  const context=field?.getContext('2d');
+  if(field&&context&&host) {
+    const canvas:HTMLCanvasElement=field,stage:HTMLElement=host,ctx:CanvasRenderingContext2D=context;
     const preference=matchMedia('(prefers-reduced-motion: reduce)');
-    const labels=[...stage.querySelectorAll('[data-focus]')];
+    const labels=[...stage.querySelectorAll<HTMLElement>('[data-focus]')];
+    const part=(label:HTMLElement,selector:string)=>label.querySelector(selector) as HTMLElement;
     const colors=['#367b63','#a55561','#466d9f','#9a7428'];
     let labelCenters=[16,16,16,16],descriptionWidths=[100,100,100,100];
-    function measureLabels(){labelCenters=labels.map(label=>label.querySelector('span').offsetWidth/2);descriptionWidths=labels.map(label=>label.querySelector('small').offsetWidth);}
+    function measureLabels(){labelCenters=labels.map(label=>part(label,'span').offsetWidth/2);descriptionWidths=labels.map(label=>part(label,'small').offsetWidth);}
     let active=true;
     let width=0,height=0,time=0,last=0,request=0,playing=!preference.matches,visible=true,fieldFocused=false;
     let selected=selectPeople(fieldAt(0).nodes),nextSwitch=[1.4,2.1,2.8,3.5];
     const highlights=colors.map((color,index)=>{
       const surface=document.createElement('canvas');surface.width=76;surface.height=140;
-      const pen=surface.getContext('2d'),gradient=pen.createLinearGradient(18,18,58,124);
+      const pen=context2d(surface),gradient=pen.createLinearGradient(18,18,58,124);
       gradient.addColorStop(0,color);gradient.addColorStop(.48,['#21b879','#ee687c','#517cde','#d9a23a'][index]);gradient.addColorStop(1,['#d6e97a','#f5be80','#a4dce6','#f2dc96'][index]);
       return {surface,pen,gradient};
     });
@@ -120,7 +124,7 @@ export function startCinematic() {
         const resolution=pixelRatio*(blur>=4?.5:1);
         const cellWidth=Math.ceil((spriteWidth+pad*2)*resolution),cellHeight=Math.ceil((spriteHeight+pad*2)*resolution);
         const surface=document.createElement('canvas');surface.width=cellWidth*16;surface.height=cellHeight;
-        strip={surface,pen:surface.getContext('2d'),ready:[],cellWidth,cellHeight,resolution,originX:pad+spriteWidth/2,originY:pad+spriteHeight/2,width:cellWidth/resolution,height:cellHeight/resolution};
+        strip={surface,pen:context2d(surface),ready:[] as boolean[],cellWidth,cellHeight,resolution,originX:pad+spriteWidth/2,originY:pad+spriteHeight/2,width:cellWidth/resolution,height:cellHeight/resolution};
         blurCache.set(node.variant,strip);
       }
       if(!strip.ready[pose]){
@@ -139,7 +143,7 @@ export function startCinematic() {
       const initial=fieldAt(time);
       if(playing&&!fieldFocused)for(let i=0;i<labels.length;i++)if(time>=nextSwitch[i]){
         const options=selectPeople(initial.nodes,Math.random,selected);selected[i]=options[i];nextSwitch[i]=time+2+Math.random()*1.2;
-        labels[i].querySelector('span').animate([{transform:'translateX(-2px)',opacity:.45,textShadow:'2px 0 #a55561,-2px 0 #466d9f'},{transform:'translateX(2px)',opacity:1},{transform:'translateX(0)',opacity:1,textShadow:'none'}],{duration:260,easing:'steps(3,end)'});
+        part(labels[i],'span').animate([{transform:'translateX(-2px)',opacity:.45,textShadow:'2px 0 #a55561,-2px 0 #466d9f'},{transform:'translateX(2px)',opacity:1},{transform:'translateX(0)',opacity:1,textShadow:'none'}],{duration:260,easing:'steps(3,end)'});
       }
       const {nodes,focus,attention}=fieldAt(time,selected);
       ctx.clearRect(0,0,width,height);
@@ -179,7 +183,7 @@ export function startCinematic() {
         ctx.beginPath();ctx.moveTo(box.labelX+labelCenters[i],box.y+7);ctx.lineTo(next.labelX+labelCenters[(i+1)%labels.length],next.y+7);ctx.stroke();
         ctx.strokeStyle=colors[i];ctx.lineWidth=attention===i?1.2:.6;ctx.strokeRect(box.x,box.boxY,box.boxWidth,box.boxHeight);
         labels[i].style.transform=`translate(${box.labelX}px,${box.y}px)`;
-        const description=labels[i].querySelector('small');
+        const description=part(labels[i],'small');
         description.style.marginTop=(box.boxHeight+6)+'px';
         description.style.transform=`translateX(${box.descriptionX-box.labelX}px)`;
         labels[i].style.opacity='1';labels[i].dataset.person=String(selected[i]);
@@ -206,6 +210,6 @@ export function startCinematic() {
     const sizeObserver=new ResizeObserver(resize);sizeObserver.observe(stage);
     document.fonts.ready.then(()=>{if(active){measureLabels();draw();}});
     sync();
-    return ()=>{active=false;cancelAnimationFrame(request);visibilityObserver.disconnect();sizeObserver.disconnect();stage.removeEventListener('focusin',focusIn);stage.removeEventListener('focusout',focusOut);preference.removeEventListener('change',motionChange);document.removeEventListener('visibilitychange',sync);labels.forEach(label=>label.querySelector('span').getAnimations().forEach(animation=>animation.cancel()));};
+    return ()=>{active=false;cancelAnimationFrame(request);visibilityObserver.disconnect();sizeObserver.disconnect();stage.removeEventListener('focusin',focusIn);stage.removeEventListener('focusout',focusOut);preference.removeEventListener('change',motionChange);document.removeEventListener('visibilitychange',sync);labels.forEach(label=>part(label,'span').getAnimations().forEach(animation=>animation.cancel()));};
   }
 }

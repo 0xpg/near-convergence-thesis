@@ -3,10 +3,11 @@ export function wordReveal(index,count,seconds){
   const order=index/Math.max(1,count-1);
   return Math.min(clamp((seconds-order*.65)/.15),clamp((2.9+order*.7-seconds)/.15));
 }
-export function startKineticType(stage){
+export function startKineticType(stage:HTMLElement){
   const preference=matchMedia('(prefers-reduced-motion: reduce)');
-  const cells=Array.from(stage.querySelectorAll('.kinetic-cell'));
-  let active=true,frame=0,widths=[],lastSeconds=null;
+  const cells=Array.from(stage.querySelectorAll<HTMLElement>('.kinetic-cell'));
+  const inner=(cell:HTMLElement)=>cell.firstElementChild as HTMLElement;
+  let active=true,frame=0,widths:number[]=[],lastSeconds:number|null=null;
   function paint(){
     frame=0;if(!active)return;
     const rect=stage.getBoundingClientRect(),height=innerHeight;
@@ -18,11 +19,11 @@ export function startKineticType(stage){
       const width=`${widths[index]*amount}px`;
       if(cell.style.width!==width)cell.style.width=width;
       const transform=mark?`scaleX(${.45+.55*Math.abs(Math.sin(seconds*5))})`:`translateY(${(1-amount)*.8}em)`;
-      if(cell.firstElementChild.style.transform!==transform)cell.firstElementChild.style.transform=transform;
+      if(inner(cell).style.transform!==transform)inner(cell).style.transform=transform;
     }
   }
   function update(){if(preference.matches)return;if(!frame&&active)frame=requestAnimationFrame(paint);}
-  function measure(){if(!active)return;lastSeconds=null;widths=cells.map(cell=>cell.firstElementChild.offsetWidth);paint();}
+  function measure(){if(!active)return;lastSeconds=null;widths=cells.map(cell=>inner(cell).offsetWidth);paint();}
   const observer=new ResizeObserver(measure);observer.observe(stage);
   document.fonts.ready.then(measure);
   addEventListener('scroll',update,{passive:true});addEventListener('resize',measure);preference.addEventListener('change',measure);

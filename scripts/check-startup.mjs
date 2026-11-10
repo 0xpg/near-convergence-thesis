@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import {humanSprite} from '../src/cinematic.mjs';
+import {humanSprite} from '../src/cinematic.ts';
 import {readFileSync} from 'node:fs';
 let created=0,painted=0;
 globalThis.document={createElement(tag){assert.equal(tag,'canvas');created++;return {getContext(){return {fillRect(){painted++;}}}};}};
@@ -7,5 +7,5 @@ const first=humanSprite(0,0);assert.equal(created,1);assert(painted>0);
 assert.equal(humanSprite(0,0),first);assert.equal(created,1);
 assert.notEqual(humanSprite(0,1),first);assert.equal(created,2);
 assert.notEqual(humanSprite(1,0),first);assert.equal(created,3);
-assert(!readFileSync('src/pages.jsx','utf8').includes('className="ascii-art"'));
+assert(!readFileSync('src/pages.tsx','utf8').includes('className="ascii-art"'));
 console.log('Walking sprites build on demand, reuse cached poses, and the obsolete ASCII fallback is absent.');

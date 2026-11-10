@@ -114,6 +114,3 @@
 }
 @media(prefers-reduced-motion:reduce){.lab-presets button,.lab-console-actions button,.lab-run,.lab-slider input::-webkit-slider-thumb{transition:none}}
 
-.lab-page .tidal-header .tidal-close,.thesis-page .tidal-header .tidal-close{display:inline-flex;align-items:center;min-height:32px;padding:0 14px;border-radius:16px;background:#e6e8e4;color:#4d5952;font-size:12px;transition:background-color 180ms ease}
-.lab-page .tidal-header .tidal-close:hover,.thesis-page .tidal-header .tidal-close:hover{background:#dcdfda}
-@media(max-width:760px){.lab-page .tidal-header .tidal-close,.thesis-page .tidal-header .tidal-close{display:none}}

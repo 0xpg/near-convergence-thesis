@@ -1,8 +1,10 @@
 import React,{useState} from 'react';
 import economics from '../data/glance-economics.json';
-import {DitherCanvas,ditherRect,ditherLine,text,rule,INK,MUTED,GREEN,SOFT,RED,AMBER} from './lab/dither.jsx';
+import {DitherCanvas,ditherRect,ditherLine,text,rule,INK,MUTED,GREEN,SOFT,RED,AMBER} from './lab/dither.tsx';
 
+type Check={metric:string,primary:string,reference:string,difference_pct:string,window:string,note?:string};
 const data=economics.observed;
+const checks:Check[]=data.checks;
 const n=value=>Number(value);
 const usd=(value,digits=1)=>{const v=n(value);if(Math.abs(v)>=1e9)return '$'+(v/1e9).toFixed(2)+'bn';if(Math.abs(v)>=1e6)return '$'+(v/1e6).toFixed(digits)+'m';if(Math.abs(v)>=1e3)return '$'+Math.round(v).toLocaleString('en-US');return '$'+v.toFixed(0);};
 const pct=(value,digits=1)=>n(value).toFixed(digits)+'%';
@@ -50,7 +52,7 @@ function drawMonthly(pen,width,height){
   for(let v=0;v<=maxBps;v+=5){rule(pen,left,y(v),right,y(v),'#293b3214');text(pen,v+' bps',left-6,y(v)+4,{size:10,color:MUTED,align:'right'});}
   months.forEach((m,i)=>{const x=left+i*step+(step-bar)/2;ditherRect(pen,x,y(m.retained_bps),bar,bottom-y(m.retained_bps),.85,GREEN);if(i%2===0||i===months.length-1)text(pen,m.month.slice(2).replace('-','/'),x+bar/2,bottom+16,{size:10,color:MUTED,align:'center'});});
   ditherLine(pen,months.map((m,i)=>[left+i*step+step/2,y(m.gross_bps)]),AMBER,1.5);
-  const last=months.at(-1);
+  const last=months[months.length-1];
   text(pen,'Charged',left+(months.length-1)*step+step/2+6,y(last.gross_bps)-6,{size:11,color:AMBER,weight:500});
   text(pen,'Kept',left+(months.length-1)*step+step/2+6,y(last.retained_bps)+4,{size:11,color:GREEN,weight:500});
 }
@@ -87,6 +89,6 @@ export function GlanceInstitutional({available=true}){
 export function GlanceValidation(){
   return <details className="glance-validation"><summary>How these numbers were checked</summary>
     <table><thead><tr><th scope="col">Measure</th><th scope="col">Source</th><th scope="col">Checked against</th><th scope="col">Difference</th></tr></thead>
-      <tbody>{data.checks.map(check=><tr key={check.metric}><th scope="row">{check.metric}<span>{check.window}</span></th><td>{check.primary}</td><td>{check.reference}</td><td>{n(check.difference_pct)>0?'+':''}{n(check.difference_pct).toFixed(2)}%{check.note&&<span>{check.note}</span>}</td></tr>)}</tbody></table>
+      <tbody>{checks.map(check=><tr key={check.metric}><th scope="row">{check.metric}<span>{check.window}</span></th><td>{check.primary}</td><td>{check.reference}</td><td>{n(check.difference_pct)>0?'+':''}{n(check.difference_pct).toFixed(2)}%{check.note&&<span>{check.note}</span>}</td></tr>)}</tbody></table>
   </details>;
 }

@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import {startDitherEmphasis} from '../src/overview/dither-emphasis.mjs';
+import {startDitherEmphasis} from '../src/overview/dither-emphasis.ts';
 let update,disconnected=false;const observed=[];
 globalThis.IntersectionObserver=class{constructor(callback,options){update=callback;assert.equal(options.threshold,.25);}observe(target){observed.push(target);}disconnect(){disconnected=true;}};
 const nodes=[0,1].map(()=>({visible:false,classList:{toggle(name,on){assert.equal(name,'is-ink-visible');nodes[this.index].visible=on;},index:0}}));

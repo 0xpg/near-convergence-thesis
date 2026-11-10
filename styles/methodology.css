@@ -1,0 +1,11 @@
+body{max-width:850px;margin:auto;padding:32px 24px}
+main{padding:40px 0}
+h1{font-size:clamp(2.5rem,6vw,4rem)}
+h2{margin-top:2.6rem}
+p,li{line-height:1.7}
+pre{background:#e7e8df;padding:20px;overflow:auto;font-size:14px}
+code{overflow-wrap:anywhere}
+table{width:100%;border-collapse:collapse}
+td,th{text-align:left;padding:12px 8px;border-bottom:1px solid #c4cbc1;vertical-align:top}
+a{text-decoration:underline}
+small{font-size:14px}

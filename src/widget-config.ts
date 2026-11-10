@@ -1,6 +1,8 @@
 import {calculate} from '../analysis/model.mjs';
 
-export const controls = [
+export type Control=[key:string,label:string,unit:string,min:number,max:number];
+
+export const controls:Control[] = [
   ['volumeGrowthPct','Annual volume growth','% per year · hypothetical',-100,500],
   ['grossFeeBps','Gross service fee','Basis points · route mix can change',0,10000],
   ['receiptSharePct','Wallet-receipt share','% of gross fees · historical proxy',0,100],

@@ -6,11 +6,13 @@ const clamp=value=>Math.max(0,Math.min(1,value));
 const smooth=value=>value*value*(3-2*value);
 function modeCheck(mode){if(!Number.isInteger(mode)||mode<0||mode>2)throw new RangeError('Unknown absorption direction');}
 
+export type Particle={id:number,sector:number,a:number,r:number,phase:number,speed:number,size:number,color:string,shade:number,stream:boolean,core:boolean};
+
 export function createParticles(mode=0){
   modeCheck(mode);
   let seed=94817;
   const random=()=>{seed=(Math.imul(seed,1664525)+1013904223)>>>0;return seed/4294967296;};
-  const particles=[];
+  const particles:Particle[]=[];
   for(let sector=0;sector<CATEGORY_COUNT;sector++){
     const center=-Math.PI/2+sector*TAU/CATEGORY_COUNT;
     const ring=204+random()*23;
@@ -44,10 +46,11 @@ export function particleAt(p,time,mode=0,selected=-1){
   return {x:320+Math.cos(angle)*radius,y:320+Math.sin(angle)*radius,alpha,size:p.size};
 }
 
-export function startAbsorption(canvas,mode=1,onSelect){
+export function startAbsorption(canvas:HTMLCanvasElement,mode=1,onSelect?:(index:number)=>void){
   modeCheck(mode);
   const initialMode=mode;
-  const ctx=canvas.getContext('2d');if(!ctx)return {destroy(){},select(){}};
+  const context=canvas.getContext('2d');if(!context)return {destroy(){},select(_index:number,_pin?:boolean){}};
+  const ctx:CanvasRenderingContext2D=context;
   const particles=createParticles(mode),positions=particles.map(p=>particleAt(p,0,mode));
   let visible=true;
   const motion=matchMedia('(prefers-reduced-motion: reduce)');

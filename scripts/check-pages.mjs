@@ -5,10 +5,15 @@ import {createElement} from 'react';
 import {renderToStaticMarkup} from 'react-dom/server';
 const server=await createServer({server:{middlewareMode:true},appType:'custom'});
 try{
- const pages=await server.ssrLoadModule('/src/pages.jsx');
- const {default:Story}=await server.ssrLoadModule('/src/ThesisPage.jsx');
- const {topics}=await server.ssrLoadModule('/src/OverviewScene.jsx');
+ const pages=await server.ssrLoadModule('/src/pages.tsx');
+ const {default:Story}=await server.ssrLoadModule('/src/ThesisPage.tsx');
+ const {topics}=await server.ssrLoadModule('/src/OverviewScene.tsx');
  const components={'index.html':pages.Landing,'lab.html':pages.Lab,'research.html':pages.Research,'methodology.html':pages.Methodology,'thesis.html':Story};
+ const routeFiles={'/':'index.html','/thesis':'thesis.html','/lab':'lab.html','/research':'research.html','/methodology':'methodology.html'};
+ const {routes,resolveRoute}=await server.ssrLoadModule('/src/routes.ts');
+ assert.deepEqual(Object.keys(routes).sort(),Object.keys(routeFiles).sort());
+ for(const [legacy,path] of [['/thesis.html','/thesis'],['/index.html','/'],['/lab/','/lab'],['/','/']])assert.equal(resolveRoute(legacy).path,path);
+ assert.equal(resolveRoute('/explore').redirect,'/research#explore');
  const rendered=Object.fromEntries(Object.entries(components).map(([file,Component])=>[file,renderToStaticMarkup(createElement(Component))]));
  for(const [page,html] of Object.entries(rendered)){
   assert(!/\u00e2\u20ac|\u00c2\u00b7/.test(html),'UTF-8 text: '+page);
@@ -16,12 +21,12 @@ try{
   assert.equal(new Set(ids).size,ids.length,'Duplicate IDs: '+page);
   for(const [,url] of html.matchAll(/(?:href|src)="([^"]+)"/g)){
    if(/^(https?:|mailto:|data:)/.test(url))continue;
-   const [target,fragment]=url.split('#'),file=(target||page).split('?')[0];
-   assert(existsSync('dist/'+file),'Missing '+page+' -> '+url);
+   const [target,fragment]=url.split('#'),route=target?routeFiles[target.split('?')[0]]:page,file=route||(target||page).split('?')[0].replace(/^\//,'');
+   assert(route?rendered[route]:existsSync('dist/'+file),'Missing '+page+' -> '+url);
    if(fragment&&rendered[file])assert(rendered[file].includes('id="'+fragment+'"'),'Missing anchor '+url);
   }
  }
- const {frameworkItems,frameworkSources}=await server.ssrLoadModule('/src/InvestmentFramework.jsx');
+ const {frameworkItems,frameworkSources}=await server.ssrLoadModule('/src/InvestmentFramework.tsx');
  assert.equal(new Set(frameworkItems.map(item=>item.id)).size,frameworkItems.length);
  for(const item of frameworkItems){assert(item.claim&&item.mechanism&&item.test&&item.sources.length);for(const id of item.sources)assert.equal(new URL(frameworkSources[id].url).protocol,'https:');for(const axis of ['x','y','z'])assert(Number.isFinite(item[axis])&&Math.abs(item[axis])<=1);}
  assert(frameworkItems.some(item=>item.id==='institutional'&&item.title==='Institutional demand'));
@@ -53,7 +58,7 @@ try{
  assert(!rendered['thesis.html'].includes('Awaiting supplied data.'));
  assert(rendered['thesis.html'].indexOf('id="framework-title"')<rendered['thesis.html'].indexOf('id="approach-title"'));
  assert(rendered['thesis.html'].indexOf('id="approach-title"')<rendered['thesis.html'].indexOf('id="network"'));
- const {default:DuneGlance,glanceCharts,glanceGroups}=await server.ssrLoadModule('/src/DuneGlance.jsx');
+ const {default:DuneGlance,glanceCharts,glanceGroups}=await server.ssrLoadModule('/src/DuneGlance.tsx');
  const missingInsights=renderToStaticMarkup(createElement(DuneGlance,{insights:{},economics:false}));
  assert(!missingInsights.includes('class="glance-takeaway"'),'Missing evidence must not retain an investment interpretation');
  assert(missingInsights.includes('Snapshot insight unavailable.'),'Missing is distinct from zero');

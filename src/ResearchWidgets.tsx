@@ -1,12 +1,12 @@
 import {Fragment,useEffect,useState} from 'react';
 import {defaults,modelVersion,formulas,calculate} from '../analysis/model.mjs';
-import {controls,presets,scenarioResult} from './widget-config.mjs';
+import {controls,presets,scenarioResult} from './widget-config.ts';
 
 const money=value=>value===null?'Not computable':new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',notation:'compact',maximumFractionDigits:2}).format(value);
 const displayValue=value=>typeof value==='number'&&Number.isFinite(value)?String(Math.round(value*100)/100):value;
 
-function useSavedJson(path,validate) {
-  const [state,setState]=useState({data:null,error:false});
+function useSavedJson<T=any>(path:string,validate?:(data:T)=>void) {
+  const [state,setState]=useState<{data:T|null,error:boolean}>({data:null,error:false});
   useEffect(()=>{
     const controller=new AbortController();
     fetch(path,{signal:controller.signal}).then(response=>{
@@ -28,14 +28,15 @@ const validateLedger=data=>{if(!Array.isArray(data.claims)||!Array.isArray(data.
 
 export function ScenarioExperience() {
   const saved=useSavedJson('data/inputs.json',validateSnapshot);
-  const [scenario,setScenario]=useState({values:{...defaults},result:null,preset:'unverified',error:''});
+  type Result=ReturnType<typeof calculate>;
+  const [scenario,setScenario]=useState<{values:Record<string,number|string>,result:Result|null,preset:string,error:string}>({values:{...defaults},result:null,preset:'unverified',error:''});
   useEffect(()=>{
     if(saved.data){const result=calculate({},saved.data);setScenario({values:result.inputs,result,preset:'unverified',error:''});}
   },[saved.data]);
   const snapshot=saved.data,result=scenario.result,disabled=!snapshot||saved.error;
   function rerun(values,preset='') {
     try{const result=scenarioResult(values,snapshot);setScenario({values,result,preset,error:''});}
-    catch(error){setScenario(previous=>({...previous,values,preset,error:error.message}));}
+    catch(error){setScenario(previous=>({...previous,values,preset,error:error instanceof Error?error.message:String(error)}));}
   }
   function selectPreset(name) {rerun({...calculate({},snapshot).inputs,...presets[name].inputs},name);}
   function exportResult() {
@@ -64,7 +65,7 @@ export function ScenarioExperience() {
             ['Retained purchases / reference value','absorption',result&&result.absorptionPctOfValue.toFixed(3)+'%'],
             ['Volume required at chosen hurdle','required-volume',result&&(result.requiredVolume===null?'Undefined at zero capture':money(result.requiredVolume))],
             ['Annual maximum issuance','issuance',result&&new Intl.NumberFormat('en-US',{notation:'compact',maximumFractionDigits:2}).format(result.issuanceNear)+' NEAR']
-          ].map(([label,id,value])=><div key={id}><dt>{label}</dt><dd id={id}>{value||'—'}</dd></div>)}
+          ].map(([label,id,value])=><div key={id??undefined}><dt>{label}</dt><dd id={id??undefined}>{value||'—'}</dd></div>)}
         </dl>
         <p className="small">Issuance is a ceiling, not forecast selling pressure. Purchases are not token burns. Actual net supply growth is uncomputed.</p>
         <p className="small" id="version-line">{snapshot?`Snapshot ${snapshot.snapshotVersion} · Model ${modelVersion} · Price reference 25 Oct 2026`:'Snapshot and model version load with inputs.'}</p>

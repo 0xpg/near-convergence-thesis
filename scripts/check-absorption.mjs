@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import {createParticles,particleAt,startAbsorption} from '../src/overview/absorption.mjs';
+import {createParticles,particleAt,startAbsorption} from '../src/overview/absorption.ts';
 const points=createParticles();
 assert.equal(points.length,1800);
 assert.deepEqual(points,createParticles());

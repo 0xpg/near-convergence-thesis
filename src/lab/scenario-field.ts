@@ -6,11 +6,12 @@ export function surface(x,y,time){
   return Math.max(0,Math.min(1,base+.07*Math.sin(x*7+time)*Math.cos(y*5-time*.7)));
 }
 
-export function startScenarioField(canvas){
-  const pen=canvas?.getContext('2d');if(!pen)return()=>{};
+export function startScenarioField(canvas:HTMLCanvasElement|null){
+  const context=canvas?.getContext('2d');if(!canvas||!context)return()=>{};
+  const pen:CanvasRenderingContext2D=context,field:HTMLCanvasElement=canvas;
   const motion=matchMedia('(prefers-reduced-motion: reduce)');
   const step=4,threshold=.52,started=performance.now();
-  let width=0,height=0,frame=0,last=0,visible=true,active=true,pointer=null;
+  let width=0,height=0,frame=0,last=0,visible=true,active=true,pointer:{x:number,y:number}|null=null;
   function cursorAt(time){
     if(pointer)return pointer;
     return {x:.5+.32*Math.sin(time*.23),y:.48+.28*Math.sin(time*.31+1.2)};
@@ -42,15 +43,15 @@ export function startScenarioField(canvas){
   function tick(now){if(now-last<80){frame=requestAnimationFrame(tick);return;}last=now;paint(now);}
   function schedule(){cancelAnimationFrame(frame);frame=requestAnimationFrame(paint);}
   function resize(){
-    const box=canvas.getBoundingClientRect();width=box.width;height=box.height;
-    const dpr=Math.min(devicePixelRatio||1,2);canvas.width=Math.round(width*dpr);canvas.height=Math.round(height*dpr);pen.setTransform(dpr,0,0,dpr,0,0);schedule();
+    const box=field.getBoundingClientRect();width=box.width;height=box.height;
+    const dpr=Math.min(devicePixelRatio||1,2);field.width=Math.round(width*dpr);field.height=Math.round(height*dpr);pen.setTransform(dpr,0,0,dpr,0,0);schedule();
   }
-  const move=event=>{const box=canvas.getBoundingClientRect();pointer={x:Math.min(1,Math.max(0,(event.clientX-box.left)/box.width)),y:Math.min(1,Math.max(0,(event.clientY-box.top)/box.height))};schedule();};
+  const move=event=>{const box=field.getBoundingClientRect();pointer={x:Math.min(1,Math.max(0,(event.clientX-box.left)/box.width)),y:Math.min(1,Math.max(0,(event.clientY-box.top)/box.height))};schedule();};
   const leave=()=>{pointer=null;schedule();};
-  canvas.addEventListener('pointermove',move);canvas.addEventListener('pointerleave',leave);
-  const sizeObserver=new ResizeObserver(resize);sizeObserver.observe(canvas);
-  const visibility=new IntersectionObserver(([entry])=>{visible=entry.isIntersecting;schedule();});visibility.observe(canvas);
+  field.addEventListener('pointermove',move);field.addEventListener('pointerleave',leave);
+  const sizeObserver=new ResizeObserver(resize);sizeObserver.observe(field);
+  const visibility=new IntersectionObserver(([entry])=>{visible=entry.isIntersecting;schedule();});visibility.observe(field);
   document.addEventListener('visibilitychange',schedule);motion.addEventListener('change',schedule);
   resize();
-  return()=>{active=false;cancelAnimationFrame(frame);sizeObserver.disconnect();visibility.disconnect();canvas.removeEventListener('pointermove',move);canvas.removeEventListener('pointerleave',leave);document.removeEventListener('visibilitychange',schedule);motion.removeEventListener('change',schedule);};
+  return()=>{active=false;cancelAnimationFrame(frame);sizeObserver.disconnect();visibility.disconnect();field.removeEventListener('pointermove',move);field.removeEventListener('pointerleave',leave);document.removeEventListener('visibilitychange',schedule);motion.removeEventListener('change',schedule);};
 }

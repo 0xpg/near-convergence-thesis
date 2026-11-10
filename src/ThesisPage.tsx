@@ -1,21 +1,21 @@
 import React,{useLayoutEffect,useRef} from 'react';
-import OverviewScene from './OverviewScene.jsx';
-import InvestmentFramework from './InvestmentFramework.jsx';
-import DuneGlance from './DuneGlance.jsx';
-import KineticStatement from './KineticStatement.jsx';
-import {startTypeDither} from './overview/type-dither.mjs';
-import {startIntroField} from './overview/intro-field.mjs';
-import {startDitherEmphasis} from './overview/dither-emphasis.mjs';
+import OverviewScene from './OverviewScene.tsx';
+import InvestmentFramework from './InvestmentFramework.tsx';
+import DuneGlance from './DuneGlance.tsx';
+import KineticStatement from './KineticStatement.tsx';
+import {startTypeDither} from './overview/type-dither.ts';
+import {startIntroField} from './overview/intro-field.ts';
+import {startDitherEmphasis} from './overview/dither-emphasis.ts';
 
 export default function ThesisPage(){
-  const heading=useRef(),canvas=useRef(),field=useRef(),closing=useRef(),closingCanvas=useRef(),reading=useRef();
-  useLayoutEffect(()=>startTypeDither(canvas.current,heading.current),[]);
-  useLayoutEffect(()=>startIntroField(field.current),[]);
-  useLayoutEffect(()=>startTypeDither(closingCanvas.current,closing.current),[]);
-  useLayoutEffect(()=>startDitherEmphasis(reading.current),[]);
+  const heading=useRef<HTMLHeadingElement>(null),canvas=useRef<HTMLCanvasElement>(null),field=useRef<HTMLCanvasElement>(null),closing=useRef<HTMLHeadingElement>(null),closingCanvas=useRef<HTMLCanvasElement>(null),reading=useRef<HTMLElement>(null);
+  useLayoutEffect(()=>canvas.current&&heading.current?startTypeDither(canvas.current,heading.current):undefined,[]);
+  useLayoutEffect(()=>field.current?startIntroField(field.current):undefined,[]);
+  useLayoutEffect(()=>closingCanvas.current&&closing.current?startTypeDither(closingCanvas.current,closing.current):undefined,[]);
+  useLayoutEffect(()=>reading.current?startDitherEmphasis(reading.current):undefined,[]);
   return <div className="thesis-page">
     <a className="tidal-skip" href="#network">Skip introduction</a>
-    <header className="tidal-header thesis-header"><a className="tidal-brand" href="index.html" aria-label="NEAR research home">NEAR</a><nav aria-label="Main navigation"><a href="thesis.html" aria-current="page">Thesis</a><a href="lab.html">Scenario lab</a></nav><a className="tidal-close" href="index.html">Home</a></header>
+    <header className="tidal-header thesis-header"><a className="tidal-brand" href="/" aria-label="NEAR research home">NEAR</a><nav aria-label="Main navigation"><a href="/thesis" aria-current="page">Thesis</a><a href="/lab">Scenario lab</a></nav><a className="tidal-close" href="/">Home</a></header>
     <main>
       <section className="thesis-intro" aria-labelledby="thesis-title">
         <canvas className="thesis-intro-field" ref={field} aria-hidden="true"/>
@@ -49,7 +49,7 @@ export default function ThesisPage(){
       <DuneGlance/>
       <section className="thesis-finale" aria-labelledby="finale-title">
         <div className="thesis-finale-type"><div className="thesis-resolve"><canvas ref={closingCanvas} aria-hidden="true"/><h2 id="finale-title" ref={closing}><span>Convergence</span></h2></div></div>
-        <div className="thesis-finale-action"><a href="lab.html">Open the Scenario Lab</a></div>
+        <div className="thesis-finale-action"><a href="/lab">Open the Scenario Lab</a></div>
       </section>
     </main>
   </div>;
