@@ -84,6 +84,15 @@ export function humanSprite(variant,pose){
   spriteAtlas[variant][pose]=sprite;return sprite;
 }
 
+function supportsCanvasBlur(){
+  try{
+    if(!('filter' in CanvasRenderingContext2D.prototype))return false;
+    const probe=document.createElement('canvas');probe.width=9;probe.height=9;
+    const pen=probe.getContext('2d');pen.filter='blur(2px)';pen.fillRect(4,4,1,1);
+    return pen.getImageData(1,4,1,1).data[3]>0;
+  }catch{return false;}
+}
+
 export function startCinematic() {
   const canvas=document.getElementById('activity-field'), stage=document.getElementById('field-stage');
   const ctx=canvas?.getContext('2d');
@@ -102,6 +111,30 @@ export function startCinematic() {
       gradient.addColorStop(0,color);gradient.addColorStop(.48,['#21b879','#ee687c','#517cde'][index]);gradient.addColorStop(1,['#d6e97a','#f5be80','#a4dce6'][index]);
       return {surface,pen,gradient};
     });
+    // Depth blur is fixed per figure, so each blurred pose is rasterized once into a per-figure strip and reused.
+    // Canvas blur radii are bitmap pixels (unaffected by the transform), so the strip blur is rescaled to its own resolution.
+    // Strongly blurred figures carry no fine detail, so their strips are stored at half the device resolution.
+    const canvasBlur=supportsCanvasBlur();
+    let pixelRatio=1,blurCacheWidth=0,blurCache=new Map();
+    function blurredSprite(node,pose,size,blur,build){
+      let strip=blurCache.get(node.variant);
+      if(!strip){
+        const spriteWidth=76*size*node.profile*build.width,spriteHeight=140*size*build.height,pad=Math.ceil(blur*3/pixelRatio)+2;
+        const resolution=pixelRatio*(blur>=4?.5:1);
+        const cellWidth=Math.ceil((spriteWidth+pad*2)*resolution),cellHeight=Math.ceil((spriteHeight+pad*2)*resolution);
+        const surface=document.createElement('canvas');surface.width=cellWidth*16;surface.height=cellHeight;
+        strip={surface,pen:surface.getContext('2d'),ready:[],cellWidth,cellHeight,resolution,originX:pad+spriteWidth/2,originY:pad+spriteHeight/2,width:cellWidth/resolution,height:cellHeight/resolution};
+        blurCache.set(node.variant,strip);
+      }
+      if(!strip.ready[pose]){
+        const {pen,cellWidth,cellHeight,resolution}=strip;
+        pen.save();pen.beginPath();pen.rect(pose*cellWidth,0,cellWidth,cellHeight);pen.clip();
+        pen.setTransform(resolution,0,0,resolution,pose*cellWidth,0);pen.translate(strip.originX,strip.originY);pen.scale(node.profile*build.width,build.height);
+        pen.filter=`blur(${blur*resolution/pixelRatio}px)`;pen.drawImage(humanSprite(node.variant,pose),-38*size,-70*size,76*size,140*size);pen.restore();
+        strip.ready[pose]=true;
+      }
+      return strip;
+    }
     const restingNodes=fieldAt(0).nodes;
     const edges=restingNodes.flatMap((origin,i)=>restingNodes.map((node,index)=>({index,distance:Math.hypot(node.x-origin.x,node.y-origin.y)})).filter(item=>item.index>i&&item.distance<.20).sort((a,b)=>a.distance-b.distance).slice(0,3).map(item=>[i,item.index]));
     function draw(){
@@ -115,13 +148,19 @@ export function startCinematic() {
       ctx.clearRect(0,0,width,height);
       const scale=width<600?.62:1;
       for(const node of [...nodes].sort((a,b)=>a.z-b.z)) {
-        const build=bodyShape(node.variant),size=(.29+node.z*.62)*scale;
+        const build=bodyShape(node.variant),size=(.29+node.z*.62)*scale,blur=depthBlur(node.z,width);
         ctx.globalAlpha=.43+(.5-Math.abs(node.z-.5))*.95;
-        ctx.filter=`blur(${depthBlur(node.z,width)}px)`;
         const pose=Math.floor(node.gait);
+        const label=selected.indexOf(node.variant);
+        if(canvasBlur&&label===-1&&blur>=(pixelRatio>=2?1:2)){
+          const cached=blurredSprite(node,pose,size,blur,build);
+          ctx.filter='none';ctx.save();ctx.translate(node.x*width,node.y*height);ctx.scale(node.direction,1);
+          ctx.drawImage(cached.surface,pose*cached.cellWidth,0,cached.cellWidth,cached.cellHeight,-cached.originX,-cached.originY,cached.width,cached.height);ctx.restore();
+          continue;
+        }
+        ctx.filter=`blur(${blur}px)`;
         ctx.save();ctx.translate(node.x*width,node.y*height);ctx.scale(node.direction*node.profile*build.width,build.height);
         let sprite=humanSprite(node.variant,pose);
-        const label=selected.indexOf(node.variant);
         if(label!==-1){
           const {surface,pen,gradient}=highlights[label];
           pen.clearRect(0,0,76,140);pen.drawImage(sprite,0,0);
@@ -165,7 +204,7 @@ export function startCinematic() {
     preference.addEventListener('change',motionChange);
     document.addEventListener('visibilitychange',sync);
     const visibilityObserver=new IntersectionObserver(([entry])=>{visible=entry.isIntersecting;sync();});visibilityObserver.observe(stage);
-    const resize=()=>{const nextWidth=stage.clientWidth,nextHeight=stage.clientHeight;if(nextWidth===width&&nextHeight===height)return;width=nextWidth;height=nextHeight;measureLabels();const dpr=Math.min(devicePixelRatio||1,2);canvas.width=Math.round(width*dpr);canvas.height=Math.round(height*dpr);ctx.setTransform(dpr,0,0,dpr,0,0);draw();stage.classList.add('is-ready');};
+    const resize=()=>{const nextWidth=stage.clientWidth,nextHeight=stage.clientHeight;if(nextWidth===width&&nextHeight===height)return;width=nextWidth;height=nextHeight;measureLabels();const dpr=Math.min(devicePixelRatio||1,2);if(dpr!==pixelRatio||(nextWidth<600)!==(blurCacheWidth<600)){blurCache=new Map();pixelRatio=dpr;}blurCacheWidth=nextWidth;canvas.width=Math.round(width*dpr);canvas.height=Math.round(height*dpr);ctx.setTransform(dpr,0,0,dpr,0,0);draw();stage.classList.add('is-ready');};
     resize();
     const sizeObserver=new ResizeObserver(resize);sizeObserver.observe(stage);
     document.fonts.ready.then(()=>{if(active){measureLabels();draw();}});
