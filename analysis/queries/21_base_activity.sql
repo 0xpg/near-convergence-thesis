@@ -1,8 +1,3 @@
--- Seven completed UTC dates; uses validated near.actions fields from query 9012806.
--- All outcomes included. Count once per tx_hash per receipt-execution date, not per action.
--- A transaction with receipts on two dates can appear on both: not inclusion-date counts.
--- Origins include relayers, not people. Daily distinct origins cannot be summed into uniques.
--- Missing dates remain absent; averages below are NULL unless all seven dates are observed.
 WITH tx AS (
  SELECT block_date,tx_hash,max(tx_from) AS origin,
   max(CASE WHEN action_kind='DELEGATE_ACTION' OR is_delegate_action THEN 1 ELSE 0 END) AS delegated,

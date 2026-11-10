@@ -1,5 +1,6 @@
 const TAU=Math.PI*2;
-const colors=['#4c5947','#a07839','#536f79','#9c754c','#8e6252','#746a9b','#6c6454','#66774e'];
+const colors=['#4c5947','#a07839','#86607a','#536f79','#9c754c','#4a6890','#8e6252','#746a9b','#6c6454','#66774e'];
+const SECTOR_TILES=162,TRAIL_START=131,ARC=8/10;
 const CATEGORY_COUNT=colors.length;
 const clamp=value=>Math.max(0,Math.min(1,value));
 const smooth=value=>value*value*(3-2*value);
@@ -13,10 +14,10 @@ export function createParticles(mode=0){
   for(let sector=0;sector<CATEGORY_COUNT;sector++){
     const center=-Math.PI/2+sector*TAU/CATEGORY_COUNT;
     const ring=204+random()*23;
-    for(let index=0;index<202;index++){
-      const trail=index>=164;
+    for(let index=0;index<SECTOR_TILES;index++){
+      const trail=index>=TRAIL_START;
       const spread=(random()+random()+random()-1.5);
-      const a=center+spread*(trail?.24:.22);
+      const a=center+spread*(trail?.24:.22)*ARC;
       const r=(trail?35+random()*160:ring+(random()+random()-1)*32)*(mode===1?1.12:1);
       particles.push({id:particles.length,sector,a,r,phase:random(),speed:.8+random()*.4,size:trail?1.7+random()*2.2:3+random()*3.4,color:colors[sector],shade:random(),stream:trail||index%4===0,core:false});
     }

@@ -1,5 +1,3 @@
--- Source token/chain labels, last 30 available completed dates per dimension.
--- The feed can lag wall-clock time. Period boundaries and observed-date counts are returned.
 WITH payload AS (SELECT json_parse(http_get('https://defillama.com/api/public/near/ecosystem')) AS body),
 charts AS (SELECT dimension,c FROM payload CROSS JOIN UNNEST(
  ARRAY['Token','Blockchain'],

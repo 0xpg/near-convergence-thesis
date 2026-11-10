@@ -57,10 +57,7 @@ def wide(key, columns):
     selection = ',\n '.join(f"max(CASE WHEN metric='{alias}' THEN value END) AS {alias}" for _, _, alias in columns)
     if key != 'revenue':
         derived = ''
-    return f"""-- Public DefiLlama NEAR investor-relations feed; provider-reported, not independent verification.
--- Array position joins each value to its own chart date. Missing values remain NULL.
--- Excludes the current UTC date. Never sum daily counts into unique users.
-WITH payload AS (SELECT json_parse(http_get('{URLS[key]}')) AS body),
+    return f"""WITH payload AS (SELECT json_parse(http_get('{URLS[key]}')) AS body),
 charts AS (SELECT metric, series_name, c FROM payload
 CROSS JOIN UNNEST(ARRAY[{aliases}],ARRAY[{names}],ARRAY[{charts}]) AS t(metric,series_name,c)),
 points AS (
@@ -113,10 +110,7 @@ def scorecard(key, groups):
             unit = unit_for(metric)
             rows.append([f"'{group}'", f"'{metric}'", f"'{unit}'", f"json_extract(body,'$.{path}.{metric}')", f"CAST(element_at(CAST(json_extract(body,'$.{asof_chart}.dates') AS ARRAY(VARCHAR)), -1) AS DATE)"])
     vals = ',\n '.join('ARRAY[' + ','.join(row[i] for row in rows) + ']' for i in range(5))
-    return f"""-- Exact provider scorecard fields. Periods are those named in metric, not recomputed windows.
--- Intents totalSwaps and cumulativeSwaps disagree in the source; retain both visibly.
--- As-of is the latest date of the related chart, not an independently verified KPI cutoff.
-WITH payload AS (SELECT json_parse(http_get('{URLS[key]}')) AS body)
+    return f"""WITH payload AS (SELECT json_parse(http_get('{URLS[key]}')) AS body)
 SELECT section, metric, CAST(json_extract_scalar(kpi,'$.value') AS DOUBLE) AS value,
 unit, json_extract_scalar(kpi,'$.formatted') AS display_value, related_chart_latest_date,
 current_timestamp AS retrieved_utc
@@ -137,9 +131,7 @@ write('12_ir_ecosystem_scorecard.sql', 'NEAR IR | Ecosystem scorecard', scorecar
     ('Token', 'tokenEconomics.kpis', 'tokenEconomics.supplyChart', lambda m: 'USD' if m in ('nearPrice', 'marketCap') else 'NEAR'),
 ]), 'Provider-reported users, swaps and supply. totalSwaps and cumulativeSwaps differ; no entity deduplication or supply-methodology reconciliation claimed.')
 
-breakdown_sql = f"""-- Source token/chain labels, last 30 available completed dates per dimension.
--- The feed can lag wall-clock time. Period boundaries and observed-date counts are returned.
-WITH payload AS (SELECT json_parse(http_get('{URLS['ecosystem']}')) AS body),
+breakdown_sql = f"""WITH payload AS (SELECT json_parse(http_get('{URLS['ecosystem']}')) AS body),
 charts AS (SELECT dimension,c FROM payload CROSS JOIN UNNEST(
  ARRAY['Token','Blockchain'],
  ARRAY[json_extract(body,'$.intents.tokenBreakdown'),json_extract(body,'$.intents.blockchainBreakdown')]
@@ -160,9 +152,7 @@ current_timestamp AS retrieved_utc FROM totals ORDER BY dimension,volume_usd DES
 write('15_ir_intents_mix.sql', 'NEAR IR | Intents token and chain mix', breakdown_sql,
       'Token symbols and blockchain labels are source labels. All-time referral fees remain a separate measure; never infer fee share from volume share.')
 
-write('16_ir_wallets_channels.sql', 'NEAR IR | Revenue wallets and fee channels', f"""-- Separate source scopes and units; never add these two groups together.
--- Wallet window is provider-defined last 12 months. Channel fees are all-time.
-WITH r AS (SELECT json_parse(http_get('{URLS['revenue']}')) AS body),
+write('16_ir_wallets_channels.sql', 'NEAR IR | Revenue wallets and fee channels', f"""WITH r AS (SELECT json_parse(http_get('{URLS['revenue']}')) AS body),
 e AS (SELECT json_parse(http_get('{URLS['ecosystem']}')) AS body), rows AS (
  SELECT 'Revenue wallets' AS section,json_extract_scalar(w,'$.wallet') AS label,
  CAST(json_extract_scalar(w,'$.total') AS DOUBLE) AS value,'NEAR' AS unit,

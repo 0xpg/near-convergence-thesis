@@ -1,5 +1,3 @@
--- Snapshot reproduction: 27 September through 26 October 2026 inclusive UTC. Source-reported referral labels; not beneficial-owner labels.
--- Affiliate/distribution fees only. Excludes the separate protocol fee table and is not tokenholder revenue.
 WITH source AS (
  SELECT CAST(substr(CAST(date_at AS VARCHAR),1,10) AS DATE) AS day,
  coalesce(nullif(CAST(referral AS VARCHAR),''),'Unlabelled') AS name,CAST(fee AS DOUBLE) AS fees_usd

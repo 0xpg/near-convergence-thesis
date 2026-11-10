@@ -1,6 +1,3 @@
--- Exact provider scorecard fields. Periods are those named in metric, not recomputed windows.
--- Intents totalSwaps and cumulativeSwaps disagree in the source; retain both visibly.
--- As-of is the latest date of the related chart, not an independently verified KPI cutoff.
 WITH payload AS (SELECT json_parse(http_get('https://defillama.com/api/public/near/revenue')) AS body)
 SELECT section, metric, CAST(json_extract_scalar(kpi,'$.value') AS DOUBLE) AS value,
 unit, json_extract_scalar(kpi,'$.formatted') AS display_value, related_chart_latest_date,

@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import {humanSprite} from '../cinematic.mjs';
+import {humanSprite} from '../src/cinematic.mjs';
 import {readFileSync} from 'node:fs';
 let created=0,painted=0;
 globalThis.document={createElement(tag){assert.equal(tag,'canvas');created++;return {getContext(){return {fillRect(){painted++;}}}};}};

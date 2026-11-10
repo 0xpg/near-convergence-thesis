@@ -5,8 +5,10 @@ import nearWordmark from '../assets/identity/near.svg';
 export const topics=[
   {title:'Settlement'},
   {title:'Intents'},
+  {title:'Solver competition'},
   {title:'Chain Signatures'},
   {title:'Accounts & access'},
+  {title:'Institutional execution'},
   {title:'AI infrastructure'},
   {title:'Applications'},
   {title:'Developer tooling'},
@@ -20,7 +22,7 @@ export default function OverviewScene(){
   function choose(index,pin=false){animation.current?.select(index,pin);}
   return <div className={'tidal-page '+(selected>=0?'is-focused':'')} onKeyDown={event=>{if(event.key==='Escape'&&!event.defaultPrevented)choose(-1,true);}}>
     <header className="tidal-header"><a className="tidal-brand" href="index.html" aria-label="NEAR research home">NEAR</a><nav aria-label="Main navigation"><a href="thesis.html" aria-current="page">Thesis</a><a href="lab.html">Scenario lab</a></nav><a className="tidal-close" href="index.html">Home</a></header>
-    <div className="tidal-editorial tidal-editorial-start"><h2>The systems <br/>behind the promise.</h2><p>Execution, coordination and AI infrastructure shape how NEAR could serve consumers and machines.</p></div>
+    <div className="tidal-editorial tidal-editorial-start"><h2>The systems <br/>behind the promise.</h2><p>Execution, coordination, liquidity and settlement shape how NEAR could serve autonomous agents and institutional markets alike.</p></div>
     <section id="tidal-main" className="tidal-main"><h2 className="tidal-sr">NEAR overview</h2><div className="tidal-field" ref={field}>
       <canvas ref={canvas} tabIndex="0" aria-label="Animated NEAR category map. Hover to preview a category. Click or tap to keep it open. Left and right keys select categories; Escape restores the overview."/>
       <section className="tidal-premise" aria-label="Blockchain and AI convergence">

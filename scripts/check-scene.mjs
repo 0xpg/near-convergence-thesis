@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import {fieldAt,motionTime,selectPeople,labelAnchor,walkingPose,ditherAt,drift,depthBlur,bodyShape,focusBox} from '../cinematic.mjs';
+import {fieldAt,motionTime,selectPeople,labelAnchor,walkingPose,ditherAt,drift,depthBlur,bodyShape,focusBox} from '../src/cinematic.mjs';
 for(const second of [0,.033,5,10,15,20,25,30,4800]) {
   const scene=fieldAt(second);
   assert.equal(scene.nodes.length,48);assert.equal(scene.focus.length,4);

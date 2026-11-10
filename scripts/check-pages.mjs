@@ -47,14 +47,14 @@ try{
  assert.equal((rendered['thesis.html'].match(/class="kinetic-statement"/g)||[]).length,2);
  assert(!rendered['thesis.html'].includes('<h3>NEAR</h3>'));
  for(const removed of ['Front view','Depth view','Framework and competing explanations','is-orbiting','framework-sources','>HYPE<'])assert(!rendered['thesis.html'].includes(removed));
- assert.equal(topics.length,8);
+ assert.equal(topics.length,10);
  assert(!topics.some(topic=>['Revenue','Products','Ecosystem','Capital & liquidity','DeFi markets'].includes(topic.title)));
  assert(rendered['thesis.html'].indexOf('id="network"')<rendered['thesis.html'].indexOf('id="thesis-data-title"'));
  assert(!rendered['thesis.html'].includes('Awaiting supplied data.'));
  assert(rendered['thesis.html'].indexOf('id="framework-title"')<rendered['thesis.html'].indexOf('id="approach-title"'));
  assert(rendered['thesis.html'].indexOf('id="approach-title"')<rendered['thesis.html'].indexOf('id="network"'));
  const {default:DuneGlance,glanceCharts,glanceGroups}=await server.ssrLoadModule('/src/DuneGlance.jsx');
- const missingInsights=renderToStaticMarkup(createElement(DuneGlance,{insights:{}}));
+ const missingInsights=renderToStaticMarkup(createElement(DuneGlance,{insights:{},economics:false}));
  assert(!missingInsights.includes('class="glance-takeaway"'),'Missing evidence must not retain an investment interpretation');
  assert(missingInsights.includes('Snapshot insight unavailable.'),'Missing is distinct from zero');
  assert(!existsSync('dist-public/scripts/glance-stress.html'),'Stress fixtures must stay local');
@@ -73,7 +73,7 @@ try{
  for(const insight of Object.values(insightData.insights)){assert(insight.value&&insight.headline&&insight.date&&insight.limitation&&insight.calculation.method);assert.equal(new URL(insight.source).protocol,'https:');}
  assert(rendered['thesis.html'].includes('Download calculations'));
  const glanceTiles=rendered['thesis.html'].match(/<article class="glance-tile[\s\S]*?<\/article>/g)||[];
- assert.equal(glanceTiles.length,9);
+ assert.equal(glanceTiles.length,11);
  for(const tile of glanceTiles){
   assert(tile.indexOf('class="glance-chart"')<tile.indexOf('class="glance-takeaway"'),'Interpretation follows its chart');
   assert.equal((tile.match(/<details>/g)||[]).length,1,'Evidence stays local to its card');
@@ -87,7 +87,7 @@ try{
  assert(!rendered['thesis.html'].includes('Architecture references'));
  assert(rendered['thesis.html'].includes('NEAR at a glance'));
  assert(rendered['thesis.html'].indexOf('id="thesis-proposition-title"')<rendered['thesis.html'].indexOf('id="network"'));
- assert.equal(new Set(topics.map(topic=>topic.title)).size,8);
+ assert.equal(new Set(topics.map(topic=>topic.title)).size,10);
  assert(rendered['research.html'].includes('id="model-controls"'));
  assert(rendered['thesis.html'].includes('NEAR overview'));
  assert(rendered['thesis.html'].includes('Intelligence'));
@@ -98,6 +98,6 @@ try{
  assert(rendered['thesis.html'].includes('Chain Signatures'));
  assert(!rendered['thesis.html'].includes('Snapshot ·'));
  assert.equal(renderToStaticMarkup(createElement(Story)),rendered['thesis.html'],'The topic geometry must remain deterministic');
- const topicMarkup=rendered['thesis.html'].match(/<div class="tidal-topics"[^>]*>(.*?)<\/div>/s)?.[1];assert(topicMarkup);assert.equal((topicMarkup.match(/aria-pressed="false"/g)||[]).length,8,'All eight categories start in overview mode');
+ const topicMarkup=rendered['thesis.html'].match(/<div class="tidal-topics"[^>]*>(.*?)<\/div>/s)?.[1];assert(topicMarkup);assert.equal((topicMarkup.match(/aria-pressed="false"/g)||[]).length,10,'All ten categories start in overview mode');
  console.log('All React pages render, IDs and local links resolve, UTF-8 text and text-only topic map preserved.');
 }finally{await server.close();}

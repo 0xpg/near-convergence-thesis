@@ -1,6 +1,3 @@
--- Public DefiLlama NEAR investor-relations feed; provider-reported, not independent verification.
--- Array position joins each value to its own chart date. Missing values remain NULL.
--- Excludes the current UTC date. Never sum daily counts into unique users.
 WITH payload AS (SELECT json_parse(http_get('https://defillama.com/api/public/near/ecosystem')) AS body),
 charts AS (SELECT metric, series_name, c FROM payload
 CROSS JOIN UNNEST(ARRAY['volume_usd','fees_usd','swaps'],ARRAY['Daily Volume','Daily Fees','Daily Swaps'],ARRAY[json_extract(body,'$.intents.volumeChart'),json_extract(body,'$.intents.feesChart'),json_extract(body,'$.intents.activityChart')]) AS t(metric,series_name,c)),

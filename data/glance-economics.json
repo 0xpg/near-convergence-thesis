@@ -1,0 +1,216 @@
+{
+  "version": "glance-economics-2026-11-10-v2",
+  "sources": {
+    "intents-scorecard-dune.json": {
+      "sha256": "2bcfa9b69570ae8ceff6f425f2662842bc6360ea1b6c26fcb79f0ab0adcb5d4b"
+    },
+    "intents-waterfall-dune.json": {
+      "sha256": "3903208bbcee66273fd4c8f6320c1a76f602d1dc0914f60b4aaf81e81a6c2212"
+    },
+    "intents-retention-dune.json": {
+      "sha256": "f221a8fe368f9678d795c7c447898e6a1f36fa89bccd5ab8619730157ab6ebf4"
+    },
+    "defillama-api-intents.json": {
+      "sha256": "764ec3ae5513c358ac1eb7d103ed8b1cef05ccf48ba3f53835873997c71d57db"
+    }
+  },
+  "observed": {
+    "window": {
+      "start": "2026-10-10",
+      "end": "2026-11-08",
+      "days": 30
+    },
+    "scorecard": {
+      "volume_usd": "3714703670.2577405",
+      "swaps": "1840277",
+      "avg_swap_usd": "2018.5568097942541",
+      "gross_fees_usd": "5781155",
+      "paid_out_usd": "3923292",
+      "retained_usd": "1857863",
+      "retained_share_pct": "31.555486651214935",
+      "gross_bps": "15.562896836933648",
+      "retained_bps": "5.00137605827141",
+      "retained_per_1m_usd": "500.13760582714104",
+      "revenue_pct_issuance": "15.897900424733063",
+      "avg_daily_transactions": "661020.9666666667"
+    },
+    "waterfall": [
+      {
+        "step": "Gross fees",
+        "usd_per_1m": "1556.2896836933646"
+      },
+      {
+        "step": "Paid out",
+        "usd_per_1m": "-1056.1520778662236"
+      },
+      {
+        "step": "Retained by protocol",
+        "usd_per_1m": "500.137605827141"
+      }
+    ],
+    "monthly": [
+      {
+        "month": "2025-11",
+        "partial": true,
+        "volume_usd": 2488843379,
+        "gross_bps": 22.7,
+        "retained_bps": 1.39,
+        "retained_share_pct": 6.1
+      },
+      {
+        "month": "2025-12",
+        "partial": false,
+        "volume_usd": 2011175995,
+        "gross_bps": 20.47,
+        "retained_bps": 0.88,
+        "retained_share_pct": 4.3
+      },
+      {
+        "month": "2026-01",
+        "partial": false,
+        "volume_usd": 2671476515,
+        "gross_bps": 16.51,
+        "retained_bps": 1.34,
+        "retained_share_pct": 8.1
+      },
+      {
+        "month": "2026-02",
+        "partial": false,
+        "volume_usd": 2377963766,
+        "gross_bps": 17.39,
+        "retained_bps": 2.79,
+        "retained_share_pct": 16.0
+      },
+      {
+        "month": "2026-03",
+        "partial": false,
+        "volume_usd": 2079962642,
+        "gross_bps": 17.26,
+        "retained_bps": 2.71,
+        "retained_share_pct": 15.7
+      },
+      {
+        "month": "2026-04",
+        "partial": false,
+        "volume_usd": 1939568692,
+        "gross_bps": 16.54,
+        "retained_bps": 1.33,
+        "retained_share_pct": 8.1
+      },
+      {
+        "month": "2026-05",
+        "partial": false,
+        "volume_usd": 2074296158,
+        "gross_bps": 14.47,
+        "retained_bps": 2.99,
+        "retained_share_pct": 20.6
+      },
+      {
+        "month": "2026-06",
+        "partial": false,
+        "volume_usd": 2629610379,
+        "gross_bps": 11.83,
+        "retained_bps": 2.36,
+        "retained_share_pct": 19.9
+      },
+      {
+        "month": "2026-07",
+        "partial": false,
+        "volume_usd": 2404693846,
+        "gross_bps": 13.61,
+        "retained_bps": 2.1,
+        "retained_share_pct": 15.4
+      },
+      {
+        "month": "2026-08",
+        "partial": false,
+        "volume_usd": 3201836782,
+        "gross_bps": 11.98,
+        "retained_bps": 2.26,
+        "retained_share_pct": 18.8
+      },
+      {
+        "month": "2026-09",
+        "partial": false,
+        "volume_usd": 4803094379,
+        "gross_bps": 15.25,
+        "retained_bps": 3.83,
+        "retained_share_pct": 25.1
+      },
+      {
+        "month": "2026-10",
+        "partial": false,
+        "volume_usd": 3985641600,
+        "gross_bps": 16.03,
+        "retained_bps": 5.49,
+        "retained_share_pct": 34.3
+      },
+      {
+        "month": "2026-11",
+        "partial": true,
+        "volume_usd": 994111036,
+        "gross_bps": 16.06,
+        "retained_bps": 3.79,
+        "retained_share_pct": 23.6
+      }
+    ],
+    "trend": {
+      "first": {
+        "month": "2025-12",
+        "partial": false,
+        "volume_usd": 2011175995,
+        "gross_bps": 20.47,
+        "retained_bps": 0.88,
+        "retained_share_pct": 4.3
+      },
+      "last": {
+        "month": "2026-10",
+        "partial": false,
+        "volume_usd": 3985641600,
+        "gross_bps": 16.03,
+        "retained_bps": 5.49,
+        "retained_share_pct": 34.3
+      }
+    },
+    "institutional": {
+      "pending": [
+        "Holdings in exchange-traded products",
+        "Holdings of listed treasury companies"
+      ],
+      "unavailable": [
+        "Institutional order flow routed through Intents",
+        "Agent-originated Intents volume",
+        "Active executing solvers"
+      ]
+    },
+    "checks": [
+      {
+        "metric": "Intents volume, 30 days",
+        "primary": "Dune scorecard",
+        "primary_value": "3714703670.2577405",
+        "reference": "DefiLlama API",
+        "reference_value": "3714703671",
+        "difference_pct": "-0.000",
+        "window": "2026-10-10 to 2026-11-08"
+      },
+      {
+        "metric": "Intents gross fees, 30 days",
+        "primary": "Dune scorecard",
+        "primary_value": "5781155",
+        "reference": "DefiLlama API",
+        "reference_value": "5781089",
+        "difference_pct": "0.001",
+        "window": "2026-10-10 to 2026-11-08"
+      },
+      {
+        "metric": "Intents retained revenue, 30 days",
+        "primary": "Dune scorecard",
+        "primary_value": "1857863",
+        "reference": "DefiLlama API",
+        "reference_value": "1858215",
+        "difference_pct": "-0.019",
+        "window": "2026-10-10 to 2026-11-08"
+      }
+    ]
+  }
+}

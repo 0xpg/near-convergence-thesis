@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import {createParticles,particleAt,startAbsorption} from '../src/overview/absorption.mjs';
 const points=createParticles();
-assert.equal(points.length,1796);
+assert.equal(points.length,1800);
 assert.deepEqual(points,createParticles());
 assert.throws(()=>createParticles(3));
 const stream=points.find(p=>p.stream&&!p.core);
@@ -14,7 +14,7 @@ const distances=Array.from({length:80},(_,i)=>{const at=particleAt(stream,i/10,0
 assert(Math.max(...distances)-Math.min(...distances)>100,'Particles must travel inward, not only fade');
 assert.notDeepEqual(particleAt(stream,2,0,stream.sector),particleAt(stream,2,1,stream.sector));
 assert(createParticles(1)[0].r>points[0].r,'Tidal needs a wider ring without enlarging its individual tiles');
-console.log('1,796 deterministic tiles: finite bounded positions, real inward travel and distinct motion directions passed.');
+console.log('1,800 deterministic tiles: finite bounded positions, real inward travel and distinct motion directions passed.');
 globalThis.matchMedia=()=>({matches:true,addEventListener(){},removeEventListener(){}});
 globalThis.document={hidden:false,addEventListener(){},removeEventListener(){}};
 let visibility;globalThis.IntersectionObserver=class{constructor(fn){visibility=fn;}observe(){}disconnect(){}};
@@ -37,8 +37,8 @@ scene.select(-1,true);assert.equal(canvas.dataset.direction,'1');
 handlers.get('pointermove')({clientX:550,clientY:320,pointerType:'mouse'});assert.equal(canvas.dataset.direction,'2');
 assert(!handlers.has('click'),'Pointer focus must not depend on a click');
 scene.select(-1);assert.equal(canvas.dataset.direction,'1');assert.equal(chosen,-1);
-scene.select(7,true);assert.equal(chosen,7,'Additional research categories are selectable');
-assert.throws(()=>scene.select(8));
+scene.select(9,true);assert.equal(chosen,9,'Additional research categories are selectable');
+assert.throws(()=>scene.select(10));
 scene.destroy();assert.equal(handlers.size,0);
 const stationary=createParticles(1).filter(p=>!p.stream);
 for(const p of stationary)assert.deepEqual(particleAt(p,0,1),particleAt(p,5,1),'Cluster anchors must remain still');

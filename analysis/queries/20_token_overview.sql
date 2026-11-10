@@ -1,6 +1,3 @@
--- Public RPC finalized-state observation. Total supply is not circulating or locked supply.
--- Preserve returned block hash/height and raw yoctoNEAR for a reproducible snapshot.
--- For exact re-execution replace {"finality":"final"} with {"block_id":RETURNED_HEIGHT}.
 WITH response AS (
  SELECT json_parse(http_post(
   'https://rpc.mainnet.near.org',

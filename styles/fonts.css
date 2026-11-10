@@ -1,0 +1,4 @@
+@font-face{font-family:Saans;src:url('../assets/fonts/Saans-TRIAL-Regular.woff2') format('woff2'),url('../assets/fonts/Saans-TRIAL-Regular.otf') format('opentype');font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:Saans;src:url('../assets/fonts/Saans-TRIAL-Medium.woff2') format('woff2'),url('../assets/fonts/Saans-TRIAL-Medium.otf') format('opentype');font-weight:500;font-style:normal;font-display:swap}
+@font-face{font-family:Saans;src:url('../assets/fonts/Saans-TRIAL-SemiBold.woff2') format('woff2'),url('../assets/fonts/Saans-TRIAL-SemiBold.otf') format('opentype');font-weight:600 900;font-style:normal;font-display:swap}
+@font-face{font-family:'Saans Mono';src:url('../assets/fonts/SaansMono-TRIAL-Regular.woff2') format('woff2'),url('../assets/fonts/SaansMono-TRIAL-Regular.otf') format('opentype');font-weight:400;font-style:normal;font-display:swap}

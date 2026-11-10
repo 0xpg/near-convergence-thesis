@@ -1,0 +1,25 @@
+{
+ "query_id": 9103907,
+ "url": "https://dune.com/queries/9103907",
+ "rows": [
+  {
+   "avg_daily_transactions": 661020.9666666667,
+   "avg_swap_usd": 2018.5568097942541,
+   "days_covered": 30,
+   "gross_bps": 15.562896836933648,
+   "gross_fees_usd": 5781155,
+   "paid_out_usd": 3923292,
+   "reported_fees_usd_ecosystem_feed": 5781153.138022646,
+   "retained_bps": 5.00137605827141,
+   "retained_per_1m_usd": 500.13760582714104,
+   "retained_share_pct": 31.555486651214935,
+   "retained_usd": 1857863,
+   "retrieved_utc": "2026-11-10 17:15:07.741 UTC",
+   "revenue_pct_issuance": 15.897900424733063,
+   "swaps": 1840277,
+   "volume_usd": 3714703670.2577405,
+   "window_end": "2026-11-08",
+   "window_start": "2026-10-10"
+  }
+ ]
+}

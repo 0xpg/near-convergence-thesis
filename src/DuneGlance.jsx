@@ -1,6 +1,7 @@
 import React,{useState} from 'react';
 import './dune-glance.css';
 import evidence from '../data/glance-insights.json';
+import {GlanceScorecard,GlanceRetention,GlanceInstitutional,GlanceValidation} from './GlanceEconomics.jsx';
 
 export const glanceCharts=[
   {id:'defi-capital',title:'DeFi capital',tab:'TVL',query:'9074769',visualization:'13123658',description:'USD value in tracked NEAR DeFi. Changes reflect prices and balances, not net deposits.'},
@@ -38,6 +39,22 @@ export const glanceGroups=[
   {id:'distribution',title:'Distribution',chartIds:['ir-channels']}
 ];
 
+export const glanceChapters=[
+  {id:'execution',title:'Execution across chains',context:'How much trading NEAR Intents settles, where it comes from and who brings it.',items:['activity','reach','distribution']},
+  {id:'economics',title:'Revenue and retention',context:'What users pay, what the protocol keeps and how that compares with new issuance.',items:['retention','revenue','issuance']},
+  {id:'capital',title:'Capital on NEAR',context:'Liquidity held on the base chain, separate from the inventory that fills Intents.',items:['capital','composition']},
+  {id:'network',title:'Network and token',context:'Base-chain activity and the token’s supply and price.',items:['network','token']},
+  {id:'demand',title:'Emerging demand',context:'Institutional and agent demand, counted only where a source can attribute it.',items:['institutional']}
+];
+
+const chapterIcons={
+  execution:<><path d="M3 7h13l-3-3M21 17H8l3 3"/><circle cx="19" cy="7" r="1.6"/><circle cx="5" cy="17" r="1.6"/></>,
+  economics:<><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/><path d="M16 9.5l3-3 3 3" /></>,
+  capital:<><path d="M12 3l9 4.5-9 4.5-9-4.5z"/><path d="M3 12l9 4.5 9-4.5M3 16.5L12 21l9-4.5"/></>,
+  network:<><circle cx="5" cy="6" r="2"/><circle cx="19" cy="6" r="2"/><circle cx="12" cy="18" r="2"/><path d="M7 6h10M6 7.8l5 8.4M18 7.8l-5 8.4"/></>,
+  demand:<><path d="M3 21h18M5 21V10M9.7 21V10M14.3 21V10M19 21V10M2.5 10h19L12 3.5z"/></>
+};
+
 const categories={capital:'Liquidity',revenue:'Economics',issuance:'Economics',network:'Network',token:'Market',activity:'Intents',composition:'Liquidity',reach:'Intents',distribution:'Intents'};
 
 const takeaways={
@@ -52,16 +69,22 @@ const takeaways={
   distribution:'The swapkit label accounts for 73.4% of reported channel fees across the source history. Distribution is economically important, but dependence on a leading channel makes retention and bargaining power central to the case.'
 };
 
-export default function DuneGlance({insights=evidence.insights}={}){
+export default function DuneGlance({insights=evidence.insights,economics=true}={}){
   const [selected,setSelected]=useState({});
   return <section className="thesis-data" aria-labelledby="thesis-data-title">
     <header><div><h2 id="thesis-data-title">NEAR at a glance</h2><p>Activity, capital and the economics connecting them.</p></div><a href="https://dune.com/0xpanatagama/near-economic" rel="noreferrer">Dune dashboard</a></header>
-    <div className="thesis-data-grid">{glanceGroups.map(group=>{
+    {economics&&<GlanceScorecard/>}
+    {glanceChapters.map(chapter=><section className="glance-chapter" key={chapter.id} aria-labelledby={'glance-chapter-'+chapter.id}>
+      <header className="glance-chapter-head"><svg className="glance-chapter-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">{chapterIcons[chapter.id]}</svg><h3 id={'glance-chapter-'+chapter.id}>{chapter.title}</h3><p>{chapter.context}</p></header>
+      <div className="thesis-data-grid">{chapter.items.map(id=>{
+      if(id==='retention')return <GlanceRetention key={id} available={economics}/>;
+      if(id==='institutional')return <GlanceInstitutional key={id} available={economics}/>;
+      const group=glanceGroups.find(group=>group.id===id);
       const chart=glanceCharts.find(chart=>chart.id===(selected[group.id]||group.chartIds[0]));
       const insight=insights[chart.id];
       const query=`https://dune.com/queries/${chart.query}/${chart.visualization}`;
       return <article className={'glance-tile glance-'+group.id} key={group.id} aria-labelledby={'glance-'+group.id+'-title'}>
-        <div className="glance-tile-head"><span className="glance-category">{categories[group.id]}</span><h3 id={'glance-'+group.id+'-title'}>{group.title}</h3>
+        <div className="glance-tile-head"><span className="glance-category">{categories[group.id]}</span><h4 id={'glance-'+group.id+'-title'}>{group.title}</h4>
           {group.chartIds.length>1&&<div className="glance-switch" role="group" aria-label={group.title+' metrics'}>{group.chartIds.map(id=>{const option=glanceCharts.find(chart=>chart.id===id);return <button key={id} aria-pressed={chart.id===id} aria-controls={'glance-'+group.id+'-chart'} onClick={()=>setSelected(previous=>({...previous,[group.id]:id}))}>{option.tab}</button>;})}</div>}
           {insight?<div className="glance-insight" aria-live="polite"><strong>{insight.value}</strong><p className="glance-observation">{insight.headline}</p></div>:<p role="status">Snapshot insight unavailable. The chart and source query remain available.</p>}
 
@@ -73,6 +96,8 @@ export default function DuneGlance({insights=evidence.insights}={}){
         <footer className="glance-footer">{insight&&<details><summary>Evidence & calculation</summary><p>{insight.date}</p><p>{chart.description} {insight.limitation}</p><p>{insight.calculation.method}</p><a href={insight.source} rel="noreferrer">Source</a>{insight.snapshot&&<a href={insight.snapshot} download>Download source snapshot</a>}<a href="data/glance-insights.json" download>Download calculations</a></details>}<a className="glance-query" href={query} rel="noreferrer" aria-label={'View '+chart.title+' query on Dune'}>View query on Dune</a></footer>
       </article>;
     })}</div>
+    </section>)}
+    {economics&&<GlanceValidation/>}
     <p className="dune-freshness">Insight dates are in the evidence details. Dune charts show each query’s last successful run and may contain newer data. Changing a chart’s internal time window does not recalculate the snapshot insight.</p>
   </section>;
 }

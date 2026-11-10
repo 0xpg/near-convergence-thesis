@@ -29,43 +29,43 @@
       "file": "10_ir_revenue_daily.sql",
       "title": "NEAR IR | Revenue and emissions",
       "notes": "NEAR-equivalent fees converted at daily prices; net receipts plus provider 70% gas-burn classification. Not tokenholder cash income or verified purchases.",
-      "sha256": "1efa3e9e747ab781cfbf2c2d1557fe4af500382401da024c58653fcc9c1dc712"
+      "sha256": "86da4c1d4c0afb620ed3fbbec5320120327374ad95266c55a5e8b35dc361383f"
     },
     {
       "file": "13_ir_ecosystem_daily.sql",
       "title": "NEAR IR | Base-chain and token history",
       "notes": "Different columns have different units. Account identities and locked-supply methodology remain provider-defined.",
-      "sha256": "19be5981b722f87ac41c4769ad0b928dd548106be49f95af1ed979af1d1b4e94"
+      "sha256": "e50eb67e47ace7bab2828960d18ee0414a2caaa833374a1d3024b9eaf06ce83e"
     },
     {
       "file": "14_ir_intents_daily.sql",
       "title": "NEAR IR | Intents activity history",
       "notes": "Service notional, fees and swaps are separate measures. Gaps are NULL, not zero. Unique users are in the source scorecard, not summed daily counts.",
-      "sha256": "ef139242194306e94e139e15ead74af3cb74c37c0e420d578b3fdbb847a9c50b"
+      "sha256": "dd6b740e619f0f6c38b6a4dca4f27fb3640d92baf3918bd7499786ed0ff78827"
     },
     {
       "file": "11_ir_revenue_scorecard.sql",
       "title": "NEAR IR | Revenue scorecard",
       "notes": "Original API fields and formatting. Revenue is the IR accounting definition, not distributable tokenholder earnings.",
-      "sha256": "7b0645b72980753834d22c8bb269eb1f1e7eac4b38cc1c83d4a312225fed08cb"
+      "sha256": "6aea2ee134f9df60178652c7a4510319cf5540f8d5690aca13af6b4fbeb953ce"
     },
     {
       "file": "12_ir_ecosystem_scorecard.sql",
       "title": "NEAR IR | Ecosystem scorecard",
       "notes": "Provider-reported users, swaps and supply. totalSwaps and cumulativeSwaps differ; no entity deduplication or supply-methodology reconciliation claimed.",
-      "sha256": "356d992db81b4e350cf98b5ef0081ac83607ee8bac407aa184389e9f611c8692"
+      "sha256": "9aaa5e9eaf3c4a7791c3365c222d2de41396d0a75cae4f13bc8a73d7b7452464"
     },
     {
       "file": "15_ir_intents_mix.sql",
       "title": "NEAR IR | Intents token and chain mix",
       "notes": "Token symbols and blockchain labels are source labels. All-time referral fees remain a separate measure; never infer fee share from volume share.",
-      "sha256": "bcdf2e0c56ac505ae95a14b1f65281e89640723ca0a4c06bba628fb843a403a9"
+      "sha256": "05abbc0866109bdbb9e0340903bcf4cbdd434d3d86dfe7b0391797f643976f8b"
     },
     {
       "file": "16_ir_wallets_channels.sql",
       "title": "NEAR IR | Revenue wallets and fee channels",
       "notes": "Two independent groups with different units and windows. Channel aggregate is not interchangeable with total Intents fees. Wallet labels are provider classifications, not verified receipts.",
-      "sha256": "a3de919ec378ec16f00e9907adefd337b890317880f0f5bc64de444229c94ce7"
+      "sha256": "b5bc78e7d2a5a5a557efd207cf5bb759be3f278914783c84d085ce88607757da"
     }
   ],
   "source_updated_utc": "2026-11-05T00:05:58.910Z",

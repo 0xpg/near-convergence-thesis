@@ -1,5 +1,3 @@
--- Separate source scopes and units; never add these two groups together.
--- Wallet window is provider-defined last 12 months. Channel fees are all-time.
 WITH r AS (SELECT json_parse(http_get('https://defillama.com/api/public/near/revenue')) AS body),
 e AS (SELECT json_parse(http_get('https://defillama.com/api/public/near/ecosystem')) AS body), rows AS (
  SELECT 'Revenue wallets' AS section,json_extract_scalar(w,'$.wallet') AS label,

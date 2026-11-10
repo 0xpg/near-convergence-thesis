@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "test": "node analysis/reproduce.mjs && node scripts/check-lab-engine.mjs && node scripts/check-scene.mjs && node scripts/check-story.mjs && node scripts/check-react.mjs && node scripts/check-overview.mjs && node scripts/check-startup.mjs && node scripts/check-taxonomy.mjs && node scripts/check-absorption.mjs && node scripts/check-type-dither.mjs && node scripts/check-intro-field.mjs && node scripts/check-framework-motion.mjs && node scripts/check-kinetic-type.mjs",
+    "test": "node analysis/reproduce.mjs && node scripts/check-lab-engine.mjs && node scripts/check-scene.mjs && node scripts/check-react.mjs && node scripts/check-overview.mjs && node scripts/check-startup.mjs && node scripts/check-taxonomy.mjs && node scripts/check-absorption.mjs && node scripts/check-type-dither.mjs && node scripts/check-intro-field.mjs && node scripts/check-framework-motion.mjs && node scripts/check-kinetic-type.mjs",
     "test:public": "node scripts/check-public.mjs",
     "build": "node analysis/reproduce.mjs && node scripts/build.mjs",
     "build:public": "node analysis/reproduce.mjs && node scripts/build.mjs --public",

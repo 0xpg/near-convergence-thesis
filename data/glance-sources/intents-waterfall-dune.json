@@ -1,0 +1,30 @@
+{
+ "query_id": 9103908,
+ "url": "https://dune.com/queries/9103908",
+ "rows": [
+  {
+   "sort_order": 1,
+   "step": "Gross fees",
+   "usd_per_1m": 1556.2896836933646,
+   "usd_total": 5781155,
+   "window_end": "2026-11-08",
+   "window_start": "2026-10-10"
+  },
+  {
+   "sort_order": 2,
+   "step": "Paid out",
+   "usd_per_1m": -1056.1520778662236,
+   "usd_total": -3923292,
+   "window_end": "2026-11-08",
+   "window_start": "2026-10-10"
+  },
+  {
+   "sort_order": 3,
+   "step": "Retained by protocol",
+   "usd_per_1m": 500.137605827141,
+   "usd_total": 1857863,
+   "window_end": "2026-11-08",
+   "window_start": "2026-10-10"
+  }
+ ]
+}

@@ -1,6 +1,3 @@
--- Snapshot reproduction: 27 September through 26 October 2026 inclusive UTC.
--- Same source feeds as the referral breakdown: protocol fees plus affiliate/distribution fees.
--- Gross service fees, not NEAR tokenholder revenue. Source-maintained datasets may be revised.
 WITH fees AS (
  SELECT CAST(substr(CAST(date_at AS VARCHAR),1,10) AS DATE) AS day,
  CAST(amount_fee AS DOUBLE) AS fees_usd,0e0 AS distribution_usd

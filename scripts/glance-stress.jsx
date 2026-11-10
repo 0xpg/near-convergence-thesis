@@ -2,8 +2,8 @@ import React,{useState} from 'react';
 import {createRoot} from 'react-dom/client';
 import DuneGlance from '../src/DuneGlance.jsx';
 import evidence from '../data/glance-insights.json';
-import '../styles.css';
-import '../fonts.css';
+import '../styles/styles.css';
+import '../styles/fonts.css';
 
 const worst=Object.fromEntries(Object.entries(evidence.insights).map(([id,item],index)=>[id,{
   ...item,value:index%2?'0 NEAR':'1,310,884,624.973014749817910636802365 NEAR',
