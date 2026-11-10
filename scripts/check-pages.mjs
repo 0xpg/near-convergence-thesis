@@ -8,7 +8,7 @@ try{
  const pages=await server.ssrLoadModule('/src/pages.jsx');
  const {default:Story}=await server.ssrLoadModule('/src/ThesisPage.jsx');
  const {topics}=await server.ssrLoadModule('/src/OverviewScene.jsx');
- const components={'index.html':pages.Landing,'lab.html':pages.Lab,'report.html':pages.Report,'research.html':pages.Research,'methodology.html':pages.Methodology,'thesis.html':Story};
+ const components={'index.html':pages.Landing,'lab.html':pages.Lab,'research.html':pages.Research,'methodology.html':pages.Methodology,'thesis.html':Story};
  const rendered=Object.fromEntries(Object.entries(components).map(([file,Component])=>[file,renderToStaticMarkup(createElement(Component))]));
  for(const [page,html] of Object.entries(rendered)){
   assert(!/\u00e2\u20ac|\u00c2\u00b7/.test(html),'UTF-8 text: '+page);

@@ -4,7 +4,6 @@ const root=new URL('../',import.meta.url);
 const width=90,height=51,ramp=' .,:;+=ox%#@';
 const depth=new Float64Array(width*height).fill(-Infinity);
 const pixels=new Array(width*height).fill(' ');
-// Orthographic character study: folded toroidal surface, independent of research data.
 for(let u=0;u<Math.PI*2;u+=0.018) for(let v=0;v<Math.PI*2;v+=0.022) {
   const radius=1.6+0.55*Math.cos(v);
   const x=radius*Math.cos(u),y=radius*Math.sin(u),z=0.55*Math.sin(v)+0.55*Math.sin(u*2);

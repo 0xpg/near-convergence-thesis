@@ -3,7 +3,7 @@ import {defaults,modelVersion,formulas,calculate} from '../analysis/model.mjs';
 import {controls,presets,scenarioResult} from './widget-config.mjs';
 
 const money=value=>value===null?'Not computable':new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',notation:'compact',maximumFractionDigits:2}).format(value);
-const ready='Shared engine ready. All results below are hypothetical annual operating scales; source snapshot is unchanged.';
+const displayValue=value=>typeof value==='number'&&Number.isFinite(value)?String(Math.round(value*100)/100):value;
 
 function useSavedJson(path,validate) {
   const [state,setState]=useState({data:null,error:false});
@@ -44,13 +44,13 @@ export function ScenarioExperience() {
     const url=URL.createObjectURL(new Blob([JSON.stringify(output,null,2)],{type:'application/json'}));
     const link=document.createElement('a');link.href=url;link.download='near-scenario-'+modelVersion+'.json';link.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
   }
-  const status=saved.error?'The saved model inputs could not be loaded. Refresh this page from the local server; the report and source downloads remain available.':scenario.error||(result?ready:'Loading documented snapshot and shared calculation engine…');
+  const status=saved.error?'The saved model inputs could not be loaded. Refresh this page from the local server; the report and source downloads remain available.':scenario.error||(result?'':'Loading documented snapshot and shared calculation engine…');
   return <>
     <div id="model-status" role="status" className={saved.error||scenario.error?'error':''}>{status}</div>
     <div className="lab-layout">
       <form id="scenario-form" onSubmit={event=>event.preventDefault()} onReset={event=>{event.preventDefault();if(snapshot)selectPreset('unverified');}}>
         <div className="presets" aria-label="Scenario presets">{Object.entries(presets).map(([name,preset])=><button key={name} type="button" data-preset={name} aria-pressed={scenario.preset===name} disabled={disabled} onClick={()=>selectPreset(name)}>{preset.label}</button>)}</div>
-        <div id="model-controls">{controls.map(([key,label,help,min,max])=><div className="control" key={key}><label htmlFor={key}>{label}<small id={key+'-help'}>{help}</small></label><input id={key} name={key} type="number" required min={min} max={max} step="any" value={scenario.values[key]} aria-describedby={key+'-help'} disabled={disabled} onChange={event=>rerun({...scenario.values,[key]:event.target.value})}/></div>)}</div>
+        <div id="model-controls">{controls.map(([key,label,help,min,max])=><div className="control" key={key}><label htmlFor={key}>{label}<small id={key+'-help'}>{help}</small></label><input id={key} name={key} type="number" required min={min} max={max} step="any" value={displayValue(scenario.values[key])} aria-describedby={key+'-help'} disabled={disabled} onChange={event=>rerun({...scenario.values,[key]:event.target.value})}/></div>)}</div>
         <div className="actions"><button type="reset" disabled={disabled}>Reset defaults</button><button type="button" id="export-model" disabled={disabled||!result||Boolean(scenario.error)} onClick={exportResult}>Export inputs &amp; results</button></div>
       </form>
       <div className="lab-results" aria-live="polite" aria-atomic="true">

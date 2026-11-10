@@ -178,7 +178,6 @@ e AS (SELECT json_parse(http_get('{URLS['ecosystem']}')) AS body), rows AS (
 SELECT *,current_timestamp AS retrieved_utc FROM rows ORDER BY section,value DESC""",
       'Two independent groups with different units and windows. Channel aggregate is not interchangeable with total Intents fees. Wallet labels are provider classifications, not verified receipts.')
 
-# Preserve material discrepancies rather than making the dashboard numbers agree by construction.
 e = payloads['ecosystem']
 r = payloads['revenue']
 swaps = e['intents']['kpis']

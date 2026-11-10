@@ -75,7 +75,6 @@ html{scroll-behavior:smooth}.thesis-page{font-family:Saans,Arial,sans-serif;colo
 
 @media(max-width:600px){.end-back{transform:translate(-50%,-100%) translateZ(-120px) rotateY(90deg)}.end-front{transform:translate(-50%,-100%) translateZ(120px) rotateY(90deg)}}
 
-/* Compact chapters retain separate reading and visualization surfaces. */
 .thesis-proposition{margin-top:0;padding:64px max(48px,calc((100vw - 1344px)/2))}
 .thesis-proposition p{margin-bottom:48px;font-size:clamp(30px,3.8vw,56px)}
 .thesis-proposition p:last-child{margin-bottom:0}
@@ -128,3 +127,14 @@ html{scroll-behavior:smooth}.thesis-page{font-family:Saans,Arial,sans-serif;colo
 @media(forced-colors:active){.thesis-convergence strong{animation:none!important;mask-image:none;color:CanvasText}}
 
 .thesis-chapter-divider{height:48px;background-color:#173b30;background-image:radial-gradient(#b5d6be42 .75px,transparent 1px);background-size:4px 4px}
+
+.framework-world{--axis-depth:220px}
+.framework-flow{width:0;height:0;padding:0;max-width:none;overflow:visible;transform-style:preserve-3d;pointer-events:none;font-size:clamp(12px,1.25vw,16px);color:#3d4f45;background:transparent}
+.flow-face{position:absolute;left:0;top:0;padding:6px 4px;white-space:nowrap;transform:translate(-50%,-50%) rotateY(90deg);backface-visibility:hidden;-webkit-backface-visibility:hidden;pointer-events:auto}
+.flow-face.face-flip{transform:translate(-50%,-50%) rotateY(-90deg)}
+.framework-flow:focus-visible{outline:0}.framework-flow:focus-visible .flow-face{outline:2px solid #52785e}
+.end-back,.end-front{backface-visibility:hidden;-webkit-backface-visibility:hidden}
+.end-back.face-flip{transform:translate(-50%,-100%) translateZ(-220px) rotateY(-90deg)}
+.end-front.face-flip{transform:translate(-50%,-100%) translateZ(220px) rotateY(-90deg)}
+@media(max-width:600px){.end-back.face-flip{transform:translate(-50%,-100%) translateZ(-120px) rotateY(-90deg)}.end-front.face-flip{transform:translate(-50%,-100%) translateZ(120px) rotateY(-90deg)}}
+@media(max-width:600px){.framework-world{--axis-depth:116px}.framework-flow{font-size:11px}}

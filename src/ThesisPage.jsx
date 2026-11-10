@@ -15,7 +15,7 @@ export default function ThesisPage(){
   useLayoutEffect(()=>startDitherEmphasis(reading.current),[]);
   return <div className="thesis-page">
     <a className="tidal-skip" href="#network">Skip introduction</a>
-    <header className="tidal-header thesis-header"><a className="tidal-brand" href="index.html" aria-label="NEAR research home">NEAR</a><nav aria-label="Main navigation"><a href="thesis.html" aria-current="page">Thesis</a><a href="lab.html">Scenario lab</a><a href="report.html">Report</a></nav><a className="tidal-close" href="index.html">Close</a></header>
+    <header className="tidal-header thesis-header"><a className="tidal-brand" href="index.html" aria-label="NEAR research home">NEAR</a><nav aria-label="Main navigation"><a href="thesis.html" aria-current="page">Thesis</a><a href="lab.html">Scenario lab</a></nav><a className="tidal-close" href="index.html">Home</a></header>
     <main>
       <section className="thesis-intro" aria-labelledby="thesis-title">
         <canvas className="thesis-intro-field" ref={field} aria-hidden="true"/>
@@ -49,7 +49,7 @@ export default function ThesisPage(){
       <DuneGlance/>
       <section className="thesis-finale" aria-labelledby="finale-title">
         <div className="thesis-finale-type"><div className="thesis-resolve"><canvas ref={closingCanvas} aria-hidden="true"/><h2 id="finale-title" ref={closing}><span>Convergence</span></h2></div></div>
-        <div className="thesis-finale-action"><a href="report.html">Read the full report</a></div>
+        <div className="thesis-finale-action"><a href="lab.html">Open the Scenario Lab</a></div>
       </section>
     </main>
   </div>;

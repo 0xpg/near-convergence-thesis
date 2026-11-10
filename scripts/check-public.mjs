@@ -9,4 +9,4 @@ for(const font of ['Saans-TRIAL-Regular.otf','Saans-TRIAL-Medium.otf','Saans-TRI
 assert.deepEqual(readFileSync('dist-public/report.pdf'),readFileSync('report.pdf'));
 console.log('Clean public output, supplied font integrity and PDF integrity passed.');
 
-for(const page of ['index','thesis','lab','report','research','methodology']){const html=readFileSync('dist-public/'+page+'.html','utf8');assert(html.includes('id="root"'));assert(!html.includes('/src/main.jsx'));assert(/assets\/main-[^"]+\.js/.test(html));}
+for(const page of ['index','thesis','lab','research','methodology']){const html=readFileSync('dist-public/'+page+'.html','utf8');assert(html.includes('id="root"'));assert(!html.includes('/src/main.jsx'));assert(/assets\/main-[^"]+\.js/.test(html));}
