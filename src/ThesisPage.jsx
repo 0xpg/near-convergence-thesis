@@ -26,17 +26,17 @@ export default function ThesisPage(){
       </section>
       <section className="thesis-proposition thesis-convergence" ref={reading} aria-labelledby="thesis-proposition-title">
         <h2 id="thesis-proposition-title" className="tidal-sr">The convergence thesis</h2>
-        <p>AI is a tool that helps augment human work, a co-creator that helps shape and respond to inquiries and takes on aspects of human work. The full potential of generative AI is still unfolding as offerings improve and become integrated into ever more aspects of daily life.</p>
-        <p>As its influence grows, the importance of AI as an investment driver is undeniable. To capture the AI growth opportunity today, most investors buy shares of AI-aligned companies and related verticals. <strong>We believe there are asymmetric opportunities worth exploring in the digital asset realm, especially blockchain’s facilitation of machine-to-machine transactions.</strong></p>
+        <p>AI is a tool that helps augment human work, a co-creator that helps shape and respond to inquiries and takes on aspects of human work. The full potential of generative AI is still unfolding as offerings improve and become integrated into ever more aspects of daily life. In parallel, institutional capital is moving onchain as tokenized assets and stablecoins become integrated into existing trading workflows.</p>
+        <p>As its influence grows, the importance of AI as an investment driver is undeniable. To capture the AI growth opportunity today, most investors buy shares of AI-aligned companies and related verticals, while institutional exposure to digital assets still runs largely through ETFs and custodial wrappers. <strong>We believe the asymmetric opportunity sits in the infrastructure that settles activity between machines, and between institutions moving onchain.</strong></p>
         <p>Enabling these machine-to-machine transactions requires secure, autonomous, verifiable, and high-throughput record-keeping. We believe blockchains and crypto technologies are likely to become the foundational delivery layer for these transactions based on the following attributes:</p>
         <ul>
           <li>Autonomous Contract Creation / Fulfillment</li>
-          <li>Decentralized Identity Verification</li>
+          <li>Verifiable Identity &amp; Compliance</li>
           <li>Auditability</li>
           <li>Access to Decentralized Computing &amp; Data</li>
-          <li>Speed and Fulfillment</li>
+          <li>Fast, Final Settlement</li>
         </ul>
-        <p><strong>Given these attributes, blockchain will be pivotal in allowing generative AI to realize its potential for consumer transactions, and the growth of agentic AI is likely to become the “killer” use case that drives blockchain adoption.</strong></p>
+        <p><strong>Given these attributes, blockchain will be pivotal in allowing institutional capital moving onchain and generative AI to realize its potential for consumer transactions—the “killer” use case that drives blockchain adoption.</strong></p>
       </section>
       <InvestmentFramework/>
       <section className="thesis-proposition thesis-approach" aria-labelledby="approach-title">

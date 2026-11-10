@@ -25,7 +25,7 @@ export const frameworkItems=[
   {id:'allocation',title:'Buyback allocation',axis:true,x:0,y:-0.28,z:0.36,claim:'Receipts become token demand only if governance directs them to purchases. An allocation can change, pause or be redeployed.',mechanism:'The share of retained revenue spent buying NEAR.',test:'Are purchases executed on chain at the stated share, consistently over time?',sources:['near','hype']},
   {id:'disposition',title:'Burn or hold',axis:true,x:0,y:0.3,z:0.62,claim:'Purchased tokens that are burned reduce supply. Tokens held in a treasury can return to circulation later.',mechanism:'The final disposition of purchased tokens.',test:'How much of what is bought is retired rather than held or redeployed?',sources:['near','hype']},
   {id:'dilution',title:'Net issuance',axis:true,x:0,y:-0.34,z:0.9,claim:'Token capture is judged net of new supply. Purchases that fall short of issuance still leave holders diluted.',mechanism:'Retired and held purchases compared with annual issuance.',test:'Do purchases outpace issuance across a full market cycle?',sources:['near','velocity']},
-  {id:'near',title:'NEAR',x:0,y:0,z:0,claim:'Conviction in NEAR’s future is one part of the case. Recurring demand for its services must give that conviction an economic foundation.',mechanism:'As AI expands what consumers and machines can do, NEAR could turn their actions into paid network usage and lasting demand for its token.',test:'The case weakens if growing activity enriches intermediaries while token demand remains temporary or dilution offsets the value retained.',sources:['near','velocity','routing']}
+  {id:'near',title:'NEAR',heading:'From demand to revenue',x:0,y:0,z:0,claim:'Conviction in NEAR’s future is one part of the case. Recurring demand from autonomous agents and institutional capital must give that conviction an economic foundation.',mechanism:'As agents transact and institutions move onchain, NEAR could turn both into paid network usage and lasting demand for its token.',test:'The case weakens if growing activity enriches intermediaries, institutional exposure stays off-chain, or dilution offsets the value retained.',sources:['near','velocity','routing']}
 ];
 
 const depth=point=>point.axis?`calc(${point.z} * var(--axis-depth))`:`${point.z*100}px`;
@@ -35,7 +35,7 @@ export default function InvestmentFramework(){
   const stage=useRef(),world=useRef(),motion=useRef(),item=frameworkItems.find(item=>item.id===selected);
   useLayoutEffect(()=>{motion.current=startFrameworkMotion(stage.current,world.current);return()=>motion.current.destroy();},[]);
   return <section className="investment-framework" aria-labelledby="framework-title">
-    <header className="framework-heading"><h2 id="framework-title">What endures in an age<br/>of abundance?</h2><p>We believe NEAR sits between conviction in a network’s future and the revenue its services can generate from consumer transactions in the age of AI.</p></header>
+    <header className="framework-heading"><h2 id="framework-title">What endures in an age<br/>of abundance?</h2><p>We believe NEAR sits between two emerging sources of demand—autonomous economic activity and institutional order flow—and the revenue its infrastructure can capture from both.</p></header>
     <div className="framework-layout">
       <div>
         <div className="framework-stage" ref={stage} tabIndex="0" role="group" aria-label="Three-dimensional investment framework" aria-describedby="framework-help">
@@ -47,7 +47,7 @@ export default function InvestmentFramework(){
         </div>
         <p id="framework-help" className="tidal-sr">Illustrative positioning, not a score. Move the mouse or drag to turn. Select a term to inspect it. Keyboard: left/right to turn, Home for front view.</p>
       </div>
-      <aside className="framework-detail" id="framework-detail" aria-live="polite"><p className="framework-kicker">The underwriting question</p>{item.id!=='near'&&<h3>{item.title}</h3>}<p>{item.claim}</p><dl><dt>Economic link</dt><dd>{item.mechanism}</dd><dt>Challenge it</dt><dd>{item.test}</dd></dl></aside>
+      <aside className="framework-detail" id="framework-detail" aria-live="polite"><p className="framework-kicker">The underwriting question</p><h3>{item.heading||item.title}</h3><p>{item.claim}</p><dl><div><dt>Economic link</dt><dd>{item.mechanism}</dd></div><div><dt>Challenge it</dt><dd>{item.test}</dd></div></dl></aside>
     </div>
   </section>;
 }

@@ -31,9 +31,9 @@ try{
  assert(rendered['thesis.html'].includes('Illustrative positioning, not a score'));
  const convergence=rendered['thesis.html'].split('id="thesis-proposition-title"')[1].split('class="investment-framework"')[0];
  assert(convergence.includes('AI is a tool that helps augment human work'));
- assert(convergence.includes('blockchain’s facilitation of machine-to-machine transactions'));
+ assert(convergence.includes('institutional capital is moving onchain'));
  assert.equal((convergence.match(/<li>/g)||[]).length,5);
- assert(convergence.includes('<strong>We believe there are asymmetric opportunities'));
+ assert(convergence.includes('<strong>We believe the asymmetric opportunity sits in the infrastructure'));
  assert(convergence.includes('<strong>Given these attributes, blockchain will be pivotal'));
  assert.equal((convergence.match(/<strong>/g)||[]).length,2);
  assert(!rendered['thesis.html'].includes('<p>Investment framework</p>'));
