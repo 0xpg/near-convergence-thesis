@@ -1,0 +1,243 @@
+{
+  "reviewedOn": "2026-11-13",
+  "status": "Source definitions verified; cross-protocol numerical ranking withheld pending matched executed-order data and publication rights.",
+  "publication": {
+    "defillama": {
+      "status": "Restricted redistribution; do not upload provider payloads to public Dune without permission",
+      "terms": "https://defillama.com/terms",
+      "sections": [
+        "7",
+        "8.4",
+        "8.7",
+        "8.9",
+        "8.10"
+      ],
+      "distinction": "Official public API availability permits access; it is not a blanket data republication licence. No provider numerical results copied into this record."
+    },
+    "alternative": "Compute metrics directly from public on-chain records in Dune; inspect public team query SQL and attribution/licence before reusing query text."
+  },
+  "metricContract": {
+    "formula": "1e6 * SUM(matched_execution_fee_usd) / NULLIF(SUM(single_side_completed_order_notional_usd),0)",
+    "grain": "One completed logical order, deduplicated by protocol-specific canonical order key; source and destination legs joined rather than added.",
+    "time": "Completed UTC days; assign fees and notional to the SAME fill event/cohort; source-created cohorts are an alternative but must be explicitly consistent.",
+    "requiredStrata": [
+      "origin chain",
+      "destination chain",
+      "input/output asset pair",
+      "size bucket",
+      "execution date",
+      "fee component class"
+    ],
+    "feeClasses": {
+      "protocolService": "Explicit protocol service charge, excluding solver/LP compensation, gas and optional integrator fees unless all peers include the same components.",
+      "distribution": "Affiliate/integrator charge, separately reported.",
+      "executionCompensation": "Solver/relayer/LP compensation; not necessarily protocol revenue or realized profit.",
+      "gas": "Origin and destination execution costs, separately reported; avoid counting destination reimbursement twice.",
+      "allInUserCost": "Only when actual input/output values, gas and app charges can be reconciled at matched asset prices; do not infer pure fees from cross-token price differences."
+    },
+    "aggregation": "Ratio of sums, not mean of per-order fee rates. Publish priced/identified coverage and excluded notional; do not claim complete protocol volume.",
+    "comparison": "Within matching route/pair/size strata, then apply one fixed reference distribution for a standardized rate. Also show the unadjusted observed rate. No causal claim that solver count changes fee rate.",
+    "missing": "Missing fee is unknown, not zero; do not divide a complete numerator by a partial denominator or vice versa.",
+    "solverDefinition": "Distinct observed fill executor addresses completing orders in the period; not all registered or live solvers, nor independent firms. Publish labelled entity-adjusted count only with evidenced mappings.",
+    "solverConcentration": [
+      "top executor volume share",
+      "HHI of filled notional shares",
+      "effective executors = 1/HHI",
+      "distinct executor addresses"
+    ]
+  },
+  "protocols": [
+    {
+      "protocol": "Across",
+      "status": "Potential direct on-chain executed-order comparator; provider summary ratio not comparable as-is",
+      "sources": [
+        "https://docs.across.to/introduction/fees",
+        "https://docs.across.to/guides/concepts/intent-lifecycle",
+        "https://docs.across.to/api-reference/deposits/get",
+        "https://skills.across.to/skills/resources",
+        "https://raw.githubusercontent.com/DefiLlama/dimension-adapters/master/fees/across.ts",
+        "https://raw.githubusercontent.com/DefiLlama/dimension-adapters/master/bridges/across.ts"
+      ],
+      "api": {
+        "legacyIndexer": "https://app.across.to/api/deposits",
+        "legacyParametersObservedInAdapter": [
+          "originChainId",
+          "destinationChainId",
+          "status=filled",
+          "startBlock",
+          "endBlock",
+          "limit",
+          "skip"
+        ],
+        "latestDocs": "https://docs.across.to/openapi.yaml",
+        "migrationWarning": "Current Across resources state legacy endpoints should not be used for new integrations and recommend /v1 endpoints; exact replacement analytics endpoint/schema not validated. Existing DefiLlama source still uses legacy endpoint. Do not assume anonymous access or perpetual API stability."
+      },
+      "observedDepositFields": [
+        "relayHash",
+        "depositId",
+        "originChainId",
+        "destinationChainId",
+        "depositor",
+        "recipient",
+        "inputToken",
+        "inputAmount",
+        "outputToken",
+        "outputAmount",
+        "status",
+        "depositBlockTimestamp",
+        "fillBlockTimestamp",
+        "relayer",
+        "fillTx",
+        "bridgeFeeUsd",
+        "fillGasFeeUsd",
+        "inputPriceUsd",
+        "outputPriceUsd"
+      ],
+      "orderKey": "Prefer canonical relayHash; otherwise validated originChainId+depositId with source contract/version namespace.",
+      "events": [
+        "V3FundsDeposited",
+        "FilledV3Relay"
+      ],
+      "fees": "Docs distinguish LP fees, relayer gas/capital/risk compensation and optional app fees. Relayer address of actual fill is observed executor; exclusiveRelayer is only nomination.",
+      "providerIssues": [
+        "Fee adapter reads bridgeFeeUsd on filled deposits using fillBlockTimestamp, with deposit timestamp fallback.",
+        "Bridge adapter incoming volume is attributed to deposit time, not fill time.",
+        "Outgoing bridge volume excludes expired/refunded but can include still-unfilled deposits. Never sum incoming and outgoing into a one-sided completed-volume denominator.",
+        "Fee adapter currently sets LP fees to zero; cannot assume full LP+relayer economics are captured.",
+        "Fee adapter catches per-chain API failures and emits zero; missing chain coverage may look like low fees.",
+        "Fee pagination assumes older-data cutoff after page sequence even though indexer ordering is by deposit time; delayed fill dates can break fill-time early-stop logic. Bridge adapter separately notes skip pagination truncation and uses block range bisection."
+      ],
+      "duneDiscovery": [
+        {
+          "name": "Across Transfers",
+          "query": "https://dune.com/queries/2459827"
+        },
+        {
+          "name": "Across V3 & V4 Transfers Foundation",
+          "query": "https://dune.com/queries/3460113"
+        },
+        {
+          "name": "Across Relayers - 30 Day Summary",
+          "query": "https://dune.com/queries/5109030"
+        },
+        {
+          "name": "Across LP Fees via Execute Root Bundle Method",
+          "query": "https://dune.com/queries/3460715"
+        }
+      ],
+      "duneSqlStatus": "Query identities verified via official team discover listing; SQL/table columns require UI inspection before drafting."
+    },
+    {
+      "protocol": "deBridge DLN",
+      "status": "Protocol fee series available; not equivalent to Across relayer fees or NEAR gross fees",
+      "sources": [
+        "https://raw.githubusercontent.com/DefiLlama/dimension-adapters/master/fees/dln/index.ts",
+        "https://raw.githubusercontent.com/DefiLlama/dimension-adapters/master/bridges/debridge-dln.ts",
+        "https://debridge.com/support/",
+        "https://docs.debridge.finance/the-debridge-messaging-protocol/deployed-contracts"
+      ],
+      "api": {
+        "dailyStats": "https://stats-api.dln.trade/api/Satistics/getDaily?dateFrom=YYYY-MM-DD&dateTo=YYYY-MM-DD",
+        "adapterFields": [
+          "dailyData",
+          "giveChainId.bigIntegerValue",
+          "totalProtocolFeeUsd"
+        ],
+        "schemaStatus": "Observed in current fee adapter source; API payload not independently archived or licensed for public republication."
+      },
+      "contracts": {
+        "evmSource": "0xeF4fB24aD0916217251F553c0596F8Edc630EB66",
+        "evmDestination": "0xE7351Fd770A37282b91D153Ee690B63579D6dd7f",
+        "provenance": "Current DefiLlama bridge adapter; independently verify deployment address on each selected chain before SQL execution."
+      },
+      "events": {
+        "CreatedOrder": [
+          "order",
+          "orderId",
+          "affiliateFee",
+          "nativeFixFee",
+          "percentFee",
+          "referralCode",
+          "metadata"
+        ],
+        "FulfilledOrder": [
+          "order",
+          "orderId",
+          "actualFulfillAmount",
+          "sender",
+          "unlockAuthority"
+        ],
+        "legacyFulfilledOrder": [
+          "order",
+          "orderId",
+          "sender",
+          "unlockAuthority"
+        ]
+      },
+      "orderKey": "orderId with source-contract/protocol namespace; do not count CreatedOrder and FulfilledOrder as separate completed swaps.",
+      "fees": "Current fee adapter sums totalProtocolFeeUsd. Solver execution spread and costs are not measured by that field; affiliateFee is a distinct event field. Historical fixed/percent schedules must not substitute for observed realized fees.",
+      "volume": "Current bridge adapter separately reports created-order outgoing giveAmount and filled incoming actualFulfillAmount (legacy takeAmount). Use fills joined to created orders, handle cancellations and patches explicitly, and price one matched side.",
+      "solver": "FulfilledOrder sender is observed execution address, not necessarily independent solver entity. unlockAuthority is settlement authority and must not be used interchangeably."
+    }
+  ],
+  "publicApiCandidates": [
+    {
+      "url": "https://api.llama.fi/summary/fees/across?dataType=dailyFees",
+      "verifiedResponseShape": [
+        "name",
+        "slug",
+        "methodology",
+        "methodologyURL",
+        "totalDataChart"
+      ],
+      "publication": "Do not republish without permission"
+    },
+    {
+      "url": "https://api.llama.fi/summary/bridges/across?dataType=dailyIncomingVolume",
+      "verifiedResponseShape": [
+        "name",
+        "slug",
+        "methodology",
+        "methodologyURL",
+        "totalDataChart"
+      ],
+      "publication": "Do not republish without permission"
+    },
+    {
+      "url": "https://api.llama.fi/summary/fees/debridge?dataType=dailyFees",
+      "verifiedResponseShape": [
+        "name",
+        "slug",
+        "methodology",
+        "methodologyURL",
+        "totalDataChart"
+      ],
+      "publication": "Do not republish without permission"
+    },
+    {
+      "url": "https://api.llama.fi/summary/bridges/debridge?dataType=dailyIncomingVolume",
+      "verifiedResponseShape": [
+        "name",
+        "slug",
+        "methodology",
+        "methodologyURL",
+        "totalDataChart"
+      ],
+      "publication": "Do not republish without permission"
+    }
+  ],
+  "researchMethod": {
+    "paper": "Exploiting Liquidity Exhaustion Attacks in Intent-Based Cross-Chain Bridges",
+    "url": "https://arxiv.org/abs/2602.17805",
+    "published": "2026-02-19",
+    "use": "Supports protocol-specific order joins, separation of fulfillment/settlement, solver concentration and chain-dependent fee economics. Its historical results are not current benchmarks, and simulation findings must not be presented as realized NEAR outcomes."
+  },
+  "nextChecks": [
+    "Inspect team Dune query SQL, status rules and chain/version coverage.",
+    "Verify exact fee component availability in NEAR public records before selecting comparable numerator.",
+    "Publish unavailable comparisons as not comparable, not zero.",
+    "Use direct on-chain derived cross-protocol source rather than restricted provider copies."
+  ],
+  "sqlDraftsCreated": false,
+  "sqlDraftReason": "No Dune executed-order table schema was actually observed; inventing table/column names would produce misleading production SQL."
+}

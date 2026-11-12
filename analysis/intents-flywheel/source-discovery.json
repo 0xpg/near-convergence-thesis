@@ -1,0 +1,249 @@
+{
+  "version": "near-intents-source-discovery-2026-11-13-v1",
+  "reviewedOn": "2026-11-13",
+  "scope": "Sources and source contracts; no Dune queries executed by this agent",
+  "conclusion": "A complete current swap-level and solver-level history is not established from public NEAR logs. Official historical 1Click Explorer access requires partner authentication; the documented Explorer response does not identify solvers.",
+  "sources": [
+    {
+      "id": "explorer",
+      "url": "https://docs.agentsonintents.com/integration/distribution-channels/1click-api/explorer/introduction",
+      "primary": true,
+      "baseUrl": "https://explorer.near-intents.org/api/v0",
+      "access": "Partner JWT required for every request; obtain from Partner Dashboard. One request per five seconds per partner.",
+      "scope": "Historical 1Click swaps, not necessarily every protocol integration.",
+      "ingestion": "Read-only GET /transactions; no browser scraping or auth bypass."
+    },
+    {
+      "id": "explorer-schema",
+      "url": "https://docs.agentsonintents.com/api-reference/get-transactions",
+      "primary": true,
+      "grain": "One explorer transaction record identified by deposit address and optional memo; validate uniqueness and source lifecycle before treating as an immutable swap key.",
+      "fields": [
+        "originAsset",
+        "destinationAsset",
+        "depositAddress",
+        "depositMemo",
+        "recipient",
+        "status",
+        "createdAt",
+        "createdAtTimestamp",
+        "intentHashes",
+        "referral",
+        "amountInFormatted",
+        "amountOutFormatted",
+        "appFees",
+        "nearTxHashes",
+        "originChainTxHashes",
+        "destinationChainTxHashes",
+        "amountIn",
+        "amountInUsd",
+        "amountOut",
+        "amountOutUsd",
+        "refundTo",
+        "senders",
+        "depositType",
+        "recipientType",
+        "refundType",
+        "refundReason"
+      ],
+      "pagination": {
+        "pageSizeMax": 1000,
+        "cursor": [
+          "lastDepositAddress",
+          "lastDepositMemo"
+        ],
+        "direction": "next for older; prev for newer"
+      },
+      "filters": [
+        "fromChainId",
+        "toChainId",
+        "fromTokenId",
+        "toTokenId",
+        "statuses",
+        "showTestTxs",
+        "referral",
+        "affiliate",
+        "startTimestamp",
+        "endTimestamp"
+      ],
+      "limits": "Timestamp boundaries are exclusive. Successful records only for completed swap notional. In-flight amounts can be zero by design. No documented solver identity or completion timestamp."
+    },
+    {
+      "id": "confidential-cutover",
+      "url": "https://docs.agentsonintents.com/changelog/overview",
+      "primary": true,
+      "effectiveDate": "2026-10-27",
+      "change": "Official changelog says 1Click swaps settle on NEAR Private Shard. nearTxHashes carries shield/unshield hashes rather than the swap hash; Explorer still presents swap data.",
+      "implication": "Public intents.near logs are not a complete current swap census. Do not interpret a decline in public logs as a matching decline in total usage."
+    },
+    {
+      "id": "events",
+      "url": "https://docs.agentsonintents.com/integration/verifier-contract/events",
+      "primary": true,
+      "envelope": [
+        "standard",
+        "version",
+        "event",
+        "data"
+      ],
+      "publicEvents": [
+        "token_diff",
+        "intents_executed",
+        "transfer",
+        "ft_withdraw",
+        "nft_withdraw"
+      ],
+      "tokenDiffFields": [
+        "account_id",
+        "intent_hash",
+        "diff"
+      ],
+      "executionEventFields": [
+        "account_id",
+        "intent_hash",
+        "nonce"
+      ],
+      "interpretation": "A successful token_diff is one signed account-side token change, not necessarily one user swap. Multiple sides and multi-asset intents may settle in one receipt. Transfers and withdrawals are not swaps."
+    },
+    {
+      "id": "dune-logs",
+      "url": "https://docs.dune.com/data-catalog/near/logs",
+      "primary": true,
+      "table": "near.logs",
+      "fields": [
+        "block_date",
+        "block_height",
+        "block_time",
+        "execution_status",
+        "executor_account_id",
+        "receipt_id",
+        "index_in_execution_outcome_logs",
+        "log",
+        "event",
+        "processed_time",
+        "updated_at",
+        "ingested_at"
+      ],
+      "rawKey": [
+        "receipt_id",
+        "index_in_execution_outcome_logs"
+      ],
+      "flattenedKey": [
+        "receipt_id",
+        "index_in_execution_outcome_logs",
+        "data_ordinal"
+      ],
+      "filters": "Bounded completed UTC days, executor intents.near, success execution status, parsed standard dip4 and exact token_diff event. Audit malformed JSON, null keys, duplicate and conflicting event versions.",
+      "semanticKey": "Preserve contract + intent_hash + account_id; do not silently dedup conflicting payloads."
+    },
+    {
+      "id": "solver-confidential-format",
+      "url": "https://docs.agentsonintents.com/integration/market-makers/confidential-example",
+      "primary": true,
+      "observableDocumentedFields": [
+        "private_signed_data.solver_id",
+        "private_signed_data.shield",
+        "private_signed_data.swap",
+        "private_signed_data.recover"
+      ],
+      "access": "Public/private relay connections require Partner JWT; private relay URL obtained from team. solver_id is solver configuration, not a documented public historical registry.",
+      "implication": "Do not equate signer, relayer or absent referral with verified solver. Identity-to-organization mapping requires evidence and versioning."
+    },
+    {
+      "id": "fee-policy",
+      "url": "https://docs.agentsonintents.com/integration/distribution-channels/1click-api/fee-config",
+      "primary": true,
+      "appFeeUnit": "integer basis points, input token",
+      "limits": "Configured appFees are not a complete paid-fee ledger. Authentication, route and partner policy affect split/minimums; actual execution and fee aggregation require reconciliation. ANY_INPUT standing collectors can produce repeated sweeps and must not be assumed single-use user orders."
+    },
+    {
+      "id": "token-registry",
+      "url": "https://1click.chaindefuser.com/v0/tokens",
+      "primary": true,
+      "localEvidence": "analysis/coverage-expansion/stablecoins/contract-registry.json",
+      "use": "Resolve originAsset and destinationAsset against versioned asset metadata; retain exact token contract, chain, decimals and alias history. Symbols alone do not identify assets."
+    },
+    {
+      "id": "official-dune-volume",
+      "url": "https://dune.com/queries/5175176",
+      "primary": true,
+      "table": "dune.near.dataset_near_intents_metrics",
+      "grain": "Date/source_type/token; provider aggregate, not order-level routes or wallet behaviors.",
+      "limitation": "Public and confidential volume add under official convention, but token blockchain is not proof of actual funding source chain."
+    },
+    {
+      "id": "counterparty-discovery",
+      "url": "https://dune.com/queries/9087711",
+      "primary": false,
+      "duplicateQuery": "https://dune.com/queries/9087729",
+      "status": "Discovery only; rejected as verified solver count",
+      "reason": "Labels every no-referral token_diff signer as a solver. Missing referral does not establish role; test, relay and generic account activity can enter. Count is public-side signing accounts rather than solver organizations."
+    }
+  ],
+  "implementationContract": {
+    "canonicalOrderKey": "Prefer provider immutable order ID if supplied; otherwise validate depositAddress + depositMemo + creation timestamp and record source version. Deposit/memo cursor is not itself proof of permanent uniqueness for standing collectors.",
+    "eventTime": "Explorer createdAt is order creation, not terminal settlement. Store created and ingestion times separately and do not call creation-to-observation latency settlement duration.",
+    "route": "Use explicit origin/destination chain fields or registry-backed asset representation plus depositType/recipientType. INTENTS origin is internal inventory; asset representation alone cannot prove last funding chain.",
+    "notional": "One validated successful user order, one chosen side USD amount, with valuation coverage. Never add input + output or both signed intent counterparties.",
+    "solver": "Nullable verified solver ID with label evidence and coverage denominator. Do not infer role merely from solver-like name or no referral.",
+    "fees": "Separate configured appFee, observed protocol fee, distribution fee, solver spread and captured receipts. Missing fee is not zero.",
+    "dedup": "Upsert mutable explorer status by validated order key. Preserve raw records and source retrieval time; repoll open orders and overlap windows. Public event duplicate conflicts quarantine.",
+    "filtering": "Deterministic validity exclusions first. Automation flags and suspected circular activity separate from hard wash exclusion. Publish unclassified and unpriced shares; do not claim organic volume by subtraction alone.",
+    "reconciliation": "Compare only equivalent windows/scopes with official aggregate. Document 1Click coverage and public/confidential splits; do not force raw public totals to all-source published metrics."
+  },
+  "capabilities": [
+    {
+      "metric": "Reported aggregate Intents volume/fees",
+      "status": "Available in existing validated Dune sources",
+      "scope": "Provider aggregates; not wash-filtered"
+    },
+    {
+      "metric": "Public token_diff intent activity",
+      "status": "Implementable after query execution and quality gates",
+      "scope": "Public signed account-side intents only"
+    },
+    {
+      "metric": "Every current swap by source chain/pair",
+      "status": "Not established without authenticated Explorer/provider history",
+      "scope": "Explorer covers 1Click; full protocol coverage still requires reconciliation"
+    },
+    {
+      "metric": "Live verified solver count",
+      "status": "Not established",
+      "scope": "No documented historical solver field in Explorer; need provider labels/relay telemetry"
+    },
+    {
+      "metric": "Wash and bot filtered full volume",
+      "status": "Not established",
+      "scope": "Needs sufficiently complete order/wallet history and assessed detection rules; confidential data limits observability"
+    }
+  ],
+  "checksPerformed": [
+    "Read existing source manifest, metadata snapshot and production SQL references",
+    "Reviewed official Explorer authentication/schema, confidential cutover, verifier events, Dune logs schema and solver integration docs",
+    "Reviewed public Dune counterparty query as rejected solver-count shortcut"
+  ],
+  "validationLimits": [
+    "No authenticated Explorer records retrieved",
+    "Direct unauthenticated API probe could not resolve host under network sandbox; does not establish API response status",
+    "No Dune execution or UI mutation performed",
+    "No secrets inspected or stored"
+  ],
+  "publicImplementation": {
+    "assetRegistry": "analysis/intents-flywheel/current-asset-registry.json",
+    "assetRegistrySql": "analysis/intents-flywheel/asset-registry-values.sql",
+    "assetCount": 230,
+    "contractSnapshot": "data/snapshots/intents-token-diff.rs.txt",
+    "additionalTokenDiffFields": [
+      "memo",
+      "referral",
+      "fees_collected"
+    ],
+    "cautions": [
+      "Existing contract snapshot is version0.4.5 source; root must probe actual historical event versions before publishing fee coverage.",
+      "Token deltas can include multiple inputs/outputs. Only classify exactly-one-negative/exactly-one-positive as simple asset pair; preserve multi-asset bucket.",
+      "Protocol fees_collected map is separate from solver spread, affiliate appFees and captured receipts.",
+      "Do not call all null-referral signers solvers."
+    ]
+  }
+}

@@ -1,0 +1,27 @@
+import assert from 'node:assert/strict';
+import {buildFlywheel} from './build.mjs';
+const day=index=>new Date(Date.UTC(2026,7,14+index)).toISOString().slice(0,10);
+const table=(id,rows)=>({query:'https://dune.com/queries/'+id,retrievedAt:'2026-11-13T00:00:00Z',rows:[Object.keys(rows[0]),...rows.map(row=>Object.values(row).map(value=>value===null?'null':String(value)))]});
+const fees=Array.from({length:90},(_,i)=>{
+ const start=Math.max(0,i-29),n=i-start+1,volume=1e6*(i+1),fee=100+i;
+ const windowVolume=Array.from({length:n},(_,j)=>1e6*(start+j+1)).reduce((a,b)=>a+b,0),windowFees=Array.from({length:n},(_,j)=>100+start+j).reduce((a,b)=>a+b,0);
+ return {day:day(i),reported_volume_usd:volume,reported_gross_fees_usd:fee,positive_unpriced_volume_rows:0,invalid_volume_rows:0,missing_fee_rows:1,invalid_fee_rows:0,reported_fees_per_million_usd:fee/volume*1e6,trailing_30d_fees_per_million_usd:n===30?windowFees/windowVolume*1e6:null,matched_days_in_30d:n,missing_fee_rows_in_30d:n,unpriced_volume_rows_in_30d:0};
+});
+const activity=Array.from({length:30},(_,i)=>({day:day(60+i),window_start:day(60),window_end:day(89),successful_contract_log_rows:20,window_observed_contract_log_days:30,public_account_intents:10,active_signing_accounts:4,nonreferral_account_intents:6,nonreferral_active_accounts:3,simple_pair_account_intents:8,multi_or_one_sided_account_intents:2,fee_field_present_intents:8,nonempty_fee_map_intents:6,token_diff_log_rows:14,invalid_or_repeated_raw_key_rows:0,malformed_or_empty_data_log_rows:0,parsed_account_payloads:12,repeated_intent_hash_payloads:2,missing_identity_payloads:0,malformed_delta_payloads:0,malformed_json_contract_log_rows:0,window_nonreferral_accounts:4,window_nonreferral_top5_count_share_pct:100,window_nonreferral_hhi_count_basis:2500}));
+const pairs=Array.from({length:2},(_,i)=>({pair_label:'USDC to USDT #'+i,public_account_intents:150,referred_account_intents:60,nonreferral_account_intents:90,unrecognized_asset_account_intents:i,fee_field_present_intents:120,nonempty_fee_map_intents:90,share_of_canonical_account_intents_pct:50,first_observed_day:day(60),last_observed_day:day(89)}));
+const reverse=activity.flatMap(row=>[15,60,240].flatMap(h=>[1,5].map(t=>({day:row.day,window_start:day(60),window_end:day(89),horizon_minutes:h,tolerance_pct:t,observed_successful_contract_log_rows:20,retained_public_account_events:10,behavior_unassessable_account_events:2,assessable_simple_account_events:8,no_prior_observed_simple_event:1,adjacent_reverse_candidate_pairs:2,distinct_flagged_account_events:4,flagged_share_of_assessable_events_pct:50,behavioral_excluded_account_events:0}))));
+const raw=[table('1',fees),table('2',activity),table('3',pairs),table('4',reverse)];
+const manifest={executed:['fee-productivity','public-participation','public-pairs','public-patterns'].map((chartId,i)=>({chartId,query:'https://dune.com/queries/'+(i+1),visualization:String(i+101)}))};
+const output=buildFlywheel(raw,manifest);
+assert.equal(output.summary.publicAccountIntents,300);assert.equal(output.summary.avgPublicAccounts,4);assert.equal(output.summary.missingFeeRows30d,30);assert.equal(output.summary.reverseFlaggedShare60min5pct,50);assert.equal(output.summary.verifiedSolverCount,null);assert.equal(output.charts.length,4);assert(Math.abs(output.summary.canonicalRetainedSharePct-300/360*100)<1e-9);
+assert.notEqual(output.summary.grossFeePerMillion30d,fees.slice(-30).reduce((n,row)=>n+row.reported_fees_per_million_usd,0)/30,'Ratio of sums must differ from an average of daily rates');
+const mutate=(tableIndex,rowIndex,key,value)=>{const copy=structuredClone(raw),column=copy[tableIndex].rows[0].indexOf(key);assert(column>=0);copy[tableIndex].rows[rowIndex][column]=value;return copy;};
+assert.throws(()=>buildFlywheel(mutate(0,90,'trailing_30d_fees_per_million_usd','0'),manifest),/ratio-of-sums/);
+assert.throws(()=>buildFlywheel(mutate(0,2,'day',day(0)),manifest),/Duplicate date/);
+assert.throws(()=>buildFlywheel(mutate(0,1,'reported_volume_usd','null'),manifest),/daily ratio/);
+assert.throws(()=>buildFlywheel(mutate(2,1,'public_account_intents','100'),manifest),/ALL retained/);
+assert.throws(()=>buildFlywheel(mutate(3,1,'behavioral_excluded_account_events','1'),manifest),/silently exclude/);
+assert.throws(()=>buildFlywheel(mutate(3,1,'horizon_minutes','30'),manifest),/Unexpected sensitivity/);
+const truncated=structuredClone(raw);truncated[2].rows.pop();assert.throws(()=>buildFlywheel(truncated,manifest),/ALL retained/);
+const noHeader=structuredClone(raw);noHeader[0].rows[0][1]='wrong';assert.throws(()=>buildFlywheel(noHeader,manifest),/Missing source column/);
+console.log('Flywheel builder: matched ratio-of-sums, null/zero distinction, calendars, whole pair reconciliation, safe sensitivity flags and source headers passed.');

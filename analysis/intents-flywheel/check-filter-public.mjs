@@ -1,0 +1,37 @@
+import assert from 'node:assert/strict';
+import {readFileSync} from 'node:fs';
+import {filterPublicIntents} from './filter-public.mjs';
+const log=(id,account,diff,time='2026-11-12T00:00:00Z')=>({receipt_id:id,index_in_execution_outcome_logs:0,executor_account_id:'intents.near',execution_status:'SUCCESS_VALUE',block_time:time,event:{standard:'dip4',version:'0.1.0',event:'token_diff',data:[{account_id:account,intent_hash:id+'hash',diff}]}});
+const first=log('one','alice.near',{A:'-1000000000000000000000000',B:'200'});
+const second=log('two','alice.near',{B:'-200',A:'990000000000000000000000'},'2026-11-12T00:05:00Z');
+const result=filterPublicIntents([second,first,structuredClone(first)]);
+assert.equal(result.summary.acceptedPublicEvents,2);assert.equal(result.summary.flaggedPublicEvents,2);assert.equal(result.summary.behavioralExclusions,0);assert.equal(result.excluded[0].reason,'EXACT_INGESTION_DUPLICATE');
+assert.equal(filterPublicIntents([first,{...first,execution_status:'FAILURE'}]).quarantined[0].reason,'CONFLICTING_LOG_VERSIONS');
+assert.equal(filterPublicIntents([{...first,execution_status:'FAILURE'}]).summary.acceptedPublicEvents,0);
+assert.equal(filterPublicIntents([{...first,event:'bad json'}]).quarantined[0].reason,'INVALID_EVENT_JSON');
+assert.equal(filterPublicIntents([log('zero','alice.near',{A:'0',B:'1'})]).quarantined[0].reason,'INVALID_TOKEN_DIFF');
+assert.equal(filterPublicIntents([log('float','alice.near',{A:-1,B:'1'})]).quarantined[0].reason,'INVALID_TOKEN_DIFF');
+assert.equal(filterPublicIntents([first,log('other','solver.near',{B:'-200',A:'990000000000000000000000'},'2026-11-12T00:05:00Z')]).summary.flaggedPublicEvents,0);
+const complex=log('multi','solver.near',{A:'-100',B:'50',C:'50'});assert.equal(filterPublicIntents([complex]).summary.unassessablePublicEvents,1);
+assert.equal(filterPublicIntents([{...first,block_time:'2026-11-12 00:00:00'}]).summary.unassessablePublicEvents,1);
+assert.equal(filterPublicIntents([first,{...second,block_time:first.block_time}]).summary.flaggedPublicEvents,0);
+assert.equal(filterPublicIntents([first,second],{returnToleranceBps:50}).summary.flaggedPublicEvents,0);
+assert.throws(()=>filterPublicIntents([], {lookbackMinutes:Infinity}));
+assert.deepEqual(filterPublicIntents([first,second]).events,filterPublicIntents([second,first]).events);
+console.log('Public token_diff checks: duplicate/conflict quarantine, status, i128 precision, missing UTC time, multi-asset coverage, deterministic reverse-pattern flags and zero behavioral exclusions passed.');
+
+const sample=JSON.parse(readFileSync(new URL('./public-event-sample.json',import.meta.url),'utf8'));
+const [columns,...records]=sample.rows;
+const normalized=records.map(record=>{const row=Object.fromEntries(columns.map((name,index)=>[name,record[index]]));return {...row,executor_account_id:'intents.near',index_in_execution_outcome_logs:Number(row.index_in_execution_outcome_logs),block_time:row.block_time.replace(' ','T')+'Z'};});
+const observed=filterPublicIntents(normalized);assert.equal(observed.quarantined.length,0);assert.equal(observed.events.length,records.length);assert(observed.events.every(event=>event.feesCollected));
+console.log('Observed saved Dune sample: '+observed.events.length+' public account-side events parsed with raw fee units retained; no solver inference.');
+
+const canonicalSql=readFileSync(new URL('./02_public_account_intents_canonical.sql',import.meta.url),'utf8').replace(/\r\n/g,'\n').split('\nSELECT day,block_time,receipt_id,log_index,ordinal,account_id,intent_hash,referral,')[0];
+const reverseSql=readFileSync(new URL('./05_public_reverse_pattern_daily.sql',import.meta.url),'utf8').replace(/\r\n/g,'\n');
+assert(reverseSql.startsWith(canonicalSql+'\n, parameters'),'Reverse SQL must retain canonical source guards');
+assert(reverseSql.includes('abs(output_raw-previous_input_raw)/previous_input_raw<=tolerance_pct/100.0'));
+assert(reverseSql.includes('abs(input_raw-previous_output_raw)/previous_output_raw<=tolerance_pct/100.0'));
+assert(reverseSql.includes('lead(reverse_with_previous)'));
+assert(reverseSql.includes('0 AS behavioral_excluded_account_events'));
+assert(reverseSql.includes('VALUES (15,1),(15,5),(60,1),(60,5),(240,1),(240,5)'));
+console.log('Reverse SQL source-contract check: identical canonical prefix, both quantity guards, both-leg flags, six sensitivity settings and zero exclusions. Live SQL execution remains separate.');

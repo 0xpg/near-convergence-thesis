@@ -1,12 +1,17 @@
 import React,{useState} from 'react';
 import './dune-glance.css';
-import {glanceInsights, type Insight} from './glance-coverage-insights.ts';
-export {glanceInsights} from './glance-coverage-insights.ts';
+import {glanceInsights as coverageInsights, type Insight} from './glance-coverage-insights.ts';
+import {flywheelInsights} from './flywheel-insights.ts';
+export const glanceInsights:Record<string,Insight>={...coverageInsights,...flywheelInsights};
 import {GlanceScorecard,GlanceRetention,GlanceValidation} from './GlanceEconomics.tsx';
 import {analyzeWindow} from './glance-analytics.ts';
 import {useGlanceSnapshot} from './glance-data.ts';
 
 export const glanceCharts=[
+  {id:'fee-productivity',title:'Intents fee productivity',tab:'Fee productivity',query:'9119498',visualization:'13171198',description:'Matched reported volume and gross fees, expressed as fees per $1M of notional. Ratio of sums; not solver spread, captured revenue or tokenholder yield.'},
+  {id:'public-participation',title:'Public Intents participation',tab:'Participation',query:'9119494',visualization:'13171200',description:'Validated public account-side token_diff intents and signing accounts. Nonreferral accounts are an unverified counterparty proxy, not solver identities. Confidential execution is excluded.'},
+  {id:'public-pairs',title:'Public asset representation pairs',tab:'Asset pairs',query:'9119517',visualization:'13171202',description:'Public account-side intent counts classified by asset representation. Unknown and multi-asset cases remain explicit. These are not unique user swaps or actual funding-chain routes.'},
+  {id:'public-patterns',title:'Public execution patterns',tab:'Patterns',query:'9119523',visualization:'13171204',description:'Observable public-account pattern diagnostics. Automation and circular activity are flags, not proof of wash trading; full-network filtered USD volume is not established.'},
   {id:'intents-balances',title:'Intents custody balances',tab:'Custody',query:'9117785',visualization:'13169372',description:'Priced custody subtotal. Public-only equals total less confidential; unsplit history stays explicit. Unpriced positive balances are excluded.'},
   {id:'stablecoin-transfers',title:'Filtered stablecoin transfers',tab:'Transfers',query:'9117819',visualization:'13169462',description:'Positive successful transfer legs across the current 17-contract roster; excludes mint, burn, self-transfers and ambiguous keys. Nominal units, not full USD value.'},
   {id:'genesis-allocation',title:'Historical genesis allocation',tab:'Genesis',query:'9117913',visualization:'13169510',description:'Historical announced allocation of the initial supply; not current ownership or projected supply.'},
@@ -34,6 +39,10 @@ export const glanceCharts=[
   {id:'ir-channels',title:'Fees by distribution channel',tab:'Channels',query:'9080255',visualization:'13129759',description:'All-time fees by referral label, in USD. A different window from the volume mixes.'}
 ];
 export const glanceGroups=[
+  {id:'fee-productivity',title:'What volume earns',chartIds:['fee-productivity']},
+  {id:'public-participation',title:'Who signs public intents',chartIds:['public-participation']},
+  {id:'public-pairs',title:'The public asset mix',chartIds:['public-pairs']},
+  {id:'public-patterns',title:'Patterns in public execution',chartIds:['public-patterns']},
   {id:'capital',title:'Capital on NEAR',chartIds:['defi-capital','stablecoins','intents-balances','stablecoin-transfers']},
   {id:'revenue',title:'The revenue picture',chartIds:['ir-fees','ir-revenue','ir-fee-sources','ir-cumulative','ir-wallets']},
   {id:'issuance',title:'Revenue and issuance',chartIds:['ir-emissions','ir-coverage']},
@@ -52,7 +61,7 @@ function byId<T extends {id:string}>(list:T[],id:string):T{
 }
 
 export const glanceChapters=[
-  {id:'execution',title:'Execution across chains',context:'How much trading NEAR Intents settles, where it comes from and who brings it.',items:['activity','reach','distribution']},
+  {id:'execution',title:'Intents flywheel',context:'Reported network volume and fee productivity, alongside the observable public execution subset. Public-account patterns exclude confidential settlement and do not identify solvers.',items:['activity','fee-productivity','public-participation','public-pairs','public-patterns','reach','distribution']},
   {id:'economics',title:'Revenue and retention',context:'What users pay, what the protocol keeps and how that compares with new issuance.',items:['retention','revenue','issuance']},
   {id:'capital',title:'Capital on NEAR',context:'Liquidity held on the base chain, separate from the inventory that fills Intents.',items:['capital','composition']},
   {id:'network',title:'Network and token',context:'Base-chain activity and the token’s supply and price.',items:['network','token']}
@@ -65,7 +74,7 @@ const chapterIcons={
   network:<><circle cx="5" cy="6" r="2"/><circle cx="19" cy="6" r="2"/><circle cx="12" cy="18" r="2"/><path d="M7 6h10M6 7.8l5 8.4M18 7.8l-5 8.4"/></>
 };
 
-const categories={capital:'Liquidity',revenue:'Economics',issuance:'Economics',network:'Network',token:'Market',activity:'Intents',composition:'Liquidity',reach:'Intents',distribution:'Intents'};
+const categories={'fee-productivity':'Economics','public-participation':'Public activity','public-pairs':'Public activity','public-patterns':'Public activity',capital:'Liquidity',revenue:'Economics',issuance:'Economics',network:'Network',token:'Market',activity:'Intents',composition:'Liquidity',reach:'Intents',distribution:'Intents'};
 
 
 

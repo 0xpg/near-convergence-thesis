@@ -66,22 +66,34 @@ try{
  const dashboardVisuals=JSON.parse(readFileSync('analysis/defillama-ir/sql/dashboard-visuals.json','utf8')).visualizations;
  const counters=new Set(['13129722','13129725','13129731','13129732','13129757']);
  const expanded=JSON.parse(readFileSync('data/glance-coverage.json','utf8'));
- const allowed=new Set([...dashboardVisuals.map(v=>v.query+'/'+v.visualization),...expanded.sources.flatMap(source=>(source.visualizations||[]).map(v=>source.query.split('/').at(-1)+'/'+v))]);
+ const flywheel=JSON.parse(readFileSync('data/intents-flywheel.json','utf8'));
+ const flywheelIds=['fee-productivity','public-participation','public-pairs','public-patterns'];
+ assert.deepEqual(flywheel.charts.map(chart=>chart.id).sort(),[...flywheelIds].sort());
+ const allowed=new Set([...dashboardVisuals.map(v=>v.query+'/'+v.visualization),...flywheel.charts.map(v=>v.query+'/'+v.visualization),...expanded.sources.flatMap(source=>(source.visualizations||[]).map(v=>source.query.split('/').at(-1)+'/'+v))]);
  for(const chart of glanceCharts)assert(allowed.has(chart.query+'/'+chart.visualization));
  for(const source of expanded.sources)for(const visual of source.visualizations||[])assert(glanceCharts.some(chart=>source.query.endsWith('/'+chart.query)&&chart.visualization===visual),'Expanded Dune chart must reach website');
  assert(rendered['thesis.html'].includes('https://dune.com/0xpanatagama/near-economic\"'));
  assert(!rendered['thesis.html'].includes('<a class="glance-chart"'));
  const chartFrames=rendered['thesis.html'].match(/<iframe[^>]+Dune visualization[^>]*>/g)||[];
- assert.equal(chartFrames.length,9);
+ assert.equal(chartFrames.length,13);
  for(const frame of chartFrames){assert(!frame.includes('aria-hidden'));assert(!frame.includes('tabindex="-1"'));}
- assert.equal(glanceCharts.length,25);assert.equal(new Set(glanceCharts.map(chart=>chart.id)).size,25);assert.equal(glanceGroups.length,9);
- assert.equal(glanceGroups.flatMap(group=>group.chartIds).length,25);
+ assert.equal(glanceCharts.length,29);assert.equal(new Set(glanceCharts.map(chart=>chart.id)).size,29);assert.equal(glanceGroups.length,13);
+ assert.equal(glanceGroups.flatMap(group=>group.chartIds).length,29);
  const insightData={insights:glanceInsights};
  for(const chart of glanceCharts){assert(insightData.insights[chart.id]);const snapshot=insightData.insights[chart.id].snapshot;if(snapshot)assert(existsSync('dist/'+snapshot));}assert(!rendered['thesis.html'].includes('Network fundamentals'));
  for(const insight of Object.values(insightData.insights)){assert(insight.value&&insight.headline&&insight.date&&insight.limitation&&insight.calculation.method);assert.equal(new URL(insight.source).protocol,'https:');}
  assert(rendered['thesis.html'].includes('Download calculations'));
  const glanceTiles=rendered['thesis.html'].match(/<article class="glance-tile[\s\S]*?<\/article>/g)||[];
- assert.equal(glanceTiles.length,10);
+ assert.equal(glanceTiles.length,14);
+ assert(rendered['thesis.html'].includes('Intents flywheel'));
+ for(const id of flywheelIds){
+  const group=glanceGroups.find(group=>group.id===id),chart=glanceCharts.find(chart=>chart.id===id);
+  assert.deepEqual(group.chartIds,[id],'Flywheel findings must be independent visible defaults');
+  assert(flywheel.charts.some(source=>source.id===id&&source.query===chart.query&&source.visualization===chart.visualization),'Flywheel embed must match its source manifest');
+  assert.equal(glanceTiles.filter(tile=>tile.includes('id="glance-'+id+'-title"')).length,1,'Exactly one visible card per flywheel finding');
+  assert(glanceInsights[id].snapshot==='data/intents-flywheel.json','Flywheel insights must point to their own validated snapshot');
+ }
+
  assert(!rendered['thesis.html'].includes('glance-institutional'));
  assert(rendered['thesis.html'].includes('Observed economics'));
  assert(rendered['thesis.html'].includes('data/glance-daily.json'));

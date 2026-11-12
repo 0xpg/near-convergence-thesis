@@ -1,0 +1,78 @@
+{
+  "query": "https://dune.com/queries/9119494",
+  "retrievedAt": "2026-11-12T20:45:57.989Z",
+  "rows": [
+    [
+      "block_date",
+      "block_time",
+      "receipt_id",
+      "index_in_execution_outcome_logs",
+      "execution_status",
+      "event"
+    ],
+    [
+      "2026-11-11 00:00:00",
+      "2026-11-11 23:57:10",
+      "HsgbweGGWeX4mSzehNamMaypcTiofsCsg2owSE1ZyMLt",
+      "0",
+      "SUCCESS_VALUE",
+      "{\"standard\":\"dip4\",\"version\":\"0.4.3\",\"event\":\"token_diff\",\"data\":[{\"intent_hash\":\"J1dtwRqYPXGsC7UB8TfQmgZZYaigZVtDpiYSzehoCzFq\",\"account_id\":\"solver-multichain-asset.near\",\"diff\":{\"nep141:eth.omft.near\":\"260583118870\",\"nep245:v2_1.omni.hot.tg:10_11111111111111111111\":\"-260557060558\"},\"fees_collected\":{\"nep245:v2_1.omni.hot.tg:10_11111111111111111111\":\"260558\"}}]}"
+    ],
+    [
+      "2026-11-11 00:00:00",
+      "2026-11-11 23:57:10",
+      "HsgbweGGWeX4mSzehNamMaypcTiofsCsg2owSE1ZyMLt",
+      "2",
+      "SUCCESS_VALUE",
+      "{\"standard\":\"dip4\",\"version\":\"0.4.3\",\"event\":\"token_diff\",\"data\":[{\"intent_hash\":\"HspkJMhefv4gbMT4E8qTvzAFJEe6Ns8T17JVgVTHhNm9\",\"account_id\":\"solver-priv-liq.near\",\"diff\":{\"nep141:eth-0xdac17f958d2ee523a2206206994597c13d831ec7.omft.near\":\"-544\",\"nep245:v2_1.omni.hot.tg:10_vLAiSt9KfUGKpw5cD3vsSyNYBo7\":\"5635245901655264\"},\"fees_collected\":{\"nep141:eth-0xdac17f958d2ee523a2206206994597c13d831ec7.omft.near\":\"1\"}}]}"
+    ],
+    [
+      "2026-11-11 00:00:00",
+      "2026-11-11 23:57:10",
+      "HsgbweGGWeX4mSzehNamMaypcTiofsCsg2owSE1ZyMLt",
+      "1",
+      "SUCCESS_VALUE",
+      "{\"standard\":\"dip4\",\"version\":\"0.4.3\",\"event\":\"token_diff\",\"data\":[{\"intent_hash\":\"AzcPV3Dmohq9TQw6bGcrbPWvcAkkGv7MyebRRCDSCd9r\",\"account_id\":\"solver-priv-liq.near\",\"diff\":{\"nep141:eth-0xdac17f958d2ee523a2206206994597c13d831ec7.omft.near\":\"543\",\"nep141:eth.omft.near\":\"-260583379454\"},\"fees_collected\":{\"nep141:eth.omft.near\":\"260584\"}}]}"
+    ],
+    [
+      "2026-11-11 00:00:00",
+      "2026-11-11 23:57:10",
+      "HsgbweGGWeX4mSzehNamMaypcTiofsCsg2owSE1ZyMLt",
+      "3",
+      "SUCCESS_VALUE",
+      "{\"standard\":\"dip4\",\"version\":\"0.4.3\",\"event\":\"token_diff\",\"data\":[{\"intent_hash\":\"BXhD5ffMVs21jNshoGhf7CR44SF4SFE2Gxo6PY4DCDgy\",\"account_id\":\"b12283dcf39a4971841f1a91a58e17a6b401152f1d9263fba8ecd5a7db4c6f44\",\"diff\":{\"nep245:v2_1.omni.hot.tg:10_11111111111111111111\":\"260556800000\",\"nep245:v2_1.omni.hot.tg:10_vLAiSt9KfUGKpw5cD3vsSyNYBo7\":\"-5635251536906801\"},\"referral\":\"1click-unknown\",\"fees_collected\":{\"nep245:v2_1.omni.hot.tg:10_vLAiSt9KfUGKpw5cD3vsSyNYBo7\":\"5635251537\"}}]}"
+    ],
+    [
+      "2026-11-11 00:00:00",
+      "2026-11-11 23:55:09",
+      "FJqTg9WEZCEGa6g9ErkR7uP3FbbuHAbkLCuK8tMtVCnF",
+      "2",
+      "SUCCESS_VALUE",
+      "{\"standard\":\"dip4\",\"version\":\"0.4.3\",\"event\":\"token_diff\",\"data\":[{\"intent_hash\":\"C9n7aftWbPNWUwuhirZfcL9ckDM7tpukTnYvkftk1Wz9\",\"account_id\":\"2fa38e0a6e90d68a6b2522f808acd591d29edc973167eb0703c3ccc40587d91e\",\"diff\":{\"nep141:eth-0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48.omft.near\":\"-490001\",\"nep141:sol-5ce3bf3a31af18be40ba30f721101b4341690186.omft.near\":\"489973\"},\"referral\":\"1click-unknown\",\"fees_collected\":{\"nep141:eth-0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48.omft.near\":\"1\"}}]}"
+    ],
+    [
+      "2026-11-11 00:00:00",
+      "2026-11-11 23:55:09",
+      "FJqTg9WEZCEGa6g9ErkR7uP3FbbuHAbkLCuK8tMtVCnF",
+      "0",
+      "SUCCESS_VALUE",
+      "{\"standard\":\"dip4\",\"version\":\"0.4.3\",\"event\":\"token_diff\",\"data\":[{\"intent_hash\":\"9BkXSsrPZYJCNFsn9Kc4Xoqk97sa8e1NdNnpsTQvFrMQ\",\"account_id\":\"brlabs-solver.near\",\"diff\":{\"nep141:eth-0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48.omft.near\":\"490000\",\"nep141:sol-5ce3bf3a31af18be40ba30f721101b4341690186.omft.near\":\"-489974\"},\"fees_collected\":{\"nep141:sol-5ce3bf3a31af18be40ba30f721101b4341690186.omft.near\":\"1\"}}]}"
+    ],
+    [
+      "2026-11-11 00:00:00",
+      "2026-11-11 23:51:01",
+      "CqS6SEMdN2Tr6L8Cb5RtspLZhdyLAFJrH7qZibCeqDJD",
+      "2",
+      "SUCCESS_VALUE",
+      "{\"standard\":\"dip4\",\"version\":\"0.4.3\",\"event\":\"token_diff\",\"data\":[{\"intent_hash\":\"FpSKy1oG15qMWgSes8RxDBTphYg9wDDtKUoHhz4zodZZ\",\"account_id\":\"fae85d13273d1648ef3aab18ae4426122cf6b13170b633dac849ef7d83e1ed19\",\"diff\":{\"nep141:nbtc.bridge.near\":\"-2020\",\"nep141:wrap.near\":\"417238421070150455056178\"},\"referral\":\"1click-lifi\",\"fees_collected\":{\"nep141:nbtc.bridge.near\":\"1\"}}]}"
+    ],
+    [
+      "2026-11-11 00:00:00",
+      "2026-11-11 23:51:01",
+      "CqS6SEMdN2Tr6L8Cb5RtspLZhdyLAFJrH7qZibCeqDJD",
+      "0",
+      "SUCCESS_VALUE",
+      "{\"standard\":\"dip4\",\"version\":\"0.4.3\",\"event\":\"token_diff\",\"data\":[{\"intent_hash\":\"Fho2eHxwGNwU6ZoVeNuPnDuHiLPbqEc8pKM8qjMxTyQp\",\"account_id\":\"intentfolio-vault.near\",\"diff\":{\"nep141:nbtc.bridge.near\":\"2019\",\"nep141:wrap.near\":\"-417238838308988764044943\"},\"fees_collected\":{\"nep141:wrap.near\":\"417238838308988765\"}}]}"
+    ]
+  ]
+}

@@ -1,0 +1,270 @@
+{
+  "version": "near-intents-filter-methodology-2026-11-13-v1",
+  "reviewedOn": "2026-11-13",
+  "status": "Source-backed implementation specification; no swap-level filter executed by this artifact",
+  "purpose": "Separate data-valid completed activity from behavioral risk flags without presenting automation or arbitrage as proven wash trading.",
+  "availableSourceGrain": {
+    "existingDuneMetrics": "dune.near.dataset_near_intents_metrics is day/source/token aggregate data. It cannot identify completed user swaps, opposing counterparties, solver identities, circular transactions or wash-trading intent.",
+    "documentedExplorer": "Read-only 1Click transaction records. Partner JWT required; documented rate is one request per five seconds; cursor uses depositAddress and depositMemo. This is not an all-Intents census.",
+    "documentedFields": [
+      "originAsset",
+      "destinationAsset",
+      "depositAddress",
+      "depositMemo",
+      "depositAddressAndMemo",
+      "recipient",
+      "status",
+      "createdAt",
+      "createdAtTimestamp",
+      "intentHashes",
+      "referral",
+      "amountInFormatted",
+      "amountOutFormatted",
+      "appFees",
+      "nearTxHashes",
+      "originChainTxHashes",
+      "destinationChainTxHashes",
+      "amountIn",
+      "amountInUsd",
+      "amountOut",
+      "amountOutUsd",
+      "refundTo",
+      "senders",
+      "depositType",
+      "recipientType",
+      "refundType",
+      "refundReason",
+      "refundFee"
+    ],
+    "documentedAbsentFields": [
+      "verified ultimate beneficial owner",
+      "verified solver operator identifier",
+      "maker/taker counterparty matching",
+      "actual swap completion timestamp in documented Explorer response"
+    ],
+    "warning": "A documented field is a schema capability, not proof that it is populated, externally accessible with current credentials, or suitable for every historical/confidential record."
+  },
+  "sources": [
+    {
+      "url": "https://docs.agentsonintents.com/integration/distribution-channels/1click-api/explorer/introduction",
+      "type": "official documentation",
+      "contribution": "Read-only 1Click scope, partner authentication and rate limit."
+    },
+    {
+      "url": "https://docs.agentsonintents.com/api-reference/get-transactions",
+      "type": "official API reference",
+      "contribution": "Transaction schema and cursor; no documented solver identifier or completion timestamp."
+    },
+    {
+      "url": "https://docs.agentsonintents.com/integration/verifier-contract/intent-types-and-execution",
+      "type": "official contract documentation",
+      "contribution": "Verifier execution accepts ordered lists; asynchronous cross-contract completion cannot be inferred from submission order."
+    },
+    {
+      "url": "https://docs.near-intents.org/integration/verifier-contract/account-abstraction",
+      "type": "official contract documentation",
+      "contribution": "Signed-account authority and relay/market-maker settlement; submitter identity is not automatically a solver operator."
+    },
+    {
+      "url": "https://arxiv.org/abs/2411.08720v2",
+      "type": "primary research preprint, revised 2026-10-07",
+      "contribution": "Controlled-wallet evidence distinguishes inventory recycling from one-sided issuer disposal. Balanced flow alone misses other manipulation forms; enforcement-grounded ownership is stronger evidence than a pattern.",
+      "transferLimit": "Evidence from documented enforcement cases does not validate NEAR-specific thresholds or identify its wallets."
+    },
+    {
+      "url": "https://arxiv.org/abs/2607.13916v1",
+      "type": "primary research, submitted 2026-07-15",
+      "contribution": "Transaction-count, volume and return complexity can expose unusual patterns; the authors explicitly distinguish anomaly evidence from direct proof of wash trading.",
+      "transferLimit": "CEX high-frequency statistics are diagnostic context, not an event-removal classifier for NEAR cross-chain settlement."
+    },
+    {
+      "url": "https://business.columbia.edu/sites/default/files-efs/citation_file_upload/ssrn-5714122.pdf",
+      "type": "primary research abstract inspected; full large PDF not fetched",
+      "contribution": "Approximately closed counterparty clusters motivate graph diagnostics, with automated market-making explicitly a detection challenge.",
+      "transferLimit": "No production implementation or parameters copied; underlying full paper and NEAR adaptation remain unvalidated."
+    }
+  ],
+  "canonicalTradeRequirements": {
+    "grain": "One completed user order, not each token leg, signed payload, receipt, deposit, withdrawal or solver hedge.",
+    "candidateOrderKey": "Provider namespace plus depositAddress plus explicit depositMemo null sentinel, after proving uniqueness and update semantics; use a stronger documented immutable order ID if the source provides it.",
+    "deduplication": "Exact duplicate records collapse only if payloads agree. Conflicting versions require a source timestamp/version or refetch; quarantine unresolved conflicts rather than selecting arbitrarily.",
+    "accountIdentity": "Use chain-qualified addresses with chain-specific normalization. Never lowercase case-sensitive addresses or infer common control solely from equal strings on unrelated chains. Preserve multi-sender ambiguity.",
+    "pairIdentity": "Resolve originAsset and destinationAsset against a versioned official token registry; retain exact chain and representation plus optional canonical economic asset mapping. Unknown mappings remain Unknown.",
+    "notional": "One-sided input USD for completed user orders with finite strictly positive observed input USD. Do not add input and output values or translate missing prices to zero. Report priced-order/count coverage.",
+    "time": "Use actual verified settlement/completion time for temporal behavior. Explorer createdAt may be used only in explicitly creation-time diagnostics, not called execution latency or completion order.",
+    "privacy": "Confidential or unavailable participant fields stay unassessable. Do not call unassessable activity unflagged or organic."
+  },
+  "reasonCodePrecedence": [
+    {
+      "code": "INVALID_KEY",
+      "action": "quarantine",
+      "criterion": "Missing canonical order key or unresolved key collision."
+    },
+    {
+      "code": "DUPLICATE_RECORD",
+      "action": "collapse agreeing duplicate ingestion rows",
+      "criterion": "Same validated order key and identical economic payload; retain provenance and duplicate count."
+    },
+    {
+      "code": "UNRESOLVED_REVISION",
+      "action": "quarantine",
+      "criterion": "Same key with conflicting status or amounts without authoritative version resolution."
+    },
+    {
+      "code": "NOT_COMPLETED",
+      "action": "exclude from completed-volume denominator",
+      "criterion": "Provider status not confirmed completed; retain pending/failed/refunded counts separately. SUCCESS mapping must be verified against source semantics."
+    },
+    {
+      "code": "UNPRICED_INPUT",
+      "action": "exclude only from priced-USD denominator",
+      "criterion": "Null/nonfinite/nonpositive input USD; retain otherwise valid order count and token quantities."
+    },
+    {
+      "code": "UNKNOWN_ROUTE",
+      "action": "retain total but exclude named-route cohort",
+      "criterion": "Unresolved source/destination token or chain mapping; publish Unknown bucket."
+    },
+    {
+      "code": "VERIFIED_TEST_ACTIVITY",
+      "action": "separate disclosed test cohort",
+      "criterion": "An explicit, versioned, externally supported test-wallet/order label; no inference from low amounts."
+    },
+    {
+      "code": "PARTICIPANT_UNASSESSABLE",
+      "action": "retain reported volume; mark behavioral coverage unknown",
+      "criterion": "No validated customer account identity, multi-sender ambiguity, or confidentiality prevents sequence reconstruction."
+    },
+    {
+      "code": "CIRCULAR_SEQUENCE_CANDIDATE",
+      "action": "flag; optional sensitivity-only subtraction",
+      "criterion": "Same resolved customer entity completes reverse exact economic asset route within configured interval; returned initial-asset quantity approximately equals original quantity. Cross-chain same-asset bridge alone is never sufficient."
+    },
+    {
+      "code": "REPETITIVE_EXECUTION_PATTERN",
+      "action": "automation diagnostic only; retain volume",
+      "criterion": "Same assessable customer and route has at least configured count of orders per hour, highly similar sizes and regular interarrival times."
+    },
+    {
+      "code": "CLOSED_COUNTERPARTY_CLUSTER",
+      "action": "flag-only, not enabled until counterparty ownership supported",
+      "criterion": "Verified trade counterparties form high-internal-flow, near-inventory-neutral clusters. Never construct this graph from shared deposit/bridge/relayer infrastructure."
+    },
+    {
+      "code": "CONFIRMED_COMMON_CONTROL_SELF_TRADE",
+      "action": "exclude from explicitly common-control-adjusted view only",
+      "criterion": "Verified opposing economic counterparties share proven control and no meaningful exposure transfer. A common relayer, originating account, recipient or solver registry label alone does not meet this standard."
+    }
+  ],
+  "behavioralDefaults": {
+    "calibrationStatus": "Researcher-selected transparent diagnostics; not estimates trained or validated on labeled NEAR wash trades. No default organic-volume claim.",
+    "circularSequence": {
+      "lookbackMinutes": 60,
+      "sensitivityMinutes": [
+        5,
+        30,
+        60,
+        360,
+        1440
+      ],
+      "returnedQuantityRelativeTolerance": 0.05,
+      "sensitivityTolerance": [
+        0.01,
+        0.02,
+        0.05
+      ],
+      "minimumCompletedReverseSequences": 3,
+      "sensitivitySequenceCount": [
+        1,
+        3,
+        5
+      ],
+      "matching": "Deterministic one-to-one chronological matching on verified completion time; no order can be matched twice. All constituent order IDs retained. If completion time absent, this rule is not enabled for wash-adjusted published totals."
+    },
+    "repetitiveExecution": {
+      "windowMinutes": 60,
+      "minimumOrders": 20,
+      "sensitivityMinimumOrders": [
+        10,
+        20,
+        50
+      ],
+      "sizeCoefficientOfVariationMaximum": 0.02,
+      "interarrivalCoefficientOfVariationMaximum": 0.2,
+      "minimumPositiveIntervals": 10,
+      "sensitivityIntervalCvMaximum": [
+        0.1,
+        0.2,
+        0.3
+      ],
+      "interpretation": "Automation-shaped execution, not bot identity or abuse. Do not remove legitimate solvers, arbitrage or agent transactions solely for this flag."
+    },
+    "closedCluster": {
+      "enabled": false,
+      "minimumDistinctCounterparties": 3,
+      "internalFlowShareMinimum": 0.95,
+      "netToGrossQuantityMaximum": 0.02,
+      "minimumOrders": 20,
+      "sensitivityInternalShare": [
+        0.9,
+        0.95,
+        0.99
+      ],
+      "requirements": "Economic counterparty graph, asset-level inventory flows and independent ownership/identity evidence. Current aggregate Dune data cannot supply these."
+    }
+  },
+  "accounting": {
+    "exclusiveBuckets": "Each canonical valid completed priced order enters exactly one primary bucket: behaviorally unassessable, assessable unflagged, flagged-only, or verified common-control/test exclusion. Secondary flags may overlap but primary volumes never double-count.",
+    "reportedIdentity": "reported_completed_priced_usd = unassessable_usd + assessable_unflagged_usd + flagged_only_usd + verified_excluded_usd",
+    "adjustedIdentity": "common_control_adjusted_usd = reported_completed_priced_usd - verified_excluded_usd",
+    "sensitivityIdentity": "heuristic_retained_usd(parameters) = reported_completed_priced_usd - verified_excluded_usd - distinct_candidate_order_usd(parameters); candidates cannot include already excluded orders",
+    "unassessableHandling": "Unassessable volume remains in reported and retained figures with coverage disclosed. No behavioral inference for this cohort.",
+    "feeRule": "Calculate filtered fees per USD only from actual fees attributed to the same retained orders and currency basis. Do not divide aggregate all-protocol fees by a filtered 1Click-only denominator or allocate fees pro rata without an explicit modeled label.",
+    "botRule": "No blanket bot-adjusted headline. User-facing options distinguish reported completed, data-valid priced, common-control-adjusted (when established) and circular-pattern sensitivity.",
+    "unitRule": "Fees per $1M = 1,000,000 * sum(matched retained fees USD) / sum(matched retained input notional USD). Null when denominator or aligned fee coverage unavailable; ratio of sums, not mean of per-order ratios."
+  },
+  "falsePositiveRisks": [
+    "Market makers and solvers deliberately cycle inventory while providing real liquidity.",
+    "Arbitrage and treasury rebalancing produce reverse routes and near-zero net inventory.",
+    "Dollar-cost averaging and integrations produce repeated sizes and regular timing.",
+    "Cross-chain self-transfers are a core bridge use case, not self-trading proof.",
+    "A shared exchange deposit, router, relayer, bridge or fee recipient does not establish common beneficial ownership.",
+    "Customer identity can be hidden by confidential flows or custodial aggregation; raw submitters can aggregate many users.",
+    "Input/output USD differences include slippage, gas, asset movement and fees; they are not a clean fee estimate."
+  ],
+  "requiredValidation": [
+    "Verify provider key uniqueness, status mapping, revisions and full cursor traversal on real authorized records.",
+    "Reconcile one-sided order notional against source-reported totals for the same 1Click scope, time cutoff and price methodology; explain residuals rather than force a match to all-Intents aggregates.",
+    "Test exact duplicates, conflicting revisions, multi-sender records, missing prices, failed/refunded orders, same-address bridge, legitimate reverse arbitrage, repeated legitimate solver fills, timestamp ties and missing participant identities.",
+    "Check exclusive volume/fee identities and filter overlap under every published parameter setting.",
+    "Publish assessed count/USD coverage, unknown routes, unpriced count, lookback boundary buffer and source lag with every result.",
+    "Manually review stratified flagged and unflagged samples before enabling any behavioral-adjusted headline. Without labeled cases, no accuracy, recall or true organic-volume claim.",
+    "Do not publish private wallet-level partner records or credentials; verify source redistribution permission and prefer aggregate outputs."
+  ],
+  "unimplementedBecauseUnverified": [
+    "All-Intents swap-level census and confidential participant reconstruction",
+    "Verified solver operator count from submitter addresses alone",
+    "Automatic wash or bot exclusion from current daily token aggregates",
+    "End-to-end partner Explorer ingestion without authorized JWT",
+    "Order-matched all-in fees from app fee basis points or input/output USD spread alone",
+    "Supervised machine-learning classifier without labeled NEAR examples and out-of-time validation"
+  ],
+  "publicImplementation": {
+    "module": "analysis/intents-flywheel/filter-public.mjs",
+    "check": "node analysis/intents-flywheel/check-filter-public.mjs",
+    "verified": "Synthetic invariants and eight observed saved Dune public token_diff records parse successfully. Input adapter asserts query contract scope, numeric log index and UTC timestamp.",
+    "grain": "Public account-side token_diff event, not user swap",
+    "rules": "Physical-key conflicts quarantine; agreeing ingestion duplicates collapse; exact successful dip4 token_diff only; signed i128 amounts retain BigInt precision; exact-two-asset reverse-account pattern is flag-only.",
+    "noCredentialPolicy": "User has no partner JWT. Public-only investigation; no authenticated Explorer ingestion, access bypass or private data use.",
+    "knownCeiling": "Latest-unmatched-route greedy matching diagnoses a bounded subset of public reverse patterns, not exhaustive cycle detection. No count or volume is removed based on the heuristic."
+  },
+  "publicSqlDiagnostic": {
+    "file": "analysis/intents-flywheel/05_public_reverse_pattern_daily.sql",
+    "status": "Awaiting root Dune execution",
+    "canonicalScope": "Same conservative 30-day public account-side event subset as SQL02. Repeated raw keys and hashes withheld, including valid repeated hashes; DECIMAL(38,0) is narrower than full signed i128.",
+    "method": "Adjacent simple-pair events per account, ordered by block timestamp then physical event key. Reverse exact token IDs and both raw quantity legs must agree within 1% or 5%, within 15/60/240 minutes. Equal-timestamp events do not qualify.",
+    "accounting": "Each event row counted once per scenario if its preceding or following pair qualifies. Pair matches can overlap while distinct event counts do not. All retained events remain; behavioral exclusions always zero.",
+    "differencesFromJs": "Local JS diagnoses latest unmatched reverse-route events and matches returned initial-asset amount only; SQL diagnoses strictly adjacent simple pairs and requires both leg quantities. Results are not asserted equivalent.",
+    "limits": "Not exhaustive cycle/ownership inference; first observation has no prior-window buffer; multiasset events excluded from adjacent simple sequence; public-only coverage, provider source lag, approximate double quantity comparisons and no USD volume removal."
+  }
+}
