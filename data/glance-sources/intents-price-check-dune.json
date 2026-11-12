@@ -1,0 +1,56 @@
+{
+  "query": "https://dune.com/queries/9115661",
+  "reviewedOn": "2026-11-12",
+  "columns": [
+    "check_name",
+    "source_type",
+    "rows_seen",
+    "first_day",
+    "last_day",
+    "value_usd",
+    "comparison_usd",
+    "mismatch_rows"
+  ],
+  "rows": [
+    [
+      "priced volume relation",
+      "confidential",
+      "14452",
+      "2026-03-23 00:00:00",
+      "2026-11-11 00:00:00",
+      "5282550732.061518",
+      "5295019062.818175",
+      "13095"
+    ],
+    [
+      "priced volume relation",
+      "public",
+      "51997",
+      "2024-12-10 00:00:00",
+      "2026-11-11 00:00:00",
+      "32971161944.694435",
+      "32979351154.18849",
+      "45816"
+    ],
+    [
+      "unpriced positive volume",
+      "confidential",
+      "28",
+      "2026-05-26 00:00:00",
+      "2026-09-09 00:00:00",
+      "9071.539904361396",
+      "",
+      "0"
+    ],
+    [
+      "unpriced positive volume",
+      "public",
+      "239",
+      "2025-03-08 00:00:00",
+      "2026-08-01 00:00:00",
+      "13910394.602129232",
+      "",
+      "18"
+    ]
+  ]
+}

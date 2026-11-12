@@ -1,6 +1,6 @@
 {
   "version": "overview-query-contracts-2026-11-12-v1",
-  "execution_status": "Mixed status: SQL21,24,29,31 executed on Dune; other local revisions/drafts are not published",
+  "execution_status": "Mixed status: SQL21,22,23,24,29,31,32,33,34 saved and executed on Dune; SQL25-28/30 remain unexecuted local drafts",
   "existing_queries": {
     "21": {
       "file": "21_ir_intents_scorecard_30d.sql",
@@ -10,12 +10,14 @@
     "22": {
       "file": "22_ir_fee_waterfall_30d.sql",
       "query_id": 9103908,
-      "status": "Local SQL revision only; revised SQL not saved to the existing Dune query"
+      "status": "Saved and executed successfully; 30/30 financially complete dates; optional count coverage does not invalidate monetary outputs",
+      "visualization": "13167195"
     },
     "23": {
       "file": "23_ir_intents_retention_monthly.sql",
       "query_id": 9103909,
-      "status": "Local SQL revision only; revised SQL not saved to the existing Dune query"
+      "status": "Saved and executed successfully after replacing repeated HTTP dependencies with one reference to query9114284; 13 monthly rows; latest November10 partial and average swap sizeNULL",
+      "visualization": "13167243"
     }
   },
   "changes": [
@@ -34,7 +36,10 @@
     "28_intents_dimension_concentration.sql",
     "29_query_contract_checks.sql",
     "30_ir_window_comparison.sql",
-    "31_glance_daily_observations.sql"
+    "31_glance_daily_observations.sql",
+    "32_intents_missingness_classification.sql",
+    "34_intents_volume_dashboard_180d.sql",
+    "33_intents_price_reconstruction_check.sql"
   ],
   "parameters": {
     "start_date": "2026-10-10",
@@ -47,7 +52,7 @@
     "https://dune.com/queries/5175176/8518997"
   ],
   "gates_before_publication": [
-    "SQL24 executed: resolve missing USD amounts, inspect source row grain and validate fee-component disjointness before publishing25-28",
+    "SQL24/32 diagnosed216139 rows with neither volume field reported and267 positive-token rows without USD (18 also lack a usable price). Sparse records are not proved zero; monetary completeness and raw row grain require metric-specific validation.",
     "No source-type fee split until the fee datasets expose verified matching attribution",
     "Preserve blockchain/asset volume labels until one-leg versus two-leg convention established",
     "Raw inflow query excludes named inter-wallet hops but wrap/unwrap and event-key reconciliation remains required",
@@ -82,6 +87,39 @@
       "sql": "29_query_contract_checks.sql",
       "query": "9114329",
       "status": "executed and saved"
+    },
+    {
+      "sql": "22_ir_fee_waterfall_30d.sql",
+      "query": "9103908",
+      "status": "saved and executed",
+      "result": "30/30 financially valid dates",
+      "visualization": "13167195"
+    },
+    {
+      "sql": "23_ir_intents_retention_monthly.sql",
+      "query": "9103909",
+      "status": "saved and executed",
+      "result": "13 monthly rows; latestNovember10 partial with averageSwapNULL; one query9114284 dependency avoids repeated HTTP requests",
+      "visualization": "13167243"
+    },
+    {
+      "sql": "32_intents_missingness_classification.sql",
+      "query": "9114423",
+      "status": "saved and executed",
+      "result": "216139 no-volume-field rows;267 positive-token/unpriced rows,18 without price; no zero inference"
+    },
+    {
+      "sql": "33_intents_price_reconstruction_check.sql",
+      "query": "9115661",
+      "status": "saved and executed",
+      "result": "USD reconstruction mismatches13095/14452 confidential and45816/51997 public tested rows; no accepted backfill"
+    },
+    {
+      "sql": "34_intents_volume_dashboard_180d.sql",
+      "query": "9115683",
+      "status": "saved and executed",
+      "result": "180 completed UTC-day parameter-free reported-priced-volume query; visual added",
+      "visualization": "13167168"
     }
   ],
   "query_status": [
@@ -124,6 +162,110 @@
       "result": "364 unique consecutive daily dates2025-11-12 through2026-11-10; financial fields available; latest swapsNULL",
       "snapshot": "data/glance-sources/glance-daily-dune.json",
       "contract": "Financial-source validity is separate from optional count coverage; not the strict all-field scorecard21 contract"
+    },
+    {
+      "file": "34_intents_volume_dashboard_180d.sql",
+      "status": "Saved and executed as query9115683; visualization13167168 added to dashboard",
+      "window": "180 completed UTC days through yesterday; no user parameters",
+      "grain": "Unique day/source_type after token-aware candidate-grain aggregation",
+      "chart_value": "reported_volume_usd is an alias of reported_priced_volume_usd, withNULL preserved when no priced observations exist",
+      "coverage": "Five amount categories retained; no price backfill or zero imputation; gaps are not inferred as activity",
+      "query": "9115683",
+      "visualization": "13167168",
+      "result": "Reported priced USD by day/source_type with missingness diagnostics; no source price reconstruction or zero imputation"
     }
-  ]
+  ],
+  "missingness_diagnosis": {
+    "query": "https://dune.com/queries/9114423",
+    "sql": "32_intents_missingness_classification.sql",
+    "status": "saved and executed",
+    "scope": "Full source history at audit time; row counts do not measure notional coverage",
+    "metrics_rows": 284593,
+    "reported_usd_rows": 68187,
+    "null_usd_rows": 216406,
+    "no_volume_fields_rows": 216139,
+    "positive_tokens_unpriced_rows": 267,
+    "public": {
+      "rows": 209840,
+      "missing_usd": 156183,
+      "no_volume_fields": 155944,
+      "positive_tokens_unpriced": 239
+    },
+    "confidential": {
+      "rows": 74753,
+      "missing_usd": 60223,
+      "no_volume_fields": 60195,
+      "positive_tokens_unpriced": 28
+    },
+    "price_backfill": {
+      "potentially_priceable_rows": 249,
+      "without_price_rows": 18,
+      "potential_usd": 13919466.14,
+      "status": "Diagnostic only. SQL33 found widespread reportedUSD versus token-quantity-times-source-price mismatch; no official or accepted backfill performed.",
+      "latest_unpriced_public": "2026-08-01",
+      "latest_unpriced_confidential": "2026-09-09"
+    }
+  },
+  "revised_volume_contract": {
+    "files": [
+      "25_intents_volume_daily.sql",
+      "28_intents_dimension_concentration.sql"
+    ],
+    "execution": "Revised locally after source diagnosis; not yet executed",
+    "amount": "ConditionalSUM of finite nonnegative reported USD; all-missing groups remainNULL",
+    "classification": [
+      "reported_usd",
+      "positive_tokens_unpriced",
+      "zero_tokens_unpriced",
+      "no_volume_fields",
+      "invalid_numeric"
+    ],
+    "guards": "TRY_CAST preserves parse failure diagnostics; is_finite excludesNaN/infinity; negative USD/token quantities invalid",
+    "candidate_grain": [
+      "day",
+      "source_type",
+      "blockchain",
+      "symbol",
+      "token_id"
+    ],
+    "duplicate_interpretation": "Additional rows at this candidate grain are diagnostics, not proved duplicate economic records",
+    "concentration": "Shares/HHI/effective labels refer only to reported pricedUSD; asset dimension keyed bytoken_id",
+    "exclusions": [
+      "No coalescing missing USD to zero",
+      "No inferred price backfill",
+      "No users or swaps aggregation from token/dimension rows",
+      "No full-market, origin-only or swap-leg convention claim"
+    ]
+  },
+  "local_validation": [
+    "Static checks: both revised queries retain five disjoint amount categories, finite-number guards and token_id grain",
+    "ConditionalSUM has no ELSE0 and no coalesced monetaryamount; users/swaps are not aggregated",
+    "Revised parameterized25/28, raw-event26/27 and comparison30 remain unexecuted; no-param34 variant executed with explicit reported-priced-subset coverage"
+  ],
+  "price_reconstruction_check": {
+    "query": "https://dune.com/queries/9115661",
+    "sql": "33_intents_price_reconstruction_check.sql",
+    "status": "saved and executed",
+    "confidential": {
+      "tested_rows": 14452,
+      "mismatched_rows": 13095
+    },
+    "public": {
+      "tested_rows": 51997,
+      "mismatched_rows": 45816
+    },
+    "interpretation": "Reported USD differs from token quantity multiplied by the source price for most tested comparable rows. The pricing/timing/unit convention remains unresolved; this diagnostic is not an accepted reconstruction.",
+    "backfill": "No source USD values backfilled or replaced;249 potentially priceable missing rows remain diagnostic, not observed notional"
+  },
+  "dashboard_update": {
+    "url": "https://dune.com/0xpanatagama/near-economic",
+    "charts_before": 27,
+    "charts_after": 30,
+    "added_visualizations": [
+      "13167168",
+      "13167195",
+      "13167243"
+    ],
+    "source_note": "Added source-quality note distinguishing sparse volume fields, positive-token pricing gaps and rejected price reconstruction"
+  }
 }

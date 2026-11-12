@@ -1,0 +1,127 @@
+{
+  "query": "https://dune.com/queries/9114423",
+  "reviewedOn": "2026-11-12",
+  "columns": [
+    "dataset",
+    "source_type",
+    "category",
+    "rows_seen",
+    "first_day",
+    "last_day",
+    "reported_usd",
+    "priceable_missing_rows",
+    "potential_usd"
+  ],
+  "rows": [
+    [
+      "affiliate_fees",
+      "confidential",
+      "missing fee",
+      "32",
+      "2026-02-19 00:00:00",
+      "2026-03-22 00:00:00",
+      "",
+      "",
+      ""
+    ],
+    [
+      "affiliate_fees",
+      "confidential",
+      "reported fee",
+      "235",
+      "2026-03-23 00:00:00",
+      "2026-11-12 00:00:00",
+      "3468292.492294202",
+      "",
+      ""
+    ],
+    [
+      "affiliate_fees",
+      "public",
+      "missing fee",
+      "7291",
+      "2025-03-27 00:00:00",
+      "2026-11-11 00:00:00",
+      "",
+      "",
+      ""
+    ],
+    [
+      "affiliate_fees",
+      "public",
+      "reported fee",
+      "20089",
+      "2025-05-06 00:00:00",
+      "2026-11-12 00:00:00",
+      "57727503.296553895",
+      "",
+      ""
+    ],
+    [
+      "metrics",
+      "confidential",
+      "no volume fields",
+      "60195",
+      "2026-02-16 00:00:00",
+      "2026-11-11 00:00:00",
+      "",
+      "0",
+      ""
+    ],
+    [
+      "metrics",
+      "confidential",
+      "positive token volume without USD",
+      "28",
+      "2026-05-26 00:00:00",
+      "2026-09-09 00:00:00",
+      "",
+      "28",
+      "9071.539904361396"
+    ],
+    [
+      "metrics",
+      "confidential",
+      "reported USD volume",
+      "14530",
+      "2026-03-23 00:00:00",
+      "2026-11-11 00:00:00",
+      "5283018985.57821",
+      "0",
+      ""
+    ],
+    [
+      "metrics",
+      "public",
+      "no volume fields",
+      "155944",
+      "2024-10-18 00:00:00",
+      "2026-11-11 00:00:00",
+      "",
+      "0",
+      ""
+    ],
+    [
+      "metrics",
+      "public",
+      "positive token volume without USD",
+      "239",
+      "2025-03-08 00:00:00",
+      "2026-08-01 00:00:00",
+      "",
+      "221",
+      "13910394.602129232"
+    ],
+    [
+      "metrics",
+      "public",
+      "reported USD volume",
+      "53657",
+      "2024-12-10 00:00:00",
+      "2026-11-11 00:00:00",
+      "33092786730.509937",
+      "0",
+      ""
+    ]
+  ]
+}

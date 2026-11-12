@@ -63,17 +63,50 @@
       "query": "https://dune.com/queries/9114313",
       "sql": "analysis/defillama-ir/sql/24_intents_source_preflight.sql",
       "status": "Executed and saved",
-      "issue": "Missing USD amounts in 216406 of 284593 metric rows and 7323 of 27647 affiliate-fee rows. Row coverage is not notional coverage; no inference of zero or negative activity."
+      "issue": "Raw missingUSD count is216406/284593 metrics rows; query9114423 resolves216139 as neither volume field reported and267 as positive-token/unpriced. These categories establish neither zero activity nor notional coverage. Affiliate-fee missingness remains a separate metric question."
     },
     {
       "query": "https://dune.com/queries/9114329",
       "sql": "analysis/defillama-ir/sql/29_query_contract_checks.sql",
       "status": "Executed and saved; all4 checks passed",
       "definition": "Synthetic checks cover currency weighting, missing/duplicate-date detection, negative accounting differences and exact multiplicative log attribution; these validate arithmetic contracts, not source completeness or independent transaction truth."
+    },
+    {
+      "query": "https://dune.com/queries/9114423",
+      "sql": "analysis/defillama-ir/sql/32_intents_missingness_classification.sql",
+      "status": "Saved and executed",
+      "definition": "Separate sparse no-volume-field records from positive-token/unpriced observations;267 positive-token gaps,18 without a usable price; no zero imputation."
+    },
+    {
+      "query": "https://dune.com/queries/9115661",
+      "sql": "analysis/defillama-ir/sql/33_intents_price_reconstruction_check.sql",
+      "status": "Saved and executed",
+      "definition": "ReportedUSD versus tokenquantity times sourceprice mismatched for13095/14452 confidential and45816/51997 public tested comparable rows. Source-price backfill rejected pending pricing/timing/unit reconciliation."
+    },
+    {
+      "query": "https://dune.com/queries/9115683",
+      "sql": "analysis/defillama-ir/sql/34_intents_volume_dashboard_180d.sql",
+      "visualization": "13167168",
+      "status": "Saved, executed and added to Dune dashboard",
+      "definition": "180 completed UTC days of reported pricedUSD by source type, with separate missingness categories and no price backfill; sum of all-missing groups remainsNULL."
+    },
+    {
+      "query": "https://dune.com/queries/9103908",
+      "sql": "analysis/defillama-ir/sql/22_ir_fee_waterfall_30d.sql",
+      "visualization": "13167195",
+      "status": "Saved, executed and added to Dune dashboard",
+      "definition": "30/30 financial-date-valid waterfall of gross fees, gross less captured receipts, captured receipts. Residual is not an executed recipient-payment ledger."
+    },
+    {
+      "query": "https://dune.com/queries/9103909",
+      "sql": "analysis/defillama-ir/sql/23_ir_intents_retention_monthly.sql",
+      "visualization": "13167243",
+      "status": "Saved, executed and added to Dune dashboard",
+      "definition": "One query9114284 dependency replaces repeated HTTP requests;13 monthly rows, latestNovember10 partial; average swap remainsNULL if an optional count is missing."
     }
   ],
   "publicationGates": [
-    "Queries25-28/30 remain unexecuted drafts; direct raw-event keys, wrap/unwrap neutrality and USD field coverage require validation before interpreting results.",
+    "Parameterized queries25-28/30 remain unexecuted drafts. Parameter-free34 is executed and reports only observed pricedUSD. Sparse volume fields do not establish zeros; remaining pricing gaps, raw event keys, wrap/unwrap neutrality and swap-leg conventions require metric-specific validation.",
     "Captured wallet inflows are not market purchases; holdings, staking and burns require separate event evidence.",
     "Same-lineage Dune/DefiLlama agreement is transformation consistency, not independent corroboration.",
     "Dune iframe filters cannot emit selected ranges to this cross-origin site. Site controls recalculate the downloaded daily snapshot only; source refresh is separate."
