@@ -1,0 +1,303 @@
+{
+  "version": "near-overview-coverage-2026-11-12-v1",
+  "generatedFromSavedDuneResults": true,
+  "automaticUpstreamRefresh": false,
+  "dashboard": "https://dune.com/0xpanatagama/near-economic#activity-liquidity-token-demand",
+  "dashboardCharts": 37,
+  "sources": [
+    {
+      "name": "Native status audit",
+      "query": "https://dune.com/queries/9116090",
+      "visualizations": null,
+      "visibility": "Public verified in Dune UI"
+    },
+    {
+      "name": "Filtered native activity",
+      "query": "https://dune.com/queries/9116129",
+      "visualizations": [
+        "13169353",
+        "13169359"
+      ],
+      "visibility": "Public verified in Dune UI"
+    },
+    {
+      "name": "Full-history reported Intents volume",
+      "query": "https://dune.com/queries/9115683",
+      "visualizations": [
+        "13167168"
+      ],
+      "visibility": "Public verified in Dune UI"
+    },
+    {
+      "name": "Official-method gross fees",
+      "query": "https://dune.com/queries/9117854",
+      "visualizations": [
+        "13169471"
+      ],
+      "visibility": "Public verified in Dune UI"
+    },
+    {
+      "name": "Non-overlapping priced Intents balances",
+      "query": "https://dune.com/queries/9117785",
+      "visualizations": [
+        "13169372"
+      ],
+      "visibility": "Public verified in Dune UI"
+    },
+    {
+      "name": "Filtered stablecoin transfers",
+      "query": "https://dune.com/queries/9117819",
+      "visualizations": [
+        "13169462"
+      ],
+      "visibility": "Public verified in Dune UI"
+    },
+    {
+      "name": "Circulating stablecoin supply",
+      "query": "https://dune.com/queries/9117903",
+      "visualizations": [
+        "13169493"
+      ],
+      "visibility": "Public verified in Dune UI"
+    },
+    {
+      "name": "Historical announced allocation",
+      "query": "https://dune.com/queries/9117913",
+      "visualizations": [
+        "13169510"
+      ],
+      "visibility": "Public verified in Dune UI"
+    },
+    {
+      "name": "Re-runnable findings",
+      "query": "https://dune.com/queries/9117970",
+      "visualizations": null,
+      "visibility": "Public verified in Dune UI"
+    }
+  ],
+  "coverage": [
+    {
+      "metric": "Transactions",
+      "status": "Implemented: provider history plus raw 30D audit",
+      "filters": "Accepted parent status; successful receipt flag; distinct day/hash cohorts; missing IDs checked. Daily hashes can recur across dates."
+    },
+    {
+      "metric": "Active accounts",
+      "status": "Implemented with explicit account definition",
+      "filters": "Distinct originating tx_from accounts in successful hash cohorts. Relayers, bots and contracts remain; not verified people or summed monthly unique users."
+    },
+    {
+      "metric": "Stablecoin supply",
+      "status": "Implemented: provider circulation by USDC/USDT/other",
+      "filters": "Completed UTC days; source-date uniqueness; finite nonnegative USD; category reconciliation; unreleased issuer inventory excluded. Exact native/bridged supply decomposition not established."
+    },
+    {
+      "metric": "Stablecoin transfer volume",
+      "status": "Implemented: 30D current-roster nominal movement; USD coverage partial",
+      "filters": "17 verified current contracts; positive ft_transfer leg; successful statuses; no mint, burn or self-transfer; event-key ambiguity guards; exact token/day price join. Missing USD groups withheld; refunds and custody remain."
+    },
+    {
+      "metric": "Intents volume",
+      "status": "Implemented: full available reported priced history",
+      "filters": "Completed days; token-key diagnostics; finite nonnegative amounts; separate positive unpriced, sparse and invalid fields. Missing USD not backfilled; order-leg convention follows provider."
+    },
+    {
+      "metric": "Intents gross fees",
+      "status": "Implemented: full reported component history",
+      "filters": "Protocol and affiliate components; finite nonnegative amounts; missing fee rows exposed. Protocol public assignment follows official query6162606 reporting convention; accrual differs from receipts."
+    },
+    {
+      "metric": "Intents TVL/balances",
+      "status": "Implemented: reported priced custody balances",
+      "filters": "Day/source/token_id grain; duplicate balance keys block totals; invalid values withheld. Raw public is total, confidential is subtracted for public-only; unsplit history stays explicit. Positive unpriced balances remain outside priced subtotal."
+    },
+    {
+      "metric": "Token allocation",
+      "status": "Implemented: historical 1bn genesis allocation",
+      "filters": "Seven announced categories with backers combined; sum and percentages checked; no future reward projection, current ownership or assumed 2035 supply."
+    },
+    {
+      "metric": "Executed buybacks",
+      "status": "Not established; no purchase series published",
+      "filters": "Cash receipts, withdrawals, custody, purchases and burns remain distinct. A wallet label or withdrawal does not prove an acquisition."
+    }
+  ],
+  "facts": [
+    {
+      "category": "Intents balances",
+      "metric": "Confidential share of reported priced balance",
+      "value": 61.66618305908312,
+      "unit": "% of priced balance",
+      "start": "2024-10-18",
+      "end": "2026-11-11",
+      "interpretation": "Duplicate keys=0; invalid rows=0; latest positive unpriced balance rows=5. Priced reported custody balances; confidential is a subset of raw public total."
+    },
+    {
+      "category": "Intents balances",
+      "metric": "Latest reported priced balance",
+      "value": 228309961.35825714,
+      "unit": "USD; priced subset",
+      "start": "2024-10-18",
+      "end": "2026-11-11",
+      "interpretation": "Duplicate keys=0; invalid rows=0; latest positive unpriced balance rows=5. Priced reported custody balances; confidential is a subset of raw public total."
+    },
+    {
+      "category": "Intents fees",
+      "metric": "30D reported gross fees",
+      "value": 5991510.153771224,
+      "unit": "USD; reported subset",
+      "start": "2026-10-13",
+      "end": "2026-11-11",
+      "interpretation": "30 observed dates; missing fee rows=201; invalid rows=0. Protocol fees assigned public by official reporting convention. Accrual is not captured receipts or purchases."
+    },
+    {
+      "category": "Intents fees",
+      "metric": "Confidential share of reported gross fees",
+      "value": 19.791320124187347,
+      "unit": "% of reported fees",
+      "start": "2026-10-13",
+      "end": "2026-11-11",
+      "interpretation": "30 observed dates; missing fee rows=201; invalid rows=0. Protocol fees assigned public by official reporting convention. Accrual is not captured receipts or purchases."
+    },
+    {
+      "category": "Intents notional",
+      "metric": "30D reported priced volume",
+      "value": 3731354986.0024533,
+      "unit": "USD; reported subset",
+      "start": "2026-10-13",
+      "end": "2026-11-11",
+      "interpretation": "30 observed dates; positive-token unpriced rows=0; invalid rows=0. Reported dataset notional; not independently verified unique order notional."
+    },
+    {
+      "category": "Intents notional",
+      "metric": "Confidential share of reported priced volume",
+      "value": 60.19340598118057,
+      "unit": "% of reported volume",
+      "start": "2026-10-13",
+      "end": "2026-11-11",
+      "interpretation": "30 observed dates; positive-token unpriced rows=0; invalid rows=0. Reported dataset notional; not independently verified unique order notional."
+    },
+    {
+      "category": "Native execution",
+      "metric": "Action rows per successful daily hash appearance",
+      "value": 6.591234768329171,
+      "unit": "action rows/hash appearance",
+      "start": "2026-10-13",
+      "end": "2026-11-11",
+      "interpretation": "30 observed dates; identifier issues=0. Execution-day hashes and originating accounts, not final transaction outcomes or people."
+    },
+    {
+      "category": "Native execution",
+      "metric": "Average daily originating accounts",
+      "value": 62933.4,
+      "unit": "accounts/day",
+      "start": "2026-10-13",
+      "end": "2026-11-11",
+      "interpretation": "30 observed dates; identifier issues=0. Execution-day hashes and originating accounts, not final transaction outcomes or people."
+    },
+    {
+      "category": "Native execution",
+      "metric": "Average daily successful execution hashes",
+      "value": 663847.0666666667,
+      "unit": "count/day",
+      "start": "2026-10-13",
+      "end": "2026-11-11",
+      "interpretation": "30 observed dates; identifier issues=0. Execution-day hashes and originating accounts, not final transaction outcomes or people."
+    },
+    {
+      "category": "Stablecoin circulation",
+      "metric": "Issuer unreleased inventory",
+      "value": 489044182,
+      "unit": "nominal units; excluded from circulation",
+      "start": "2022-07-10",
+      "end": "2026-11-11",
+      "interpretation": "Duplicate dates=0; invalid points=0. Circulation excludes unreleased reserves. Categories follow provider representation coverage."
+    },
+    {
+      "category": "Stablecoin circulation",
+      "metric": "Latest USDC circulating value",
+      "value": 90919515,
+      "unit": "USD",
+      "start": "2022-07-10",
+      "end": "2026-11-11",
+      "interpretation": "Duplicate dates=0; invalid points=0. Circulation excludes unreleased reserves. Categories follow provider representation coverage."
+    },
+    {
+      "category": "Stablecoin circulation",
+      "metric": "Latest USDT circulating value",
+      "value": 39313266,
+      "unit": "USD",
+      "start": "2022-07-10",
+      "end": "2026-11-11",
+      "interpretation": "Duplicate dates=0; invalid points=0. Circulation excludes unreleased reserves. Categories follow provider representation coverage."
+    },
+    {
+      "category": "Stablecoin circulation",
+      "metric": "Latest circulating stablecoin value",
+      "value": 131229272,
+      "unit": "USD",
+      "start": "2022-07-10",
+      "end": "2026-11-11",
+      "interpretation": "Duplicate dates=0; invalid points=0. Circulation excludes unreleased reserves. Categories follow provider representation coverage."
+    },
+    {
+      "category": "Stablecoin movement",
+      "metric": "Direct Intents custody share of nominal transfer units",
+      "value": 69.6395788329284,
+      "unit": "% of nominal gross units",
+      "start": "2026-10-13",
+      "end": "2026-11-11",
+      "interpretation": "30 observed dates; ambiguous legs=0; unpriced legs=9922. Current 17-contract roster; gross movement includes custody and refunds, not payments."
+    },
+    {
+      "category": "Stablecoin movement",
+      "metric": "Gross nominal transfer units",
+      "value": 2074024925.676323,
+      "unit": "nominal USDC/USDT units",
+      "start": "2026-10-13",
+      "end": "2026-11-11",
+      "interpretation": "30 observed dates; ambiguous legs=0; unpriced legs=9922. Current 17-contract roster; gross movement includes custody and refunds, not payments."
+    },
+    {
+      "category": "Stablecoin movement",
+      "metric": "USD sum of fully priced contract groups",
+      "value": 2063884958.01582,
+      "unit": "USD; priced subset only",
+      "start": "2026-10-13",
+      "end": "2026-11-11",
+      "interpretation": "30 observed dates; ambiguous legs=0; unpriced legs=9922. Current 17-contract roster; gross movement includes custody and refunds, not payments."
+    },
+    {
+      "category": "Stablecoin movement",
+      "metric": "Unpriced transfer legs",
+      "value": 9922,
+      "unit": "legs",
+      "start": "2026-10-13",
+      "end": "2026-11-11",
+      "interpretation": "30 observed dates; ambiguous legs=0; unpriced legs=9922. Current 17-contract roster; gross movement includes custody and refunds, not payments."
+    }
+  ],
+  "derived": {
+    "period": {
+      "start": "2026-10-13",
+      "end": "2026-11-11"
+    },
+    "confidentialReportedGrossFeeBps": 5.2795338298205605,
+    "publicReportedGrossFeeBps": 32.35460339701054,
+    "interpretation": "Aligned reported cohort fees divided by reported notional. Accounting/mix comparison, not quoted execution fees, causal pricing power or tokenholder yield."
+  },
+  "lineage": [
+    {
+      "file": "analysis/coverage-expansion/overview-results.json",
+      "sha256": "a6eb352ee5baadc023a34c2331879a20ced0cac44159175fa7f0eaab647c5bcd"
+    },
+    {
+      "file": "analysis/coverage-expansion/native/activity-result.json",
+      "sha256": "84657353dac73d685c6d4da184419b3cae21b045e8738cac0a11f7be3c34b267"
+    },
+    {
+      "file": "analysis/coverage-expansion/token/genesis-result.json",
+      "sha256": "a89738e48d481f5751a5c97e805820ed3cfe1dacd72d934045d9809a3e077cb7"
+    }
+  ]
+}

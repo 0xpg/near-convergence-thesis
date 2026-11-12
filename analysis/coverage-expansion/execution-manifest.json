@@ -1,0 +1,124 @@
+{
+  "version": "coverage-execution-2026-11-12-v1",
+  "dashboard": "https://dune.com/0xpanatagama/near-economic",
+  "charts": 37,
+  "executed": [
+    {
+      "file": "native/01_status_audit.sql",
+      "query": "https://dune.com/queries/9116090",
+      "visualizations": [],
+      "status": "Saved and executed; public visibility verified",
+      "dashboard": false,
+      "localSourceSha256": "1766090d6752299fbf2198e6b98e64ebd74b36cc5334d97eeb2984db24067a9a"
+    },
+    {
+      "file": "native/02_filtered_activity_30d.sql",
+      "query": "https://dune.com/queries/9116129",
+      "visualizations": [
+        "13169353",
+        "13169359"
+      ],
+      "status": "Saved and executed; public visibility verified",
+      "dashboard": true,
+      "localSourceSha256": "949025796decf582550a5dffdb7471d81773053371fa777f283165b561d63de2"
+    },
+    {
+      "file": "intents/35_intents_reported_volume_full_history.sql",
+      "query": "https://dune.com/queries/9115683",
+      "visualizations": [
+        "13167168"
+      ],
+      "status": "Saved and executed; public visibility verified",
+      "dashboard": true,
+      "localSourceSha256": "58497152c1c98e61682ae07716ee163899c0a3362050030dc8a1b564d841e42c"
+    },
+    {
+      "file": "intents/36_intents_reported_fee_components_full_history.sql",
+      "query": "https://dune.com/queries/9117854",
+      "visualizations": [
+        "13169471"
+      ],
+      "status": "Saved and executed; public visibility verified",
+      "dashboard": true,
+      "localSourceSha256": "e5ae91af83a901f599ec8c41c69092116baeb88a71b66590542eb9cff66ec8b2"
+    },
+    {
+      "file": "intents/39_intents_balances_official_overlap.sql",
+      "query": "https://dune.com/queries/9117785",
+      "visualizations": [
+        "13169372"
+      ],
+      "status": "Saved and executed; public visibility verified",
+      "dashboard": true,
+      "localSourceSha256": "72091f262f8b09b6e78706f25d75be3a9a034c0e13ea5274d3b73872877fe04b"
+    },
+    {
+      "file": "stablecoins/05_filtered_transfer_daily_30d.sql",
+      "query": "https://dune.com/queries/9117819",
+      "visualizations": [
+        "13169462"
+      ],
+      "status": "Saved and executed; public visibility verified",
+      "dashboard": true,
+      "localSourceSha256": "283ddc5dc3246f99035d8beb81067b6f6dc1989ce7ba37c1688025d1fc0732c6"
+    },
+    {
+      "file": "stablecoins/06_circulating_supply_by_asset.sql",
+      "query": "https://dune.com/queries/9117903",
+      "visualizations": [
+        "13169493"
+      ],
+      "status": "Saved and executed; public visibility verified",
+      "dashboard": true,
+      "localSourceSha256": "de98763ed27c7c68be266ab5fabb51c2eb9e3a0c14f796c941d057b2ec39327a"
+    },
+    {
+      "file": "token/historical-genesis-allocation.sql",
+      "query": "https://dune.com/queries/9117913",
+      "visualizations": [
+        "13169510"
+      ],
+      "status": "Saved and executed; public visibility verified",
+      "dashboard": true,
+      "localSourceSha256": "5247308e2bcc0c66ca029473644823a842ce88acc3665af03079fa76cdd6e152"
+    },
+    {
+      "file": "40_reproducible_overview_findings.sql",
+      "query": "https://dune.com/queries/9117970",
+      "visualizations": [],
+      "status": "Saved and executed; public visibility verified",
+      "dashboard": false,
+      "localSourceSha256": "ce424c9690d92db71d16d531f245f01c49f914336234290bfcb52ced72ad55f0"
+    }
+  ],
+  "notPublished": [
+    "intents/37_tvl_token_grain_audit.sql (detail draft; summary preflight and production guards executed)",
+    "intents/38_intents_reported_balances_full_history.sql (raw-source draft; superseded by39 overlap correction)",
+    "stablecoins/02_candidate_key_audit.sql (draft; production05 guards tested at30D grain)",
+    "stablecoins/03_transfer_daily_candidate.sql (superseded draft; example cause/status filters replaced after live profiling)",
+    "stablecoins/04_supply_daily_api.sql (draft; production06 provides guarded asset composition)",
+    "intents/39_tvl_grain_audit_summary.sql (unexecuted alternate detail summary)"
+  ],
+  "privacy": "All new chart source queries were verified Public before dashboard additions; no private-query permissions changed.",
+  "scopeLimits": "No verified executed-buyback history, no2035 projection, no full historical contract roster, and incomplete transfer USD pricing. Legacy upstream query results retain their own run times.",
+  "preflights": [
+    {
+      "file": "native/01_status_audit.sql",
+      "query": "https://dune.com/queries/9116090",
+      "status": "Saved and executed"
+    },
+    {
+      "file": "intents/37_balance_grain_summary.sql",
+      "executedEditor": "https://dune.com/queries/9117785",
+      "status": "Executed preflight; editor subsequently saved as production39",
+      "result": "intents/balance-audit-result.json"
+    },
+    {
+      "file": "stablecoins/01_transfer_preflight.sql",
+      "executedEditor": "https://dune.com/queries/9117819",
+      "status": "Executed preflight; editor subsequently saved as production05",
+      "result": "stablecoins/transfer-profile-sample.json",
+      "resultCoverage": "Sample page only; production guards cover complete30D result"
+    }
+  ]
+}

@@ -1,0 +1,1 @@
+SELECT tx_status,execution_status,count(*) action_rows,count(DISTINCT tx_hash) transaction_hashes,count(DISTINCT receipt_id) receipts,count(DISTINCT tx_from) originating_accounts,count_if(tx_hash IS NULL) missing_tx_hash,count_if(tx_from IS NULL) missing_origin FROM near.actions WHERE block_date=current_date-interval '2' day GROUP BY 1,2 ORDER BY action_rows DESC

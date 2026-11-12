@@ -1,0 +1,30 @@
+{
+  "status": "Research and SQL drafts; no Dune execution or publication",
+  "registry_scope": "17 unique current NEP-141 contracts: 2 issuer-native, 2 Rainbow, 13 Omni USDC/USDT representations; not a complete historical roster or NEP-245 liability ledger",
+  "sources": {
+    "raw_schema": "https://docs.dune.com/data-catalog/near/ft_transfers",
+    "issuer_usdc": "https://developers.circle.com/stablecoins/usdc-contract-addresses",
+    "issuer_usdt": "https://tether.to/en/supported-protocols/",
+    "registry": "https://1click.chaindefuser.com/v0/tokens",
+    "supply": "https://stablecoins.llama.fi/stablecoincharts/Near",
+    "usdc_adapter": "https://github.com/DefiLlama/peggedassets-server/tree/master/src/adapters/peggedAssets/usd-coin",
+    "usdt_adapter": "https://github.com/DefiLlama/peggedassets-server/tree/master/src/adapters/peggedAssets/tether"
+  },
+  "existing_queries": {"supply": 9074817, "legacy_supply": 9012810, "composition": 9074892},
+  "community_transfer_query": "No independently verified NEAR stablecoin transfer query found. Generic curated multichain coverage must not be assumed to include NEAR.",
+  "publication_gates": [
+    "Confirm successful status and transfer cause values from preflight; SQL candidate filter values remain unverified examples.",
+    "Inspect event_index and batch event grain. Duplicate candidate keys block totals, never silently discard rows.",
+    "Validate historical contract activation and retirement; current registry is not historical completeness.",
+    "Use one signed positive balance leg, exclude mint and burn; absolute deltas count both legs.",
+    "Source contract-specific historical USD prices and report coverage before publishing market-value USD. Token units and assumed dollar parity are not market-value USD.",
+    "Refunds, self moves, bridge inventory and Intents custody are gross throughput, not proven economic payments."
+  ],
+  "supply_caveats": [
+    "USDT adapter subtracts issuer unreleased reserves; reported minted inventory and circulation differ materially.",
+    "Inspected NEAR adapter branches explicitly cover native and Rainbow representations; all Omni wrappers are not proven included.",
+    "Do not sum Aurora claims with NEAR bridge collateral or origin locked collateral with destination minted claims.",
+    "Do not add API circulating, minted, bridged and unreleased fields: they are distinct measures, not an additive partition.",
+    "Do not add NEP-141 custody balances and NEP-245 claims on the same assets."
+  ]
+}

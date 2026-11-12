@@ -1,0 +1,168 @@
+{
+  "query": "https://dune.com/queries/9117970",
+  "reviewedOn": "2026-11-12",
+  "columns": [
+    "category",
+    "metric",
+    "value",
+    "unit",
+    "first_day",
+    "last_day",
+    "interpretation"
+  ],
+  "rows": [
+    [
+      "Intents balances",
+      "Confidential share of reported priced balance",
+      "61.66618305908312",
+      "% of priced balance",
+      "2024-10-18 00:00:00",
+      "2026-11-11 00:00:00",
+      "Duplicate keys=0; invalid rows=0; latest positive unpriced balance rows=5. Priced reported custody balances; confidential is a subset of raw public total."
+    ],
+    [
+      "Intents balances",
+      "Latest reported priced balance",
+      "228309961.35825714",
+      "USD; priced subset",
+      "2024-10-18 00:00:00",
+      "2026-11-11 00:00:00",
+      "Duplicate keys=0; invalid rows=0; latest positive unpriced balance rows=5. Priced reported custody balances; confidential is a subset of raw public total."
+    ],
+    [
+      "Intents fees",
+      "30D reported gross fees",
+      "5991510.153771224",
+      "USD; reported subset",
+      "2026-10-13 00:00:00",
+      "2026-11-11 00:00:00",
+      "30 observed dates; missing fee rows=201; invalid rows=0. Protocol fees assigned public by official reporting convention. Accrual is not captured receipts or purchases."
+    ],
+    [
+      "Intents fees",
+      "Confidential share of reported gross fees",
+      "19.791320124187347",
+      "% of reported fees",
+      "2026-10-13 00:00:00",
+      "2026-11-11 00:00:00",
+      "30 observed dates; missing fee rows=201; invalid rows=0. Protocol fees assigned public by official reporting convention. Accrual is not captured receipts or purchases."
+    ],
+    [
+      "Intents notional",
+      "30D reported priced volume",
+      "3731354986.0024533",
+      "USD; reported subset",
+      "2026-10-13 00:00:00",
+      "2026-11-11 00:00:00",
+      "30 observed dates; positive-token unpriced rows=0; invalid rows=0. Reported dataset notional; not independently verified unique order notional."
+    ],
+    [
+      "Intents notional",
+      "Confidential share of reported priced volume",
+      "60.19340598118057",
+      "% of reported volume",
+      "2026-10-13 00:00:00",
+      "2026-11-11 00:00:00",
+      "30 observed dates; positive-token unpriced rows=0; invalid rows=0. Reported dataset notional; not independently verified unique order notional."
+    ],
+    [
+      "Native execution",
+      "Action rows per successful daily hash appearance",
+      "6.591234768329171",
+      "action rows/hash appearance",
+      "2026-10-13 00:00:00",
+      "2026-11-11 00:00:00",
+      "30 observed dates; identifier issues=0. Execution-day hashes and originating accounts, not final transaction outcomes or people."
+    ],
+    [
+      "Native execution",
+      "Average daily originating accounts",
+      "62933.4",
+      "accounts/day",
+      "2026-10-13 00:00:00",
+      "2026-11-11 00:00:00",
+      "30 observed dates; identifier issues=0. Execution-day hashes and originating accounts, not final transaction outcomes or people."
+    ],
+    [
+      "Native execution",
+      "Average daily successful execution hashes",
+      "663847.0666666667",
+      "count/day",
+      "2026-10-13 00:00:00",
+      "2026-11-11 00:00:00",
+      "30 observed dates; identifier issues=0. Execution-day hashes and originating accounts, not final transaction outcomes or people."
+    ],
+    [
+      "Stablecoin circulation",
+      "Issuer unreleased inventory",
+      "489044182",
+      "nominal units; excluded from circulation",
+      "2022-07-10 00:00:00",
+      "2026-11-11 00:00:00",
+      "Duplicate dates=0; invalid points=0. Circulation excludes unreleased reserves. Categories follow provider representation coverage."
+    ],
+    [
+      "Stablecoin circulation",
+      "Latest USDC circulating value",
+      "90919515",
+      "USD",
+      "2022-07-10 00:00:00",
+      "2026-11-11 00:00:00",
+      "Duplicate dates=0; invalid points=0. Circulation excludes unreleased reserves. Categories follow provider representation coverage."
+    ],
+    [
+      "Stablecoin circulation",
+      "Latest USDT circulating value",
+      "39313266",
+      "USD",
+      "2022-07-10 00:00:00",
+      "2026-11-11 00:00:00",
+      "Duplicate dates=0; invalid points=0. Circulation excludes unreleased reserves. Categories follow provider representation coverage."
+    ],
+    [
+      "Stablecoin circulation",
+      "Latest circulating stablecoin value",
+      "131229272",
+      "USD",
+      "2022-07-10 00:00:00",
+      "2026-11-11 00:00:00",
+      "Duplicate dates=0; invalid points=0. Circulation excludes unreleased reserves. Categories follow provider representation coverage."
+    ],
+    [
+      "Stablecoin movement",
+      "Direct Intents custody share of nominal transfer units",
+      "69.6395788329284",
+      "% of nominal gross units",
+      "2026-10-13 00:00:00",
+      "2026-11-11 00:00:00",
+      "30 observed dates; ambiguous legs=0; unpriced legs=9922. Current 17-contract roster; gross movement includes custody and refunds, not payments."
+    ],
+    [
+      "Stablecoin movement",
+      "Gross nominal transfer units",
+      "2074024925.676323",
+      "nominal USDC/USDT units",
+      "2026-10-13 00:00:00",
+      "2026-11-11 00:00:00",
+      "30 observed dates; ambiguous legs=0; unpriced legs=9922. Current 17-contract roster; gross movement includes custody and refunds, not payments."
+    ],
+    [
+      "Stablecoin movement",
+      "USD sum of fully priced contract groups",
+      "2063884958.01582",
+      "USD; priced subset only",
+      "2026-10-13 00:00:00",
+      "2026-11-11 00:00:00",
+      "30 observed dates; ambiguous legs=0; unpriced legs=9922. Current 17-contract roster; gross movement includes custody and refunds, not payments."
+    ],
+    [
+      "Stablecoin movement",
+      "Unpriced transfer legs",
+      "9922",
+      "legs",
+      "2026-10-13 00:00:00",
+      "2026-11-11 00:00:00",
+      "30 observed dates; ambiguous legs=0; unpriced legs=9922. Current 17-contract roster; gross movement includes custody and refunds, not payments."
+    ]
+  ]
+}

@@ -1,0 +1,195 @@
+{
+  "version": "near-stablecoin-contract-roster-2026-11-12-v1",
+  "retrieved_at": "2026-11-12T11:17:15.4253716+00:00",
+  "scope": "Issuer-native USDC/USDT, Rainbow USDC.e/USDT.e and official Intents-listed NEP-141 Omni USDC/USDT representations. Not all stablecoins or NEP-245 asset liabilities.",
+  "source_sha256": "c7f12dbd70cfe60f46c6ef164b505310f15b727a9386d4e0352cd1f15cfc1795",
+  "contracts": [
+    {
+      "asset_id": "nep141:17208628f84f5d6ad33f0da3bbbeb27ffcb398eac501a31bd6ad2011e36133a1",
+      "near_contract": "17208628f84f5d6ad33f0da3bbbeb27ffcb398eac501a31bd6ad2011e36133a1",
+      "symbol": "USDC",
+      "decimals": 6,
+      "representation": "native_issuer",
+      "origin_chain": "near",
+      "origin_contract": "17208628f84f5d6ad33f0da3bbbeb27ffcb398eac501a31bd6ad2011e36133a1",
+      "source": "https://1click.chaindefuser.com/v0/tokens",
+      "current_roster_only": true
+    },
+    {
+      "asset_id": "nep141:eth-0xdac17f958d2ee523a2206206994597c13d831ec7.omft.near",
+      "near_contract": "eth-0xdac17f958d2ee523a2206206994597c13d831ec7.omft.near",
+      "symbol": "USDT",
+      "decimals": 6,
+      "representation": "omni_bridge_representation",
+      "origin_chain": "eth",
+      "origin_contract": "0xdac17f958d2ee523a2206206994597c13d831ec7",
+      "source": "https://1click.chaindefuser.com/v0/tokens",
+      "current_roster_only": true
+    },
+    {
+      "asset_id": "nep141:eth-0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48.omft.near",
+      "near_contract": "eth-0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48.omft.near",
+      "symbol": "USDC",
+      "decimals": 6,
+      "representation": "omni_bridge_representation",
+      "origin_chain": "eth",
+      "origin_contract": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+      "source": "https://1click.chaindefuser.com/v0/tokens",
+      "current_roster_only": true
+    },
+    {
+      "asset_id": "nep141:tron-d28a265909efecdcee7c5028585214ea0b96f015.omft.near",
+      "near_contract": "tron-d28a265909efecdcee7c5028585214ea0b96f015.omft.near",
+      "symbol": "USDT",
+      "decimals": 6,
+      "representation": "omni_bridge_representation",
+      "origin_chain": "tron",
+      "origin_contract": "TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t",
+      "source": "https://1click.chaindefuser.com/v0/tokens",
+      "current_roster_only": true
+    },
+    {
+      "asset_id": "nep141:sol-c800a4bd850783ccb82c2b2c7e84175443606352.omft.near",
+      "near_contract": "sol-c800a4bd850783ccb82c2b2c7e84175443606352.omft.near",
+      "symbol": "USDT",
+      "decimals": 6,
+      "representation": "omni_bridge_representation",
+      "origin_chain": "sol",
+      "origin_contract": "Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB",
+      "source": "https://1click.chaindefuser.com/v0/tokens",
+      "current_roster_only": true
+    },
+    {
+      "asset_id": "nep141:usdt.tether-token.near",
+      "near_contract": "usdt.tether-token.near",
+      "symbol": "USDT",
+      "decimals": 6,
+      "representation": "native_issuer",
+      "origin_chain": "near",
+      "origin_contract": "usdt.tether-token.near",
+      "source": "https://1click.chaindefuser.com/v0/tokens",
+      "current_roster_only": true
+    },
+    {
+      "asset_id": "nep141:arb-0xaf88d065e77c8cc2239327c5edb3a432268e5831.omft.near",
+      "near_contract": "arb-0xaf88d065e77c8cc2239327c5edb3a432268e5831.omft.near",
+      "symbol": "USDC",
+      "decimals": 6,
+      "representation": "omni_bridge_representation",
+      "origin_chain": "arb",
+      "origin_contract": "0xaf88d065e77c8cc2239327c5edb3a432268e5831",
+      "source": "https://1click.chaindefuser.com/v0/tokens",
+      "current_roster_only": true
+    },
+    {
+      "asset_id": "nep141:base-0x833589fcd6edb6e08f4c7c32d4f71b54bda02913.omft.near",
+      "near_contract": "base-0x833589fcd6edb6e08f4c7c32d4f71b54bda02913.omft.near",
+      "symbol": "USDC",
+      "decimals": 6,
+      "representation": "omni_bridge_representation",
+      "origin_chain": "base",
+      "origin_contract": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+      "source": "https://1click.chaindefuser.com/v0/tokens",
+      "current_roster_only": true
+    },
+    {
+      "asset_id": "nep141:sol-5ce3bf3a31af18be40ba30f721101b4341690186.omft.near",
+      "near_contract": "sol-5ce3bf3a31af18be40ba30f721101b4341690186.omft.near",
+      "symbol": "USDC",
+      "decimals": 6,
+      "representation": "omni_bridge_representation",
+      "origin_chain": "sol",
+      "origin_contract": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+      "source": "https://1click.chaindefuser.com/v0/tokens",
+      "current_roster_only": true
+    },
+    {
+      "asset_id": "nep141:gnosis-0x2a22f9c3b484c3629090feed35f17ff8f88f76f0.omft.near",
+      "near_contract": "gnosis-0x2a22f9c3b484c3629090feed35f17ff8f88f76f0.omft.near",
+      "symbol": "USDC",
+      "decimals": 6,
+      "representation": "omni_bridge_representation",
+      "origin_chain": "gnosis",
+      "origin_contract": "0x2a22f9c3b484c3629090feed35f17ff8f88f76f0",
+      "source": "https://1click.chaindefuser.com/v0/tokens",
+      "current_roster_only": true
+    },
+    {
+      "asset_id": "nep141:gnosis-0x4ecaba5870353805a9f068101a40e0f32ed605c6.omft.near",
+      "near_contract": "gnosis-0x4ecaba5870353805a9f068101a40e0f32ed605c6.omft.near",
+      "symbol": "USDT",
+      "decimals": 6,
+      "representation": "omni_bridge_representation",
+      "origin_chain": "gnosis",
+      "origin_contract": "0x4ecaba5870353805a9f068101a40e0f32ed605c6",
+      "source": "https://1click.chaindefuser.com/v0/tokens",
+      "current_roster_only": true
+    },
+    {
+      "asset_id": "nep141:aptos-88cb7619440a914fe6400149a12b443c3ac21d59.omft.near",
+      "near_contract": "aptos-88cb7619440a914fe6400149a12b443c3ac21d59.omft.near",
+      "symbol": "USDT",
+      "decimals": 6,
+      "representation": "omni_bridge_representation",
+      "origin_chain": "aptos",
+      "origin_contract": "0x357b0b74bc833e95a115ad22604854d6b0fca151cecd94111770e5d6ffc9dc2b",
+      "source": "https://1click.chaindefuser.com/v0/tokens",
+      "current_roster_only": true
+    },
+    {
+      "asset_id": "nep141:aptos-34ee497f210c5a511e8d5b53bc56d75b63612bb5.omft.near",
+      "near_contract": "aptos-34ee497f210c5a511e8d5b53bc56d75b63612bb5.omft.near",
+      "symbol": "USDC",
+      "decimals": 6,
+      "representation": "omni_bridge_representation",
+      "origin_chain": "aptos",
+      "origin_contract": "0xbae207659db88bea0cbead6da0ed00aac12edcdda169e591cd41c94180b46f3b",
+      "source": "https://1click.chaindefuser.com/v0/tokens",
+      "current_roster_only": true
+    },
+    {
+      "asset_id": "nep141:sui-c1b81ecaf27933252d31a963bc5e9458f13c18ce.omft.near",
+      "near_contract": "sui-c1b81ecaf27933252d31a963bc5e9458f13c18ce.omft.near",
+      "symbol": "USDC",
+      "decimals": 6,
+      "representation": "omni_bridge_representation",
+      "origin_chain": "sui",
+      "origin_contract": "0xdba34672e30cb065b1f93e3ab55318768fd6fef66c15942c9f7cb846e2f900e7::usdc::USDC",
+      "source": "https://1click.chaindefuser.com/v0/tokens",
+      "current_roster_only": true
+    },
+    {
+      "asset_id": "nep141:miden-0x5cb79d29507d3ad17bb6dc60279e89.omft.near",
+      "near_contract": "miden-0x5cb79d29507d3ad17bb6dc60279e89.omft.near",
+      "symbol": "USDT",
+      "decimals": 6,
+      "representation": "omni_bridge_representation",
+      "origin_chain": "miden",
+      "origin_contract": "0x5cb79d29507d3ad17bb6dc60279e89",
+      "source": "https://1click.chaindefuser.com/v0/tokens",
+      "current_roster_only": true
+    },
+    {
+      "asset_id": "nep141:a0b86991c6218b36c1d19d4a2e9eb0ce3606eb48.factory.bridge.near",
+      "near_contract": "a0b86991c6218b36c1d19d4a2e9eb0ce3606eb48.factory.bridge.near",
+      "symbol": "USDC.e",
+      "decimals": 6,
+      "representation": "rainbow_bridge_representation",
+      "origin_chain": "eth",
+      "origin_contract": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+      "source": "https://raw.githubusercontent.com/DefiLlama/peggedassets-server/master/src/adapters/peggedAssets/usd-coin/config.ts",
+      "current_roster_only": true
+    },
+    {
+      "asset_id": "nep141:dac17f958d2ee523a2206206994597c13d831ec7.factory.bridge.near",
+      "near_contract": "dac17f958d2ee523a2206206994597c13d831ec7.factory.bridge.near",
+      "symbol": "USDT.e",
+      "decimals": 6,
+      "representation": "rainbow_bridge_representation",
+      "origin_chain": "eth",
+      "origin_contract": "0xdac17f958d2ee523a2206206994597c13d831ec7",
+      "source": "https://raw.githubusercontent.com/DefiLlama/peggedassets-server/master/src/adapters/peggedAssets/tether/config.ts",
+      "current_roster_only": true
+    }
+  ]
+}

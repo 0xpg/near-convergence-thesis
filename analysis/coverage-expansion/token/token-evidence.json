@@ -1,0 +1,121 @@
+{
+  "reviewed_utc": "2026-11-12",
+  "scope": "Historical allocation, supply schedule, captured receipts and executed buybacks; observed overview only",
+  "sources": [
+    {
+      "id": "genesis",
+      "url": "https://www.near.org/blog/near-token-supply-and-distribution",
+      "published": "2020-06-19",
+      "updated": "2020-10-16",
+      "status": "Primary project description; allocation figure image not retrieved during this review"
+    },
+    {
+      "id": "tokenomics",
+      "url": "https://near.org/blog/evolving-near-tokenomics",
+      "published": "2026-02-24",
+      "status": "Primary policy description; not a trade execution ledger"
+    },
+    {
+      "id": "adapter",
+      "url": "https://github.com/DefiLlama/dimension-adapters/blob/master/fees/near-intents/index.ts",
+      "status": "Public adapter implementation; revenue classification is not purchase verification"
+    },
+    {
+      "id": "wallet_designations",
+      "url": "https://dune.com/queries/6732239",
+      "status": "Official-team query referenced by adapter; inspect current SQL before reuse"
+    },
+    {
+      "id": "wallet_sweeps",
+      "url": "https://dune.com/queries/6740088",
+      "status": "NEAR/wNEAR wallet sweeps referenced by adapter; not executed purchases"
+    },
+    {
+      "id": "gross_fees",
+      "url": "https://dune.com/queries/6162763",
+      "status": "Gross fees and affiliate datasets referenced by adapter"
+    },
+    {
+      "id": "bitwise_retraction",
+      "url": "https://s3.us-east-1.amazonaws.com/static.bitwiseinvestments.com/Research/Bitwise-Staking-Report-Q4-2026.pdf",
+      "pdf_page_index": 59,
+      "finding": "Issuer research removed previously reported buybacks because those amounts were an upper bound rather than actual purchases. This independently corroborates the accounting limitation, but is not transaction-level proof.",
+      "publication": "INTERNAL_ONLY: exclude from dashboard, public research and source lists"
+    },
+    {
+      "id": "kraken_historical",
+      "url": "https://assets-cms.kraken.com/files/51n36hrp/facade/d8b53c875cd18238a48cbbfef350910625023672.pdf",
+      "published": "2025-08-19",
+      "finding": "Confirms early investors received 23.7% of the initial one billion tokens. Its 5% issuance description is historical, not current policy."
+    },
+    {
+      "id": "bitstamp_allocation",
+      "url": "https://www.bitstamp.net/en-gb/learn/cryptocurrency-guide/what-is-near-protocol-near/",
+      "published": "2024-07-29",
+      "finding": "Seven historical categories explicitly total one billion; project backers aggregated23.7%; source is exchange-authored educational material, not original allocation ledger."
+    }
+  ],
+  "historical_allocation": {
+    "genesis_near": 1000000000,
+    "genesis_date": "2020-04-22",
+    "transfer_unlock_start": "2020-10-13",
+    "scheduled_all_genesis_unlocked_month": 60,
+    "core_team_schedule": "Four years with a twelve-month cliff",
+    "general_release": "Generally linear per block, not monthly batches; locked tokens could stake",
+    "publishable_now": "Historical genesis supply and schedule commentary; early investors 23.7% corroborated",
+    "full_category_chart": "Seven-category SQL draft corroborated by exchange-authored historical statements; original primary figure remains visually unverified. Explicitly disclose this evidence tier.",
+    "interpretation": "Historical allocation is not current beneficial ownership, current liquid float or current wallet holdings. Scheduled unlocking does not prove funds were sold."
+  },
+  "projection_2035": {
+    "classification": "Assumption-dependent projection, not observed allocation",
+    "screenshot_total_near": 1646000000,
+    "screenshot_epoch_rewards_near": 646000000,
+    "arithmetic": "1000000000 + 646000000 = 1646000000",
+    "requirements": [
+      "Pinned starting block and total supply",
+      "Historical realized issuance and burns",
+      "Explicit future issuance regime and activation dates",
+      "Compounding convention and actual elapsed seconds",
+      "Explicit fee-burn assumption",
+      "Separation of historical recipient categories from future validator/treasury rewards"
+    ],
+    "decision": "Do not label screenshot 1.65B as maximum supply, actual 2035 supply, current allocation or remaining genesis unlocks. Current observed overview should use pinned actual supply and realized net issuance instead."
+  },
+  "wallets": [
+    "fefundsadmin.sputnik-dao.near",
+    "1csfundsadmin.sputnik-dao.near",
+    "buybacks.multisignature.near"
+  ],
+  "existing_receipt_query": "analysis/defillama-ir/sql/27_captured_wallet_inflows_daily.sql",
+  "receipt_query_status": "Draft candidate inflows only; native/wrapped kept separate until event-key and wrap/unwrap audit. Do not sum as executed purchases.",
+  "verified_saved_examples": [
+    {
+      "transaction": "HbuZpqWLE3D9ddcSGcYNGSLXMCMFhWWuygTqdrvLWRiZ",
+      "amount_near": "224.844231219262160870042846",
+      "classification": "Native withdrawal received by buyback wallet; upstream acquisition not traced",
+      "saved_source": "data/snapshots/buyback-receipt-0.json"
+    },
+    {
+      "transaction": "Fc2tAhTt4Uc9QmHVtsiXC3yKePBTuGUMzWquG36uA6At",
+      "amount_near": "300.895945623938882516248293",
+      "classification": "Native withdrawal received by buyback wallet; upstream acquisition not traced",
+      "saved_source": "data/snapshots/buyback-receipt-1.json"
+    }
+  ],
+  "execution_proof_required": [
+    "Identifiable acquisition transaction and successful receipt chain",
+    "Trade input asset/amount and actual NEAR output amount",
+    "Verified acquiring entity and counterparty/router role",
+    "Reconcile custody transfers and wrap/unwrap to avoid double counting",
+    "USD valuation timestamp and source distinct from realized trade price",
+    "Post-purchase disposition tracked separately: held, staked, locked, transferred or provably burned"
+  ],
+  "publication_decisions": {
+    "captured_wallet_receipts": "Publish only under receipt label after raw event-key audit; not buybacks or holder distribution",
+    "executed_buybacks": "Not established by inspected evidence; do not publish synthetic purchase history",
+    "buyback_yield": "Blocked without verified executed USD purchase numerator and aligned market-cap or FDV denominator; retained receipts/FDV is not buyback yield",
+    "burns": "Protocol fee burns and treasury purchases are distinct. Wallet balance or withdrawal does not establish burn.",
+    "unlock_chart": "Historical announced schedule possible after exact category/source verification; no future genesis cliff implied after month sixty"
+  },
+  "analyst_conclusion": "The economically important distinction is deployment, not a wallet label: fee capture can grow before market purchases are verified. Present captured receipts as measurable capital available to governance, and require matched acquisition evidence before claiming investor-directed token demand. Historical allocation contextualizes initial distribution; current supply change is the more relevant ongoing dilution measure."
+}

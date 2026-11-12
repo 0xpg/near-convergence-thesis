@@ -85,10 +85,10 @@
     },
     {
       "query": "https://dune.com/queries/9115683",
-      "sql": "analysis/defillama-ir/sql/34_intents_volume_dashboard_180d.sql",
+      "sql": "analysis/coverage-expansion/intents/35_intents_reported_volume_full_history.sql",
       "visualization": "13167168",
       "status": "Saved, executed and added to Dune dashboard",
-      "definition": "180 completed UTC days of reported pricedUSD by source type, with separate missingness categories and no price backfill; sum of all-missing groups remainsNULL."
+      "definition": "Full available reported priced volume history; replaces the earlier rolling 180-day query. Monetary field names preserved; missing prices are not backfilled."
     },
     {
       "query": "https://dune.com/queries/9103908",
@@ -130,5 +130,12 @@
       "status": "No Blockworks numerical data uploaded to Dune or published. Governing license/Publishable Data entitlement must permit public use.",
       "terms": "https://blockworks.com/terms"
     }
+  },
+  "expandedCoverage": {
+    "resource": "/data/glance-coverage.json",
+    "dashboard": "https://dune.com/0xpanatagama/near-economic#activity-liquidity-token-demand",
+    "findingsQuery": "https://dune.com/queries/9117970",
+    "status": "Executed queries and 37-chart dashboard verified after reload; source-specific coverage limits retained.",
+    "scope": "Observed overview only; no Scenario Lab changes or verified buyback series."
   }
 }

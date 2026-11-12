@@ -1,0 +1,47 @@
+{
+  "query": "https://dune.com/queries/9116090",
+  "reviewedOn": "2026-11-12",
+  "columns": [
+    "tx_status",
+    "execution_status",
+    "action_rows",
+    "transaction_hashes",
+    "receipts",
+    "originating_accounts",
+    "missing_tx_hash",
+    "missing_origin"
+  ],
+  "rows": [
+    [
+      "SUCCESS_RECEIPT_ID",
+      "SUCCESS_VALUE",
+      "4072910",
+      "970515",
+      "4042740",
+      "177509",
+      "0",
+      "0"
+    ],
+    [
+      "SUCCESS_RECEIPT_ID",
+      "SUCCESS_RECEIPT_ID",
+      "299667",
+      "197750",
+      "296290",
+      "1310",
+      "0",
+      "0"
+    ],
+    [
+      "SUCCESS_RECEIPT_ID",
+      "FAILURE",
+      "85785",
+      "71991",
+      "72904",
+      "648",
+      "0",
+      "0"
+    ]
+  ],
+  "definition": "Status groups overlap in transaction hashes and are not additive."
+}

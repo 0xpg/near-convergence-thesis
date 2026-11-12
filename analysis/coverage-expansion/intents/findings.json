@@ -1,0 +1,136 @@
+{
+  "status": "Unexecuted local research drafts; no Dune publication or source execution by this agent",
+  "sources": [
+    {
+      "url": "https://dune.com/near/near-intents",
+      "kind": "Official NEAR dashboard; query IDs verified by lead live browser",
+      "queries": {
+        "full_volume": 5179085,
+        "volume_30d": 5175176,
+        "tvl": 7586891,
+        "gross_fees": 6162606
+      },
+      "visualizations": {
+        "tvl_total": 12776613,
+        "tvl_public": 12776617,
+        "tvl_confidential": 11538773,
+        "fees_total": 9849004,
+        "fees_public": 12823176,
+        "fees_confidential": 12823180
+      }
+    },
+    {
+      "url": "https://raw.githubusercontent.com/DefiLlama/dimension-adapters/master/fees/near-intents/index.ts",
+      "kind": "Primary provider adapter",
+      "queries": {
+        "gross_fees_adapter_reference": 6162763,
+        "revenue": 6740088,
+        "wallet_designation": 6732239
+      },
+      "notes": "Adapter gross fee ID differs from current official dashboard ID. Components follow UNION ALL of protocol amount_fee and affiliate fee. Receipt sweeps use native/wrapped NEAR incoming funds to designated wallets, excluding inter-wallet hops."
+    },
+    {
+      "url": "https://raw.githubusercontent.com/DefiLlama/dimension-adapters/master/dexs/near-intents/index.ts",
+      "kind": "Primary provider volume adapter",
+      "notes": "SUM volume_amount_usd by date; no forced swap-leg divide-by-two. Adapter start 2024-11-05 does not establish table launch history."
+    },
+    {
+      "url": "https://docs.near-intents.org/integration/verifier-contract/introduction",
+      "kind": "Official settlement architecture",
+      "notes": "intents.near holds account ledger balances. Deposits are not necessarily executable maker liquidity."
+    }
+  ],
+  "verified_schema": {
+    "metrics": {
+      "table": "dune.near.dataset_near_intents_metrics",
+      "fields": [
+        "date_at",
+        "source_type",
+        "token_id",
+        "blockchain",
+        "symbol",
+        "tvl_tokens",
+        "tvl_usd",
+        "volume_amount_tokens",
+        "volume_amount_usd",
+        "swaps_amount",
+        "uniq_accounts1d",
+        "uniq_accounts7d",
+        "uniq_accounts30d",
+        "price"
+      ],
+      "evidence": "Lead SELECT * live source inspection"
+    },
+    "protocol_fees": {
+      "table": "dune.near.dataset_near_intents_protocol_fees",
+      "fields": [
+        "date_at",
+        "amount_fee"
+      ],
+      "unverified": [
+        "source_type",
+        "event identifiers"
+      ],
+      "evidence": "Primary provider adapter"
+    },
+    "affiliate_fees": {
+      "table": "dune.near.dataset_near_intents_fees",
+      "fields": [
+        "date_at",
+        "fee",
+        "source_type"
+      ],
+      "evidence": "Primary provider adapter plus executed source audit32"
+    }
+  },
+  "drafts": [
+    {
+      "file": "35_intents_reported_volume_full_history.sql",
+      "contract": "One row per observed day/source; complete source history before current UTC day; reported priced USD subset and missingness counts. Does not manufacture absent dates."
+    },
+    {
+      "file": "36_intents_reported_fee_components_full_history.sql",
+      "contract": "One row per observed day/component/raw classification/official classification. Official method assigns protocol fees to public; raw attribution remains unestablished. Missing/invalid finite-value guards; no zero fill."
+    },
+    {
+      "file": "37_tvl_token_grain_audit.sql",
+      "contract": "Token/day/source/blockchain/symbol candidate grain. Detect repeated non-null and positive balances before summation; do not automatically MAX deduplicate."
+    },
+    {
+      "file": "38_intents_reported_balances_full_history.sql",
+      "contract": "One row per observed day/source. Monetary result withheld for repeated non-null balance keys or invalid numeric rows; priced subset otherwise."
+    },
+    {
+      "file": "39_tvl_grain_audit_summary.sql",
+      "contract": "Compact source-level quality result using same token-day audit CTE as37. Repeated-key, invalid and unpriced counts; source history boundaries."
+    }
+  ],
+  "filters_and_limits": [
+    "End at previous completed UTC day. Source freshness must be displayed; last table row is not evidence all components complete.",
+    "No user count sum across token, source, chain or date. uniq_accounts windows overlap; official canonical total query needed.",
+    "No automatic summation of swaps across assets until repeated-token/swap-leg grain is verified.",
+    "Volume asset double-leg convention remains unverified. Do not divide by two or label unique economic turnover.",
+    "Public and confidential dimensions are provider classifications. Their balances require scope reconciliation before economic total is asserted. Gross-fee official method specifically hardcodes protocol fees as public; this is not independently observed privacy attribution.",
+    "TVL SQL guards repeats, but verified technical uniqueness does not prove economically disjoint custody claims.",
+    "SUM ignores missing values: results explicitly priced subset, not complete notional.",
+    "No source-price backfill: query33 mismatches reported USD against quantity times source daily price in 13095/14452 confidential and 45816/51997 public comparable rows.",
+    "267 positive-token unpriced observations differ from 216139 rows with neither volume field; sparse fields are not zero activity.",
+    "Gross accrued fees, wallet receipt sweeps, partner payouts, token purchases and burns are separate ledgers. Cash receipts may exceed fees on sweep days.",
+    "No verified DefiLlama Intents TVL adapter found; official Dune TVL query is the primary reconciliation target."
+  ],
+  "value_capture_next": [
+    "Use matched complete windows to compare reported fees / reported priced volume as observed gross fee intensity in bps, with independent numerator and denominator scope coverage.",
+    "Retained USD wallet receipts / accrued gross USD fees is a cash realization comparison over matched windows, not daily take rate; test 7/30/90-day lag alignment and receipt concentration.",
+    "Report rolling fee medians and top-five-day fee share alongside totals to expose spike dependence, using observed days and explicit missing-day completeness.",
+    "Intents balances / volume is a stock-flow comparison only after source-specific custody and swap-leg scope are verified; never imply revenue or executable liquidity.",
+    "Do not infer genuine unique users, net deposits, executed buybacks or token burns from these aggregated source fields."
+  ],
+  "official_fee_classification": {
+    "url": "https://dune.com/queries/6162606",
+    "evidence": "Lead inspected official SQL in Dune UI; fragments below preserve supplied text, not a claim to full SQL export.",
+    "protocol_fragment": "SELECT date_at, 'protocol fee' AS referral, 'public' AS source_type, CAST(amount_fee AS double) AS fee FROM dune.near.dataset_near_intents_protocol_fees WHERE date_at < current_date",
+    "affiliate_fragment": "SELECT date_at, referral, source_type, CAST(fee AS double) AS fee FROM dune.near.dataset_near_intents_fees",
+    "aggregation": "Official SQL UNIONs protocol and affiliate components then aggregates positive fees by public/confidential source_type. Protocol public attribution is a SQL literal, not observed raw privacy metadata.",
+    "implementation": "SQL36 retains source_type=unattributed_protocol and adds official_source_type=public for protocol. Affiliate official_source_type follows source_type. SQL36 keeps zero observations and invalid/missing diagnostics; positive fee totals align numerically with positive-only aggregation when no negatives are admitted."
+  }
+}

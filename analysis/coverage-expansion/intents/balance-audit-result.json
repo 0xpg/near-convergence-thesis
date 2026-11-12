@@ -1,0 +1,37 @@
+{
+  "executedEditor": "https://dune.com/queries/9117785",
+  "sql": "37_balance_grain_summary.sql",
+  "reviewedOn": "2026-11-12",
+  "columns": [
+    "source_type",
+    "token_day_keys",
+    "repeated_balance_keys",
+    "repeated_positive_balance_keys",
+    "invalid_numeric_rows",
+    "unpriced_positive_balances",
+    "first_day",
+    "last_day"
+  ],
+  "rows": [
+    [
+      "public",
+      "209840",
+      "0",
+      "0",
+      "0",
+      "4858",
+      "2024-10-18 00:00:00",
+      "2026-11-11 00:00:00"
+    ],
+    [
+      "confidential",
+      "74753",
+      "0",
+      "0",
+      "0",
+      "481",
+      "2026-02-16 00:00:00",
+      "2026-11-11 00:00:00"
+    ]
+  ]
+}

@@ -1,0 +1,70 @@
+{
+  "query": "https://dune.com/queries/9117913",
+  "reviewedOn": "2026-11-12",
+  "columns": [
+    "category",
+    "genesis_near",
+    "genesis_share_pct",
+    "genesis_date",
+    "scheduled_unlock_start",
+    "measurement"
+  ],
+  "rows": [
+    [
+      "Project backers",
+      "237000000",
+      "23.7",
+      "2020-04-22 00:00:00",
+      "2020-10-13 00:00:00",
+      "Historical announced genesis allocation; not current ownership"
+    ],
+    [
+      "Community grants and programs",
+      "172000000",
+      "17.2",
+      "2020-04-22 00:00:00",
+      "2020-10-13 00:00:00",
+      "Historical announced genesis allocation; not current ownership"
+    ],
+    [
+      "Core contributors",
+      "140000000",
+      "14",
+      "2020-04-22 00:00:00",
+      "2020-10-13 00:00:00",
+      "Historical announced genesis allocation; not current ownership"
+    ],
+    [
+      "Community sale",
+      "120000000",
+      "12",
+      "2020-04-22 00:00:00",
+      "2020-10-13 00:00:00",
+      "Historical announced genesis allocation; not current ownership"
+    ],
+    [
+      "Early ecosystem",
+      "117000000",
+      "11.7",
+      "2020-04-22 00:00:00",
+      "2020-10-13 00:00:00",
+      "Historical announced genesis allocation; not current ownership"
+    ],
+    [
+      "Operations grants",
+      "114000000",
+      "11.4",
+      "2020-04-22 00:00:00",
+      "2020-10-13 00:00:00",
+      "Historical announced genesis allocation; not current ownership"
+    ],
+    [
+      "Foundation endowment",
+      "100000000",
+      "10",
+      "2020-04-22 00:00:00",
+      "2020-10-13 00:00:00",
+      "Historical announced genesis allocation; not current ownership"
+    ]
+  ]
+}
