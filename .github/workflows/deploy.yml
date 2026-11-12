@@ -41,3 +41,14 @@ jobs:
             exit 1
           fi
           npx --yes wrangler@4.157.0 pages deploy dist-public --project-name near-evidence --branch main
+      - name: Verify live routes
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+        run: |
+          for route in thesis lab research methodology; do
+            expected="https://near-evidence.pages.dev/$route"
+            actual=$(curl --fail --silent --show-error --location --retry 3 --max-time 30 --output /dev/null --write-out '%{url_effective}' "$expected")
+            if [ "$actual" != "$expected" ]; then
+              echo "::error::Expected $expected, reached $actual"
+              exit 1
+            fi
+          done
