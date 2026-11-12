@@ -46,7 +46,11 @@ jobs:
         run: |
           for route in thesis lab research methodology; do
             expected="https://near-evidence.pages.dev/$route"
-            actual=$(curl --fail --silent --show-error --location --retry 3 --max-time 30 --output /dev/null --write-out '%{url_effective}' "$expected")
+            for attempt in {1..10}; do
+              actual=$(curl --fail --silent --show-error --location --retry 2 --max-time 15 --output /dev/null --write-out '%{url_effective}' "$expected") || actual=''
+              if [ "$actual" = "$expected" ]; then break; fi
+              sleep 3
+            done
             if [ "$actual" != "$expected" ]; then
               echo "::error::Expected $expected, reached $actual"
               exit 1
