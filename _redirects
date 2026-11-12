@@ -5,7 +5,7 @@
 /explore.html /research#explore 301
 /explore /research#explore 301
 /report /thesis 301
-/thesis /index.html 200
-/lab /index.html 200
-/research /index.html 200
-/methodology /index.html 200
+/thesis / 200
+/lab / 200
+/research / 200
+/methodology / 200
