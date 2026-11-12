@@ -1,0 +1,3667 @@
+{
+  "version": "glance-daily-2026-11-12-v1",
+  "asOf": "2026-11-12",
+  "retrievedAt": "2026-11-12T05:08:32Z",
+  "sourceCutoff": "2026-11-10",
+  "queries": {
+    "intents": "https://dune.com/queries/9077358",
+    "revenue": "https://dune.com/queries/9077309",
+    "ecosystem": "https://dune.com/queries/9077345",
+    "daily": "https://dune.com/queries/9114284"
+  },
+  "lineage": [
+    {
+      "file": "data/glance-sources/glance-daily-dune.json",
+      "url": "https://dune.com/queries/9114284",
+      "retrievedAt": "2026-11-12T05:08:32Z",
+      "sha256": "69985b6eb766feea28a1297ab95f3683932f0d95b286d75fd781a5539455a1e2"
+    }
+  ],
+  "method": "Executed Dune daily result snapshot, including explicit source-row quality. NEAR fee and receipt amounts converted at daily provider prices. Accrual and receipt timing differ. Missing optional counts remain null; financial outputs use complete financial inputs. Shared upstream lineage is not independent validation.",
+  "rows": [
+    {
+      "day": "2025-11-12",
+      "volumeUsd": 166823191.66912067,
+      "grossFeesUsd": 217516,
+      "capturedUsd": 0,
+      "swaps": 177768,
+      "transactions": 4337790,
+      "emissionsNear": 87658.32664932638,
+      "totalRevenueNear": 2329.757491477195
+    },
+    {
+      "day": "2025-11-13",
+      "volumeUsd": 126239340.25708236,
+      "grossFeesUsd": 238122,
+      "capturedUsd": 151339,
+      "swaps": 183377,
+      "transactions": 4351120,
+      "emissionsNear": 87663.61541237777,
+      "totalRevenueNear": 62106.4801686572
+    },
+    {
+      "day": "2025-11-14",
+      "volumeUsd": 152038949.112487,
+      "grossFeesUsd": 391517,
+      "capturedUsd": 0,
+      "swaps": 214451,
+      "transactions": 4363339,
+      "emissionsNear": 87668.9579061816,
+      "totalRevenueNear": 2362.2948550175242
+    },
+    {
+      "day": "2025-11-15",
+      "volumeUsd": 119737142.15521516,
+      "grossFeesUsd": 231261,
+      "capturedUsd": 0,
+      "swaps": 198486,
+      "transactions": 4328149,
+      "emissionsNear": 87674.28993449478,
+      "totalRevenueNear": 2339.430746451378
+    },
+    {
+      "day": "2025-11-16",
+      "volumeUsd": 125401003.03464334,
+      "grossFeesUsd": 275755,
+      "capturedUsd": 0,
+      "swaps": 183232,
+      "transactions": 4284834,
+      "emissionsNear": 87681.51372910601,
+      "totalRevenueNear": 2291.036690762777
+    },
+    {
+      "day": "2025-11-17",
+      "volumeUsd": 120198784.42137755,
+      "grossFeesUsd": 323960,
+      "capturedUsd": 0,
+      "swaps": 273016,
+      "transactions": 4366874,
+      "emissionsNear": 87686.87345360825,
+      "totalRevenueNear": 2394.435824975527
+    },
+    {
+      "day": "2025-11-18",
+      "volumeUsd": 128183489.7892076,
+      "grossFeesUsd": 293219,
+      "capturedUsd": 0,
+      "swaps": 96674,
+      "transactions": 4266045,
+      "emissionsNear": 87692.16466748429,
+      "totalRevenueNear": 2260.422257065996
+    },
+    {
+      "day": "2025-11-19",
+      "volumeUsd": 137683579.0571515,
+      "grossFeesUsd": 329928.99999999994,
+      "capturedUsd": 0,
+      "swaps": 125281,
+      "transactions": 4274079,
+      "emissionsNear": 87697.52228069784,
+      "totalRevenueNear": 2298.776884047372
+    },
+    {
+      "day": "2025-11-20",
+      "volumeUsd": 176547926.50131416,
+      "grossFeesUsd": 420152,
+      "capturedUsd": 0,
+      "swaps": 209129,
+      "transactions": 4457064,
+      "emissionsNear": 87704.60383178128,
+      "totalRevenueNear": 2385.200861978984
+    },
+    {
+      "day": "2025-11-21",
+      "volumeUsd": 264962974.83344543,
+      "grossFeesUsd": 590043,
+      "capturedUsd": 193533,
+      "swaps": 164353,
+      "transactions": 4286527,
+      "emissionsNear": 87709.89926187471,
+      "totalRevenueNear": 95709.23859676062
+    },
+    {
+      "day": "2025-11-22",
+      "volumeUsd": 123030746.61064814,
+      "grossFeesUsd": 435967,
+      "capturedUsd": 0,
+      "swaps": 208892,
+      "transactions": 4333041,
+      "emissionsNear": 87715.1965960169,
+      "totalRevenueNear": 2306.8368495056106
+    },
+    {
+      "day": "2025-11-23",
+      "volumeUsd": 103434265.01639788,
+      "grossFeesUsd": 468066,
+      "capturedUsd": 0,
+      "swaps": 203262,
+      "transactions": 4315430,
+      "emissionsNear": 87720.48405817963,
+      "totalRevenueNear": 2266.6027351122116
+    },
+    {
+      "day": "2025-11-24",
+      "volumeUsd": 94669419.89216712,
+      "grossFeesUsd": 192067,
+      "capturedUsd": 0,
+      "swaps": 104446,
+      "transactions": 4222699,
+      "emissionsNear": 87727.64008389285,
+      "totalRevenueNear": 2229.6191655772814
+    },
+    {
+      "day": "2025-11-25",
+      "volumeUsd": 88492001.53164896,
+      "grossFeesUsd": 167087,
+      "capturedUsd": 0,
+      "swaps": 216011,
+      "transactions": 4331713,
+      "emissionsNear": 87732.98333566109,
+      "totalRevenueNear": 2304.1881510112607
+    },
+    {
+      "day": "2025-11-26",
+      "volumeUsd": 74243200.01087427,
+      "grossFeesUsd": 154790,
+      "capturedUsd": 0,
+      "swaps": 119761,
+      "transactions": 3828036,
+      "emissionsNear": 87738.28361217825,
+      "totalRevenueNear": 2100.1658039859008
+    },
+    {
+      "day": "2025-11-27",
+      "volumeUsd": 74122938.62033418,
+      "grossFeesUsd": 186666,
+      "capturedUsd": 0,
+      "swaps": 117133,
+      "transactions": 4332084,
+      "emissionsNear": 87743.62919307887,
+      "totalRevenueNear": 2234.39487948108
+    },
+    {
+      "day": "2025-11-28",
+      "volumeUsd": 94018131.52309123,
+      "grossFeesUsd": 190984,
+      "capturedUsd": 0,
+      "swaps": 119087,
+      "transactions": 4413456,
+      "emissionsNear": 87750.733212578,
+      "totalRevenueNear": 2345.6475888398827
+    },
+    {
+      "day": "2025-11-29",
+      "volumeUsd": 51775372.268528804,
+      "grossFeesUsd": 96858,
+      "capturedUsd": 0,
+      "swaps": 69431,
+      "transactions": 4031761,
+      "emissionsNear": 87756.0025822864,
+      "totalRevenueNear": 2112.3561822922948
+    },
+    {
+      "day": "2025-11-30",
+      "volumeUsd": 53009307.987234995,
+      "grossFeesUsd": 92558,
+      "capturedUsd": 0,
+      "swaps": 70737,
+      "transactions": 4107373,
+      "emissionsNear": 87761.28105516481,
+      "totalRevenueNear": 2119.556715475206
+    },
+    {
+      "day": "2025-12-01",
+      "volumeUsd": 134435721.68056086,
+      "grossFeesUsd": 256228,
+      "capturedUsd": 176629,
+      "swaps": 129136,
+      "transactions": 4228761,
+      "emissionsNear": 87768.36849509423,
+      "totalRevenueNear": 99649.43793801367
+    },
+    {
+      "day": "2025-12-02",
+      "volumeUsd": 112191090.54447994,
+      "grossFeesUsd": 323061,
+      "capturedUsd": 0,
+      "swaps": 128273,
+      "transactions": 4081654,
+      "emissionsNear": 87773.75449052735,
+      "totalRevenueNear": 2211.149781590546
+    },
+    {
+      "day": "2025-12-03",
+      "volumeUsd": 78039894.454557,
+      "grossFeesUsd": 354339,
+      "capturedUsd": 0,
+      "swaps": 145399,
+      "transactions": 4105359,
+      "emissionsNear": 87779.60818450962,
+      "totalRevenueNear": 2206.9477118400605
+    },
+    {
+      "day": "2025-12-04",
+      "volumeUsd": 51226691.5450775,
+      "grossFeesUsd": 115604,
+      "capturedUsd": 0,
+      "swaps": 183320,
+      "transactions": 4216807,
+      "emissionsNear": 87785.0338194527,
+      "totalRevenueNear": 2288.302324065654
+    },
+    {
+      "day": "2025-12-05",
+      "volumeUsd": 74324124.37249537,
+      "grossFeesUsd": 152645,
+      "capturedUsd": 0,
+      "swaps": 90772,
+      "transactions": 3983361,
+      "emissionsNear": 87790.32156283077,
+      "totalRevenueNear": 2139.876872736327
+    },
+    {
+      "day": "2025-12-06",
+      "volumeUsd": 50733236.98448853,
+      "grossFeesUsd": 87813,
+      "capturedUsd": 0,
+      "swaps": 54644,
+      "transactions": 3861406,
+      "emissionsNear": 87795.64574270234,
+      "totalRevenueNear": 2047.2673893010772
+    },
+    {
+      "day": "2025-12-07",
+      "volumeUsd": 44864078.646434546,
+      "grossFeesUsd": 82587,
+      "capturedUsd": 0,
+      "swaps": 50276,
+      "transactions": 3879668,
+      "emissionsNear": 87802.80623432594,
+      "totalRevenueNear": 2048.62256137878
+    },
+    {
+      "day": "2025-12-08",
+      "volumeUsd": 47372025.18497801,
+      "grossFeesUsd": 107673,
+      "capturedUsd": 0,
+      "swaps": 62932,
+      "transactions": 3919127,
+      "emissionsNear": 87808.1456196648,
+      "totalRevenueNear": 2097.9558017127188
+    },
+    {
+      "day": "2025-12-09",
+      "volumeUsd": 78166394.40347688,
+      "grossFeesUsd": 180522,
+      "capturedUsd": 0,
+      "swaps": 106397,
+      "transactions": 3969897,
+      "emissionsNear": 87813.65330154193,
+      "totalRevenueNear": 2052.4071504259928
+    },
+    {
+      "day": "2025-12-10",
+      "volumeUsd": 57386947.98263556,
+      "grossFeesUsd": 125841,
+      "capturedUsd": 0,
+      "swaps": 80965,
+      "transactions": 3936999,
+      "emissionsNear": 87819.13345000442,
+      "totalRevenueNear": 1947.3648666727847
+    },
+    {
+      "day": "2025-12-11",
+      "volumeUsd": 59215643.69519238,
+      "grossFeesUsd": 133462,
+      "capturedUsd": 0,
+      "swaps": 85287,
+      "transactions": 3881276,
+      "emissionsNear": 87824.53340643256,
+      "totalRevenueNear": 1931.027305745893
+    },
+    {
+      "day": "2025-12-12",
+      "volumeUsd": 52073806.94827023,
+      "grossFeesUsd": 114243,
+      "capturedUsd": 0,
+      "swaps": 60996,
+      "transactions": 3748277,
+      "emissionsNear": 87831.66073224628,
+      "totalRevenueNear": 1852.616698297665
+    },
+    {
+      "day": "2025-12-13",
+      "volumeUsd": 45664757.786850624,
+      "grossFeesUsd": 95561,
+      "capturedUsd": 0,
+      "swaps": 52622,
+      "transactions": 3626525,
+      "emissionsNear": 87836.96931481893,
+      "totalRevenueNear": 1768.9021646442445
+    },
+    {
+      "day": "2025-12-14",
+      "volumeUsd": 47999265.82366441,
+      "grossFeesUsd": 125808.00000000001,
+      "capturedUsd": 0,
+      "swaps": 54429,
+      "transactions": 3780233,
+      "emissionsNear": 87842.27736442593,
+      "totalRevenueNear": 1848.9323082494946
+    },
+    {
+      "day": "2025-12-15",
+      "volumeUsd": 79369930.17685965,
+      "grossFeesUsd": 171223,
+      "capturedUsd": 0,
+      "swaps": 76678,
+      "transactions": 3843544,
+      "emissionsNear": 87847.90384432494,
+      "totalRevenueNear": 1919.5862815492794
+    },
+    {
+      "day": "2025-12-16",
+      "volumeUsd": 59632899.44458895,
+      "grossFeesUsd": 141777,
+      "capturedUsd": 0,
+      "swaps": 68367,
+      "transactions": 3870281,
+      "emissionsNear": 87855.05391269947,
+      "totalRevenueNear": 1917.9186939035853
+    },
+    {
+      "day": "2025-12-17",
+      "volumeUsd": 71874331.63054878,
+      "grossFeesUsd": 151345,
+      "capturedUsd": 0,
+      "swaps": 58639,
+      "transactions": 3839700,
+      "emissionsNear": 87860.42047881884,
+      "totalRevenueNear": 1899.9901266473744
+    },
+    {
+      "day": "2025-12-18",
+      "volumeUsd": 60123310.90890866,
+      "grossFeesUsd": 137313,
+      "capturedUsd": 0,
+      "swaps": 58076,
+      "transactions": 4026913,
+      "emissionsNear": 87865.7364564517,
+      "totalRevenueNear": 1945.8066919033672
+    },
+    {
+      "day": "2025-12-19",
+      "volumeUsd": 95832368.10198134,
+      "grossFeesUsd": 152508,
+      "capturedUsd": 0,
+      "swaps": 56099,
+      "transactions": 3876577,
+      "emissionsNear": 87872.88397176274,
+      "totalRevenueNear": 1914.216690711532
+    },
+    {
+      "day": "2025-12-20",
+      "volumeUsd": 49570638.25005926,
+      "grossFeesUsd": 91615,
+      "capturedUsd": 0,
+      "swaps": 54514,
+      "transactions": 3836808,
+      "emissionsNear": 87878.20357412295,
+      "totalRevenueNear": 1848.3781942264097
+    },
+    {
+      "day": "2025-12-21",
+      "volumeUsd": 29810274.637221113,
+      "grossFeesUsd": 57620,
+      "capturedUsd": 0,
+      "swaps": 58057,
+      "transactions": 3725545,
+      "emissionsNear": 87883.7559390066,
+      "totalRevenueNear": 1842.5599609190842
+    },
+    {
+      "day": "2025-12-22",
+      "volumeUsd": 67935455.30123422,
+      "grossFeesUsd": 117025.00000000001,
+      "capturedUsd": 0,
+      "swaps": 63750,
+      "transactions": 3824384,
+      "emissionsNear": 87889.3058784693,
+      "totalRevenueNear": 1883.9299699231185
+    },
+    {
+      "day": "2025-12-23",
+      "volumeUsd": 50636986.50626786,
+      "grossFeesUsd": 95164,
+      "capturedUsd": 0,
+      "swaps": 48833,
+      "transactions": 3755622,
+      "emissionsNear": 87895.1766635956,
+      "totalRevenueNear": 1868.2778297212321
+    },
+    {
+      "day": "2025-12-24",
+      "volumeUsd": 86538455.94029725,
+      "grossFeesUsd": 107243.99999999999,
+      "capturedUsd": 0,
+      "swaps": 56998,
+      "transactions": 3760062,
+      "emissionsNear": 87900.99922535637,
+      "totalRevenueNear": 1865.224806180856
+    },
+    {
+      "day": "2025-12-25",
+      "volumeUsd": 73475677.70572509,
+      "grossFeesUsd": 76459,
+      "capturedUsd": 0,
+      "swaps": 57162,
+      "transactions": 3802237,
+      "emissionsNear": 87906.57028954466,
+      "totalRevenueNear": 1859.5795796945067
+    },
+    {
+      "day": "2025-12-26",
+      "volumeUsd": 70276985.61900449,
+      "grossFeesUsd": 92306,
+      "capturedUsd": 0,
+      "swaps": 58155,
+      "transactions": 3649009,
+      "emissionsNear": 87912.44347613564,
+      "totalRevenueNear": 1785.2722394037185
+    },
+    {
+      "day": "2025-12-27",
+      "volumeUsd": 70474169.01997574,
+      "grossFeesUsd": 66344,
+      "capturedUsd": 0,
+      "swaps": 62389,
+      "transactions": 3645108,
+      "emissionsNear": 87917.76616447164,
+      "totalRevenueNear": 1821.9039400093093
+    },
+    {
+      "day": "2025-12-28",
+      "volumeUsd": 41028033.454945184,
+      "grossFeesUsd": 63261.99999999999,
+      "capturedUsd": 0,
+      "swaps": 56216,
+      "transactions": 3604294,
+      "emissionsNear": 87924.94296407532,
+      "totalRevenueNear": 1801.840762186157
+    },
+    {
+      "day": "2025-12-29",
+      "volumeUsd": 64147270.43166332,
+      "grossFeesUsd": 121464,
+      "capturedUsd": 0,
+      "swaps": 74239,
+      "transactions": 3613999,
+      "emissionsNear": 87930.24917397343,
+      "totalRevenueNear": 1832.0815558232955
+    },
+    {
+      "day": "2025-12-30",
+      "volumeUsd": 58083704.39929454,
+      "grossFeesUsd": 105149,
+      "capturedUsd": 0,
+      "swaps": 79287,
+      "transactions": 3608436,
+      "emissionsNear": 87935.70425542173,
+      "totalRevenueNear": 1826.1351179620344
+    },
+    {
+      "day": "2025-12-31",
+      "volumeUsd": 48671823.318785295,
+      "grossFeesUsd": 113353,
+      "capturedUsd": 0,
+      "swaps": 131352,
+      "transactions": 3621035,
+      "emissionsNear": 87941.12443558361,
+      "totalRevenueNear": 1853.0728947292946
+    },
+    {
+      "day": "2026-01-01",
+      "volumeUsd": 30112461.107266817,
+      "grossFeesUsd": 58839.00000000001,
+      "capturedUsd": 0,
+      "swaps": 86963,
+      "transactions": 3506624,
+      "emissionsNear": 87948.34936284779,
+      "totalRevenueNear": 1786.3352925062484
+    },
+    {
+      "day": "2026-01-02",
+      "volumeUsd": 61416427.13091065,
+      "grossFeesUsd": 118866,
+      "capturedUsd": 0,
+      "swaps": 105670,
+      "transactions": 3593062,
+      "emissionsNear": 87953.71238339623,
+      "totalRevenueNear": 1830.6968234043156
+    },
+    {
+      "day": "2026-01-03",
+      "volumeUsd": 44693641.25704795,
+      "grossFeesUsd": 96420,
+      "capturedUsd": 0,
+      "swaps": 79680,
+      "transactions": 3520716,
+      "emissionsNear": 87959.05267064087,
+      "totalRevenueNear": 1792.6818952420815
+    },
+    {
+      "day": "2026-01-04",
+      "volumeUsd": 48510978.56354865,
+      "grossFeesUsd": 107779,
+      "capturedUsd": 0,
+      "swaps": 89909,
+      "transactions": 3541417,
+      "emissionsNear": 87964.42006328666,
+      "totalRevenueNear": 1809.0271785541272
+    },
+    {
+      "day": "2026-01-05",
+      "volumeUsd": 100496101.64361718,
+      "grossFeesUsd": 201200,
+      "capturedUsd": 0,
+      "swaps": 114744,
+      "transactions": 3647154,
+      "emissionsNear": 87971.60217183147,
+      "totalRevenueNear": 1880.1745034547528
+    },
+    {
+      "day": "2026-01-06",
+      "volumeUsd": 98327917.849661,
+      "grossFeesUsd": 165739,
+      "capturedUsd": 0,
+      "swaps": 110935,
+      "transactions": 3683216,
+      "emissionsNear": 87976.95186551043,
+      "totalRevenueNear": 1894.8463668278423
+    },
+    {
+      "day": "2026-01-07",
+      "volumeUsd": 111573297.62733445,
+      "grossFeesUsd": 161099,
+      "capturedUsd": 0,
+      "swaps": 93833,
+      "transactions": 3623519,
+      "emissionsNear": 87982.30985452872,
+      "totalRevenueNear": 1839.0483684442574
+    },
+    {
+      "day": "2026-01-08",
+      "volumeUsd": 108629297.6705721,
+      "grossFeesUsd": 177370,
+      "capturedUsd": 0,
+      "swaps": 146160,
+      "transactions": 3718695,
+      "emissionsNear": 87987.65289312045,
+      "totalRevenueNear": 1904.5245837249283
+    },
+    {
+      "day": "2026-01-09",
+      "volumeUsd": 99428105.3085974,
+      "grossFeesUsd": 152673,
+      "capturedUsd": 0,
+      "swaps": 91666,
+      "transactions": 3594342,
+      "emissionsNear": 87994.81579337067,
+      "totalRevenueNear": 1832.5981829370503
+    },
+    {
+      "day": "2026-01-10",
+      "volumeUsd": 55959110.48346172,
+      "grossFeesUsd": 98073,
+      "capturedUsd": 0,
+      "swaps": 112003,
+      "transactions": 3548648,
+      "emissionsNear": 88000.16847023879,
+      "totalRevenueNear": 1810.480277998113
+    },
+    {
+      "day": "2026-01-11",
+      "volumeUsd": 33039582.4117225,
+      "grossFeesUsd": 77356,
+      "capturedUsd": 0,
+      "swaps": 57804,
+      "transactions": 3412165,
+      "emissionsNear": 88005.47824439047,
+      "totalRevenueNear": 1748.2861089660487
+    },
+    {
+      "day": "2026-01-12",
+      "volumeUsd": 85469211.97546862,
+      "grossFeesUsd": 137195,
+      "capturedUsd": 0,
+      "swaps": 99487,
+      "transactions": 3523288,
+      "emissionsNear": 88012.58344101015,
+      "totalRevenueNear": 1848.2375059159178
+    },
+    {
+      "day": "2026-01-13",
+      "volumeUsd": 120030789.90437171,
+      "grossFeesUsd": 188522,
+      "capturedUsd": 0,
+      "swaps": 97776,
+      "transactions": 2826774,
+      "emissionsNear": 88017.92758746035,
+      "totalRevenueNear": 1477.1079130683288
+    },
+    {
+      "day": "2026-01-14",
+      "volumeUsd": 108053470.9753708,
+      "grossFeesUsd": 225804,
+      "capturedUsd": 0,
+      "swaps": 87138,
+      "transactions": 4277725,
+      "emissionsNear": 88023.21821731227,
+      "totalRevenueNear": 2205.2199313928477
+    },
+    {
+      "day": "2026-01-15",
+      "volumeUsd": 99635410.08535263,
+      "grossFeesUsd": 128585,
+      "capturedUsd": 355826,
+      "swaps": 43600,
+      "transactions": 3440557,
+      "emissionsNear": 88030.34911223024,
+      "totalRevenueNear": 199241.96144462496
+    },
+    {
+      "day": "2026-01-16",
+      "volumeUsd": 113450680.5847871,
+      "grossFeesUsd": 140681,
+      "capturedUsd": 0,
+      "swaps": 56699,
+      "transactions": 3413354,
+      "emissionsNear": 88035.65171067034,
+      "totalRevenueNear": 1767.025935884936
+    },
+    {
+      "day": "2026-01-17",
+      "volumeUsd": 42565422.907065086,
+      "grossFeesUsd": 81025,
+      "capturedUsd": 0,
+      "swaps": 55391,
+      "transactions": 3392056,
+      "emissionsNear": 88040.94949134342,
+      "totalRevenueNear": 1759.5003208836736
+    },
+    {
+      "day": "2026-01-18",
+      "volumeUsd": 40566228.71580201,
+      "grossFeesUsd": 89816,
+      "capturedUsd": 0,
+      "swaps": 56374,
+      "transactions": 3417900,
+      "emissionsNear": 88046.25310968628,
+      "totalRevenueNear": 1809.1287972732694
+    },
+    {
+      "day": "2026-01-19",
+      "volumeUsd": 115633156.15044622,
+      "grossFeesUsd": 173881,
+      "capturedUsd": 0,
+      "swaps": 127562,
+      "transactions": 3511364,
+      "emissionsNear": 88053.38325876748,
+      "totalRevenueNear": 1878.1391618156576
+    },
+    {
+      "day": "2026-01-20",
+      "volumeUsd": 124704516.88290307,
+      "grossFeesUsd": 223367,
+      "capturedUsd": 0,
+      "swaps": 91880,
+      "transactions": 3577884,
+      "emissionsNear": 88058.69992383575,
+      "totalRevenueNear": 1863.276131566053
+    },
+    {
+      "day": "2026-01-21",
+      "volumeUsd": 119329721.04703051,
+      "grossFeesUsd": 190157,
+      "capturedUsd": 0,
+      "swaps": 84964,
+      "transactions": 3494194,
+      "emissionsNear": 88064.33874677612,
+      "totalRevenueNear": 1821.6398830304229
+    },
+    {
+      "day": "2026-01-22",
+      "volumeUsd": 95590447.86757246,
+      "grossFeesUsd": 121853,
+      "capturedUsd": 0,
+      "swaps": 78637,
+      "transactions": 3392561,
+      "emissionsNear": 88069.63837389892,
+      "totalRevenueNear": 1776.9912844131227
+    },
+    {
+      "day": "2026-01-23",
+      "volumeUsd": 90493377.9162219,
+      "grossFeesUsd": 115620.99999999999,
+      "capturedUsd": 0,
+      "swaps": 63199,
+      "transactions": 3372711,
+      "emissionsNear": 88074.99952254299,
+      "totalRevenueNear": 1758.5052719374657
+    },
+    {
+      "day": "2026-01-24",
+      "volumeUsd": 47244474.411378965,
+      "grossFeesUsd": 81665,
+      "capturedUsd": 0,
+      "swaps": 57923,
+      "transactions": 3426823,
+      "emissionsNear": 88082.15839268436,
+      "totalRevenueNear": 1757.925533491053
+    },
+    {
+      "day": "2026-01-25",
+      "volumeUsd": 81241597.28091106,
+      "grossFeesUsd": 193715,
+      "capturedUsd": 0,
+      "swaps": 63934,
+      "transactions": 3448570,
+      "emissionsNear": 88087.4732335028,
+      "totalRevenueNear": 1775.9989607168488
+    },
+    {
+      "day": "2026-01-26",
+      "volumeUsd": 103470714.83328292,
+      "grossFeesUsd": 178695,
+      "capturedUsd": 0,
+      "swaps": 81210,
+      "transactions": 3485043,
+      "emissionsNear": 88092.77185534303,
+      "totalRevenueNear": 1798.1378121051844
+    },
+    {
+      "day": "2026-01-27",
+      "volumeUsd": 121184981.25703251,
+      "grossFeesUsd": 143871,
+      "capturedUsd": 0,
+      "swaps": 84849,
+      "transactions": 3467652,
+      "emissionsNear": 88099.92011082114,
+      "totalRevenueNear": 1799.8989492957428
+    },
+    {
+      "day": "2026-01-28",
+      "volumeUsd": 95583328.65175244,
+      "grossFeesUsd": 108492,
+      "capturedUsd": 0,
+      "swaps": 95268,
+      "transactions": 3480999,
+      "emissionsNear": 88105.27102199932,
+      "totalRevenueNear": 1809.9356154720558
+    },
+    {
+      "day": "2026-01-29",
+      "volumeUsd": 92821296.17238635,
+      "grossFeesUsd": 111221,
+      "capturedUsd": 0,
+      "swaps": 72801,
+      "transactions": 3430439,
+      "emissionsNear": 88110.64205545056,
+      "totalRevenueNear": 1803.7422637083976
+    },
+    {
+      "day": "2026-01-30",
+      "volumeUsd": 85350915.01882543,
+      "grossFeesUsd": 154979,
+      "capturedUsd": 0,
+      "swaps": 88579,
+      "transactions": 3454330,
+      "emissionsNear": 88117.88843623223,
+      "totalRevenueNear": 1843.8950727086597
+    },
+    {
+      "day": "2026-01-31",
+      "volumeUsd": 96869850.90229501,
+      "grossFeesUsd": 205657.99999999997,
+      "capturedUsd": 3414,
+      "swaps": 91244,
+      "transactions": 3457212,
+      "emissionsNear": 88123.23215542786,
+      "totalRevenueNear": 4455.550758338449
+    },
+    {
+      "day": "2026-02-01",
+      "volumeUsd": 73457729.96066545,
+      "grossFeesUsd": 139835,
+      "capturedUsd": 3109,
+      "swaps": 71881,
+      "transactions": 3410196,
+      "emissionsNear": 88128.5893539832,
+      "totalRevenueNear": 4357.876007741777
+    },
+    {
+      "day": "2026-02-02",
+      "volumeUsd": 134039276.94667467,
+      "grossFeesUsd": 231800,
+      "capturedUsd": 274415,
+      "swaps": 99554,
+      "transactions": 3391098,
+      "emissionsNear": 88133.99460545603,
+      "totalRevenueNear": 235554.06349780833
+    },
+    {
+      "day": "2026-02-03",
+      "volumeUsd": 126830874.08803506,
+      "grossFeesUsd": 159597,
+      "capturedUsd": 7492,
+      "swaps": 120164,
+      "transactions": 3685228,
+      "emissionsNear": 88141.19679246945,
+      "totalRevenueNear": 8120.53298291779
+    },
+    {
+      "day": "2026-02-04",
+      "volumeUsd": 141431208.48218918,
+      "grossFeesUsd": 232699,
+      "capturedUsd": 13623.999999999998,
+      "swaps": 117288,
+      "transactions": 3595251,
+      "emissionsNear": 88146.5300289637,
+      "totalRevenueNear": 13462.998124742378
+    },
+    {
+      "day": "2026-02-05",
+      "volumeUsd": 200722798.68221062,
+      "grossFeesUsd": 347423,
+      "capturedUsd": 8059,
+      "swaps": 124741,
+      "transactions": 3637869,
+      "emissionsNear": 88151.81085419346,
+      "totalRevenueNear": 8885.86051027839
+    },
+    {
+      "day": "2026-02-06",
+      "volumeUsd": 162578725.90660617,
+      "grossFeesUsd": 253758,
+      "capturedUsd": 77249,
+      "swaps": 123578,
+      "transactions": 3562713,
+      "emissionsNear": 88158.91485769744,
+      "totalRevenueNear": 80832.0725945931
+    },
+    {
+      "day": "2026-02-07",
+      "volumeUsd": 90602908.48475112,
+      "grossFeesUsd": 129336,
+      "capturedUsd": 3865,
+      "swaps": 79762,
+      "transactions": 3447863,
+      "emissionsNear": 88164.18866660389,
+      "totalRevenueNear": 5352.938403000037
+    },
+    {
+      "day": "2026-02-08",
+      "volumeUsd": 61852639.63349157,
+      "grossFeesUsd": 87138.99999999999,
+      "capturedUsd": 2489.9999999999995,
+      "swaps": 77831,
+      "transactions": 3441513,
+      "emissionsNear": 88169.45225731975,
+      "totalRevenueNear": 4096.807323369056
+    },
+    {
+      "day": "2026-02-09",
+      "volumeUsd": 92108923.03826727,
+      "grossFeesUsd": 135715,
+      "capturedUsd": 9593,
+      "swaps": 77206,
+      "transactions": 3435600,
+      "emissionsNear": 88176.52862201977,
+      "totalRevenueNear": 10994.060672137626
+    },
+    {
+      "day": "2026-02-10",
+      "volumeUsd": 84428988.34444371,
+      "grossFeesUsd": 110126,
+      "capturedUsd": 8296,
+      "swaps": 69748,
+      "transactions": 3534923,
+      "emissionsNear": 88181.7884216848,
+      "totalRevenueNear": 9824.862398974128
+    },
+    {
+      "day": "2026-02-11",
+      "volumeUsd": 100959092.35962445,
+      "grossFeesUsd": 160738,
+      "capturedUsd": 10629,
+      "swaps": 67859,
+      "transactions": 3550475,
+      "emissionsNear": 88187.0510245991,
+      "totalRevenueNear": 12498.807047812494
+    },
+    {
+      "day": "2026-02-12",
+      "volumeUsd": 85222468.85540688,
+      "grossFeesUsd": 130223,
+      "capturedUsd": 11312,
+      "swaps": 80732,
+      "transactions": 3520045,
+      "emissionsNear": 88194.23064581286,
+      "totalRevenueNear": 13581.517422514498
+    },
+    {
+      "day": "2026-02-13",
+      "volumeUsd": 80686987.98602895,
+      "grossFeesUsd": 124041,
+      "capturedUsd": 8122,
+      "swaps": 75306,
+      "transactions": 3596766,
+      "emissionsNear": 88199.58052047348,
+      "totalRevenueNear": 10303.843062710956
+    },
+    {
+      "day": "2026-02-14",
+      "volumeUsd": 63710897.0876133,
+      "grossFeesUsd": 109616,
+      "capturedUsd": 7063,
+      "swaps": 55888,
+      "transactions": 3489869,
+      "emissionsNear": 88204.9151444357,
+      "totalRevenueNear": 8665.049946645326
+    },
+    {
+      "day": "2026-02-15",
+      "volumeUsd": 78631984.89781334,
+      "grossFeesUsd": 147789,
+      "capturedUsd": 11845,
+      "swaps": 55487,
+      "transactions": 3790938,
+      "emissionsNear": 88210.21628199195,
+      "totalRevenueNear": 12675.583315314625
+    },
+    {
+      "day": "2026-02-16",
+      "volumeUsd": 47136216.94355881,
+      "grossFeesUsd": 73070,
+      "capturedUsd": 1199,
+      "swaps": 51462,
+      "transactions": 3568949,
+      "emissionsNear": 88217.35996921704,
+      "totalRevenueNear": 2877.8330982598427
+    },
+    {
+      "day": "2026-02-17",
+      "volumeUsd": 49021771.51135546,
+      "grossFeesUsd": 69342,
+      "capturedUsd": 1026,
+      "swaps": 56838,
+      "transactions": 3673260,
+      "emissionsNear": 88222.68154187618,
+      "totalRevenueNear": 2716.98317573228
+    },
+    {
+      "day": "2026-02-18",
+      "volumeUsd": 71776128.1399355,
+      "grossFeesUsd": 114649,
+      "capturedUsd": 1976,
+      "swaps": 65830,
+      "transactions": 3227703,
+      "emissionsNear": 88228.05347547652,
+      "totalRevenueNear": 3424.0611760014654
+    },
+    {
+      "day": "2026-02-19",
+      "volumeUsd": 62691165.36542764,
+      "grossFeesUsd": 108187,
+      "capturedUsd": 1169,
+      "swaps": 63357,
+      "transactions": 3270228,
+      "emissionsNear": 88235.22432139554,
+      "totalRevenueNear": 2895.9332580360874
+    },
+    {
+      "day": "2026-02-20",
+      "volumeUsd": 46188790.33874683,
+      "grossFeesUsd": 115124,
+      "capturedUsd": 1031,
+      "swaps": 46036,
+      "transactions": 3251929,
+      "emissionsNear": 88240.57295501039,
+      "totalRevenueNear": 2752.9394470285383
+    },
+    {
+      "day": "2026-02-21",
+      "volumeUsd": 36828078.282004714,
+      "grossFeesUsd": 72181,
+      "capturedUsd": 1309,
+      "swaps": 46254,
+      "transactions": 3202198,
+      "emissionsNear": 88245.91849596488,
+      "totalRevenueNear": 2947.741350586326
+    },
+    {
+      "day": "2026-02-22",
+      "volumeUsd": 33488051.449124433,
+      "grossFeesUsd": 70650.99999999999,
+      "capturedUsd": 1406,
+      "swaps": 53332,
+      "transactions": 3249572,
+      "emissionsNear": 88253.07819039178,
+      "totalRevenueNear": 3047.9424812223224
+    },
+    {
+      "day": "2026-02-23",
+      "volumeUsd": 69635992.95726661,
+      "grossFeesUsd": 152523,
+      "capturedUsd": 6275,
+      "swaps": 63476,
+      "transactions": 3335654,
+      "emissionsNear": 88258.40024190777,
+      "totalRevenueNear": 7950.549670373043
+    },
+    {
+      "day": "2026-02-24",
+      "volumeUsd": 79392637.1523763,
+      "grossFeesUsd": 190712,
+      "capturedUsd": 8052.999999999999,
+      "swaps": 67317,
+      "transactions": 3219737,
+      "emissionsNear": 88263.75177405794,
+      "totalRevenueNear": 9960.071030977833
+    },
+    {
+      "day": "2026-02-25",
+      "volumeUsd": 87957996.42909937,
+      "grossFeesUsd": 274728,
+      "capturedUsd": 14022,
+      "swaps": 73268,
+      "transactions": 3793647,
+      "emissionsNear": 88269.07121209447,
+      "totalRevenueNear": 16648.357706913674
+    },
+    {
+      "day": "2026-02-26",
+      "volumeUsd": 86993091.03771193,
+      "grossFeesUsd": 152138,
+      "capturedUsd": 151977,
+      "swaps": 70713,
+      "transactions": 3840625,
+      "emissionsNear": 88276.34596947595,
+      "totalRevenueNear": 132106.68949640062
+    },
+    {
+      "day": "2026-02-27",
+      "volumeUsd": 61827762.7147827,
+      "grossFeesUsd": 111931,
+      "capturedUsd": 15284,
+      "swaps": 75146,
+      "transactions": 3424852,
+      "emissionsNear": 88281.67721075812,
+      "totalRevenueNear": 15452.200861309488
+    },
+    {
+      "day": "2026-02-28",
+      "volumeUsd": 67760578.46189761,
+      "grossFeesUsd": 129430,
+      "capturedUsd": 1236.9999999999998,
+      "swaps": 75125,
+      "transactions": 3532396,
+      "emissionsNear": 88287.02154185447,
+      "totalRevenueNear": 3137.169781973955
+    },
+    {
+      "day": "2026-03-01",
+      "volumeUsd": 49155596.92405497,
+      "grossFeesUsd": 109551,
+      "capturedUsd": 3700,
+      "swaps": 69176,
+      "transactions": 3595113,
+      "emissionsNear": 88292.39282188946,
+      "totalRevenueNear": 5238.3459253141
+    },
+    {
+      "day": "2026-03-02",
+      "volumeUsd": 78530683.13785717,
+      "grossFeesUsd": 157276,
+      "capturedUsd": 20717,
+      "swaps": 80255,
+      "transactions": 3664541,
+      "emissionsNear": 88299.62814661836,
+      "totalRevenueNear": 20216.973462642538
+    },
+    {
+      "day": "2026-03-03",
+      "volumeUsd": 67300853.18291588,
+      "grossFeesUsd": 133442,
+      "capturedUsd": 14843,
+      "swaps": 80060,
+      "transactions": 3336584,
+      "emissionsNear": 88305.00526410821,
+      "totalRevenueNear": 12751.704813437715
+    },
+    {
+      "day": "2026-03-04",
+      "volumeUsd": 101461382.9204868,
+      "grossFeesUsd": 260076,
+      "capturedUsd": 8995,
+      "swaps": 81364,
+      "transactions": 3325268,
+      "emissionsNear": 88310.30874518228,
+      "totalRevenueNear": 8458.590531895165
+    },
+    {
+      "day": "2026-03-05",
+      "volumeUsd": 71253340.11237885,
+      "grossFeesUsd": 136912,
+      "capturedUsd": 2001,
+      "swaps": 79185,
+      "transactions": 3325419,
+      "emissionsNear": 88317.4983457142,
+      "totalRevenueNear": 3345.750505489592
+    },
+    {
+      "day": "2026-03-06",
+      "volumeUsd": 65655180.61223596,
+      "grossFeesUsd": 114667,
+      "capturedUsd": 3548,
+      "swaps": 70163,
+      "transactions": 3306784,
+      "emissionsNear": 88322.8876943734,
+      "totalRevenueNear": 4574.60326659803
+    },
+    {
+      "day": "2026-03-07",
+      "volumeUsd": 46153281.875961065,
+      "grossFeesUsd": 90527,
+      "capturedUsd": 7631,
+      "swaps": 60787,
+      "transactions": 3247636,
+      "emissionsNear": 88328.18376023376,
+      "totalRevenueNear": 7975.667306282154
+    },
+    {
+      "day": "2026-03-08",
+      "volumeUsd": 39053005.77109443,
+      "grossFeesUsd": 57872,
+      "capturedUsd": 4212,
+      "swaps": 59441,
+      "transactions": 3315460,
+      "emissionsNear": 88335.27917736357,
+      "totalRevenueNear": 5221.709207707842
+    },
+    {
+      "day": "2026-03-09",
+      "volumeUsd": 62364562.14335426,
+      "grossFeesUsd": 103535,
+      "capturedUsd": 4269,
+      "swaps": 71612,
+      "transactions": 3351758,
+      "emissionsNear": 88340.56060206582,
+      "totalRevenueNear": 5325.264684598693
+    },
+    {
+      "day": "2026-03-10",
+      "volumeUsd": 67064755.82504667,
+      "grossFeesUsd": 112707,
+      "capturedUsd": 10070,
+      "swaps": 84952,
+      "transactions": 3332900,
+      "emissionsNear": 88345.86176557936,
+      "totalRevenueNear": 9973.380234086419
+    },
+    {
+      "day": "2026-03-11",
+      "volumeUsd": 61394606.08620892,
+      "grossFeesUsd": 93240.00000000001,
+      "capturedUsd": 11192,
+      "swaps": 72509,
+      "transactions": 3287695,
+      "emissionsNear": 88352.96239914314,
+      "totalRevenueNear": 10506.785969231994
+    },
+    {
+      "day": "2026-03-12",
+      "volumeUsd": 56107325.13619015,
+      "grossFeesUsd": 73884,
+      "capturedUsd": 44350,
+      "swaps": 72191,
+      "transactions": 3335521,
+      "emissionsNear": 88358.23670523225,
+      "totalRevenueNear": 36004.93584290337
+    },
+    {
+      "day": "2026-03-13",
+      "volumeUsd": 70673004.25786982,
+      "grossFeesUsd": 140331,
+      "capturedUsd": 20759,
+      "swaps": 72071,
+      "transactions": 3269575,
+      "emissionsNear": 88363.64013531177,
+      "totalRevenueNear": 16967.438938972657
+    },
+    {
+      "day": "2026-03-14",
+      "volumeUsd": 37245079.32428813,
+      "grossFeesUsd": 62395,
+      "capturedUsd": 6599.999999999999,
+      "swaps": 55085,
+      "transactions": 3169552,
+      "emissionsNear": 88368.94259497928,
+      "totalRevenueNear": 6631.970335779986
+    },
+    {
+      "day": "2026-03-15",
+      "volumeUsd": 46223318.60244663,
+      "grossFeesUsd": 86831,
+      "capturedUsd": 8896,
+      "swaps": 64778,
+      "transactions": 3178560,
+      "emissionsNear": 88376.1174739925,
+      "totalRevenueNear": 8435.475690284378
+    },
+    {
+      "day": "2026-03-16",
+      "volumeUsd": 112860093.56603359,
+      "grossFeesUsd": 229727.99999999997,
+      "capturedUsd": 14441.000000000002,
+      "swaps": 85918,
+      "transactions": 3290512,
+      "emissionsNear": 88381.41657507743,
+      "totalRevenueNear": 12532.32161917579
+    },
+    {
+      "day": "2026-03-17",
+      "volumeUsd": 55175372.827957794,
+      "grossFeesUsd": 15726,
+      "capturedUsd": 12050,
+      "swaps": 73952,
+      "transactions": 3219245,
+      "emissionsNear": 88386.73788743511,
+      "totalRevenueNear": 9822.036102750655
+    },
+    {
+      "day": "2026-03-18",
+      "volumeUsd": 85314687.03526632,
+      "grossFeesUsd": 103197.99999999999,
+      "capturedUsd": 11787,
+      "swaps": 89633,
+      "transactions": 3237808,
+      "emissionsNear": 88393.89565504552,
+      "totalRevenueNear": 9857.082906330335
+    },
+    {
+      "day": "2026-03-19",
+      "volumeUsd": 77574536.41002889,
+      "grossFeesUsd": 116595,
+      "capturedUsd": 11703,
+      "swaps": 92098,
+      "transactions": 3208457,
+      "emissionsNear": 88399.18221227798,
+      "totalRevenueNear": 10217.234419723447
+    },
+    {
+      "day": "2026-03-20",
+      "volumeUsd": 59561030.80378453,
+      "grossFeesUsd": 83118,
+      "capturedUsd": 7843,
+      "swaps": 73708,
+      "transactions": 3145237,
+      "emissionsNear": 88404.49671823479,
+      "totalRevenueNear": 7606.26107393166
+    },
+    {
+      "day": "2026-03-21",
+      "volumeUsd": 46340466.20914222,
+      "grossFeesUsd": 77082,
+      "capturedUsd": 6740,
+      "swaps": 68392,
+      "transactions": 3114793,
+      "emissionsNear": 88411.63563326001,
+      "totalRevenueNear": 6793.418084873756
+    },
+    {
+      "day": "2026-03-22",
+      "volumeUsd": 58842764.58002532,
+      "grossFeesUsd": 128695,
+      "capturedUsd": 6876,
+      "swaps": 71839,
+      "transactions": 3106917,
+      "emissionsNear": 88416.94833218165,
+      "totalRevenueNear": 6979.353561917923
+    },
+    {
+      "day": "2026-03-23",
+      "volumeUsd": 88339034.68886417,
+      "grossFeesUsd": 146222,
+      "capturedUsd": 15697,
+      "swaps": 100608,
+      "transactions": 3444711,
+      "emissionsNear": 88422.21843445033,
+      "totalRevenueNear": 14084.903166793621
+    },
+    {
+      "day": "2026-03-24",
+      "volumeUsd": 79971619.22441925,
+      "grossFeesUsd": 127953,
+      "capturedUsd": 6476.999999999999,
+      "swaps": 101873,
+      "transactions": 3891497,
+      "emissionsNear": 88429.29849994183,
+      "totalRevenueNear": 6752.80525801275
+    },
+    {
+      "day": "2026-03-25",
+      "volumeUsd": 89719567.96432659,
+      "grossFeesUsd": 150733,
+      "capturedUsd": 7405,
+      "swaps": 115323,
+      "transactions": 4232584,
+      "emissionsNear": 88434.57495223032,
+      "totalRevenueNear": 7579.963658521808
+    },
+    {
+      "day": "2026-03-26",
+      "volumeUsd": 63854122.45914558,
+      "grossFeesUsd": 103640,
+      "capturedUsd": 6731,
+      "swaps": 93295,
+      "transactions": 3915239,
+      "emissionsNear": 88439.838771669,
+      "totalRevenueNear": 7065.135097817889
+    },
+    {
+      "day": "2026-03-27",
+      "volumeUsd": 69302776.5197191,
+      "grossFeesUsd": 146040,
+      "capturedUsd": 249361,
+      "swaps": 99478,
+      "transactions": 3618171,
+      "emissionsNear": 88447.02123382916,
+      "totalRevenueNear": 205848.24625718727
+    },
+    {
+      "day": "2026-03-28",
+      "volumeUsd": 56132598.386516735,
+      "grossFeesUsd": 109754.00000000001,
+      "capturedUsd": 8349,
+      "swaps": 75213,
+      "transactions": 4563367,
+      "emissionsNear": 88452.29916922515,
+      "totalRevenueNear": 8913.204972226973
+    },
+    {
+      "day": "2026-03-29",
+      "volumeUsd": 37952914.66874698,
+      "grossFeesUsd": 60827,
+      "capturedUsd": 4217,
+      "swaps": 69344,
+      "transactions": 4191688,
+      "emissionsNear": 88457.5736817754,
+      "totalRevenueNear": 5385.95643337373
+    },
+    {
+      "day": "2026-03-30",
+      "volumeUsd": 78723708.13018037,
+      "grossFeesUsd": 112703,
+      "capturedUsd": 8269,
+      "swaps": 106859,
+      "transactions": 3464917,
+      "emissionsNear": 88464.683627507,
+      "totalRevenueNear": 8900.397677529358
+    },
+    {
+      "day": "2026-03-31",
+      "volumeUsd": 100661372.80760099,
+      "grossFeesUsd": 144853,
+      "capturedUsd": 13731,
+      "swaps": 110817,
+      "transactions": 4169826,
+      "emissionsNear": 88469.95700788315,
+      "totalRevenueNear": 13636.158580483907
+    },
+    {
+      "day": "2026-04-01",
+      "volumeUsd": 116947010.47397971,
+      "grossFeesUsd": 191805.99999999997,
+      "capturedUsd": 10280,
+      "swaps": 99377,
+      "transactions": 3758663,
+      "emissionsNear": 88475.28695701262,
+      "totalRevenueNear": 10050.208810152895
+    },
+    {
+      "day": "2026-04-02",
+      "volumeUsd": 86333691.25221357,
+      "grossFeesUsd": 107688.99999999999,
+      "capturedUsd": 11188,
+      "swaps": 88530,
+      "transactions": 1063375,
+      "emissionsNear": 88482.52354490446,
+      "totalRevenueNear": 9920.292429546615
+    },
+    {
+      "day": "2026-04-03",
+      "volumeUsd": 49373229.68661672,
+      "grossFeesUsd": 91490,
+      "capturedUsd": 7575,
+      "swaps": 76276,
+      "transactions": 907861,
+      "emissionsNear": 88487.887967381,
+      "totalRevenueNear": 7017.4292396753135
+    },
+    {
+      "day": "2026-04-04",
+      "volumeUsd": 28634731.756460775,
+      "grossFeesUsd": 46418,
+      "capturedUsd": 3432.0000000000005,
+      "swaps": 73639,
+      "transactions": 908553,
+      "emissionsNear": 88493.22688174859,
+      "totalRevenueNear": 3309.2277514760553
+    },
+    {
+      "day": "2026-04-05",
+      "volumeUsd": 71576101.84104119,
+      "grossFeesUsd": 91181,
+      "capturedUsd": 4210,
+      "swaps": 75884,
+      "transactions": 896322,
+      "emissionsNear": 88500.36106868835,
+      "totalRevenueNear": 3803.0296278809215
+    },
+    {
+      "day": "2026-04-06",
+      "volumeUsd": 71544956.35802294,
+      "grossFeesUsd": 120143,
+      "capturedUsd": 5689,
+      "swaps": 88513,
+      "transactions": 959480,
+      "emissionsNear": 88505.7100613446,
+      "totalRevenueNear": 5062.910521627457
+    },
+    {
+      "day": "2026-04-07",
+      "volumeUsd": 98301207.58229552,
+      "grossFeesUsd": 142229,
+      "capturedUsd": 10767,
+      "swaps": 90316,
+      "transactions": 957226,
+      "emissionsNear": 88511.07537245007,
+      "totalRevenueNear": 9150.594058364655
+    },
+    {
+      "day": "2026-04-08",
+      "volumeUsd": 98094917.65414244,
+      "grossFeesUsd": 148571,
+      "capturedUsd": 12073,
+      "swaps": 91568,
+      "transactions": 971381,
+      "emissionsNear": 88518.23486221516,
+      "totalRevenueNear": 9721.231739277646
+    },
+    {
+      "day": "2026-04-09",
+      "volumeUsd": 87273564.64093588,
+      "grossFeesUsd": 134950,
+      "capturedUsd": 11028,
+      "swaps": 98823,
+      "transactions": 972850,
+      "emissionsNear": 88523.62182613874,
+      "totalRevenueNear": 8847.317202744118
+    },
+    {
+      "day": "2026-04-10",
+      "volumeUsd": 79231973.22338384,
+      "grossFeesUsd": 155641,
+      "capturedUsd": 11885.999999999998,
+      "swaps": 93844,
+      "transactions": 992732,
+      "emissionsNear": 88528.98657623431,
+      "totalRevenueNear": 9275.741362887407
+    },
+    {
+      "day": "2026-04-11",
+      "volumeUsd": 43813761.69878167,
+      "grossFeesUsd": 69433,
+      "capturedUsd": 2146,
+      "swaps": 83349,
+      "transactions": 960660,
+      "emissionsNear": 88536.1863200012,
+      "totalRevenueNear": 2110.31281580478
+    },
+    {
+      "day": "2026-04-12",
+      "volumeUsd": 51250308.00998233,
+      "grossFeesUsd": 118035,
+      "capturedUsd": 6796,
+      "swaps": 77025,
+      "transactions": 992071,
+      "emissionsNear": 88541.53593348901,
+      "totalRevenueNear": 5408.123024629421
+    },
+    {
+      "day": "2026-04-13",
+      "volumeUsd": 80486985.04427245,
+      "grossFeesUsd": 115373,
+      "capturedUsd": 16610,
+      "swaps": 95286,
+      "transactions": 895923,
+      "emissionsNear": 88546.99366440736,
+      "totalRevenueNear": 12893.519692464819
+    },
+    {
+      "day": "2026-04-14",
+      "volumeUsd": 86207552.2872193,
+      "grossFeesUsd": 151329,
+      "capturedUsd": 10353,
+      "swaps": 95072,
+      "transactions": 785094,
+      "emissionsNear": 88554.2644123523,
+      "totalRevenueNear": 7831.558675738031
+    },
+    {
+      "day": "2026-04-15",
+      "volumeUsd": 62115559.47657651,
+      "grossFeesUsd": 95114,
+      "capturedUsd": 9655,
+      "swaps": 75334,
+      "transactions": 763144,
+      "emissionsNear": 88559.73165378,
+      "totalRevenueNear": 7564.096373116282
+    },
+    {
+      "day": "2026-04-16",
+      "volumeUsd": 36639483.626090035,
+      "grossFeesUsd": 38829,
+      "capturedUsd": 4007,
+      "swaps": 34556,
+      "transactions": 1058803,
+      "emissionsNear": 88565.1265700792,
+      "totalRevenueNear": 3430.8050344246835
+    },
+    {
+      "day": "2026-04-17",
+      "volumeUsd": 50372432.76698337,
+      "grossFeesUsd": 108018.00000000001,
+      "capturedUsd": 9178,
+      "swaps": 47951,
+      "transactions": 729376,
+      "emissionsNear": 88572.42013026099,
+      "totalRevenueNear": 6892.194622926203
+    },
+    {
+      "day": "2026-04-18",
+      "volumeUsd": 55612228.72802582,
+      "grossFeesUsd": 94225.00000000001,
+      "capturedUsd": 4653,
+      "swaps": 81886,
+      "transactions": 763796,
+      "emissionsNear": 88577.79690251444,
+      "totalRevenueNear": 3837.476724582671
+    },
+    {
+      "day": "2026-04-19",
+      "volumeUsd": 52337594.86936228,
+      "grossFeesUsd": 89726.99999999999,
+      "capturedUsd": 11211,
+      "swaps": 87086,
+      "transactions": 802962,
+      "emissionsNear": 88583.22337608684,
+      "totalRevenueNear": 8919.734995185156
+    },
+    {
+      "day": "2026-04-20",
+      "volumeUsd": 67300956.31643252,
+      "grossFeesUsd": 124958,
+      "capturedUsd": 8199,
+      "swaps": 85321,
+      "transactions": 808458,
+      "emissionsNear": 88590.49150840584,
+      "totalRevenueNear": 6746.190386554793
+    },
+    {
+      "day": "2026-04-21",
+      "volumeUsd": 60446540.80400037,
+      "grossFeesUsd": 108701,
+      "capturedUsd": 4552,
+      "swaps": 75291,
+      "transactions": 805053,
+      "emissionsNear": 88595.95595563296,
+      "totalRevenueNear": 3919.914521290743
+    },
+    {
+      "day": "2026-04-22",
+      "volumeUsd": 66425528.87321191,
+      "grossFeesUsd": 135792,
+      "capturedUsd": 0.05,
+      "swaps": 80568,
+      "transactions": 778988,
+      "emissionsNear": 88601.35721260494,
+      "totalRevenueNear": 546.1749354291936
+    },
+    {
+      "day": "2026-04-23",
+      "volumeUsd": 67125418.80146019,
+      "grossFeesUsd": 122768,
+      "capturedUsd": 28301,
+      "swaps": 85469,
+      "transactions": 751971,
+      "emissionsNear": 88606.90677375137,
+      "totalRevenueNear": 20696.126681110327
+    },
+    {
+      "day": "2026-04-24",
+      "volumeUsd": 50818838.428864084,
+      "grossFeesUsd": 87899,
+      "capturedUsd": 5251,
+      "swaps": 81539,
+      "transactions": 686968,
+      "emissionsNear": 88614.12548207125,
+      "totalRevenueNear": 4173.404367623528
+    },
+    {
+      "day": "2026-04-25",
+      "volumeUsd": 27113068.66200885,
+      "grossFeesUsd": 37667,
+      "capturedUsd": 4481,
+      "swaps": 52706,
+      "transactions": 622133,
+      "emissionsNear": 88619.47709581749,
+      "totalRevenueNear": 3561.51997258803
+    },
+    {
+      "day": "2026-04-26",
+      "volumeUsd": 39210660.20784269,
+      "grossFeesUsd": 66729,
+      "capturedUsd": 6046,
+      "swaps": 66940,
+      "transactions": 722389,
+      "emissionsNear": 88626.59626313488,
+      "totalRevenueNear": 4938.47903981405
+    },
+    {
+      "day": "2026-04-27",
+      "volumeUsd": 63200658.210162185,
+      "grossFeesUsd": 106647,
+      "capturedUsd": 10607,
+      "swaps": 80573,
+      "transactions": 713204,
+      "emissionsNear": 88631.9472866954,
+      "totalRevenueNear": 8098.278731402134
+    },
+    {
+      "day": "2026-04-28",
+      "volumeUsd": 52786762.981708676,
+      "grossFeesUsd": 94806,
+      "capturedUsd": 6321,
+      "swaps": 78493,
+      "transactions": 709459,
+      "emissionsNear": 88637.30963142433,
+      "totalRevenueNear": 5142.689198391488
+    },
+    {
+      "day": "2026-04-29",
+      "volumeUsd": 61854158.60404417,
+      "grossFeesUsd": 85393,
+      "capturedUsd": 11075.000000000002,
+      "swaps": 80146,
+      "transactions": 932580,
+      "emissionsNear": 88644.45408450614,
+      "totalRevenueNear": 8767.019052787926
+    },
+    {
+      "day": "2026-04-30",
+      "volumeUsd": 77138808.79483882,
+      "grossFeesUsd": 125695,
+      "capturedUsd": 11170,
+      "swaps": 78969,
+      "transactions": 726837,
+      "emissionsNear": 88649.80005220762,
+      "totalRevenueNear": 8949.88368206149
+    },
+    {
+      "day": "2026-05-01",
+      "volumeUsd": 57165578.8427748,
+      "grossFeesUsd": 101264,
+      "capturedUsd": 13243,
+      "swaps": 74744,
+      "transactions": 704350,
+      "emissionsNear": 88655.13765462511,
+      "totalRevenueNear": 10758.612636232665
+    },
+    {
+      "day": "2026-05-02",
+      "volumeUsd": 31534645.799439557,
+      "grossFeesUsd": 49570,
+      "capturedUsd": 5635,
+      "swaps": 54848,
+      "transactions": 695144,
+      "emissionsNear": 88662.27701399913,
+      "totalRevenueNear": 4856.0627064980345
+    },
+    {
+      "day": "2026-05-03",
+      "volumeUsd": 37534294.77152826,
+      "grossFeesUsd": 58577,
+      "capturedUsd": 8367,
+      "swaps": 63087,
+      "transactions": 726605,
+      "emissionsNear": 88667.64375466733,
+      "totalRevenueNear": 6936.042624015617
+    },
+    {
+      "day": "2026-05-04",
+      "volumeUsd": 64713779.29572903,
+      "grossFeesUsd": 129003.99999999999,
+      "capturedUsd": 9387,
+      "swaps": 81257,
+      "transactions": 768403,
+      "emissionsNear": 88672.99743247642,
+      "totalRevenueNear": 7899.783720588012
+    },
+    {
+      "day": "2026-05-05",
+      "volumeUsd": 73121400.46102569,
+      "grossFeesUsd": 163191,
+      "capturedUsd": 22234,
+      "swaps": 71702,
+      "transactions": 761084,
+      "emissionsNear": 88680.17306035796,
+      "totalRevenueNear": 18168.937831775922
+    },
+    {
+      "day": "2026-05-06",
+      "volumeUsd": 81794069.86777633,
+      "grossFeesUsd": 155380,
+      "capturedUsd": 22443,
+      "swaps": 85445,
+      "transactions": 847917,
+      "emissionsNear": 88685.53202085421,
+      "totalRevenueNear": 17945.439445311484
+    },
+    {
+      "day": "2026-05-07",
+      "volumeUsd": 59707135.706757285,
+      "grossFeesUsd": 99811,
+      "capturedUsd": 12037,
+      "swaps": 73241,
+      "transactions": 783747,
+      "emissionsNear": 88692.68884808997,
+      "totalRevenueNear": 8644.220669441831
+    },
+    {
+      "day": "2026-05-08",
+      "volumeUsd": 52932193.92930545,
+      "grossFeesUsd": 84999,
+      "capturedUsd": 13747.999999999998,
+      "swaps": 70475,
+      "transactions": 761282,
+      "emissionsNear": 88698.05132159786,
+      "totalRevenueNear": 9926.200769250816
+    },
+    {
+      "day": "2026-05-09",
+      "volumeUsd": 45828157.96874141,
+      "grossFeesUsd": 86767,
+      "capturedUsd": 6734,
+      "swaps": 69630,
+      "transactions": 740471,
+      "emissionsNear": 88703.37791198606,
+      "totalRevenueNear": 4772.65996408091
+    },
+    {
+      "day": "2026-05-10",
+      "volumeUsd": 42453109.0744096,
+      "grossFeesUsd": 83820,
+      "capturedUsd": 7514,
+      "swaps": 51678,
+      "transactions": 757261,
+      "emissionsNear": 88710.55526652202,
+      "totalRevenueNear": 5331.821735843092
+    },
+    {
+      "day": "2026-05-11",
+      "volumeUsd": 57518600.28899402,
+      "grossFeesUsd": 112713.99999999999,
+      "capturedUsd": 14359.999999999998,
+      "swaps": 57252,
+      "transactions": 757788,
+      "emissionsNear": 88715.8947987848,
+      "totalRevenueNear": 9687.925490855545
+    },
+    {
+      "day": "2026-05-12",
+      "volumeUsd": 56370001.68337051,
+      "grossFeesUsd": 108042,
+      "capturedUsd": 14073.999999999998,
+      "swaps": 51215,
+      "transactions": 788621,
+      "emissionsNear": 88721.37098818156,
+      "totalRevenueNear": 9681.908917586561
+    },
+    {
+      "day": "2026-05-13",
+      "volumeUsd": 55924660.49195527,
+      "grossFeesUsd": 92786,
+      "capturedUsd": 6692.999999999999,
+      "swaps": 70178,
+      "transactions": 790516,
+      "emissionsNear": 88727.02143604208,
+      "totalRevenueNear": 4780.699754619802
+    },
+    {
+      "day": "2026-05-14",
+      "volumeUsd": 59693974.319866404,
+      "grossFeesUsd": 107564,
+      "capturedUsd": 13952.999999999998,
+      "swaps": 79781,
+      "transactions": 786025,
+      "emissionsNear": 88734.41859081098,
+      "totalRevenueNear": 9431.098316215752
+    },
+    {
+      "day": "2026-05-15",
+      "volumeUsd": 62138455.02141143,
+      "grossFeesUsd": 104126.99999999999,
+      "capturedUsd": 17798,
+      "swaps": 78747,
+      "transactions": 751448,
+      "emissionsNear": 88739.91252016686,
+      "totalRevenueNear": 11897.635355345414
+    },
+    {
+      "day": "2026-05-16",
+      "volumeUsd": 43114118.0976903,
+      "grossFeesUsd": 64767.99999999999,
+      "capturedUsd": 13616,
+      "swaps": 67577,
+      "transactions": 722169,
+      "emissionsNear": 88745.4148355106,
+      "totalRevenueNear": 9359.887003690847
+    },
+    {
+      "day": "2026-05-17",
+      "volumeUsd": 43550845.94648703,
+      "grossFeesUsd": 62254,
+      "capturedUsd": 10759,
+      "swaps": 62508,
+      "transactions": 726935,
+      "emissionsNear": 88752.7681934105,
+      "totalRevenueNear": 7700.868162383082
+    },
+    {
+      "day": "2026-05-18",
+      "volumeUsd": 68653690.35280898,
+      "grossFeesUsd": 120085.99999999999,
+      "capturedUsd": 15825,
+      "swaps": 74549,
+      "transactions": 787300,
+      "emissionsNear": 88758.27776054712,
+      "totalRevenueNear": 11151.91358838586
+    },
+    {
+      "day": "2026-05-19",
+      "volumeUsd": 62040341.897355765,
+      "grossFeesUsd": 82030,
+      "capturedUsd": 13886.000000000002,
+      "swaps": 67327,
+      "transactions": 779071,
+      "emissionsNear": 88763.7908818608,
+      "totalRevenueNear": 9160.258590063724
+    },
+    {
+      "day": "2026-05-20",
+      "volumeUsd": 73901745.15996172,
+      "grossFeesUsd": 120380.99999999999,
+      "capturedUsd": 13756.999999999998,
+      "swaps": 72664,
+      "transactions": 817159,
+      "emissionsNear": 88769.28167490159,
+      "totalRevenueNear": 9198.496356637928
+    },
+    {
+      "day": "2026-05-21",
+      "volumeUsd": 69385124.81721723,
+      "grossFeesUsd": 92646,
+      "capturedUsd": 19047,
+      "swaps": 77702,
+      "transactions": 836842,
+      "emissionsNear": 88776.59208843579,
+      "totalRevenueNear": 11893.975778703145
+    },
+    {
+      "day": "2026-05-22",
+      "volumeUsd": 82465907.76743495,
+      "grossFeesUsd": 111161,
+      "capturedUsd": 28131,
+      "swaps": 82865,
+      "transactions": 1109094,
+      "emissionsNear": 88782.06782543186,
+      "totalRevenueNear": 15422.47262790083
+    },
+    {
+      "day": "2026-05-23",
+      "volumeUsd": 90461778.52114019,
+      "grossFeesUsd": 107128,
+      "capturedUsd": 58520,
+      "swaps": 78843,
+      "transactions": 879647,
+      "emissionsNear": 88787.52292321675,
+      "totalRevenueNear": 28622.791497215774
+    },
+    {
+      "day": "2026-05-24",
+      "volumeUsd": 56793347.61171453,
+      "grossFeesUsd": 60552,
+      "capturedUsd": 21810,
+      "swaps": 72959,
+      "transactions": 898928,
+      "emissionsNear": 88794.82738842719,
+      "totalRevenueNear": 9547.841172344244
+    },
+    {
+      "day": "2026-05-25",
+      "volumeUsd": 95873619.6268578,
+      "grossFeesUsd": 111570,
+      "capturedUsd": 41873,
+      "swaps": 82819,
+      "transactions": 898740,
+      "emissionsNear": 88800.27159712148,
+      "totalRevenueNear": 18170.562911534053
+    },
+    {
+      "day": "2026-05-26",
+      "volumeUsd": 114638454.08701083,
+      "grossFeesUsd": 112324,
+      "capturedUsd": 68154,
+      "swaps": 84536,
+      "transactions": 957320,
+      "emissionsNear": 88805.72552816219,
+      "totalRevenueNear": 25337.35143716222
+    },
+    {
+      "day": "2026-05-27",
+      "volumeUsd": 97910988.2929255,
+      "grossFeesUsd": 119100,
+      "capturedUsd": 31306.000000000004,
+      "swaps": 79275,
+      "transactions": 831632,
+      "emissionsNear": 88811.16585864394,
+      "totalRevenueNear": 13002.590805460906
+    },
+    {
+      "day": "2026-05-28",
+      "volumeUsd": 83826917.40461963,
+      "grossFeesUsd": 103537.00000000001,
+      "capturedUsd": 15804.000000000002,
+      "swaps": 79644,
+      "transactions": 825571,
+      "emissionsNear": 88818.47405299639,
+      "totalRevenueNear": 7022.611322439921
+    },
+    {
+      "day": "2026-05-29",
+      "volumeUsd": 54545032.172418095,
+      "grossFeesUsd": 72602,
+      "capturedUsd": 13852,
+      "swaps": 70643,
+      "transactions": 864412,
+      "emissionsNear": 88823.9262782285,
+      "totalRevenueNear": 6437.482304909622
+    },
+    {
+      "day": "2026-05-30",
+      "volumeUsd": 61508895.78412823,
+      "grossFeesUsd": 53291,
+      "capturedUsd": 30963,
+      "swaps": 62631,
+      "transactions": 776204,
+      "emissionsNear": 88829.36115084516,
+      "totalRevenueNear": 13600.697267329122
+    },
+    {
+      "day": "2026-05-31",
+      "volumeUsd": 137195293.23543105,
+      "grossFeesUsd": 71263,
+      "capturedUsd": 34091,
+      "swaps": 65843,
+      "transactions": 761360,
+      "emissionsNear": 88836.62966236983,
+      "totalRevenueNear": 15833.685653804601
+    },
+    {
+      "day": "2026-06-01",
+      "volumeUsd": 123282461.24393116,
+      "grossFeesUsd": 142360,
+      "capturedUsd": 32456,
+      "swaps": 76095,
+      "transactions": 882995,
+      "emissionsNear": 88842.09871454016,
+      "totalRevenueNear": 14793.797773421216
+    },
+    {
+      "day": "2026-06-02",
+      "volumeUsd": 96765893.7390138,
+      "grossFeesUsd": 152934,
+      "capturedUsd": 29401,
+      "swaps": 82549,
+      "transactions": 971904,
+      "emissionsNear": 88847.54830892486,
+      "totalRevenueNear": 12016.26294497661
+    },
+    {
+      "day": "2026-06-03",
+      "volumeUsd": 124655653.42071895,
+      "grossFeesUsd": 127116.99999999999,
+      "capturedUsd": 25729,
+      "swaps": 88222,
+      "transactions": 987134,
+      "emissionsNear": 88854.77767260098,
+      "totalRevenueNear": 10683.075778833469
+    },
+    {
+      "day": "2026-06-04",
+      "volumeUsd": 140177656.37287053,
+      "grossFeesUsd": 142240,
+      "capturedUsd": 44465,
+      "swaps": 72588,
+      "transactions": 1020616,
+      "emissionsNear": 88860.19686866426,
+      "totalRevenueNear": 16673.70159217171
+    },
+    {
+      "day": "2026-06-05",
+      "volumeUsd": 274725862.2124848,
+      "grossFeesUsd": 242971,
+      "capturedUsd": 142586,
+      "swaps": 97650,
+      "transactions": 1055518,
+      "emissionsNear": 88865.69369754611,
+      "totalRevenueNear": 65401.28807528438
+    },
+    {
+      "day": "2026-06-06",
+      "volumeUsd": 71150871.72340848,
+      "grossFeesUsd": 91088,
+      "capturedUsd": 15855,
+      "swaps": 67605,
+      "transactions": 830379,
+      "emissionsNear": 88871.28039139285,
+      "totalRevenueNear": 8726.616704515254
+    },
+    {
+      "day": "2026-06-07",
+      "volumeUsd": 69407346.85966997,
+      "grossFeesUsd": 79246,
+      "capturedUsd": 21674,
+      "swaps": 70422,
+      "transactions": 845410,
+      "emissionsNear": 88878.71560551772,
+      "totalRevenueNear": 12280.511220251641
+    },
+    {
+      "day": "2026-06-08",
+      "volumeUsd": 96745905.36584985,
+      "grossFeesUsd": 111211,
+      "capturedUsd": 21467,
+      "swaps": 80060,
+      "transactions": 876622,
+      "emissionsNear": 88884.36252528126,
+      "totalRevenueNear": 11159.53585241942
+    },
+    {
+      "day": "2026-06-09",
+      "volumeUsd": 86330450.64834884,
+      "grossFeesUsd": 88545,
+      "capturedUsd": 19579,
+      "swaps": 74295,
+      "transactions": 804550,
+      "emissionsNear": 88889.96142134606,
+      "totalRevenueNear": 9866.281416808113
+    },
+    {
+      "day": "2026-06-10",
+      "volumeUsd": 88331150.12444694,
+      "grossFeesUsd": 74633,
+      "capturedUsd": 18332,
+      "swaps": 73052,
+      "transactions": 804245,
+      "emissionsNear": 88895.60411682994,
+      "totalRevenueNear": 9145.209157521862
+    },
+    {
+      "day": "2026-06-11",
+      "volumeUsd": 96853037.65245248,
+      "grossFeesUsd": 87111,
+      "capturedUsd": 9681,
+      "swaps": 74961,
+      "transactions": 804656,
+      "emissionsNear": 88901.20396112905,
+      "totalRevenueNear": 5567.515133649476
+    },
+    {
+      "day": "2026-06-12",
+      "volumeUsd": 107533950.36546735,
+      "grossFeesUsd": 118249,
+      "capturedUsd": 17720,
+      "swaps": 75202,
+      "transactions": 789334,
+      "emissionsNear": 88908.63853160915,
+      "totalRevenueNear": 9228.883737396707
+    },
+    {
+      "day": "2026-06-13",
+      "volumeUsd": 36216032.01282509,
+      "grossFeesUsd": 39391,
+      "capturedUsd": 7110,
+      "swaps": 61628,
+      "transactions": 734123,
+      "emissionsNear": 88914.2018463581,
+      "totalRevenueNear": 4103.9080583852765
+    },
+    {
+      "day": "2026-06-14",
+      "volumeUsd": 43350582.06954481,
+      "grossFeesUsd": 62314,
+      "capturedUsd": 13143,
+      "swaps": 61187,
+      "transactions": 756764,
+      "emissionsNear": 88919.72721622992,
+      "totalRevenueNear": 6753.159007427647
+    },
+    {
+      "day": "2026-06-15",
+      "volumeUsd": 117790211.54062168,
+      "grossFeesUsd": 143373,
+      "capturedUsd": 31151,
+      "swaps": 85344,
+      "transactions": 851039,
+      "emissionsNear": 88925.27461184973,
+      "totalRevenueNear": 14680.727749411622
+    },
+    {
+      "day": "2026-06-16",
+      "volumeUsd": 95880076.52486122,
+      "grossFeesUsd": 98108,
+      "capturedUsd": 16965,
+      "swaps": 74540,
+      "transactions": 804245,
+      "emissionsNear": 88932.61164886027,
+      "totalRevenueNear": 7753.055675906439
+    },
+    {
+      "day": "2026-06-17",
+      "volumeUsd": 79785697.53010574,
+      "grossFeesUsd": 75139,
+      "capturedUsd": 14968,
+      "swaps": 76187,
+      "transactions": 823188,
+      "emissionsNear": 88938.07885920705,
+      "totalRevenueNear": 7114.025844316511
+    },
+    {
+      "day": "2026-06-18",
+      "volumeUsd": 76370741.36596708,
+      "grossFeesUsd": 104860,
+      "capturedUsd": 11592,
+      "swaps": 78803,
+      "transactions": 801660,
+      "emissionsNear": 88943.54254533963,
+      "totalRevenueNear": 5950.710807961623
+    },
+    {
+      "day": "2026-06-19",
+      "volumeUsd": 50125458.71142742,
+      "grossFeesUsd": 61160,
+      "capturedUsd": 6931,
+      "swaps": 66177,
+      "transactions": 812658,
+      "emissionsNear": 88950.8397045013,
+      "totalRevenueNear": 3770.713388343891
+    },
+    {
+      "day": "2026-06-20",
+      "volumeUsd": 47115489.9229997,
+      "grossFeesUsd": 45085,
+      "capturedUsd": 16708,
+      "swaps": 70568,
+      "transactions": 719919,
+      "emissionsNear": 88956.30107336135,
+      "totalRevenueNear": 8252.677082046363
+    },
+    {
+      "day": "2026-06-21",
+      "volumeUsd": 50074696.02480547,
+      "grossFeesUsd": 64018,
+      "capturedUsd": 7279,
+      "swaps": 69349,
+      "transactions": 722402,
+      "emissionsNear": 88961.77223837026,
+      "totalRevenueNear": 3863.128410674579
+    },
+    {
+      "day": "2026-06-22",
+      "volumeUsd": 85366996.736762,
+      "grossFeesUsd": 85276,
+      "capturedUsd": 12905,
+      "swaps": 80102,
+      "transactions": 757253,
+      "emissionsNear": 88967.29023503081,
+      "totalRevenueNear": 6722.664331222757
+    },
+    {
+      "day": "2026-06-23",
+      "volumeUsd": 78532144.8458121,
+      "grossFeesUsd": 108797,
+      "capturedUsd": 9400,
+      "swaps": 79103,
+      "transactions": 757769,
+      "emissionsNear": 88974.62033227512,
+      "totalRevenueNear": 5133.425936332942
+    },
+    {
+      "day": "2026-06-24",
+      "volumeUsd": 95140705.32072432,
+      "grossFeesUsd": 155709,
+      "capturedUsd": 15666,
+      "swaps": 95597,
+      "transactions": 768173,
+      "emissionsNear": 88980.10571250373,
+      "totalRevenueNear": 8531.388718924754
+    },
+    {
+      "day": "2026-06-25",
+      "volumeUsd": 71738298.56995165,
+      "grossFeesUsd": 109434,
+      "capturedUsd": 10905,
+      "swaps": 92404,
+      "transactions": 743096,
+      "emissionsNear": 88985.58316594898,
+      "totalRevenueNear": 6144.731365819997
+    },
+    {
+      "day": "2026-06-26",
+      "volumeUsd": 64346522.40123635,
+      "grossFeesUsd": 98886,
+      "capturedUsd": 9781,
+      "swaps": 87427,
+      "transactions": 736132,
+      "emissionsNear": 88992.89456814242,
+      "totalRevenueNear": 5925.77538709675
+    },
+    {
+      "day": "2026-06-27",
+      "volumeUsd": 41278948.95910865,
+      "grossFeesUsd": 67247,
+      "capturedUsd": 4218,
+      "swaps": 75199,
+      "transactions": 697852,
+      "emissionsNear": 88998.30639481315,
+      "totalRevenueNear": 2882.0779606410197
+    },
+    {
+      "day": "2026-06-28",
+      "volumeUsd": 49384844.27114297,
+      "grossFeesUsd": 69206,
+      "capturedUsd": 9571,
+      "swaps": 76315,
+      "transactions": 711388,
+      "emissionsNear": 89003.70719322076,
+      "totalRevenueNear": 5649.848131173879
+    },
+    {
+      "day": "2026-06-29",
+      "volumeUsd": 69971990.05237484,
+      "grossFeesUsd": 119968,
+      "capturedUsd": 12034,
+      "swaps": 88081,
+      "transactions": 796983,
+      "emissionsNear": 89010.93153610129,
+      "totalRevenueNear": 7130.147744563353
+    },
+    {
+      "day": "2026-06-30",
+      "volumeUsd": 101180702.72673869,
+      "grossFeesUsd": 146136,
+      "capturedUsd": 10203,
+      "swaps": 93729,
+      "transactions": 747039,
+      "emissionsNear": 89016.35884369093,
+      "totalRevenueNear": 6051.603027479382
+    },
+    {
+      "day": "2026-07-01",
+      "volumeUsd": 103463473.9830796,
+      "grossFeesUsd": 141660,
+      "capturedUsd": 14453,
+      "swaps": 95300,
+      "transactions": 720865,
+      "emissionsNear": 89021.76271143438,
+      "totalRevenueNear": 8676.573272614602
+    },
+    {
+      "day": "2026-07-02",
+      "volumeUsd": 106054148.97359493,
+      "grossFeesUsd": 188258,
+      "capturedUsd": 16344.999999999998,
+      "swaps": 94393,
+      "transactions": 747871,
+      "emissionsNear": 89029.36147009795,
+      "totalRevenueNear": 9661.884953412813
+    },
+    {
+      "day": "2026-07-03",
+      "volumeUsd": 78578993.55383821,
+      "grossFeesUsd": 127607,
+      "capturedUsd": 16289,
+      "swaps": 85755,
+      "transactions": 739047,
+      "emissionsNear": 89034.85052638102,
+      "totalRevenueNear": 8953.030600450413
+    },
+    {
+      "day": "2026-07-04",
+      "volumeUsd": 62751533.87909938,
+      "grossFeesUsd": 109233,
+      "capturedUsd": 7762,
+      "swaps": 88845,
+      "transactions": 753757,
+      "emissionsNear": 89040.29946518675,
+      "totalRevenueNear": 4376.596978937358
+    },
+    {
+      "day": "2026-07-05",
+      "volumeUsd": 49333871.85979742,
+      "grossFeesUsd": 76215,
+      "capturedUsd": 10972,
+      "swaps": 86281,
+      "transactions": 737968,
+      "emissionsNear": 89045.79334669489,
+      "totalRevenueNear": 6022.9853698213965
+    },
+    {
+      "day": "2026-07-06",
+      "volumeUsd": 101153233.99928154,
+      "grossFeesUsd": 164860,
+      "capturedUsd": 18684.999999999996,
+      "swaps": 96092,
+      "transactions": 796655,
+      "emissionsNear": 89053.17252523778,
+      "totalRevenueNear": 9873.712747214626
+    },
+    {
+      "day": "2026-07-07",
+      "volumeUsd": 93441969.11509094,
+      "grossFeesUsd": 109255,
+      "capturedUsd": 16817,
+      "swaps": 94925,
+      "transactions": 819335,
+      "emissionsNear": 89058.68530126254,
+      "totalRevenueNear": 8793.560268935626
+    },
+    {
+      "day": "2026-07-08",
+      "volumeUsd": 94468479.67589046,
+      "grossFeesUsd": 136883,
+      "capturedUsd": 24175,
+      "swaps": 107395,
+      "transactions": 873695,
+      "emissionsNear": 89064.21677034695,
+      "totalRevenueNear": 12873.703345293658
+    },
+    {
+      "day": "2026-07-09",
+      "volumeUsd": 83368869.85531601,
+      "grossFeesUsd": 114158,
+      "capturedUsd": 16791,
+      "swaps": 95740,
+      "transactions": 823411,
+      "emissionsNear": 89071.57024270554,
+      "totalRevenueNear": 9492.299440400571
+    },
+    {
+      "day": "2026-07-10",
+      "volumeUsd": 84655616.49969776,
+      "grossFeesUsd": 95463,
+      "capturedUsd": 14060,
+      "swaps": 94341,
+      "transactions": 770836,
+      "emissionsNear": 89077.14936311083,
+      "totalRevenueNear": 7888.203636868133
+    },
+    {
+      "day": "2026-07-11",
+      "volumeUsd": 50493222.78795,
+      "grossFeesUsd": 76378,
+      "capturedUsd": 7323,
+      "swaps": 81510,
+      "transactions": 715477,
+      "emissionsNear": 89082.60137384909,
+      "totalRevenueNear": 4394.673629855604
+    },
+    {
+      "day": "2026-07-12",
+      "volumeUsd": 47130221.23154806,
+      "grossFeesUsd": 56156,
+      "capturedUsd": 10580,
+      "swaps": 76126,
+      "transactions": 694076,
+      "emissionsNear": 89088.07279824482,
+      "totalRevenueNear": 6143.723984976045
+    },
+    {
+      "day": "2026-07-13",
+      "volumeUsd": 85850226.61582872,
+      "grossFeesUsd": 86826,
+      "capturedUsd": 12904,
+      "swaps": 90364,
+      "transactions": 794924,
+      "emissionsNear": 89095.5440701439,
+      "totalRevenueNear": 7378.49030460272
+    },
+    {
+      "day": "2026-07-14",
+      "volumeUsd": 103546324.8679502,
+      "grossFeesUsd": 156329,
+      "capturedUsd": 34286,
+      "swaps": 89448,
+      "transactions": 757867,
+      "emissionsNear": 89101.16381321315,
+      "totalRevenueNear": 18439.866227305465
+    },
+    {
+      "day": "2026-07-15",
+      "volumeUsd": 108470019.46232714,
+      "grossFeesUsd": 150733,
+      "capturedUsd": 19489,
+      "swaps": 96193,
+      "transactions": 725079,
+      "emissionsNear": 89106.83972677737,
+      "totalRevenueNear": 10234.571346123477
+    },
+    {
+      "day": "2026-07-16",
+      "volumeUsd": 91397049.49443872,
+      "grossFeesUsd": 101299,
+      "capturedUsd": 21064,
+      "swaps": 90475,
+      "transactions": 724947,
+      "emissionsNear": 89112.39520647231,
+      "totalRevenueNear": 10735.612629128718
+    },
+    {
+      "day": "2026-07-17",
+      "volumeUsd": 70885324.2885213,
+      "grossFeesUsd": 81325,
+      "capturedUsd": 17612,
+      "swaps": 82588,
+      "transactions": 711903,
+      "emissionsNear": 89119.78177776716,
+      "totalRevenueNear": 9522.988992565677
+    },
+    {
+      "day": "2026-07-18",
+      "volumeUsd": 58838162.82973739,
+      "grossFeesUsd": 52035,
+      "capturedUsd": 18400,
+      "swaps": 80844,
+      "transactions": 672538,
+      "emissionsNear": 89125.19818301153,
+      "totalRevenueNear": 10026.898297905082
+    },
+    {
+      "day": "2026-07-19",
+      "volumeUsd": 44953171.776483804,
+      "grossFeesUsd": 52746,
+      "capturedUsd": 10812,
+      "swaps": 76619,
+      "transactions": 664256,
+      "emissionsNear": 89130.66012646879,
+      "totalRevenueNear": 6047.529318137217
+    },
+    {
+      "day": "2026-07-20",
+      "volumeUsd": 67710951.77863154,
+      "grossFeesUsd": 94331,
+      "capturedUsd": 13349,
+      "swaps": 78726,
+      "transactions": 754988,
+      "emissionsNear": 89136.22963835871,
+      "totalRevenueNear": 7519.9489461741005
+    },
+    {
+      "day": "2026-07-21",
+      "volumeUsd": 115247043.042923,
+      "grossFeesUsd": 222709,
+      "capturedUsd": 22589,
+      "swaps": 92424,
+      "transactions": 737854,
+      "emissionsNear": 89142.06544493102,
+      "totalRevenueNear": 12027.65872412357
+    },
+    {
+      "day": "2026-07-22",
+      "volumeUsd": 95998898.88403764,
+      "grossFeesUsd": 124716,
+      "capturedUsd": 44044,
+      "swaps": 94955,
+      "transactions": 718549,
+      "emissionsNear": 89149.47139267786,
+      "totalRevenueNear": 23385.112724142717
+    },
+    {
+      "day": "2026-07-23",
+      "volumeUsd": 71089977.63984293,
+      "grossFeesUsd": 85942,
+      "capturedUsd": 14289,
+      "swaps": 99405,
+      "transactions": 732946,
+      "emissionsNear": 89154.95804945761,
+      "totalRevenueNear": 8232.369247862827
+    },
+    {
+      "day": "2026-07-24",
+      "volumeUsd": 67955638.23920785,
+      "grossFeesUsd": 71139,
+      "capturedUsd": 9704,
+      "swaps": 98983,
+      "transactions": 712611,
+      "emissionsNear": 89160.4054027359,
+      "totalRevenueNear": 5733.182422654103
+    },
+    {
+      "day": "2026-07-25",
+      "volumeUsd": 50617435.80938554,
+      "grossFeesUsd": 65860,
+      "capturedUsd": 6833,
+      "swaps": 92599,
+      "transactions": 718997,
+      "emissionsNear": 89167.69259074,
+      "totalRevenueNear": 4366.0296043354165
+    },
+    {
+      "day": "2026-07-26",
+      "volumeUsd": 52209524.4334835,
+      "grossFeesUsd": 77274,
+      "capturedUsd": 11776,
+      "swaps": 89798,
+      "transactions": 706844,
+      "emissionsNear": 89173.20392874503,
+      "totalRevenueNear": 7131.340427003696
+    },
+    {
+      "day": "2026-07-27",
+      "volumeUsd": 62705122.20587893,
+      "grossFeesUsd": 85755,
+      "capturedUsd": 14181,
+      "swaps": 101057,
+      "transactions": 698017,
+      "emissionsNear": 89178.72915334455,
+      "totalRevenueNear": 8292.969627193994
+    },
+    {
+      "day": "2026-07-28",
+      "volumeUsd": 77745928.6623993,
+      "grossFeesUsd": 95577,
+      "capturedUsd": 11953,
+      "swaps": 100789,
+      "transactions": 703205,
+      "emissionsNear": 89184.29837101945,
+      "totalRevenueNear": 7687.455939286182
+    },
+    {
+      "day": "2026-07-29",
+      "volumeUsd": 65147559.9866229,
+      "grossFeesUsd": 75701,
+      "capturedUsd": 14307.999999999998,
+      "swaps": 103723,
+      "transactions": 705004,
+      "emissionsNear": 89191.67439278029,
+      "totalRevenueNear": 9257.066598251135
+    },
+    {
+      "day": "2026-07-30",
+      "volumeUsd": 82798277.24578217,
+      "grossFeesUsd": 101720,
+      "capturedUsd": 17473,
+      "swaps": 114719,
+      "transactions": 733277,
+      "emissionsNear": 89197.138129136,
+      "totalRevenueNear": 11380.424720025478
+    },
+    {
+      "day": "2026-07-31",
+      "volumeUsd": 76633572.89530219,
+      "grossFeesUsd": 93770,
+      "capturedUsd": 15545.999999999998,
+      "swaps": 113627,
+      "transactions": 708126,
+      "emissionsNear": 89202.71810115298,
+      "totalRevenueNear": 9891.944734259834
+    },
+    {
+      "day": "2026-08-01",
+      "volumeUsd": 60410875.65445727,
+      "grossFeesUsd": 68960,
+      "capturedUsd": 13576,
+      "swaps": 102703,
+      "transactions": 681793,
+      "emissionsNear": 89208.28309657153,
+      "totalRevenueNear": 8747.147332828465
+    },
+    {
+      "day": "2026-08-02",
+      "volumeUsd": 38334169.02645914,
+      "grossFeesUsd": 49848,
+      "capturedUsd": 5354,
+      "swaps": 93500,
+      "transactions": 671128,
+      "emissionsNear": 89215.71522630265,
+      "totalRevenueNear": 3733.084517635109
+    },
+    {
+      "day": "2026-08-03",
+      "volumeUsd": 75917317.27854155,
+      "grossFeesUsd": 95834,
+      "capturedUsd": 11733,
+      "swaps": 104589,
+      "transactions": 690732,
+      "emissionsNear": 89221.2223480024,
+      "totalRevenueNear": 7412.0331125932735
+    },
+    {
+      "day": "2026-08-04",
+      "volumeUsd": 63719989.38234057,
+      "grossFeesUsd": 73742,
+      "capturedUsd": 11864,
+      "swaps": 104582,
+      "transactions": 696617,
+      "emissionsNear": 89226.77175892255,
+      "totalRevenueNear": 7430.71664816741
+    },
+    {
+      "day": "2026-08-05",
+      "volumeUsd": 82963645.6150966,
+      "grossFeesUsd": 84527,
+      "capturedUsd": 15939.000000000002,
+      "swaps": 112274,
+      "transactions": 671609,
+      "emissionsNear": 89234.15881137893,
+      "totalRevenueNear": 9833.53618760695
+    },
+    {
+      "day": "2026-08-06",
+      "volumeUsd": 90509823.02193649,
+      "grossFeesUsd": 71684,
+      "capturedUsd": 10715,
+      "swaps": 116518,
+      "transactions": 675341,
+      "emissionsNear": 89239.74087413757,
+      "totalRevenueNear": 6873.597098309154
+    },
+    {
+      "day": "2026-08-07",
+      "volumeUsd": 80615040.31131594,
+      "grossFeesUsd": 94209,
+      "capturedUsd": 21552,
+      "swaps": 114194,
+      "transactions": 656089,
+      "emissionsNear": 89245.31341173308,
+      "totalRevenueNear": 13565.732923919759
+    },
+    {
+      "day": "2026-08-08",
+      "volumeUsd": 66042323.103222,
+      "grossFeesUsd": 85935,
+      "capturedUsd": 13749.000000000002,
+      "swaps": 108010,
+      "transactions": 656235,
+      "emissionsNear": 89250.81686433013,
+      "totalRevenueNear": 9221.112942874986
+    },
+    {
+      "day": "2026-08-09",
+      "volumeUsd": 53248926.264832884,
+      "grossFeesUsd": 45885,
+      "capturedUsd": 16602,
+      "swaps": 102268,
+      "transactions": 637854,
+      "emissionsNear": 89258.18519348609,
+      "totalRevenueNear": 10838.100260754269
+    },
+    {
+      "day": "2026-08-10",
+      "volumeUsd": 84848765.95707972,
+      "grossFeesUsd": 101506,
+      "capturedUsd": 13215.000000000002,
+      "swaps": 118973,
+      "transactions": 672018,
+      "emissionsNear": 89263.71722925012,
+      "totalRevenueNear": 8839.111042659008
+    },
+    {
+      "day": "2026-08-11",
+      "volumeUsd": 82443834.37676638,
+      "grossFeesUsd": 89805,
+      "capturedUsd": 18369,
+      "swaps": 124807,
+      "transactions": 660154,
+      "emissionsNear": 89269.27385081809,
+      "totalRevenueNear": 12047.760148325347
+    },
+    {
+      "day": "2026-08-12",
+      "volumeUsd": 84515163.51591907,
+      "grossFeesUsd": 89734,
+      "capturedUsd": 18006,
+      "swaps": 125935,
+      "transactions": 685406,
+      "emissionsNear": 89274.8914490486,
+      "totalRevenueNear": 11708.208644599425
+    },
+    {
+      "day": "2026-08-13",
+      "volumeUsd": 77682852.85407746,
+      "grossFeesUsd": 66844,
+      "capturedUsd": 8915,
+      "swaps": 121885,
+      "transactions": 664804,
+      "emissionsNear": 89282.28094625437,
+      "totalRevenueNear": 5978.704630422125
+    },
+    {
+      "day": "2026-08-14",
+      "volumeUsd": 85117462.25770232,
+      "grossFeesUsd": 81532,
+      "capturedUsd": 15902,
+      "swaps": 122108,
+      "transactions": 639732,
+      "emissionsNear": 89287.7663062498,
+      "totalRevenueNear": 10251.343470583277
+    },
+    {
+      "day": "2026-08-15",
+      "volumeUsd": 40298858.772755936,
+      "grossFeesUsd": 30597.999999999996,
+      "capturedUsd": 7223,
+      "swaps": 78721,
+      "transactions": 584733,
+      "emissionsNear": 89293.41288332004,
+      "totalRevenueNear": 4881.507464186443
+    },
+    {
+      "day": "2026-08-16",
+      "volumeUsd": 53177731.58173673,
+      "grossFeesUsd": 48854,
+      "capturedUsd": 6492,
+      "swaps": 103176,
+      "transactions": 615151,
+      "emissionsNear": 89298.95603440652,
+      "totalRevenueNear": 4522.1654879902735
+    },
+    {
+      "day": "2026-08-17",
+      "volumeUsd": 100797507.1659664,
+      "grossFeesUsd": 91373,
+      "capturedUsd": 25889,
+      "swaps": 131158,
+      "transactions": 669250,
+      "emissionsNear": 89306.32722152921,
+      "totalRevenueNear": 16745.64261647019
+    },
+    {
+      "day": "2026-08-18",
+      "volumeUsd": 89672642.06563343,
+      "grossFeesUsd": 78925,
+      "capturedUsd": 15352,
+      "swaps": 128016,
+      "transactions": 673834,
+      "emissionsNear": 89311.88351381086,
+      "totalRevenueNear": 9975.945122483685
+    },
+    {
+      "day": "2026-08-19",
+      "volumeUsd": 167024454.6494427,
+      "grossFeesUsd": 179826,
+      "capturedUsd": 60832,
+      "swaps": 147784,
+      "transactions": 733400,
+      "emissionsNear": 89317.39184701466,
+      "totalRevenueNear": 38949.53091587498
+    },
+    {
+      "day": "2026-08-20",
+      "volumeUsd": 151208263.41289562,
+      "grossFeesUsd": 256874.00000000003,
+      "capturedUsd": 39966,
+      "swaps": 165033,
+      "transactions": 758797,
+      "emissionsNear": 89324.75854996892,
+      "totalRevenueNear": 23793.820723057222
+    },
+    {
+      "day": "2026-08-21",
+      "volumeUsd": 202364549.57274175,
+      "grossFeesUsd": 304079,
+      "capturedUsd": 71250,
+      "swaps": 161234,
+      "transactions": 786077,
+      "emissionsNear": 89330.39282113586,
+      "totalRevenueNear": 41075.56681719345
+    },
+    {
+      "day": "2026-08-22",
+      "volumeUsd": 158700980.32666448,
+      "grossFeesUsd": 275924,
+      "capturedUsd": 37752,
+      "swaps": 131918,
+      "transactions": 804701,
+      "emissionsNear": 89336.01708349501,
+      "totalRevenueNear": 19930.548886210705
+    },
+    {
+      "day": "2026-08-23",
+      "volumeUsd": 124432643.24636173,
+      "grossFeesUsd": 204259,
+      "capturedUsd": 32726,
+      "swaps": 130081,
+      "transactions": 726225,
+      "emissionsNear": 89341.54581319145,
+      "totalRevenueNear": 18057.312171501653
+    },
+    {
+      "day": "2026-08-24",
+      "volumeUsd": 162771743.3381388,
+      "grossFeesUsd": 191573,
+      "capturedUsd": 37127,
+      "swaps": 147705,
+      "transactions": 805717,
+      "emissionsNear": 89348.90441095774,
+      "totalRevenueNear": 19147.835453580145
+    },
+    {
+      "day": "2026-08-25",
+      "volumeUsd": 162444084.60931447,
+      "grossFeesUsd": 196928,
+      "capturedUsd": 27170,
+      "swaps": 152445,
+      "transactions": 719568,
+      "emissionsNear": 89354.42502664645,
+      "totalRevenueNear": 14547.18372050005
+    },
+    {
+      "day": "2026-08-26",
+      "volumeUsd": 141699661.95116916,
+      "grossFeesUsd": 157295,
+      "capturedUsd": 36945,
+      "swaps": 122296,
+      "transactions": 655345,
+      "emissionsNear": 89359.94099092956,
+      "totalRevenueNear": 20444.054016072427
+    },
+    {
+      "day": "2026-08-27",
+      "volumeUsd": 154703436.07582566,
+      "grossFeesUsd": 197928,
+      "capturedUsd": 25295,
+      "swaps": 141360,
+      "transactions": 681264,
+      "emissionsNear": 89365.53378097226,
+      "totalRevenueNear": 13907.323323402396
+    },
+    {
+      "day": "2026-08-28",
+      "volumeUsd": 125969153.46303047,
+      "grossFeesUsd": 177386,
+      "capturedUsd": 26210,
+      "swaps": 128653,
+      "transactions": 654889,
+      "emissionsNear": 89372.99578899117,
+      "totalRevenueNear": 14215.071018919123
+    },
+    {
+      "day": "2026-08-29",
+      "volumeUsd": 87376509.72002204,
+      "grossFeesUsd": 101288,
+      "capturedUsd": 26382,
+      "swaps": 105198,
+      "transactions": 594141,
+      "emissionsNear": 89378.58005032563,
+      "totalRevenueNear": 14971.57045213871
+    },
+    {
+      "day": "2026-08-30",
+      "volumeUsd": 100234618.23673561,
+      "grossFeesUsd": 110331,
+      "capturedUsd": 27238,
+      "swaps": 116839,
+      "transactions": 623892,
+      "emissionsNear": 89384.20375579828,
+      "totalRevenueNear": 15109.917249581935
+    },
+    {
+      "day": "2026-08-31",
+      "volumeUsd": 152589754.80719241,
+      "grossFeesUsd": 133489,
+      "capturedUsd": 23922,
+      "swaps": 150757,
+      "transactions": 684883,
+      "emissionsNear": 89389.83303866313,
+      "totalRevenueNear": 13760.745548967514
+    },
+    {
+      "day": "2026-09-01",
+      "volumeUsd": 131320550.27479078,
+      "grossFeesUsd": 113515,
+      "capturedUsd": 23011,
+      "swaps": 143486,
+      "transactions": 670529,
+      "emissionsNear": 89397.34849712305,
+      "totalRevenueNear": 12584.31884936249
+    },
+    {
+      "day": "2026-09-02",
+      "volumeUsd": 143225567.3072366,
+      "grossFeesUsd": 182270,
+      "capturedUsd": 29958,
+      "swaps": 131245,
+      "transactions": 659622,
+      "emissionsNear": 89403.00353941179,
+      "totalRevenueNear": 16472.839768979626
+    },
+    {
+      "day": "2026-09-03",
+      "volumeUsd": 169508995.84673247,
+      "grossFeesUsd": 189877,
+      "capturedUsd": 64906,
+      "swaps": 146588,
+      "transactions": 703698,
+      "emissionsNear": 89408.79942535031,
+      "totalRevenueNear": 35124.13750661402
+    },
+    {
+      "day": "2026-09-04",
+      "volumeUsd": 209382036.38454747,
+      "grossFeesUsd": 166252,
+      "capturedUsd": 109183,
+      "swaps": 144954,
+      "transactions": 735463,
+      "emissionsNear": 89414.45506505208,
+      "totalRevenueNear": 56596.58628997656
+    },
+    {
+      "day": "2026-09-05",
+      "volumeUsd": 101244338.97448148,
+      "grossFeesUsd": 127209,
+      "capturedUsd": 28981,
+      "swaps": 124771,
+      "transactions": 674162,
+      "emissionsNear": 89420.0605892945,
+      "totalRevenueNear": 13944.091446628148
+    },
+    {
+      "day": "2026-09-06",
+      "volumeUsd": 141010446.95966008,
+      "grossFeesUsd": 179520,
+      "capturedUsd": 68915,
+      "swaps": 124292,
+      "transactions": 763172,
+      "emissionsNear": 89427.54599605518,
+      "totalRevenueNear": 32106.47936569679
+    },
+    {
+      "day": "2026-09-07",
+      "volumeUsd": 109239531.89191929,
+      "grossFeesUsd": 141528,
+      "capturedUsd": 21453,
+      "swaps": 135258,
+      "transactions": 746044,
+      "emissionsNear": 89433.16532262135,
+      "totalRevenueNear": 9444.021261106558
+    },
+    {
+      "day": "2026-09-08",
+      "volumeUsd": 104742193.63910668,
+      "grossFeesUsd": 116689,
+      "capturedUsd": 26021,
+      "swaps": 100196,
+      "transactions": 704254,
+      "emissionsNear": 89438.77139699632,
+      "totalRevenueNear": 11891.928208061305
+    },
+    {
+      "day": "2026-09-09",
+      "volumeUsd": 198864845.27029145,
+      "grossFeesUsd": 310488,
+      "capturedUsd": 39358,
+      "swaps": 93323,
+      "transactions": 772841,
+      "emissionsNear": 89444.38050408635,
+      "totalRevenueNear": 17611.436921039684
+    },
+    {
+      "day": "2026-09-10",
+      "volumeUsd": 150771716.25223517,
+      "grossFeesUsd": 198245,
+      "capturedUsd": 35167,
+      "swaps": 85096,
+      "transactions": 728736,
+      "emissionsNear": 89449.96288255425,
+      "totalRevenueNear": 14751.018523172097
+    },
+    {
+      "day": "2026-09-11",
+      "volumeUsd": 147252230.4098085,
+      "grossFeesUsd": 200757.99999999997,
+      "capturedUsd": 37305,
+      "swaps": 83717,
+      "transactions": 846582,
+      "emissionsNear": 89457.49614404544,
+      "totalRevenueNear": 15974.161763301376
+    },
+    {
+      "day": "2026-09-12",
+      "volumeUsd": 111677868.51879196,
+      "grossFeesUsd": 114257,
+      "capturedUsd": 27755,
+      "swaps": 73409,
+      "transactions": 651970,
+      "emissionsNear": 89463.10472995919,
+      "totalRevenueNear": 12273.57639592708
+    },
+    {
+      "day": "2026-09-13",
+      "volumeUsd": 87330458.26770586,
+      "grossFeesUsd": 83603,
+      "capturedUsd": 30849,
+      "swaps": 53921,
+      "transactions": 626447,
+      "emissionsNear": 89468.71279578855,
+      "totalRevenueNear": 13525.141271325505
+    },
+    {
+      "day": "2026-09-14",
+      "volumeUsd": 121309891.77264227,
+      "grossFeesUsd": 183447,
+      "capturedUsd": 34816,
+      "swaps": 69068,
+      "transactions": 706600,
+      "emissionsNear": 89474.29067228395,
+      "totalRevenueNear": 15735.00530352708
+    },
+    {
+      "day": "2026-09-15",
+      "volumeUsd": 131467577.22275221,
+      "grossFeesUsd": 198043,
+      "capturedUsd": 32832,
+      "swaps": 70737,
+      "transactions": 706597,
+      "emissionsNear": 89481.78100893927,
+      "totalRevenueNear": 13904.570782235718
+    },
+    {
+      "day": "2026-09-16",
+      "volumeUsd": 134119473.49254791,
+      "grossFeesUsd": 241335.99999999997,
+      "capturedUsd": 40751,
+      "swaps": 64975,
+      "transactions": 777089,
+      "emissionsNear": 89487.37808011906,
+      "totalRevenueNear": 18070.614988553672
+    },
+    {
+      "day": "2026-09-17",
+      "volumeUsd": 303419793.82832855,
+      "grossFeesUsd": 556429,
+      "capturedUsd": 102442,
+      "swaps": 87274,
+      "transactions": 840314,
+      "emissionsNear": 89492.95599120324,
+      "totalRevenueNear": 39871.61691762945
+    },
+    {
+      "day": "2026-09-18",
+      "volumeUsd": 227845909.1076988,
+      "grossFeesUsd": 414401.99999999994,
+      "capturedUsd": 127733,
+      "swaps": 85404,
+      "transactions": 973388,
+      "emissionsNear": 89498.45598703643,
+      "totalRevenueNear": 41442.70752428432
+    },
+    {
+      "day": "2026-09-19",
+      "volumeUsd": 126492192.7075666,
+      "grossFeesUsd": 249210,
+      "capturedUsd": 59836,
+      "swaps": 67771,
+      "transactions": 839380,
+      "emissionsNear": 89505.7996124975,
+      "totalRevenueNear": 16587.311727027223
+    },
+    {
+      "day": "2026-09-20",
+      "volumeUsd": 118561597.76171146,
+      "grossFeesUsd": 180169,
+      "capturedUsd": 47877,
+      "swaps": 66800,
+      "transactions": 846013,
+      "emissionsNear": 89511.37956066596,
+      "totalRevenueNear": 14080.397742554247
+    },
+    {
+      "day": "2026-09-21",
+      "volumeUsd": 270827432.0077508,
+      "grossFeesUsd": 576218,
+      "capturedUsd": 120972,
+      "swaps": 117518,
+      "transactions": 871723,
+      "emissionsNear": 89516.87890858015,
+      "totalRevenueNear": 29896.527454957013
+    },
+    {
+      "day": "2026-09-22",
+      "volumeUsd": 223237663.1540963,
+      "grossFeesUsd": 410219,
+      "capturedUsd": 115821,
+      "swaps": 96081,
+      "transactions": 971959,
+      "emissionsNear": 89524.28638009801,
+      "totalRevenueNear": 28027.75536709462
+    },
+    {
+      "day": "2026-09-23",
+      "volumeUsd": 215033741.30418354,
+      "grossFeesUsd": 355621,
+      "capturedUsd": 107775,
+      "swaps": 99469,
+      "transactions": 869892,
+      "emissionsNear": 89529.83699248462,
+      "totalRevenueNear": 25275.827874379604
+    },
+    {
+      "day": "2026-09-24",
+      "volumeUsd": 175821655.46784085,
+      "grossFeesUsd": 272938,
+      "capturedUsd": 79755.99999999999,
+      "swaps": 86723,
+      "transactions": 741291,
+      "emissionsNear": 89535.31807259448,
+      "totalRevenueNear": 19166.745111074633
+    },
+    {
+      "day": "2026-09-25",
+      "volumeUsd": 180522864.4267077,
+      "grossFeesUsd": 266210,
+      "capturedUsd": 93621,
+      "swaps": 92213,
+      "transactions": 715469,
+      "emissionsNear": 89540.72764832796,
+      "totalRevenueNear": 21255.043104860917
+    },
+    {
+      "day": "2026-09-26",
+      "volumeUsd": 93548366.06352659,
+      "grossFeesUsd": 150152,
+      "capturedUsd": 41268,
+      "swaps": 76656,
+      "transactions": 603143,
+      "emissionsNear": 89547.92037372684,
+      "totalRevenueNear": 9018.57462973041
+    },
+    {
+      "day": "2026-09-27",
+      "volumeUsd": 120587817.99792942,
+      "grossFeesUsd": 216809,
+      "capturedUsd": 47489.00000000001,
+      "swaps": 104037,
+      "transactions": 1217209,
+      "emissionsNear": 89553.26695616155,
+      "totalRevenueNear": 10517.075834453337
+    },
+    {
+      "day": "2026-09-28",
+      "volumeUsd": 167864177.15022716,
+      "grossFeesUsd": 290827,
+      "capturedUsd": 65755,
+      "swaps": 121973,
+      "transactions": 1129793,
+      "emissionsNear": 89560.43996030098,
+      "totalRevenueNear": 13338.597141829683
+    },
+    {
+      "day": "2026-09-29",
+      "volumeUsd": 213684037.62561828,
+      "grossFeesUsd": 355494,
+      "capturedUsd": 74042,
+      "swaps": 116526,
+      "transactions": 987627,
+      "emissionsNear": 89565.85827552025,
+      "totalRevenueNear": 16411.17219712253
+    },
+    {
+      "day": "2026-09-30",
+      "volumeUsd": 173179407.65597263,
+      "grossFeesUsd": 284057,
+      "capturedUsd": 103864.99999999999,
+      "swaps": 81654,
+      "transactions": 923526,
+      "emissionsNear": 89571.37936055142,
+      "totalRevenueNear": 22813.7343809135
+    },
+    {
+      "day": "2026-10-01",
+      "volumeUsd": 125036685.06397325,
+      "grossFeesUsd": 206596,
+      "capturedUsd": 71388,
+      "swaps": 65082,
+      "transactions": 1151492,
+      "emissionsNear": 89576.79545178369,
+      "totalRevenueNear": 15460.935740628149
+    },
+    {
+      "day": "2026-10-02",
+      "volumeUsd": 124137316.70157205,
+      "grossFeesUsd": 225596,
+      "capturedUsd": 54327,
+      "swaps": 67000,
+      "transactions": 868026,
+      "emissionsNear": 89583.97572235638,
+      "totalRevenueNear": 11996.031105891774
+    },
+    {
+      "day": "2026-10-03",
+      "volumeUsd": 76633485.95038506,
+      "grossFeesUsd": 117970.99999999999,
+      "capturedUsd": 25842,
+      "swaps": 53512,
+      "transactions": 690438,
+      "emissionsNear": 89589.32445751145,
+      "totalRevenueNear": 6042.014492036603
+    },
+    {
+      "day": "2026-10-04",
+      "volumeUsd": 64354236.49857379,
+      "grossFeesUsd": 240708,
+      "capturedUsd": 146154,
+      "swaps": 51524,
+      "transactions": 839450,
+      "emissionsNear": 89596.47124673284,
+      "totalRevenueNear": 30888.383751626003
+    },
+    {
+      "day": "2026-10-05",
+      "volumeUsd": 117176998.10285932,
+      "grossFeesUsd": 207150,
+      "capturedUsd": 53207,
+      "swaps": 62841,
+      "transactions": 865681,
+      "emissionsNear": 89601.81717137694,
+      "totalRevenueNear": 11486.14900313918
+    },
+    {
+      "day": "2026-10-06",
+      "volumeUsd": 126234797.39082317,
+      "grossFeesUsd": 225250,
+      "capturedUsd": 61629,
+      "swaps": 77379,
+      "transactions": 909765,
+      "emissionsNear": 89607.16420230933,
+      "totalRevenueNear": 12342.569430448853
+    },
+    {
+      "day": "2026-10-07",
+      "volumeUsd": 119708258.38908494,
+      "grossFeesUsd": 238952,
+      "capturedUsd": 63423,
+      "swaps": 74321,
+      "transactions": 971068,
+      "emissionsNear": 89614.35608672899,
+      "totalRevenueNear": 13235.950953594802
+    },
+    {
+      "day": "2026-10-08",
+      "volumeUsd": 256069391.6464302,
+      "grossFeesUsd": 401457,
+      "capturedUsd": 118719.99999999999,
+      "swaps": 126961,
+      "transactions": 1014850,
+      "emissionsNear": 89619.68920906779,
+      "totalRevenueNear": 23299.679973538943
+    },
+    {
+      "day": "2026-10-09",
+      "volumeUsd": 255697796.2595831,
+      "grossFeesUsd": 339710,
+      "capturedUsd": 113449,
+      "swaps": 93294,
+      "transactions": 680332,
+      "emissionsNear": 89626.85982674085,
+      "totalRevenueNear": 26062.592840514895
+    },
+    {
+      "day": "2026-10-10",
+      "volumeUsd": 153185459.52755877,
+      "grossFeesUsd": 219737,
+      "capturedUsd": 78515,
+      "swaps": 75491,
+      "transactions": 850344,
+      "emissionsNear": 89632.1274932213,
+      "totalRevenueNear": 18003.781877204536
+    },
+    {
+      "day": "2026-10-11",
+      "volumeUsd": 122774330.05047238,
+      "grossFeesUsd": 162447,
+      "capturedUsd": 81286,
+      "swaps": 71222,
+      "transactions": 1109584,
+      "emissionsNear": 89637.29867171832,
+      "totalRevenueNear": 18244.38439897216
+    },
+    {
+      "day": "2026-10-12",
+      "volumeUsd": 139501824.97003826,
+      "grossFeesUsd": 202627,
+      "capturedUsd": 62759,
+      "swaps": 83516,
+      "transactions": 712621,
+      "emissionsNear": 89644.49142472055,
+      "totalRevenueNear": 11464.280209753644
+    },
+    {
+      "day": "2026-10-13",
+      "volumeUsd": 133642221.16923124,
+      "grossFeesUsd": 200723,
+      "capturedUsd": 56520.00000000001,
+      "swaps": 82630,
+      "transactions": 731054,
+      "emissionsNear": 89649.8637849769,
+      "totalRevenueNear": 11958.57460880603
+    },
+    {
+      "day": "2026-10-14",
+      "volumeUsd": 145432170.59250382,
+      "grossFeesUsd": 229844,
+      "capturedUsd": 82736,
+      "swaps": 83285,
+      "transactions": 767812,
+      "emissionsNear": 89656.31533817132,
+      "totalRevenueNear": 17229.495508253924
+    },
+    {
+      "day": "2026-10-15",
+      "volumeUsd": 99643157.65866792,
+      "grossFeesUsd": 170811,
+      "capturedUsd": 162768,
+      "swaps": 62622,
+      "transactions": 911980,
+      "emissionsNear": 89661.47326213015,
+      "totalRevenueNear": 36789.9472846639
+    },
+    {
+      "day": "2026-10-16",
+      "volumeUsd": 88174962.44627729,
+      "grossFeesUsd": 143463,
+      "capturedUsd": 46209,
+      "swaps": 51358,
+      "transactions": 658427,
+      "emissionsNear": 89668.74300189581,
+      "totalRevenueNear": 9449.719103814157
+    },
+    {
+      "day": "2026-10-17",
+      "volumeUsd": 130727859.68720698,
+      "grossFeesUsd": 213822,
+      "capturedUsd": 32347,
+      "swaps": 45425,
+      "transactions": 557903,
+      "emissionsNear": 89674.19035011026,
+      "totalRevenueNear": 6976.170955001202
+    },
+    {
+      "day": "2026-10-18",
+      "volumeUsd": 138807316.74370876,
+      "grossFeesUsd": 252096,
+      "capturedUsd": 46284.00000000001,
+      "swaps": 42652,
+      "transactions": 569735,
+      "emissionsNear": 89679.62690770067,
+      "totalRevenueNear": 10059.554285336344
+    },
+    {
+      "day": "2026-10-19",
+      "volumeUsd": 97672918.93416253,
+      "grossFeesUsd": 150645,
+      "capturedUsd": 53083,
+      "swaps": 52312,
+      "transactions": 607019,
+      "emissionsNear": 89686.8936371065,
+      "totalRevenueNear": 11170.303084363508
+    },
+    {
+      "day": "2026-10-20",
+      "volumeUsd": 121452062.68126667,
+      "grossFeesUsd": 218703,
+      "capturedUsd": 78180,
+      "swaps": 42376,
+      "transactions": 617990,
+      "emissionsNear": 89692.35721059839,
+      "totalRevenueNear": 16548.093090030256
+    },
+    {
+      "day": "2026-10-21",
+      "volumeUsd": 151452048.9661409,
+      "grossFeesUsd": 214208,
+      "capturedUsd": 63787,
+      "swaps": 55441,
+      "transactions": 658784,
+      "emissionsNear": 89697.8213950936,
+      "totalRevenueNear": 13660.83710834452
+    },
+    {
+      "day": "2026-10-22",
+      "volumeUsd": 132262402.92874916,
+      "grossFeesUsd": 160494,
+      "capturedUsd": 58818.99999999999,
+      "swaps": 51335,
+      "transactions": 547267,
+      "emissionsNear": 89705.01797091734,
+      "totalRevenueNear": 11736.341493358765
+    },
+    {
+      "day": "2026-10-23",
+      "volumeUsd": 95545767.17621002,
+      "grossFeesUsd": 147974,
+      "capturedUsd": 38629,
+      "swaps": 49990,
+      "transactions": 609236,
+      "emissionsNear": 89710.35237286655,
+      "totalRevenueNear": 8493.167501123498
+    },
+    {
+      "day": "2026-10-24",
+      "volumeUsd": 85994134.01667002,
+      "grossFeesUsd": 164861,
+      "capturedUsd": 47262.00000000001,
+      "swaps": 50263,
+      "transactions": 635438,
+      "emissionsNear": 89717.35038396373,
+      "totalRevenueNear": 10625.908600588922
+    },
+    {
+      "day": "2026-10-25",
+      "volumeUsd": 89290005.15797925,
+      "grossFeesUsd": 127082.99999999999,
+      "capturedUsd": 61742,
+      "swaps": 44777,
+      "transactions": 550250,
+      "emissionsNear": 89722.63686856526,
+      "totalRevenueNear": 14207.872513751296
+    },
+    {
+      "day": "2026-10-26",
+      "volumeUsd": 134322214.26429942,
+      "grossFeesUsd": 190376,
+      "capturedUsd": 79249.99999999999,
+      "swaps": 53753,
+      "transactions": 573801,
+      "emissionsNear": 89729.66286430755,
+      "totalRevenueNear": 17788.9063481482
+    },
+    {
+      "day": "2026-10-27",
+      "volumeUsd": 141264150.5109713,
+      "grossFeesUsd": 158080,
+      "capturedUsd": 76747,
+      "swaps": 58395,
+      "transactions": 604320,
+      "emissionsNear": 89735.38391838035,
+      "totalRevenueNear": 17646.486894148675
+    },
+    {
+      "day": "2026-10-28",
+      "volumeUsd": 112385955.68066911,
+      "grossFeesUsd": 144527,
+      "capturedUsd": 57359,
+      "swaps": 51436,
+      "transactions": 520096,
+      "emissionsNear": 89740.67464283753,
+      "totalRevenueNear": 12834.046686576894
+    },
+    {
+      "day": "2026-10-29",
+      "volumeUsd": 141723823.39358872,
+      "grossFeesUsd": 199177,
+      "capturedUsd": 94993,
+      "swaps": 56755,
+      "transactions": 649103,
+      "emissionsNear": 89747.78694100532,
+      "totalRevenueNear": 20691.29454174672
+    },
+    {
+      "day": "2026-10-30",
+      "volumeUsd": 191904556.711985,
+      "grossFeesUsd": 387696,
+      "capturedUsd": 75590,
+      "swaps": 95469,
+      "transactions": 691420,
+      "emissionsNear": 89753.10996240779,
+      "totalRevenueNear": 19318.43819917944
+    },
+    {
+      "day": "2026-10-31",
+      "volumeUsd": 73433290.98637725,
+      "grossFeesUsd": 125292,
+      "capturedUsd": 46517,
+      "swaps": 55777,
+      "transactions": 502649,
+      "emissionsNear": 89758.42302754485,
+      "totalRevenueNear": 11347.112836850609
+    },
+    {
+      "day": "2026-11-01",
+      "volumeUsd": 81928561.9263451,
+      "grossFeesUsd": 148144,
+      "capturedUsd": 28866.999999999996,
+      "swaps": 65808,
+      "transactions": 509345,
+      "emissionsNear": 89765.48125703688,
+      "totalRevenueNear": 7009.863881397578
+    },
+    {
+      "day": "2026-11-02",
+      "volumeUsd": 155286804.14870852,
+      "grossFeesUsd": 163928,
+      "capturedUsd": 33483,
+      "swaps": 54044,
+      "transactions": 522358,
+      "emissionsNear": 89770.75926944774,
+      "totalRevenueNear": 8356.880037680341
+    },
+    {
+      "day": "2026-11-03",
+      "volumeUsd": 137911779.3028735,
+      "grossFeesUsd": 164946,
+      "capturedUsd": 42975,
+      "swaps": 72753,
+      "transactions": 597189,
+      "emissionsNear": 89777.73288994448,
+      "totalRevenueNear": 11637.926551448842
+    },
+    {
+      "day": "2026-11-04",
+      "volumeUsd": 143981404.0402527,
+      "grossFeesUsd": 255718,
+      "capturedUsd": 49088,
+      "swaps": 78865,
+      "transactions": 706690,
+      "emissionsNear": 89783.09454755702,
+      "totalRevenueNear": 13434.323083784479
+    },
+    {
+      "day": "2026-11-05",
+      "volumeUsd": 131020261.35538948,
+      "grossFeesUsd": 228625,
+      "capturedUsd": 60331,
+      "swaps": 74032,
+      "transactions": 848794,
+      "emissionsNear": 89790.10147681486,
+      "totalRevenueNear": 15747.85320563698
+    },
+    {
+      "day": "2026-11-06",
+      "volumeUsd": 141555970.52174038,
+      "grossFeesUsd": 252865.00000000003,
+      "capturedUsd": 87700,
+      "swaps": 70770,
+      "transactions": 717484,
+      "emissionsNear": 89795.34847212878,
+      "totalRevenueNear": 24575.77755518368
+    },
+    {
+      "day": "2026-11-07",
+      "volumeUsd": 114752674.44779767,
+      "grossFeesUsd": 187467,
+      "capturedUsd": 43279,
+      "swaps": 59077,
+      "transactions": 682432,
+      "emissionsNear": 89802.3847047796,
+      "totalRevenueNear": 12179.17353695073
+    },
+    {
+      "day": "2026-11-08",
+      "volumeUsd": 87673580.25989825,
+      "grossFeesUsd": 194710,
+      "capturedUsd": 31109.999999999996,
+      "swaps": 48648,
+      "transactions": 609504,
+      "emissionsNear": 89807.59393398043,
+      "totalRevenueNear": 8814.753212600337
+    },
+    {
+      "day": "2026-11-09",
+      "volumeUsd": 166233298.6169098,
+      "grossFeesUsd": 263740,
+      "capturedUsd": 58512,
+      "swaps": 74781,
+      "transactions": 895302,
+      "emissionsNear": 89814.60085055039,
+      "totalRevenueNear": 16987.036564383852
+    },
+    {
+      "day": "2026-11-10",
+      "volumeUsd": 152754903.906052,
+      "grossFeesUsd": 298141,
+      "capturedUsd": 60642.00000000001,
+      "swaps": null,
+      "transactions": 970505,
+      "emissionsNear": 89819.83660802236,
+      "totalRevenueNear": 17438.120904461008
+    }
+  ],
+  "quality": {
+    "missingSwapDates": 1,
+    "financialDates": 364
+  }
+}

@@ -1,0 +1,129 @@
+{
+  "version": "overview-query-contracts-2026-11-12-v1",
+  "execution_status": "Mixed status: SQL21,24,29,31 executed on Dune; other local revisions/drafts are not published",
+  "existing_queries": {
+    "21": {
+      "file": "21_ir_intents_scorecard_30d.sql",
+      "query_id": 9103907,
+      "status": "Saved and executed; strict all-field guard29/30 because10November swaps missing; monetary headlinesNULL"
+    },
+    "22": {
+      "file": "22_ir_fee_waterfall_30d.sql",
+      "query_id": 9103908,
+      "status": "Local SQL revision only; revised SQL not saved to the existing Dune query"
+    },
+    "23": {
+      "file": "23_ir_intents_retention_monthly.sql",
+      "query_id": 9103909,
+      "status": "Local SQL revision only; revised SQL not saved to the existing Dune query"
+    }
+  },
+  "changes": [
+    "retained_share_pct is USD-weighted; separate retained_share_near_pct",
+    "Date spine before LEFT JOIN; duplicate source rows and metric duplicates invalidate dates",
+    "NULL headline metrics when expected calendar coverage is incomplete",
+    "paid_out_usd retained only as compatibility alias for gross_less_captured_usd",
+    "SQL22 labels reflect accrued fees versus captured receipts, not verified recipient payments",
+    "SQL30 exact multiplicative log attribution is descriptive; positive-factor gate, no causal conclusion"
+  ],
+  "new_queries": [
+    "24_intents_source_preflight.sql",
+    "25_intents_volume_daily.sql",
+    "26_intents_gross_fees_daily.sql",
+    "27_captured_wallet_inflows_daily.sql",
+    "28_intents_dimension_concentration.sql",
+    "29_query_contract_checks.sql",
+    "30_ir_window_comparison.sql",
+    "31_glance_daily_observations.sql"
+  ],
+  "parameters": {
+    "start_date": "2026-10-10",
+    "end_date": "2026-11-08",
+    "note": "SQL25-28 use Dune date parameters; clamp end_date before current UTC day"
+  },
+  "primary_sources": [
+    "https://raw.githubusercontent.com/DefiLlama/dimension-adapters/master/fees/near-intents/index.ts",
+    "https://raw.githubusercontent.com/DefiLlama/dimension-adapters/master/dexs/near-intents/index.ts",
+    "https://dune.com/queries/5175176/8518997"
+  ],
+  "gates_before_publication": [
+    "SQL24 executed: resolve missing USD amounts, inspect source row grain and validate fee-component disjointness before publishing25-28",
+    "No source-type fee split until the fee datasets expose verified matching attribution",
+    "Preserve blockchain/asset volume labels until one-leg versus two-leg convention established",
+    "Raw inflow query excludes named inter-wallet hops but wrap/unwrap and event-key reconciliation remains required",
+    "No executed-buyback or burn claim based on wallet receipt aggregation",
+    "SQL29 executed with4/4 passed; continue checking materialized/snapshot metadata, units and coverage after source changes",
+    "Source agreement with DefiLlama is common-lineage consistency, not independent corroboration"
+  ],
+  "cost_note": "SQL24 scans full aggregate source history; raw near.actions/ft_transfers bounded by required date parameters; execution cost not measured",
+  "live_execution": [
+    {
+      "result": "29/30 all-field valid: latest swap count missing; headlines NULL",
+      "sql": "21_ir_intents_scorecard_30d.sql",
+      "query": "9103907",
+      "status": "executed"
+    },
+    {
+      "snapshot": "data/glance-sources/glance-daily-dune.json",
+      "status": "executed and saved",
+      "rows": 364,
+      "sql": "31_glance_daily_observations.sql",
+      "cutoff": "2026-11-10",
+      "query": "9114284"
+    },
+    {
+      "result": "Missing USD fields require coverage review before25-28 publication",
+      "sql": "24_intents_source_preflight.sql",
+      "query": "9114313",
+      "status": "executed and saved"
+    },
+    {
+      "result": "4/4 passed after explicit floating-point literal correction",
+      "sql": "29_query_contract_checks.sql",
+      "query": "9114329",
+      "status": "executed and saved"
+    }
+  ],
+  "query_status": [
+    {
+      "file": "24_intents_source_preflight.sql",
+      "query": "9114313",
+      "status": "saved and executed",
+      "result": "Missing USD:216406/284593 metric rows and7323/27647 affiliate-fee rows. Counts do not establish notional coverage."
+    },
+    {
+      "file": "25_intents_volume_daily.sql",
+      "status": "unexecuted local draft"
+    },
+    {
+      "file": "26_intents_gross_fees_daily.sql",
+      "status": "unexecuted local draft"
+    },
+    {
+      "file": "27_captured_wallet_inflows_daily.sql",
+      "status": "unexecuted local draft"
+    },
+    {
+      "file": "28_intents_dimension_concentration.sql",
+      "status": "unexecuted local draft"
+    },
+    {
+      "file": "29_query_contract_checks.sql",
+      "query": "9114329",
+      "status": "saved and executed",
+      "result": "All4 synthetic contract checks passed after explicit floating-point literal correction"
+    },
+    {
+      "file": "30_ir_window_comparison.sql",
+      "status": "unexecuted local draft"
+    },
+    {
+      "file": "31_glance_daily_observations.sql",
+      "query": "9114284",
+      "status": "saved and executed; all15 result pages imported",
+      "result": "364 unique consecutive daily dates2025-11-12 through2026-11-10; financial fields available; latest swapsNULL",
+      "snapshot": "data/glance-sources/glance-daily-dune.json",
+      "contract": "Financial-source validity is separate from optional count coverage; not the strict all-field scorecard21 contract"
+    }
+  ]
+}

@@ -1,5 +1,5 @@
 {
-  "version": "glance-economics-2026-11-10-v2",
+  "version": "glance-economics-2026-11-12-v3",
   "sources": {
     "intents-scorecard-dune.json": {
       "sha256": "2bcfa9b69570ae8ceff6f425f2662842bc6360ea1b6c26fcb79f0ab0adcb5d4b"
@@ -27,7 +27,8 @@
       "gross_fees_usd": "5781155",
       "paid_out_usd": "3923292",
       "retained_usd": "1857863",
-      "retained_share_pct": "31.555486651214935",
+      "retained_share_pct": "32.136536730117078680644265721988080236561725122402",
+      "retained_share_near_pct": "31.555486651214935",
       "gross_bps": "15.562896836933648",
       "retained_bps": "5.00137605827141",
       "retained_per_1m_usd": "500.13760582714104",

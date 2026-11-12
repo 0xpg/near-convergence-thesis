@@ -78,7 +78,11 @@ try{
  for(const insight of Object.values(insightData.insights)){assert(insight.value&&insight.headline&&insight.date&&insight.limitation&&insight.calculation.method);assert.equal(new URL(insight.source).protocol,'https:');}
  assert(rendered['thesis.html'].includes('Download calculations'));
  const glanceTiles=rendered['thesis.html'].match(/<article class="glance-tile[\s\S]*?<\/article>/g)||[];
- assert.equal(glanceTiles.length,11);
+ assert.equal(glanceTiles.length,10);
+ assert(!rendered['thesis.html'].includes('glance-institutional'));
+ assert(rendered['thesis.html'].includes('Observed economics'));
+ assert(rendered['thesis.html'].includes('data/glance-daily.json'));
+ assert(rendered['thesis.html'].includes('Observed analysis window'));
  for(const tile of glanceTiles){
   assert(tile.indexOf('class="glance-chart"')<tile.indexOf('class="glance-takeaway"'),'Interpretation follows its chart');
   assert.equal((tile.match(/<details>/g)||[]).length,1,'Evidence stays local to its card');

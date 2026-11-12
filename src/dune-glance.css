@@ -4,7 +4,7 @@
 .thesis-page .thesis-data>header>a{color:#436851;font-size:12px;white-space:nowrap;text-underline-offset:4px}
 .thesis-data .thesis-data-grid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:24px;align-items:start}
 .glance-tile{display:flex;flex-direction:column;min-width:0;grid-column:span 3;border:1px solid #293b321a;border-radius:20px;overflow:hidden;overflow-wrap:anywhere;background:#fff;box-shadow:0 2px 4px #173b3003,0 10px 30px #173b3008}
-.glance-distribution,.glance-retention,.glance-institutional{grid-column:span 6}
+.glance-distribution,.glance-retention{grid-column:span 6}
 .glance-tile-head{padding:28px 28px 24px;background-image:radial-gradient(#59746350 .7px,transparent .9px);background-size:5px 5px;background-repeat:repeat-x}
 .glance-category{display:block;margin-bottom:10px;font:500 11px/1.3 Saans,Arial,sans-serif;letter-spacing:.02em;color:#5c6861}
 .glance-tile-head h4{font:400 22px/1.15 Saans,Arial,sans-serif;letter-spacing:-.03em;margin:0 0 18px;color:#293b32}
@@ -36,7 +36,7 @@
 @media(max-width:640px),(pointer:coarse){.thesis-data .glance-switch button{min-height:44px;padding:6px 10px}.thesis-data .glance-switch button::before{inset:8px 0}}
 @supports (interpolate-size:allow-keywords){.glance-footer details::details-content{interpolate-size:allow-keywords;block-size:0;overflow:clip;opacity:0;transition:block-size 220ms cubic-bezier(.23,1,.32,1),opacity 160ms ease-out,content-visibility 220ms;transition-behavior:allow-discrete}.glance-footer details[open]::details-content{block-size:auto;opacity:1}.glance-footer details:has(summary:focus-visible)::details-content{transition:none}}
 @media(prefers-reduced-motion:reduce){.thesis-data .glance-switch button,.glance-footer details::details-content{transition:none}.glance-switch button:active{transform:none}}
-.glance-scorecard{margin:0 0 72px;padding:28px 0 0;border-top:1px solid #293b32}
+.glance-scorecard{margin:0 0 72px;padding:28px 0 0;border-top:1px solid #293b32;scroll-margin-top:96px}
 .glance-scorecard-head{display:flex;align-items:baseline;justify-content:space-between;gap:16px;margin:0 0 24px}
 .glance-scorecard-head h3{font:400 22px/1.15 Saans,Arial,sans-serif;letter-spacing:-.03em;margin:0}
 .glance-scorecard-head p,.glance-scorecard-foot{font:400 12px/1.5 Saans,Arial,sans-serif;color:#5c6861;margin:0}
@@ -49,6 +49,20 @@
 .glance-scorecard-grid span{display:block;margin-top:10px;font:400 12px/1.45 Saans,Arial,sans-serif;color:#5c6861}
 .glance-scorecard-foot{margin-top:24px}
 .glance-scorecard-foot a,.glance-validation summary{color:#436851;text-underline-offset:4px}
+.glance-window-controls{display:flex;align-items:center;justify-content:flex-end;gap:16px;flex-wrap:wrap}
+.glance-window-controls label{display:flex;align-items:center;gap:8px;font:400 12px/1.3 Saans,Arial,sans-serif;color:#5c6861}
+.glance-window-controls input{max-width:150px;min-height:30px;padding:4px 8px;border:1px solid #293b3220;border-radius:7px;background:#fff;color:#293b32;font:400 12px/1.3 Saans,Arial,sans-serif}
+.glance-window-controls input:focus-visible{outline:2px solid #436851;outline-offset:3px}
+.glance-window-commentary{margin:24px 0 0;max-width:75ch;font:400 15px/1.6 Saans,Arial,sans-serif;color:#293b32}
+.glance-source-bar{display:flex;align-items:center;justify-content:space-between;gap:20px;margin-top:20px;padding-top:16px;border-top:1px solid #293b3214}
+.glance-source-bar p{max-width:85ch;margin:0;font:400 11px/1.6 Saans,Arial,sans-serif;color:#65736b}
+.thesis-data .glance-source-bar button,.thesis-data .glance-export{min-height:30px;flex-shrink:0;padding:5px 10px;border:1px solid #293b3220;border-radius:7px;background:#fff;font:400 12px/1.3 Saans,Arial,sans-serif;color:#436851;cursor:pointer}
+.glance-source-bar button:focus-visible,.glance-export:focus-visible{outline:2px solid #436851;outline-offset:3px}
+.thesis-data .glance-export{margin:8px 0}
+.glance-quality,.glance-data-status{margin:14px 0 0;font:400 12px/1.6 Saans,Arial,sans-serif;color:#65736b}
+.glance-quality summary{cursor:pointer;color:#436851;width:fit-content}
+.glance-quality ul{margin:10px 0 0;padding-left:20px}
+@media(max-width:640px){.glance-window-controls{justify-content:flex-start;margin-top:16px;gap:12px}.glance-source-bar{align-items:flex-start;flex-direction:column;gap:12px}.glance-scorecard{margin-bottom:48px}.glance-window-controls input,.thesis-data .glance-source-bar button{min-height:44px}.glance-export{max-width:100%;white-space:normal}}
 .glance-chapter{margin:0 0 72px}
 .thesis-page .thesis-data .glance-chapter-head{display:grid;justify-content:stretch;grid-template-columns:48px minmax(0,1fr);column-gap:16px;align-items:center;margin:0 0 24px;padding-top:20px;border-top:1px solid #293b32}
 .glance-chapter-icon{width:28px;height:28px;align-self:center;fill:none;stroke:#436851;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}

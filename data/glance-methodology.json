@@ -1,0 +1,101 @@
+{
+  "version": "glance-methodology-2026-11-12-v1",
+  "scope": "Observed NEAR overview only; no Scenario Lab changes",
+  "methods": [
+    {
+      "name": "Completed UTC equal-window comparisons",
+      "implementation": "src/glance-analytics.ts",
+      "definition": "Current and immediately preceding windows have the same count of consecutive completed UTC dates. Missing financial fields invalidate financial outputs; optional counts retain null and suppress count-derived statistics."
+    },
+    {
+      "name": "Currency-consistent capture",
+      "definition": "sum(captured USD receipts) / sum(accrued USD gross fees), separate from native-NEAR ratio. This is a period cash/accrual capture measure, not cohort retention or verified partner payout."
+    },
+    {
+      "name": "Exact symmetric accounting attribution",
+      "formula": "R=V*r; volumeEffect=(V1-V0)*(r0+r1)/2; rateEffect=(r1-r0)*(V0+V1)/2",
+      "interpretation": "Both replacement orders are averaged. Contributions reconcile exactly to the change in observed receipts. Descriptive accounting, not causal identification.",
+      "reference": "https://arxiv.org/abs/2608.04547"
+    },
+    {
+      "name": "Burst sensitivity",
+      "definition": "Median daily volume and share of period volume occurring on the five largest days. No winsorization or suppression of revenue sweeps."
+    }
+  ],
+  "references": [
+    {
+      "url": "https://arxiv.org/abs/2608.04547",
+      "title": "Attributing Differences Between Forecast Runs to Input Changes, With Applications to CCAR and CECL Exercises",
+      "date": "2026-08-05",
+      "use": "Exact order-independent attribution principle; adapted to observed volume times realized receipts rate. Not a NEAR valuation or forecast."
+    },
+    {
+      "url": "https://arxiv.org/abs/2608.03259",
+      "title": "FinVerse: Toward More Realistic Evaluation for Financial Time-Series Forecasting",
+      "revision": "2026-10-23",
+      "use": "Economic semantics and task-specific validation; no forecasting model imported."
+    },
+    {
+      "url": "https://arxiv.org/abs/2607.03124",
+      "use": "Source-first metric reconstruction and explicit validation context; reference preprint."
+    },
+    {
+      "url": "https://arxiv.org/abs/2606.13555",
+      "use": "Fee-demand elasticity requires identification beyond aggregate correlations; no causal pricing-power claim made."
+    }
+  ],
+  "sources": [
+    {
+      "query": "https://dune.com/queries/9114284",
+      "file": "data/glance-sources/glance-daily-dune.json",
+      "sql": "analysis/defillama-ir/sql/31_glance_daily_observations.sql",
+      "status": "Executed; all 15 result pages captured, 364 unique daily rows",
+      "cutoff": "2026-11-10",
+      "issue": "Latest day swap count missing. Financial fields available; no count imputation."
+    },
+    {
+      "query": "https://dune.com/queries/9103907",
+      "sql": "analysis/defillama-ir/sql/21_ir_intents_scorecard_30d.sql",
+      "status": "Corrected and executed",
+      "issue": "Strict all-field guard reports 29 of 30 valid dates because Nov10 swap count is absent; monetary headlines intentionally NULL."
+    },
+    {
+      "query": "https://dune.com/queries/9114313",
+      "sql": "analysis/defillama-ir/sql/24_intents_source_preflight.sql",
+      "status": "Executed and saved",
+      "issue": "Missing USD amounts in 216406 of 284593 metric rows and 7323 of 27647 affiliate-fee rows. Row coverage is not notional coverage; no inference of zero or negative activity."
+    },
+    {
+      "query": "https://dune.com/queries/9114329",
+      "sql": "analysis/defillama-ir/sql/29_query_contract_checks.sql",
+      "status": "Executed and saved; all4 checks passed",
+      "definition": "Synthetic checks cover currency weighting, missing/duplicate-date detection, negative accounting differences and exact multiplicative log attribution; these validate arithmetic contracts, not source completeness or independent transaction truth."
+    }
+  ],
+  "publicationGates": [
+    "Queries25-28/30 remain unexecuted drafts; direct raw-event keys, wrap/unwrap neutrality and USD field coverage require validation before interpreting results.",
+    "Captured wallet inflows are not market purchases; holdings, staking and burns require separate event evidence.",
+    "Same-lineage Dune/DefiLlama agreement is transformation consistency, not independent corroboration.",
+    "Dune iframe filters cannot emit selected ranges to this cross-origin site. Site controls recalculate the downloaded daily snapshot only; source refresh is separate."
+  ],
+  "providerAccess": {
+    "Herd": {
+      "skillRead": true,
+      "mcpToolsExposed": false,
+      "sdkVersion": "0.13.0",
+      "sdkAuthConfirmed": false,
+      "coverage": "Documented EVM coverage; native NEAR and Aurora not established. No authenticated Herd query performed.",
+      "nativeContract": {
+        "account": "intents.near",
+        "source": "https://docs.near-intents.org/integration/verifier-contract/introduction",
+        "repository": "https://github.com/near/intents",
+        "limit": "Repository source is not proof of deployed bytecode equivalence."
+      }
+    },
+    "Blockworks": {
+      "publicRedistributionConfirmed": false,
+      "status": "No Blockworks numerical data uploaded to Dune or published. Governing license/Publishable Data entitlement must permit public use.",
+      "terms": "https://blockworks.com/terms"
+    }
+  }
+}

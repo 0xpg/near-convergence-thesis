@@ -1,7 +1,9 @@
 import React,{useState} from 'react';
 import './dune-glance.css';
 import evidence from '../data/glance-insights.json';
-import {GlanceScorecard,GlanceRetention,GlanceInstitutional,GlanceValidation} from './GlanceEconomics.tsx';
+import {GlanceScorecard,GlanceRetention,GlanceValidation} from './GlanceEconomics.tsx';
+import {analyzeWindow} from './glance-analytics.ts';
+import {useGlanceSnapshot} from './glance-data.ts';
 
 export const glanceCharts=[
   {id:'defi-capital',title:'DeFi capital',tab:'TVL',query:'9074769',visualization:'13123658',description:'USD value in tracked NEAR DeFi. Changes reflect prices and balances, not net deposits.'},
@@ -49,44 +51,72 @@ export const glanceChapters=[
   {id:'execution',title:'Execution across chains',context:'How much trading NEAR Intents settles, where it comes from and who brings it.',items:['activity','reach','distribution']},
   {id:'economics',title:'Revenue and retention',context:'What users pay, what the protocol keeps and how that compares with new issuance.',items:['retention','revenue','issuance']},
   {id:'capital',title:'Capital on NEAR',context:'Liquidity held on the base chain, separate from the inventory that fills Intents.',items:['capital','composition']},
-  {id:'network',title:'Network and token',context:'Base-chain activity and the token’s supply and price.',items:['network','token']},
-  {id:'demand',title:'Emerging demand',context:'Institutional and agent demand, counted only where a source can attribute it.',items:['institutional']}
+  {id:'network',title:'Network and token',context:'Base-chain activity and the token’s supply and price.',items:['network','token']}
 ];
 
 const chapterIcons={
   execution:<><path d="M3 7h13l-3-3M21 17H8l3 3"/><circle cx="19" cy="7" r="1.6"/><circle cx="5" cy="17" r="1.6"/></>,
   economics:<><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/><path d="M16 9.5l3-3 3 3" /></>,
   capital:<><path d="M12 3l9 4.5-9 4.5-9-4.5z"/><path d="M3 12l9 4.5 9-4.5M3 16.5L12 21l9-4.5"/></>,
-  network:<><circle cx="5" cy="6" r="2"/><circle cx="19" cy="6" r="2"/><circle cx="12" cy="18" r="2"/><path d="M7 6h10M6 7.8l5 8.4M18 7.8l-5 8.4"/></>,
-  demand:<><path d="M3 21h18M5 21V10M9.7 21V10M14.3 21V10M19 21V10M2.5 10h19L12 3.5z"/></>
+  network:<><circle cx="5" cy="6" r="2"/><circle cx="19" cy="6" r="2"/><circle cx="12" cy="18" r="2"/><path d="M7 6h10M6 7.8l5 8.4M18 7.8l-5 8.4"/></>
 };
 
 const categories={capital:'Liquidity',revenue:'Economics',issuance:'Economics',network:'Network',token:'Market',activity:'Intents',composition:'Liquidity',reach:'Intents',distribution:'Intents'};
 
-const takeaways={
-  capital:'Stablecoin balances expanded while DeFi TVL contracted over the same 30 days. More transferable capital has not yet translated into a larger DeFi capital base.',
-  revenue:'Intents generated 87.3% of cumulative fees in the source history. Cross-chain services sit at the centre of the observed fee base; how much value NEAR retains becomes the investment question.',
-  issuance:'Captured revenue covered 16.4% of issuance across the observed 30 days. The revenue-linked argument still depends on substantial expansion in paid demand.',
-  network:'A busy base chain can support distribution without generating large gas receipts. The stronger economic case would pair sustained activity with growing demand for higher-value services.',
-  token:'The market prices the network’s future before that future is earned. Sustained service revenue would give investors a firmer basis for judging how much of that expectation is justified.',
-  activity:'Intents gives NEAR a route to serve trading across networks, beyond its own DeFi capital base. The next test is whether that reach supports recurring fees and lasting token demand.',
-  composition:'Rhea Lend and Rhea Dex hold 96.7% of tracked product balances. DeFi traction is concentrated: expansion across more products would make the capital base less dependent on a single ecosystem franchise.',
-  reach:'ETH and USDT are the largest labels in their respective Intents volume mixes. NEAR’s opportunity includes coordinating capital already held elsewhere, rather than requiring every user to migrate assets.',
-  distribution:'The swapkit label accounts for 73.4% of reported channel fees across the source history. Distribution is economically important, but dependence on a leading channel makes retention and bargaining power central to the case.'
-};
+type Insight={value:string,headline:string,date:string,limitation:string,source:string,snapshot?:string,calculation:{method:string,[key:string]:unknown}};
 
-type Insight={value:string,headline:string,date:string,limitation:string,source:string,snapshot?:string,calculation:{method:string}};
+function metricTakeaway(id:string,insight:Insight){
+  const c=insight.calculation,n=(key:string)=>typeof c[key]==='number'||typeof c[key]==='string'?Number(c[key]):NaN;
+  const share=(a:string,b:string)=>Number.isFinite(n(a))&&Number.isFinite(n(b))&&n(b)>0?n(a)/n(b)*100:null;
+  if(id==='defi-capital'||id==='stablecoins'){
+    const change=n('change_pct');
+    return Number.isFinite(change)?`The tracked ${id==='stablecoins'?'stablecoin':'DeFi'} capital base ${change>=0?'expanded':'contracted'} ${Math.abs(change).toFixed(1)}% across the stated window. ${id==='stablecoins'?'The next economic test is whether this liquidity supports more paid transfers and execution.':'A price-and-balance decomposition is needed to establish whether the change reflects capital allocation or asset repricing.'}`:'The source does not support a comparable period-change inference.';
+  }
+  if(id==='ir-emissions'||id==='ir-coverage'){
+    const covered=share('revenue_near','emissions_near');
+    return covered===null?'Revenue coverage is unavailable without matched issuance observations.':`Reported revenue was ${covered.toFixed(1)}% of issuance on the source’s NEAR-denominated basis. ${covered<100?'Current receipts leave a substantial gap for the revenue-led investment argument to close.':'Reported coverage exceeded issuance, but a verified burn and supply ledger is still required to establish dilution offset.'}`;
+  }
+  if(id==='ir-fee-sources'){
+    const s=share('intents_fees_near','total_fees_near');
+    return s===null?'Fee-source shares require a complete comparable denominator.':`Intents accounts for ${s.toFixed(1)}% of the cumulative reported fee base. The economic case therefore depends on cross-chain fee capture, beyond native transaction activity alone.`;
+  }
+  if(id==='ir-cumulative'){
+    const s=share('revenue_near','fees_near');
+    return s===null?'Cumulative capture requires matched fee and revenue coverage.':`The source reports captured revenue equal to ${s.toFixed(1)}% of cumulative fees in NEAR. The difference is an accounting observation; it cannot by itself allocate value between partners, solvers and timing effects.`;
+  }
+  if(id==='ir-channels'||id==='ir-chains'||id==='ir-tokens'||id==='defi-mix'||id==='stablecoin-mix'){
+    const s=share('selected_usd','total_usd')??n('share_pct');
+    return Number.isFinite(s)?`The selected ${id==='ir-channels'?'channel':'asset or product'} accounts for ${s.toFixed(1)}% of this source-defined total. ${id==='ir-channels'?'That concentration makes channel retention and bargaining power material to recurring economics.':id==='ir-chains'||id==='ir-tokens'?'This is a labelled activity share; confirming whether both swap legs are counted is necessary before interpreting it as an origin-market share.':'The breadth of the capital base depends on how the remaining balance is distributed, not the headline total alone.'}`:'The source does not establish a comparable concentration share.';
+  }
+  const implications:Record<string,string>={
+    'ir-fees':'Gross fees measure monetized usage. The captured-receipts analysis above tests how much of that activity reaches the protocol over a matched window.',
+    'ir-revenue':'These are captured receipts, whose collection date may lag the underlying trade. A purchase-and-disposition ledger is needed to connect the receipts to lasting token demand.',
+    'ir-wallets':'Wallet concentration identifies where captured value is collected; it does not establish whether the funds were bought, held, staked or burned.',
+    'ir-transactions':'The stronger economic signal pairs transaction activity with paid execution and fees. Application-level attribution is needed to distinguish changes in demand from changes in one high-volume product.',
+    'ir-accounts':'Activity is concentrated or broad only relative to the participating applications and counterparties. Account counts alone do not identify distinct people or durable economic users.',
+    'ir-gas':'Native gas monetizes base-chain execution. Comparing it with captured Intents receipts shows which part of the stack contributes to the observed economic base.',
+    'ir-price':'Price is a market observation. A price-implied investment claim requires a consistent market-cap denominator and verified cash-flow or token-demand mechanism.',
+    'ir-supply':'The total-versus-circulating gap describes supply classification at this cutoff. Future issuance, actual vesting and treasury-held tokens require separate ledgers.',
+    'ir-volume':'Reported notional establishes the scale of Intents execution. Captured fees per dollar traded and the concentration of activity determine how much economic weight that scale carries.',
+    'ir-swaps':'Combining swap count with comparable notional distinguishes more trades from a larger average trade. Neither establishes institutional or agent attribution.',
+    'ir-intents-fees':'Gross fees connect trading activity to user spending. Capture rate and collection timing determine how much becomes protocol receipts.'
+  };
+  return implications[id]||insight.headline;
+}
 
 export default function DuneGlance({insights=evidence.insights as Record<string,Insight>,economics=true}:{insights?:Record<string,Insight>,economics?:boolean}={}){
   const [selected,setSelected]=useState({});
+  const {snapshot,refreshing,error,refresh}=useGlanceSnapshot();
+  const [days,setDays]=useState(30),[selectedEnd,setEnd]=useState<string|null>(null);
+  const end=selectedEnd||snapshot.sourceCutoff;
+  const analysis=analyzeWindow(snapshot.rows,{days,end,asOf:snapshot.asOf});
   return <section className="thesis-data" aria-labelledby="thesis-data-title">
     <header><div><h2 id="thesis-data-title">NEAR at a glance</h2><p>Activity, capital and the economics connecting them.</p></div><a href="https://dune.com/0xpanatagama/near-economic" rel="noreferrer">Dune dashboard</a></header>
-    {economics&&<GlanceScorecard/>}
+    {economics&&<GlanceScorecard analysis={analysis} days={days} onDaysChange={setDays} end={end} onEndChange={setEnd} maxDate={snapshot.sourceCutoff} sourceVersion={snapshot.version} retrievedAt={snapshot.retrievedAt} onRefresh={refresh} refreshing={refreshing} refreshError={error}/>}
     {glanceChapters.map(chapter=><section className="glance-chapter" key={chapter.id} aria-labelledby={'glance-chapter-'+chapter.id}>
       <header className="glance-chapter-head"><svg className="glance-chapter-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">{chapterIcons[chapter.id]}</svg><h3 id={'glance-chapter-'+chapter.id}>{chapter.title}</h3><p>{chapter.context}</p></header>
       <div className="thesis-data-grid">{chapter.items.map(id=>{
-      if(id==='retention')return <GlanceRetention key={id} available={economics}/>;
-      if(id==='institutional')return <GlanceInstitutional key={id} available={economics}/>;
+      if(id==='retention')return <GlanceRetention key={id} analysis={analysis} snapshot={snapshot} available={economics}/>;
       const group=byId(glanceGroups,id);
       const chart=byId(glanceCharts,selected[group.id]||group.chartIds[0]);
       const insight=insights[chart.id];
@@ -100,12 +130,12 @@ export default function DuneGlance({insights=evidence.insights as Record<string,
         <div className="glance-chart" id={'glance-'+group.id+'-chart'}>
           <iframe key={chart.id} title={chart.title+' — Dune visualization'} src={`https://dune.com/embeds/${chart.query}/${chart.visualization}`} loading="lazy" referrerPolicy="no-referrer"/>
         </div>
-        {insight&&<blockquote className="glance-takeaway">{takeaways[group.id]}</blockquote>}
+        {insight&&<blockquote className="glance-takeaway">{metricTakeaway(chart.id,insight)}</blockquote>}
         <footer className="glance-footer">{insight&&<details><summary>Evidence & calculation</summary><p>{insight.date}</p><p>{chart.description} {insight.limitation}</p><p>{insight.calculation.method}</p><a href={insight.source} rel="noreferrer">Source</a>{insight.snapshot&&<a href={insight.snapshot} download>Download source snapshot</a>}<a href="data/glance-insights.json" download>Download calculations</a></details>}<a className="glance-query" href={query} rel="noreferrer" aria-label={'View '+chart.title+' query on Dune'}>View query on Dune</a></footer>
       </article>;
     })}</div>
     </section>)}
     {economics&&<GlanceValidation/>}
-    <p className="dune-freshness">Insight dates are in the evidence details. Dune charts show each query’s last successful run and may contain newer data. Changing a chart’s internal time window does not recalculate the snapshot insight.</p>
+    <p className="dune-freshness">The observed-economics controls recalculate the source snapshot above. Each embedded Dune chart has independent controls and freshness; changing an iframe’s internal window does not recalculate the snapshot insight. Source cutoffs for the individual metric cards are in their evidence details.</p>
   </section>;
 }

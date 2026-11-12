@@ -1,0 +1,54 @@
+{
+  "query": "https://dune.com/queries/9114313",
+  "reviewedOn": "2026-11-12",
+  "columns": [
+    "dataset",
+    "first_day",
+    "last_day",
+    "rows_seen",
+    "invalid_rows",
+    "invalid_date_rows",
+    "missing_amount_rows",
+    "negative_amount_rows",
+    "source_type_labels",
+    "labels"
+  ],
+  "rows": [
+    [
+      "affiliate_fees",
+      "2025-03-27 00:00:00",
+      "2026-11-12 00:00:00",
+      "27647",
+      "7323",
+      "0",
+      "7323",
+      "0",
+      "",
+      ""
+    ],
+    [
+      "protocol_fees",
+      "2024-12-10 00:00:00",
+      "2026-11-10 00:00:00",
+      "701",
+      "0",
+      "0",
+      "0",
+      "0",
+      "",
+      ""
+    ],
+    [
+      "metrics",
+      "2024-10-18 00:00:00",
+      "2026-11-11 00:00:00",
+      "284593",
+      "216406",
+      "0",
+      "216406",
+      "0",
+      "2",
+      "public, confidential"
+    ]
+  ]
+}

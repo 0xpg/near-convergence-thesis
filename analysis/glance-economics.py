@@ -87,7 +87,8 @@ def build():
         window=dict(start=start, end=end, days=30),
         scorecard=dict(volume_usd=str(s['volume_usd']), swaps=str(s['swaps']), avg_swap_usd=str(s['avg_swap_usd']),
                        gross_fees_usd=str(s['gross_fees_usd']), paid_out_usd=str(s['paid_out_usd']), retained_usd=str(s['retained_usd']),
-                       retained_share_pct=str(s['retained_share_pct']), gross_bps=str(s['gross_bps']), retained_bps=str(s['retained_bps']),
+                       retained_share_pct=str(100 * s['retained_usd'] / s['gross_fees_usd']),
+                       retained_share_near_pct=str(s.get('retained_share_near_pct', s['retained_share_pct'])), gross_bps=str(s['gross_bps']), retained_bps=str(s['retained_bps']),
                        retained_per_1m_usd=str(s['retained_per_1m_usd']), revenue_pct_issuance=str(s['revenue_pct_issuance']),
                        avg_daily_transactions=str(s['avg_daily_transactions'])),
         waterfall=[dict(step=k, usd_per_1m=str(v)) for k, v in steps.items()],
@@ -96,7 +97,7 @@ def build():
         institutional=dict(pending=['Holdings in exchange-traded products', 'Holdings of listed treasury companies'],
                            unavailable=['Institutional order flow routed through Intents', 'Agent-originated Intents volume', 'Active executing solvers']),
         checks=checks)
-    return dict(version='glance-economics-2026-11-10-v2', sources={k: dict(sha256=v) for k, v in hashes.items()}, observed=observed)
+    return dict(version='glance-economics-2026-11-12-v3', sources={k: dict(sha256=v) for k, v in hashes.items()}, observed=observed)
 
 
 if __name__ == '__main__':
