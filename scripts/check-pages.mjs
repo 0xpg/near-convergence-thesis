@@ -58,22 +58,25 @@ try{
  assert(!rendered['thesis.html'].includes('Awaiting supplied data.'));
  assert(rendered['thesis.html'].indexOf('id="framework-title"')<rendered['thesis.html'].indexOf('id="approach-title"'));
  assert(rendered['thesis.html'].indexOf('id="approach-title"')<rendered['thesis.html'].indexOf('id="network"'));
- const {default:DuneGlance,glanceCharts,glanceGroups}=await server.ssrLoadModule('/src/DuneGlance.tsx');
+ const {default:DuneGlance,glanceCharts,glanceGroups,glanceInsights}=await server.ssrLoadModule('/src/DuneGlance.tsx');
  const missingInsights=renderToStaticMarkup(createElement(DuneGlance,{insights:{},economics:false}));
  assert(!missingInsights.includes('class="glance-takeaway"'),'Missing evidence must not retain an investment interpretation');
  assert(missingInsights.includes('Snapshot insight unavailable.'),'Missing is distinct from zero');
  assert(!existsSync('dist-public/scripts/glance-stress.html'),'Stress fixtures must stay local');
  const dashboardVisuals=JSON.parse(readFileSync('analysis/defillama-ir/sql/dashboard-visuals.json','utf8')).visualizations;
  const counters=new Set(['13129722','13129725','13129731','13129732','13129757']);
- assert.deepEqual(new Set(glanceCharts.map(c=>c.query+'/'+c.visualization)),new Set(dashboardVisuals.filter(v=>!counters.has(v.visualization)).map(v=>v.query+'/'+v.visualization)));
+ const expanded=JSON.parse(readFileSync('data/glance-coverage.json','utf8'));
+ const allowed=new Set([...dashboardVisuals.map(v=>v.query+'/'+v.visualization),...expanded.sources.flatMap(source=>(source.visualizations||[]).map(v=>source.query.split('/').at(-1)+'/'+v))]);
+ for(const chart of glanceCharts)assert(allowed.has(chart.query+'/'+chart.visualization));
+ for(const source of expanded.sources)for(const visual of source.visualizations||[])assert(glanceCharts.some(chart=>source.query.endsWith('/'+chart.query)&&chart.visualization===visual),'Expanded Dune chart must reach website');
  assert(rendered['thesis.html'].includes('https://dune.com/0xpanatagama/near-economic\"'));
  assert(!rendered['thesis.html'].includes('<a class="glance-chart"'));
  const chartFrames=rendered['thesis.html'].match(/<iframe[^>]+Dune visualization[^>]*>/g)||[];
  assert.equal(chartFrames.length,9);
  for(const frame of chartFrames){assert(!frame.includes('aria-hidden'));assert(!frame.includes('tabindex="-1"'));}
- assert.equal(glanceCharts.length,22);assert.equal(new Set(glanceCharts.map(chart=>chart.id)).size,22);assert.equal(glanceGroups.length,9);
- assert.equal(glanceGroups.flatMap(group=>group.chartIds).length,22);
- const insightData=JSON.parse(readFileSync('data/glance-insights.json','utf8'));
+ assert.equal(glanceCharts.length,25);assert.equal(new Set(glanceCharts.map(chart=>chart.id)).size,25);assert.equal(glanceGroups.length,9);
+ assert.equal(glanceGroups.flatMap(group=>group.chartIds).length,25);
+ const insightData={insights:glanceInsights};
  for(const chart of glanceCharts){assert(insightData.insights[chart.id]);const snapshot=insightData.insights[chart.id].snapshot;if(snapshot)assert(existsSync('dist/'+snapshot));}assert(!rendered['thesis.html'].includes('Network fundamentals'));
  for(const insight of Object.values(insightData.insights)){assert(insight.value&&insight.headline&&insight.date&&insight.limitation&&insight.calculation.method);assert.equal(new URL(insight.source).protocol,'https:');}
  assert(rendered['thesis.html'].includes('Download calculations'));

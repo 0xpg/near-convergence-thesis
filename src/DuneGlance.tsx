@@ -1,11 +1,15 @@
 import React,{useState} from 'react';
 import './dune-glance.css';
-import evidence from '../data/glance-insights.json';
+import {glanceInsights, type Insight} from './glance-coverage-insights.ts';
+export {glanceInsights} from './glance-coverage-insights.ts';
 import {GlanceScorecard,GlanceRetention,GlanceValidation} from './GlanceEconomics.tsx';
 import {analyzeWindow} from './glance-analytics.ts';
 import {useGlanceSnapshot} from './glance-data.ts';
 
 export const glanceCharts=[
+  {id:'intents-balances',title:'Intents custody balances',tab:'Custody',query:'9117785',visualization:'13169372',description:'Priced custody subtotal. Public-only equals total less confidential; unsplit history stays explicit. Unpriced positive balances are excluded.'},
+  {id:'stablecoin-transfers',title:'Filtered stablecoin transfers',tab:'Transfers',query:'9117819',visualization:'13169462',description:'Positive successful transfer legs across the current 17-contract roster; excludes mint, burn, self-transfers and ambiguous keys. Nominal units, not full USD value.'},
+  {id:'genesis-allocation',title:'Historical genesis allocation',tab:'Genesis',query:'9117913',visualization:'13169510',description:'Historical announced allocation of the initial supply; not current ownership or projected supply.'},
   {id:'defi-capital',title:'DeFi capital',tab:'TVL',query:'9074769',visualization:'13123658',description:'USD value in tracked NEAR DeFi. Changes reflect prices and balances, not net deposits.'},
   {id:'stablecoins',title:'Stablecoins on NEAR',tab:'Stablecoins',query:'9074817',visualization:'13123708',description:'Tracked stablecoin circulation in USD. A balance measure that can overlap DeFi TVL.'},
   {id:'ir-fees',title:'Fees and captured revenue',tab:'Fees',query:'9077309',visualization:'13126541',description:'Daily fees and captured revenue in NEAR equivalents; receipts can occur on a different date from fee generation.'},
@@ -15,26 +19,26 @@ export const glanceCharts=[
   {id:'ir-wallets',title:'Revenue mix',tab:'Mix',query:'9080248',visualization:'13129747',description:'The source’s trailing-year wallet and gas-burn revenue classifications.'},
   {id:'ir-emissions',title:'Revenue and issuance',tab:'Issuance',query:'9077309',visualization:'13126520',description:'Daily captured revenue and emissions, both denominated in NEAR.'},
   {id:'ir-coverage',title:'Revenue coverage of issuance',tab:'Coverage',query:'9077309',visualization:'13129720',description:'Daily revenue / emissions × 100. The headline uses the ratio of 30-day totals.'},
-  {id:'ir-transactions',title:'Base-chain transactions',tab:'Transactions',query:'9077345',visualization:'13129713',description:'Daily base-chain transaction counts from the public IR feed.'},
-  {id:'ir-accounts',title:'Active and new accounts',tab:'Accounts',query:'9077345',visualization:'13129714',description:'Daily active and newly created accounts; these are different populations.'},
+  {id:'ir-transactions',title:'Base-chain transactions',tab:'Transactions',query:'9116129',visualization:'13169353',description:'Distinct execution-day hashes with successful receipts and accepted parent status. Not final transaction success; a hash can recur across dates.'},
+  {id:'ir-accounts',title:'Active and new accounts',tab:'Accounts',query:'9116129',visualization:'13169359',description:'Distinct originating accounts in successful execution cohorts. Not verified people; daily counts cannot be summed into monthly unique users.'},
   {id:'ir-gas',title:'Base-chain gas fees',tab:'Gas',query:'9077345',visualization:'13129715',description:'Native gas fees in NEAR; excludes Intents cross-chain service fees.'},
   {id:'ir-price',title:'NEAR price',tab:'Price',query:'9077345',visualization:'13129716',description:'Historical provider price in USD.'},
   {id:'ir-supply',title:'Total and circulating supply',tab:'Supply',query:'9077345',visualization:'13129717',description:'Total and circulating supply in NEAR, using source definitions.'},
-  {id:'ir-volume',title:'Intents trading volume',tab:'Volume',query:'9077358',visualization:'13126575',description:'Daily cross-chain trading notional in USD.'},
+  {id:'ir-volume',title:'Intents trading volume',tab:'Volume',query:'9115683',visualization:'13167168',description:'Daily cross-chain trading notional in USD.'},
   {id:'ir-swaps',title:'Intents swaps',tab:'Swaps',query:'9077358',visualization:'13126584',description:'Daily reported Intents swap counts.'},
-  {id:'ir-intents-fees',title:'Intents service fees',tab:'Fees',query:'9077358',visualization:'13126680',description:'Daily gross service fees in USD.'},
+  {id:'ir-intents-fees',title:'Intents service fees',tab:'Fees',query:'9117854',visualization:'13169471',description:'Daily gross service fees in USD.'},
   {id:'defi-mix',title:'DeFi deployment by protocol',tab:'DeFi products',query:'9074882',visualization:'13123784',description:'Balances across tracked DeFi products. Excludes bridges and staking; product overlap may remain.'},
-  {id:'stablecoin-mix',title:'Stablecoin mix',tab:'Stablecoins',query:'9074892',visualization:'13123797',description:'Tracked USD stablecoin balances. Native and bridged forms may be aggregated.'},
+  {id:'stablecoin-mix',title:'Stablecoin mix',tab:'Stablecoins',query:'9117903',visualization:'13169493',description:'USDC, USDT and other provider-tracked circulation. Excludes unreleased inventory; representation coverage follows the provider.'},
   {id:'ir-chains',title:'Intents volume by blockchain',tab:'Chains',query:'9080261',visualization:'13129769',description:'Provider blockchain labels over the last 30-day source window.'},
   {id:'ir-tokens',title:'Intents volume by token',tab:'Tokens',query:'9080259',visualization:'13129763',description:'Provider token-symbol labels over the last 30-day source window.'},
   {id:'ir-channels',title:'Fees by distribution channel',tab:'Channels',query:'9080255',visualization:'13129759',description:'All-time fees by referral label, in USD. A different window from the volume mixes.'}
 ];
 export const glanceGroups=[
-  {id:'capital',title:'Capital on NEAR',chartIds:['defi-capital','stablecoins']},
+  {id:'capital',title:'Capital on NEAR',chartIds:['defi-capital','stablecoins','intents-balances','stablecoin-transfers']},
   {id:'revenue',title:'The revenue picture',chartIds:['ir-fees','ir-revenue','ir-fee-sources','ir-cumulative','ir-wallets']},
   {id:'issuance',title:'Revenue and issuance',chartIds:['ir-emissions','ir-coverage']},
   {id:'network',title:'On the base chain',chartIds:['ir-transactions','ir-accounts','ir-gas']},
-  {id:'token',title:'The NEAR token',chartIds:['ir-price','ir-supply']},
+  {id:'token',title:'The NEAR token',chartIds:['ir-price','ir-supply','genesis-allocation']},
   {id:'activity',title:'Intents activity',chartIds:['ir-volume','ir-swaps','ir-intents-fees']},
   {id:'composition',title:'Capital composition',chartIds:['defi-mix','stablecoin-mix']},
   {id:'reach',title:'Cross-chain reach',chartIds:['ir-chains','ir-tokens']},
@@ -63,9 +67,10 @@ const chapterIcons={
 
 const categories={capital:'Liquidity',revenue:'Economics',issuance:'Economics',network:'Network',token:'Market',activity:'Intents',composition:'Liquidity',reach:'Intents',distribution:'Intents'};
 
-type Insight={value:string,headline:string,date:string,limitation:string,source:string,snapshot?:string,calculation:{method:string,[key:string]:unknown}};
+
 
 function metricTakeaway(id:string,insight:Insight){
+  if(insight.takeaway)return insight.takeaway;
   const c=insight.calculation,n=(key:string)=>typeof c[key]==='number'||typeof c[key]==='string'?Number(c[key]):NaN;
   const share=(a:string,b:string)=>Number.isFinite(n(a))&&Number.isFinite(n(b))&&n(b)>0?n(a)/n(b)*100:null;
   if(id==='defi-capital'||id==='stablecoins'){
@@ -104,7 +109,7 @@ function metricTakeaway(id:string,insight:Insight){
   return implications[id]||insight.headline;
 }
 
-export default function DuneGlance({insights=evidence.insights as Record<string,Insight>,economics=true}:{insights?:Record<string,Insight>,economics?:boolean}={}){
+export default function DuneGlance({insights=glanceInsights,economics=true}:{insights?:Record<string,Insight>,economics?:boolean}={}){
   const [selected,setSelected]=useState({});
   const {snapshot,refreshing,error,refresh}=useGlanceSnapshot();
   const [days,setDays]=useState(30),[selectedEnd,setEnd]=useState<string|null>(null);
@@ -124,14 +129,14 @@ export default function DuneGlance({insights=evidence.insights as Record<string,
       return <article className={'glance-tile glance-'+group.id} key={group.id} aria-labelledby={'glance-'+group.id+'-title'}>
         <div className="glance-tile-head"><span className="glance-category">{categories[group.id]}</span><h4 id={'glance-'+group.id+'-title'}>{group.title}</h4>
           {group.chartIds.length>1&&<div className="glance-switch" role="group" aria-label={group.title+' metrics'}>{group.chartIds.map(id=>{const option=byId(glanceCharts,id);return <button key={id} aria-pressed={chart.id===id} aria-controls={'glance-'+group.id+'-chart'} onClick={()=>setSelected(previous=>({...previous,[group.id]:id}))}>{option.tab}</button>;})}</div>}
-          {insight?<div className="glance-insight" aria-live="polite"><strong>{insight.value}</strong><p className="glance-observation">{insight.headline}</p></div>:<p role="status">Snapshot insight unavailable. The chart and source query remain available.</p>}
+          {insight?<div className="glance-insight" aria-live="polite"><strong>{insight.value}</strong><p className="glance-observation">{insight.headline}</p><small>{insight.date}</small></div>:<p role="status">Snapshot insight unavailable. The chart and source query remain available.</p>}
 
         </div>
         <div className="glance-chart" id={'glance-'+group.id+'-chart'}>
           <iframe key={chart.id} title={chart.title+' — Dune visualization'} src={`https://dune.com/embeds/${chart.query}/${chart.visualization}`} loading="lazy" referrerPolicy="no-referrer"/>
         </div>
         {insight&&<blockquote className="glance-takeaway">{metricTakeaway(chart.id,insight)}</blockquote>}
-        <footer className="glance-footer">{insight&&<details><summary>Evidence & calculation</summary><p>{insight.date}</p><p>{chart.description} {insight.limitation}</p><p>{insight.calculation.method}</p><a href={insight.source} rel="noreferrer">Source</a>{insight.snapshot&&<a href={insight.snapshot} download>Download source snapshot</a>}<a href="data/glance-insights.json" download>Download calculations</a></details>}<a className="glance-query" href={query} rel="noreferrer" aria-label={'View '+chart.title+' query on Dune'}>View query on Dune</a></footer>
+        <footer className="glance-footer">{insight&&<details><summary>Evidence & calculation</summary><p>{insight.date}</p><p>{chart.description} {insight.limitation}</p><p>{insight.calculation.method}</p><a href={insight.source} rel="noreferrer">Source</a>{insight.snapshot&&<a href={insight.snapshot} download>Download source snapshot</a>}<a href="data/glance-insights.json" download>Download calculations</a><a href="data/glance-coverage.json" download>Download expanded findings</a></details>}<a className="glance-query" href={query} rel="noreferrer" aria-label={'View '+chart.title+' query on Dune'}>View query on Dune</a></footer>
       </article>;
     })}</div>
     </section>)}
