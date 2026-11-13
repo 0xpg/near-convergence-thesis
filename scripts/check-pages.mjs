@@ -15,6 +15,9 @@ try{
  for(const [legacy,path] of [['/thesis.html','/thesis'],['/index.html','/'],['/lab/','/lab'],['/','/']])assert.equal(resolveRoute(legacy).path,path);
  assert.equal(resolveRoute('/explore').redirect,'/research#explore');
  const rendered=Object.fromEntries(Object.entries(components).map(([file,Component])=>[file,renderToStaticMarkup(createElement(Component))]));
+ for(const label of ['Price the conditions.','Constrained monetization','Operating execution','Scale leadership','What would $400–$500 require?','Export complete model'])assert(rendered['lab.html'].includes(label),'Lab model missing '+label);
+ assert(!rendered['lab.html'].includes('Mock data'));
+ assert(rendered['lab.html'].includes('2026-11-10')&&rendered['lab.html'].includes('224353535'),'Lab evidence cutoffs must be visible');
  for(const [page,html] of Object.entries(rendered)){
   assert(!/\u00e2\u20ac|\u00c2\u00b7/.test(html),'UTF-8 text: '+page);
   const ids=[...html.matchAll(/\bid="([^"]+)"/g)].map(match=>match[1]);

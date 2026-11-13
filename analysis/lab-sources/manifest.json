@@ -1,0 +1,35 @@
+{
+  "endpoint": "https://rpc.mainnet.near.org",
+  "blockHash": "7gGjCRDZpkr3VzByZ43iFFkuyncsL4bAK2yUPhaqm4aZ",
+  "totalSupplyYocto": "1311600052456145253501788378818095",
+  "requests": [
+    {
+      "sha256": "fae43f9eb0dae015a8db4e46df408d5446773ff5721c233df517774bc1922947",
+      "method": "block",
+      "file": "block.json",
+      "params": {
+        "finality": "final"
+      }
+    },
+    {
+      "sha256": "4f6492134ba19b164c85d72a7a3528f57542315cd49062b213f1b9a7896dd00b",
+      "method": "EXPERIMENTAL_protocol_config",
+      "file": "protocol.json",
+      "params": {
+        "block_id": 224353535
+      }
+    }
+  ],
+  "burntGasReward": [
+    0,
+    1
+  ],
+  "protocolVersion": 88,
+  "retrievedAt": "2026-11-13T10:53:57.5924776+00:00",
+  "maximumInflationRate": [
+    1,
+    40
+  ],
+  "blockTimestampNanosec": "1794567237994764904",
+  "blockHeight": 224353535
+}

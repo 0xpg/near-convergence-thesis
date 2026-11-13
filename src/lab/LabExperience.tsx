@@ -1,5 +1,9 @@
 import {useEffect,useLayoutEffect,useMemo,useRef,useState,type CSSProperties,type ReactNode} from 'react';
-import {MOCK,DEFAULTS,LIMITS,PRESETS,TRADING_DAYS,run,sanitize,compressionIndex,coverageGrid,supplyPath,flywheel,type Inputs,type InputKey} from './engine.ts';
+import {BASELINE,baseline,DEFAULTS,LIMITS,PRESETS,TRADING_DAYS,run,sanitize,compressionIndex,coverageGrid,supplyPath,flywheel,type Inputs,type InputKey} from './engine.ts';
+
+import ValuationPanel,{VAL_DEFAULTS} from './ValuationPanel.tsx';
+import {MODEL_VERSION,cleanValuation,runValuation,type ValuationInputs} from './valuation.ts';
+import {STARTING} from './ValuationPanel.tsx';
 
 type Result=ReturnType<typeof run>;
 type Update=(patch:Partial<Inputs>)=>void;
@@ -26,9 +30,9 @@ const FORMAT:Record<InputKey,(value:number)=>string>={
   solverElasticity:value=>value.toFixed(2),qualityElasticity:value=>value.toFixed(2),responsiveness:value=>value.toFixed(2),distributionGrowth:value=>pct(value)
 };
 const LABEL:Partial<Record<InputKey,string>>={
-  volumeMultiple:'Crypto-native volume',compression:'Fee compression elasticity',
+  volumeMultiple:'Existing Intents volume',compression:'Fee compression elasticity',
   bpsStable:'Stablecoin route fee',bpsMajors:'Majors route fee',bpsLong:'Long-tail route fee',
-  partnerPayout:'Partner payout share',costs:'Other costs',buybackAllocation:'Buyback allocation',burnShare:'Share of buybacks burned',
+  partnerPayout:'Uncaptured fee share',costs:'Other costs',buybackAllocation:'Buyback allocation',burnShare:'Share of buybacks burned',
   price:'NEAR price',issuancePct:'Annual issuance',
   ordersPerDesk:'Orders per desk',orderSize:'Average order size',incrementalShare:'Incremental, not displaced',institutionalBps:'Institutional fee',
   intentsPerAgent:'Intents per agent',agentNotional:'Average agent notional',eligibleShare:'Routed through Intents',agentBps:'Agent fee',
@@ -37,7 +41,7 @@ const LABEL:Partial<Record<InputKey,string>>={
 };
 
 function readHash(){
-  try{const match=location.hash.match(/^#s=(.+)$/);return match?sanitize(JSON.parse(decodeURIComponent(match[1]))):null;}catch{return null;}
+  try{const match=location.hash.match(/^#s=(.+)$/);if(!match)return null;const x=JSON.parse(decodeURIComponent(match[1]));if(x.model!==MODEL_VERSION||x.baseline!==baseline.version)return null;const valuation=cleanValuation(x.valuation,VAL_DEFAULTS);runValuation(valuation,STARTING);return {inputs:sanitize(x.inputs),valuation};}catch{return null;}
 }
 
 function Slider({name,value,onChange}:{name:InputKey,value:number,onChange:Update}){
@@ -57,7 +61,7 @@ type CardProps={wide?:boolean,category:string,title:string,value:ReactNode,headl
 function Card({wide,category,title,value,headline,legend,caption,table,sliders,inputs,update,actions,children}:CardProps){
   return <figure className={'lab-card'+(wide?' is-wide':'')}>
     <div className="lab-card-head">
-      <div className="lab-card-meta"><span>{category}</span><span className="lab-mock">Mock data</span></div>
+      <div className="lab-card-meta"><span>{category}</span><span className="lab-mock">Assumption sensitivity</span></div>
       <h3>{title}</h3>
       <p className="lab-card-headline"><strong>{value}</strong><span>{headline}</span></p>
     </div>
@@ -94,7 +98,7 @@ function RouteMix({result,update,inputs}:ModelProps){
     if(target.current===0){const total=inputs.shareStable+inputs.shareMajors,stable=Math.round(clamp(share,0,total));update({shareStable:stable,shareMajors:total-stable});}
     else update({shareMajors:Math.round(clamp(share-inputs.shareStable,0,100-inputs.shareStable))});
   };
-  return <Card category="Execution economics" title="Route mix sets the fee rate" value={`${blended.toFixed(1)} bps`} headline={`blended crypto-native fee. Long-tail routes are ${pct(long.sharePct,0)} of volume but ${pct(feeShare(long),0)} of fees.`}
+  return <Card category="Illustrative mix · aggregate-calibrated" title="Route mix sets the fee rate" value={`${blended.toFixed(1)} bps`} headline={`blended modeled fee; route attribution is assumed. Long-tail routes are ${pct(long.sharePct,0)} of volume but ${pct(feeShare(long),0)} of fees.`}
     legend={[['Stablecoin routes',BLUE],['Majors',GREEN],['Long-tail',AMBER],['Drag the dividers',INK]]}
     caption="Fee revenue depends on which routes carry the volume, not only on how much volume there is. A shift toward cheap stablecoin routes can grow volume while shrinking fees."
     table={result.routes.map(route=>[route.name,pct(route.sharePct,0)+' of volume',`${route.bps.toFixed(1)} bps`,money(route.fees)])}
@@ -105,8 +109,8 @@ function RouteMix({result,update,inputs}:ModelProps){
 
 function Waterfall({result,update,inputs}:ModelProps){
   const steps:[string,number,'total'|'loss',string][]=[
-    ['Gross\nfees',result.grossFees,'total',GREEN],['Partner\npayouts',result.payouts,'loss',RED],['Other\ncosts',result.otherCosts,'loss',RED],
-    ['Retained\nrevenue',result.retained,'total',INK],['Not used\nfor buybacks',result.retained-result.buybackUsd,'loss',RED],['Buybacks',result.buybackUsd,'total',GREEN],['Burned',result.tokensBurned*inputs.price,'total',AMBER]
+    ['Gross\nfees',result.grossFees,'total',GREEN],['Uncaptured\nfees',result.payouts,'loss',RED],['Other\ncosts',result.otherCosts,'loss',RED],
+    ['Captured\nreceipts',result.retained,'total',INK],['Not used\nfor buybacks',result.retained-result.buybackUsd,'loss',RED],['Buybacks',result.buybackUsd,'total',GREEN],['Burned',result.tokensBurned*inputs.price,'total',AMBER]
   ];
   const geometry=(width,height)=>({top:24,bottom:height-38,column:width/steps.length});
   const draw=(pen,width,height)=>{
@@ -123,9 +127,9 @@ function Waterfall({result,update,inputs}:ModelProps){
     });
   };
   const onDrag=(x,y,width,height)=>{const {top,bottom}=geometry(width,height),level=clamp((bottom-y)/(bottom-top),0,1);update({partnerPayout:Math.round((1-level)*1000)/10});};
-  return <Card category="Value transmission" title="Where the fee dollar goes" value={money(result.retainedPerMillion)} headline={`retained per $1m of volume. ${pct(inputs.partnerPayout)} of gross fees go to partners first.`}
+  return <Card category="Value transmission" title="Where the fee dollar goes" value={money(result.retainedPerMillion)} headline={`retained per $1m of volume. ${pct(inputs.partnerPayout)} of gross fees are not captured in this modeled window.`}
     legend={[['Totals',GREEN],['Leakage',RED],['Drag the payout handle',INK]]}
-    caption="Gross fees are not protocol revenue. Distribution partners, costs and the buyback policy each take a cut before anything reaches the token."
+    caption="Gross fees are not protocol revenue. The observed gap includes distribution and collection timing; it is not verified partner profit. Costs and purchase policy are separate assumptions."
     table={steps.map(([label,value])=>[label.replace('\n',' '),money(value)])} sliders={['partnerPayout','costs','buybackAllocation']} inputs={inputs} update={update}>
     <DitherCanvas draw={draw} height={260} onDrag={onDrag} label={`Fee waterfall: ${money(result.grossFees)} gross fees, ${money(result.retained)} retained, ${money(result.buybackUsd)} buybacks.`}/>
   </Card>;
@@ -153,11 +157,11 @@ function Compression({inputs,update}:{inputs:Inputs,update:Update}){
     if(target.current==='end'){const index=clamp((bottom-py)/(bottom-top)*10,1,10);update({compression:Math.round((1-Math.log(index)/Math.log(10))*100)/100});}
     else update({volumeMultiple:Math.round(clamp(1+(px-left)/(right-left)*9,1,10)*10)/10});
   };
-  return <Card category="Fee compression" title="More volume is not more value" value={times(compressionIndex(10,e))} headline={`retained revenue at 10x volume when fees compress with elasticity ${e.toFixed(2)}.`}
-    legend={[['Volume',SOFT],['Retained revenue',INK],['Drag the end point or the volume marker',RED]]}
+  return <Card category="Fee compression" title="More volume is not more value" value={times(compressionIndex(10,e))} headline={`captured receipts at 10x volume when fees compress with elasticity ${e.toFixed(2)}.`}
+    legend={[['Volume',SOFT],['Captured receipts',INK],['Drag the end point or the volume marker',RED]]}
     caption="Competition for order flow pushes fee rates down as volume grows. At elasticity 1, ten times the volume earns exactly the same revenue."
-    table={[1,2,5,10].map(m=>[`${m}x volume`,times(compressionIndex(m,e),2)+' retained revenue'])} sliders={['compression','volumeMultiple']} inputs={inputs} update={update}>
-    <DitherCanvas draw={draw} height={250} onDrag={onDrag} label={`At 10x volume, retained revenue is ${times(compressionIndex(10,e))} today.`}/>
+    table={[1,2,5,10].map(m=>[`${m}x volume`,times(compressionIndex(m,e),2)+' captured receipts'])} sliders={['compression','volumeMultiple']} inputs={inputs} update={update}>
+    <DitherCanvas draw={draw} height={250} onDrag={onDrag} label={`At 10x volume, captured receipts is ${times(compressionIndex(10,e))} today.`}/>
   </Card>;
 }
 
@@ -185,7 +189,7 @@ function CoverageGrid({inputs,update}:{inputs:Inputs,update:Update}){
         if(row===5)text(pen,`${multiple}x`,x+cellW/2,bottom+15,{align:'center',size:10});
       });
     });
-    text(pen,'Crypto-native volume →',width,bottom+28,{align:'right',size:10,color:INK});
+    text(pen,'Existing Intents volume →',width,bottom+28,{align:'right',size:10,color:INK});
     const [x,y]=position(width,height);handle(pen,x,y,RED);
   };
   const onDrag=(px,py,width,height)=>{
@@ -193,9 +197,9 @@ function CoverageGrid({inputs,update}:{inputs:Inputs,update:Update}){
     const multiple=GRID_MULTIPLES[column]*(GRID_MULTIPLES[column+1]/GRID_MULTIPLES[column])**t,payout=clamp(95-(py-cellH/2)/(cellH+gap)*10,45,95);
     update({volumeMultiple:Math.round(multiple*10)/10,partnerPayout:Math.round(payout*10)/10});
   };
-  return <Card category="Token capture" title="When buybacks outpace issuance" value={`${covered} of 42`} headline="volume and payout combinations buy back all newly issued NEAR."
+  return <Card category="Token capture" title="When modeled purchases cover issuance" value={`${covered} of 42`} headline="volume and capture combinations buy back all newly issued NEAR."
     legend={[['Denser, more coverage',GREEN],['Outlined, covers issuance',INK],['Drag your scenario',RED]]}
-    caption="Each cell reruns the full model at a different crypto-native volume and partner payout share, holding every other assumption fixed. Rows are payout share."
+    caption="Each cell reruns the full model at a different existing Intents volume and uncaptured fee share, holding every other assumption fixed. Rows are uncaptured share."
     table={GRID_PAYOUTS.map((payout,row)=>[`${payout}% payout`,...GRID_MULTIPLES.map((multiple,column)=>`${multiple}x: ${pct(cells[row][column],0)}`)])} sliders={['issuancePct','price']} inputs={inputs} update={update}>
     <DitherCanvas draw={draw} height={270} onDrag={onDrag} label={`${covered} of 42 combinations cover annual issuance with buybacks.`}/>
   </Card>;
@@ -203,7 +207,7 @@ function CoverageGrid({inputs,update}:{inputs:Inputs,update:Update}){
 
 function DemandFrontier({result,inputs,update}:ModelProps){
   const target=useRef(1),scale=logScale(1e7,1e12);
-  const bars:[string,number,string,number][]=[['Crypto-native',result.cryptoVolume,GREEN,result.cryptoFees],['Institutional',result.institutionalVolume,AMBER,result.institutionalFees],['Agents',result.agentVolume,RED,result.agentFees]];
+  const bars:[string,number,string,number][]=[['Existing Intents',result.cryptoVolume,GREEN,result.cryptoFees],['Institutional',result.institutionalVolume,AMBER,result.institutionalFees],['Agents',result.agentVolume,RED,result.agentFees]];
   const newShare=result.volume?(result.institutionalVolume+result.agentVolume)/result.volume*100:0,newFees=result.grossFees?(result.institutionalFees+result.agentFees)/result.grossFees*100:0;
   const frame=(width,height)=>({left:44,bottom:height-34,top:16,column:(width-44)/3});
   const draw=(pen,width,height)=>{
@@ -225,7 +229,7 @@ function DemandFrontier({result,inputs,update}:ModelProps){
     else{const perAgent=inputs.intentsPerAgent*inputs.agentNotional*365*inputs.eligibleShare/100;if(perAgent>0)update({agents:nice(clamp(value/perAgent,100,1e6))});}
   };
   return <Card category="Demand frontier" title="Who brings the volume" value={pct(newShare,0)} headline={`of volume from institutions and agents, earning ${pct(newFees,0)} of fees at their lower fee rates.`}
-    legend={[['Crypto-native',GREEN],['Institutional desks',AMBER],['Agents',RED],['Drag the bar tops',INK]]}
+    legend={[['Existing Intents',GREEN],['Institutional desks',AMBER],['Agents',RED],['Drag the bar tops',INK]]}
     caption={`Institutional flow is ${inputs.desks} desks × ${inputs.ordersPerDesk} orders a day × ${money(inputs.orderSize)} × ${TRADING_DAYS} days. Only the incremental share adds volume; the rest displaces flow that already existed.`}
     table={bars.map(([label,value,,fees])=>[label,money(value),money(fees)+' fees'])} sliders={['ordersPerDesk','orderSize','incrementalShare','institutionalBps']} inputs={inputs} update={update}>
     <DitherCanvas draw={draw} height={270} onDrag={onDrag} label={`Demand frontier: institutions and agents provide ${pct(newShare,0)} of volume and ${pct(newFees,0)} of fees.`}/>
@@ -245,7 +249,7 @@ function AgentFlow({result,inputs,update}:ModelProps){
     ditherArea(pen,line,bottom,.32,RED);ditherLine(pen,line,RED,1.5);
     rule(pen,left,y(goal),right,y(goal),INK,[4,3]);text(pen,`10% of total volume · ${money(goal)}`,left+4,y(goal)-6,{size:10,color:INK});
     if(needed>=100&&needed<=1e6){rule(pen,x(needed),y(goal),x(needed),bottom,INK,[2,3]);pen.fillStyle=INK;pen.beginPath();pen.arc(x(needed),y(goal),4,0,Math.PI*2);pen.fill();}
-    handle(pen,x(inputs.agents),y(inputs.agents*perAgent),RED);
+    if(inputs.agents>0)handle(pen,x(inputs.agents),y(inputs.agents*perAgent),RED);
     text(pen,'Transacting agents →',right,bottom+28,{align:'right',size:10,color:INK});
   };
   const onDrag=(px,py,width,height)=>{const {left,right}=frame(width,height);update({agents:nice(xScale.from(px-left,right-left))});};
@@ -292,26 +296,26 @@ function SupplyPath({inputs,update}:{inputs:Inputs,update:Update}){
     ditherArea(pen,burn,bottom,.22,GREEN);ditherLine(pen,issuance,SOFT,1.2);ditherLine(pen,burn,INK,1.6);
     handle(pen,x(5),y(last.issuanceOnly),SOFT);
   };
-  const onDrag=(px,py,width,height)=>{const {top,bottom,min,max}=frame(width,height),value=min+(bottom-py)/(bottom-top)*(max-min);update({issuancePct:Math.round(clamp(((value/MOCK.supply)**(1/5)-1)*100,0,8)*10)/10});};
+  const onDrag=(px,py,width,height)=>{const {top,bottom,min,max}=frame(width,height),value=min+(bottom-py)/(bottom-top)*(max-min);update({issuancePct:Math.round(clamp(((value/BASELINE.supply)**(1/5)-1)*100,0,8)*10)/10});};
   return <Card category="Supply" title="Five-year supply path" value={`${growth>=0?'+':''}${pct(growth)}`} headline={`net supply over five years with ${pct(inputs.burnShare,0)} of buybacks burned.`}
     legend={[['Issuance only',SOFT],['After burns',INK],['Drag year five to set issuance',SOFT]]}
-    caption="Issuance compounds on the growing supply. Burns subtract a fixed token amount each year at the current buyback level; held buybacks do not change supply."
+    caption="Issuance compounds on the growing supply. Burns subtract a fixed token amount each year at your assumed price, capped at available supply. Held purchases do not change supply. This mechanical path does not forecast execution prices."
     table={rows.map(row=>[`Year ${row.year}`,number(row.issuanceOnly),number(row.withBurn)])} sliders={['issuancePct','burnShare']} inputs={inputs} update={update}>
     <DitherCanvas draw={draw} height={240} onDrag={onDrag} label={`Supply grows ${pct(growth)} over five years.`}/>
   </Card>;
 }
 
 function ReverseValuation({result,inputs,update}:ModelProps){
-  const target=useRef('cap'),xScale=logScale(2,150);
-  const range=()=>{const low=Math.min(result.retained*2||1e6,result.marketCap)/2,high=Math.max(result.retained*150,result.marketCap)*2;return logScale(low,high);};
+  const target=useRef('cap'),xScale=logScale(2,1000);
+  const range=()=>{const low=Math.min(result.retained*2||1e6,result.marketCap)/2,high=Math.max(result.retained*1000,result.marketCap)*2;return logScale(low,high);};
   const frame=(width,height)=>({left:46,right:width-10,top:10,bottom:height-30});
   const draw=(pen,width,height)=>{
     const {left,right,top,bottom}=frame(width,height),yScale=range(),x=m=>left+xScale.to(m,right-left),y=v=>bottom-yScale.to(v,bottom-top);
-    for(const tick of [2,10,30,100])text(pen,`${tick}x`,x(tick),bottom+16,{align:'center',size:10});
-    const line=[2,5,10,30,60,150].map((m):Point=>[x(m),y(Math.max(result.retained*m,1))]);
+    for(const tick of [2,10,100,1000])text(pen,`${tick}x`,x(tick),bottom+16,{align:'center',size:10});
+    const line=[2,10,30,100,300,1000].map((m):Point=>[x(m),y(Math.max(result.retained*m,1))]);
     ditherArea(pen,line,bottom,.28,GREEN);ditherLine(pen,line,GREEN,1.5);
     rule(pen,left,y(result.marketCap),right,y(result.marketCap),INK,[4,3]);text(pen,`Market cap ${money(result.marketCap)}`,left+4,y(result.marketCap)-6,{size:10,color:INK});
-    if(result.impliedMultiple>=2&&result.impliedMultiple<=150){pen.fillStyle=RED;pen.beginPath();pen.arc(x(result.impliedMultiple),y(result.marketCap),4.5,0,Math.PI*2);pen.fill();}
+    if(result.impliedMultiple>=2&&result.impliedMultiple<=1000){pen.fillStyle=RED;pen.beginPath();pen.arc(x(result.impliedMultiple),y(result.marketCap),4.5,0,Math.PI*2);pen.fill();}
     const tx=x(inputs.targetMultiple);rule(pen,tx,top,tx,bottom,'#9a742890',[3,3]);handle(pen,tx,bottom,AMBER);handle(pen,right-14,y(result.marketCap),INK);
     text(pen,'Revenue multiple →',right,bottom+28,{align:'right',size:10,color:INK});
   };
@@ -319,13 +323,13 @@ function ReverseValuation({result,inputs,update}:ModelProps){
     const {left,right,top,bottom}=frame(width,height);
     if(phase==='start')target.current=py>bottom-16?'multiple':'cap';
     if(target.current==='multiple')update({targetMultiple:Math.round(xScale.from(px-left,right-left))});
-    else{const cap=range().from(bottom-py,bottom-top);update({price:Math.round(clamp(cap/MOCK.supply,.5,20)*100)/100});}
+    else{const cap=range().from(bottom-py,bottom-top);update({price:Math.round(clamp(cap/BASELINE.supply,.01,1000)*100)/100});}
   };
-  return <Card wide category="Reverse underwriting" title="What the price already assumes" value={times(result.impliedMultiple,0)} headline={`retained revenue is priced in at $${inputs.price.toFixed(2)} per NEAR.`}
+  return <Card wide category="Reverse underwriting" title="What the price already assumes" value={times(result.impliedMultiple,0)} headline={`captured receipts is priced in at $${inputs.price.toFixed(2)} per NEAR.`}
     legend={[['Value at each multiple',GREEN],['Drag market cap',INK],['Drag target multiple',AMBER]]}
-    caption={`At a ${times(inputs.targetMultiple,0)} multiple, today's market cap needs ${money(result.requiredRevenue)} of retained revenue, or ${money(result.requiredVolume)} of annual volume at ${result.retainedBps.toFixed(2)} retained bps, ${times(result.requiredVolume/result.volume)} today's modeled volume.`}
+    caption={`At a ${times(inputs.targetMultiple,0)} multiple, today's market cap needs ${money(result.requiredRevenue)} of captured receipts, or ${money(result.requiredVolume)} of annual volume at ${result.retainedBps.toFixed(2)} retained bps, ${times(result.requiredVolume/result.volume)} today's modeled volume.`}
     table={[['Market cap',money(result.marketCap)],['Implied multiple',times(result.impliedMultiple,0)],['Required revenue',money(result.requiredRevenue)],['Required volume',money(result.requiredVolume)]]} sliders={['targetMultiple','price']} inputs={inputs} update={update}>
-    <DitherCanvas draw={draw} height={250} onDrag={onDrag} label={`The market prices ${times(result.impliedMultiple,0)} retained revenue.`}/>
+    <DitherCanvas draw={draw} height={250} onDrag={onDrag} label={`The market prices ${times(result.impliedMultiple,0)} captured receipts.`}/>
   </Card>;
 }
 
@@ -337,25 +341,25 @@ function Flywheel({inputs,update}:{inputs:Inputs,update:Update}){
   const last=rows[rows.length-1];
   const frame=(width,height)=>({left:30,right:width-12,top:12,bottom:height-28});
   const draw=(pen,width,height)=>{
-    const {left,right,top,bottom}=frame(width,height),max=Math.max(2,...rows.flatMap(row=>[row.flow,row.solvers/MOCK.solvers,row.retainedIndex]))*1.08;
+    const {left,right,top,bottom}=frame(width,height),max=Math.max(2,...rows.flatMap(row=>[row.flow,row.solvers/BASELINE.solvers,row.retainedIndex]))*1.08;
     const x=round=>left+round/12*(right-left),y=v=>bottom-v/max*(bottom-top);
     for(const tick of [0,1,Math.round(max)]){rule(pen,left,y(tick),right,y(tick),tick===1?'#293b3240':RULE,[2,3]);text(pen,`${tick}x`,0,y(tick)+4,{size:10});}
     [0,3,6,9,12].forEach(round=>text(pen,`R${round}`,x(round),bottom+16,{align:'center',size:10}));
     const visible=rows.filter(row=>row.round<=progress);
     const series=(key:'flow'|'solvers'|'retainedIndex',transform=(value:number)=>value)=>visible.map((row):Point=>[x(row.round),y(transform(row[key]))]);
     ditherArea(pen,series('flow'),bottom,.4,GREEN);ditherLine(pen,series('flow'),GREEN,1.6);
-    ditherLine(pen,series('solvers',value=>value/MOCK.solvers),BLUE,1.3);ditherLine(pen,series('retainedIndex'),INK,1.8);
+    ditherLine(pen,series('solvers',value=>value/BASELINE.solvers),BLUE,1.3);ditherLine(pen,series('retainedIndex'),INK,1.8);
     const head=visible.at(-1);if(head)handle(pen,x(head.round),y(head.flow),GREEN);
   };
   const onDrag=(px,py,width)=>{const {left,right}=frame(width,0);cancelAnimationFrame(animation.current);setProgress(clamp((px-left)/(right-left)*12,0,12));};
   const shown=rows[Math.floor(progress)];
-  return <Card wide category="Intents flywheel" title="Does the loop compound?" value={times(shown.flow,2)} headline={`order flow after ${Math.floor(progress)} rounds, with ${number(shown.solvers)} solvers quoting ${shown.spreadBps.toFixed(1)} bps spreads. Retained revenue: ${times(shown.retainedIndex,2)}.`}
-    legend={[['Order flow',GREEN],['Active solvers',BLUE],['Retained revenue',INK],['Drag to scrub rounds',GREEN]]}
+  return <Card wide category="Intents flywheel" title="Does the loop compound?" value={times(shown.flow,2)} headline={`order flow after ${Math.floor(progress)} rounds, with ${number(shown.solvers)} solver-participation index and execution-cost index ${shown.spreadBps.toFixed(1)} x modeled cost. Captured receipts: ${times(shown.retainedIndex,2)}.`}
+    legend={[['Order flow',GREEN],['Participation index (assumed)',BLUE],['Captured receipts',INK],['Drag to scrub rounds',GREEN]]}
     caption="Hypothesis, not evidence: more flow attracts solvers, more solvers tighten execution, better execution attracts more flow. Each link is an assumption you can weaken; fee compression means revenue can lag the loop."
-    table={rows.map(row=>[`Round ${row.round}`,times(row.flow,2)+' flow',number(row.solvers)+' solvers',times(row.retainedIndex,2)+' revenue'])}
+    table={rows.map(row=>[`Round ${row.round}`,times(row.flow,2)+' flow',times(row.solvers,2)+' participation index',times(row.retainedIndex,2)+' revenue'])}
     sliders={['solverElasticity','qualityElasticity','responsiveness','distributionGrowth']} inputs={inputs} update={update}
     actions={<button type="button" className="lab-run" onClick={replay}>Run the loop</button>}>
-    <DitherCanvas draw={draw} height={260} onDrag={onDrag} label={`After 12 rounds, order flow is ${times(last.flow,2)} and retained revenue ${times(last.retainedIndex,2)}.`}/>
+    <DitherCanvas draw={draw} height={260} onDrag={onDrag} label={`After 12 rounds, order flow is ${times(last.flow,2)} and captured receipts ${times(last.retainedIndex,2)}.`}/>
   </Card>;
 }
 
@@ -366,9 +370,9 @@ function LabHero({result}:{result:Result}){
   return <section className="lab-hero" aria-labelledby="lab-title">
     <div className="lab-hero-copy">
       <div className="thesis-resolve"><canvas ref={canvas} aria-hidden="true"/><h1 id="lab-title" ref={heading}><span>Test the</span><span>token economics.</span></h1></div>
-      <p className="lab-deck">Ten connected models trace how volume becomes fees, fees become retained revenue, and revenue becomes, or fails to become, demand for NEAR. Every chart reruns as you drag.</p>
+      <p className="lab-deck">Connected models trace how volume becomes fees, fees become captured receipts, and revenue becomes, or fails to become, demand for NEAR. Every chart reruns as you drag.</p>
       <dl className="lab-hero-stats">
-        <div><dt>Retained revenue</dt><dd>{money(result.retained)}</dd></div>
+        <div><dt>Captured receipts</dt><dd>{money(result.retained)}</dd></div>
         <div><dt>Issuance covered</dt><dd>{pct(result.coveragePct)}</dd></div>
         <div><dt>Priced-in multiple</dt><dd>{times(result.impliedMultiple,0)}</dd></div>
       </dl>
@@ -380,48 +384,51 @@ function LabHero({result}:{result:Result}){
 }
 
 export default function LabExperience(){
-  const [inputs,setInputs]=useState<Inputs>(()=>readHash()||{...DEFAULTS});
+  const [rejectedLink]=useState(()=>typeof location!=='undefined'&&location.hash.startsWith('#s=')&&!readHash());
+  const [inputs,setInputs]=useState<Inputs>(()=>readHash()?.inputs||{...DEFAULTS});
   const [preset,setPreset]=useState(()=>readHash()?'':'base');
+  const [valuation,setValuation]=useState<ValuationInputs>(()=>readHash()?.valuation||{...VAL_DEFAULTS});
   const [copied,setCopied]=useState(false);
   const result=useMemo(()=>run(inputs),[inputs]);
   const update:Update=patch=>{setInputs(previous=>sanitize({...previous,...patch}));setPreset('');};
   const choose=name=>{setInputs(sanitize({...DEFAULTS,...PRESETS[name].inputs}));setPreset(name);};
   useEffect(()=>{
-    const changed=Object.fromEntries(Object.entries(inputs).filter(([key,value])=>value!==DEFAULTS[key]));
-    const hash=Object.keys(changed).length?'#s='+encodeURIComponent(JSON.stringify(changed)):'';
-    if(location.hash!==hash&&(hash||location.hash.startsWith('#s=')))history.replaceState(null,'',location.pathname+location.search+hash);
-  },[inputs]);
+    const hash='#s='+encodeURIComponent(JSON.stringify({model:MODEL_VERSION,baseline:baseline.version,inputs,valuation}));
+    if(location.hash!==hash)history.replaceState(null,'',location.pathname+location.search+hash);
+  },[inputs,valuation]);
   const share=async()=>{try{await navigator.clipboard.writeText(location.href);setCopied(true);setTimeout(()=>setCopied(false),1600);}catch{setCopied(false);}};
   const exportScenario=()=>{
-    const output={exportedAt:new Date().toISOString(),status:MOCK.status,inputs,outputs:Object.fromEntries(Object.entries(result).filter(([,value])=>typeof value==='number'))};
+    const output={exportedAt:new Date().toISOString(),model:MODEL_VERSION,baseline,inputs,valuation,valuationOutputs:runValuation(valuation,STARTING),outputs:Object.fromEntries(Object.entries(result).filter(([,value])=>typeof value==='number').map(([key,value])=>[key,Number.isFinite(value)?value:null])),unreachableEncoding:'Non-finite operating outputs are null; see retained rate and volume for reachability.'};
     const url=URL.createObjectURL(new Blob([JSON.stringify(output,null,2)],{type:'application/json'}));
-    const link=document.createElement('a');link.href=url;link.download='near-scenario-mock.json';link.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
+    const link=document.createElement('a');link.href=url;link.download='near-scenario.json';link.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
   };
   const props={result,inputs,update};
   return <>
     <LabHero result={result}/>
+    {rejectedLink&&<p className="lab-link-notice" role="status">This shared model uses an incompatible baseline or invalid assumptions. The current dated defaults are shown; its original result has not been reproduced.</p>}
+    <ValuationPanel inputs={valuation} onChange={setValuation}/>
     <section id="lab" className="lab-console" aria-label="Scenario console">
       <div className="lab-console-controls">
         <div className="lab-presets" role="group" aria-label="Assumption sets">{Object.entries(PRESETS).map(([name,option])=><button key={name} type="button" aria-pressed={preset===name} onClick={()=>choose(name)}>{option.label}</button>)}</div>
         <div className="lab-console-sliders">{(['volumeMultiple','compression','partnerPayout','buybackAllocation','burnShare','price','issuancePct','targetMultiple'] as InputKey[]).map(name=><Slider key={name} name={name} value={inputs[name]} onChange={update}/>)}</div>
-        <div className="lab-console-actions"><button type="button" onClick={()=>choose('base')}>Reset</button><button type="button" onClick={exportScenario}>Export JSON</button><button type="button" onClick={share}>{copied?'Link copied':'Copy scenario link'}</button></div>
+        <div className="lab-console-actions"><button type="button" onClick={()=>choose('base')}>Reset operating model</button><button type="button" onClick={exportScenario}>Export complete model</button><button type="button" onClick={share}>{copied?'Link copied':'Copy model link'}</button></div>
       </div>
       <div className="lab-console-results" aria-live="polite">
         <p className="lab-console-label">Annual run rate · mock baseline</p>
-        <p className="lab-console-big"><span>Retained revenue</span><strong>{money(result.retained)}</strong></p>
+        <p className="lab-console-big"><span>Captured receipts</span><strong>{money(result.retained)}</strong></p>
         <dl>
           <div><dt>Total volume</dt><dd>{money(result.volume)}</dd></div>
           <div><dt>Gross fees</dt><dd>{money(result.grossFees)} · {result.grossBps.toFixed(1)} bps</dd></div>
           <div><dt>Retained per $1m</dt><dd>{money(result.retainedPerMillion)}</dd></div>
           <div><dt>NEAR bought per year</dt><dd>{number(result.tokensBought)}</dd></div>
           <div><dt>Issuance covered</dt><dd>{pct(result.coveragePct)}</dd></div>
-          <div><dt>Market cap / retained revenue</dt><dd>{times(result.impliedMultiple,0)}</dd></div>
+          <div><dt>Market cap / captured receipts</dt><dd>{times(result.impliedMultiple,0)}</dd></div>
         </dl>
-        <p className="lab-console-note">Hypothetical. 10x volume is a sensitivity, not a forecast, and never implies 10x token demand.</p>
+        <p className="lab-console-note">Policy defaults credit no purchases or burns. Hypothetical 10x volume is a sensitivity, not a forecast, and never implies 10x token demand.</p>
       </div>
     </section>
     <section className="lab-models" aria-labelledby="lab-models-title">
-      <header><h2 id="lab-models-title">Ten models, one set of assumptions</h2><p>Drag a handle or a slider in any chart. Every model reruns from the same inputs.</p></header>
+      <header><h2 id="lab-models-title">Trace the transmission.</h2><p>Drag a handle or a slider in any chart. These operating controls are separate from the dated valuation assumptions above. Each model below reruns from this set.</p></header>
       <div className="lab-grid">
         <RouteMix {...props}/><Waterfall {...props}/>
         <Compression {...props}/><CoverageGrid {...props}/>
@@ -437,11 +444,11 @@ export default function LabExperience(){
           <dt>Compression factor</dt><dd>(total volume / baseline volume)^−elasticity, applied only above baseline</dd>
           <dt>Institutional flow</dt><dd>desks × orders per day × average order × {TRADING_DAYS} days × incremental share</dd>
           <dt>Agent flow</dt><dd>agents × intents per day × average notional × 365 × share routed through Intents</dd>
-          <dt>Retained revenue</dt><dd>gross fees × (1 − partner payout) × (1 − other costs)</dd>
-          <dt>Tokens bought</dt><dd>retained revenue × buyback allocation / NEAR price; only the burned share reduces supply</dd>
+          <dt>Captured receipts</dt><dd>gross fees × (1 − uncaptured share) × (1 − other costs)</dd>
+          <dt>Tokens bought</dt><dd>captured receipts × buyback allocation / NEAR price; only the burned share reduces supply</dd>
           <dt>Reverse underwriting</dt><dd>required revenue = market cap / target multiple; required volume = required revenue / retained bps</dd>
         </dl>
-        <p>{MOCK.status} The baseline uses a 30-day crypto-native volume of {money(MOCK.cryptoVolume30d)}, a {number(MOCK.supply)} NEAR supply and {MOCK.solvers} active solvers. Replace these with reconciled source data before drawing conclusions.</p>
+        <p>{BASELINE.status} The baseline uses a 30-day reported Intents volume of {money(BASELINE.cryptoVolume30d)}, a {number(BASELINE.supply)} NEAR supply and no verified solver count. Route shares and rate differences below are illustrative; all route rates initially equal the observed aggregate so totals reconcile.</p>
       </details>
     </section>
   </>;

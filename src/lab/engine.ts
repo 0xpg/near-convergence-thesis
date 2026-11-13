@@ -1,10 +1,7 @@
-export const MOCK=Object.freeze({
-  status:'Mock baseline. Illustrative inputs, not measured data.',
-  cryptoVolume30d:4.0e9,
-  supply:1.311e9,
-  solvers:18,
-  spreadBps:9
-});
+import baseline from '../../data/lab-baseline.json' with {type:'json'};
+export const BASELINE=Object.freeze({status:baseline.modelStatus,cryptoVolume30d:baseline.operating.windows[0].volumeUsd,supply:baseline.supply.supplyNear,solvers:1,spreadBps:1});
+export {baseline};
+const observed=baseline.operating.windows[0];
 
 export type RouteSpec={id:string,name:string,share:'shareStable'|'shareMajors'|null,bps:'bpsStable'|'bpsMajors'|'bpsLong'};
 
@@ -15,13 +12,13 @@ export const ROUTES:readonly RouteSpec[]=Object.freeze([
 ]);
 
 const defaultInputs={
-  volumeMultiple:1,compression:.4,
-  shareStable:38,shareMajors:44,bpsStable:3,bpsMajors:14,bpsLong:35,
-  partnerPayout:73.7,costs:0,buybackAllocation:93,burnShare:0,
-  price:3.83,issuancePct:2.5,
-  desks:5,ordersPerDesk:20,orderSize:250000,incrementalShare:50,institutionalBps:4,
-  agents:10000,intentsPerAgent:4,agentNotional:80,eligibleShare:40,agentBps:12,
-  targetMultiple:30,
+  volumeMultiple:1,compression:0,
+  shareStable:38,shareMajors:44,bpsStable:observed.grossBps,bpsMajors:observed.grossBps,bpsLong:observed.grossBps,
+  partnerPayout:100-observed.cashCapturePct,costs:0,buybackAllocation:0,burnShare:0,
+  price:baseline.market.priceUsd,issuancePct:baseline.supply.issuancePct,
+  desks:0,ordersPerDesk:20,orderSize:250000,incrementalShare:50,institutionalBps:4,
+  agents:0,intentsPerAgent:4,agentNotional:80,eligibleShare:40,agentBps:12,
+  targetMultiple:200,
   solverElasticity:.5,qualityElasticity:.3,responsiveness:.8,distributionGrowth:4
 };
 
@@ -33,15 +30,15 @@ export const LIMITS:Readonly<Record<InputKey,[number,number,number|'log']>>=Obje
   volumeMultiple:[0,10,.1],compression:[0,1,.05],
   shareStable:[0,100,1],shareMajors:[0,100,1],bpsStable:[0,60,.5],bpsMajors:[0,60,.5],bpsLong:[0,60,.5],
   partnerPayout:[0,100,.1],costs:[0,50,1],buybackAllocation:[0,100,1],burnShare:[0,100,1],
-  price:[.5,20,.01],issuancePct:[0,8,.1],
+  price:[.01,1000,.01],issuancePct:[0,8,.1],
   desks:[0,200,1],ordersPerDesk:[0,200,1],orderSize:[10000,10000000,'log'],incrementalShare:[0,100,1],institutionalBps:[0,20,.5],
-  agents:[100,1000000,'log'],intentsPerAgent:[0,50,1],agentNotional:[5,5000,'log'],eligibleShare:[0,100,1],agentBps:[0,40,.5],
-  targetMultiple:[2,150,1],
+  agents:[0,1000000,1],intentsPerAgent:[0,50,1],agentNotional:[5,5000,'log'],eligibleShare:[0,100,1],agentBps:[0,40,.5],
+  targetMultiple:[2,1000,1],
   solverElasticity:[0,1.5,.05],qualityElasticity:[0,1,.05],responsiveness:[0,2,.05],distributionGrowth:[0,20,.5]
 });
 
 export const PRESETS=Object.freeze({
-  base:{label:'Mock base',inputs:{}},
+  base:{label:'Observed starting scale',inputs:{}},
   compression:{label:'Fee compression',inputs:{volumeMultiple:5,compression:1}},
   institutional:{label:'Institutional pull',inputs:{desks:60,ordersPerDesk:40,orderSize:500000,incrementalShare:60}},
   agents:{label:'Agent economy',inputs:{agents:500000,intentsPerAgent:8,agentNotional:120}},
@@ -54,8 +51,8 @@ export const TRADING_DAYS=250;
 export function sanitize(inputs?:Partial<Record<InputKey,unknown>>|null):Inputs{
   const clean:Inputs={...DEFAULTS};
   for(const key of Object.keys(DEFAULTS) as InputKey[]){
-    const value=Number(inputs?.[key]);
-    if(!Number.isFinite(value))continue;
+    const value=inputs?.[key];
+    if(typeof value!=='number'||!Number.isFinite(value))continue;
     const [min,max]=LIMITS[key];
     clean[key]=Math.min(max,Math.max(min,value));
   }
@@ -65,7 +62,7 @@ export function sanitize(inputs?:Partial<Record<InputKey,unknown>>|null):Inputs{
 
 export function run(inputs=DEFAULTS){
   const a=sanitize(inputs);
-  const baselineAnnual=MOCK.cryptoVolume30d*365/30;
+  const baselineAnnual=BASELINE.cryptoVolume30d*365/30;
   const shares={shareStable:a.shareStable,shareMajors:a.shareMajors,long:Math.max(0,100-a.shareStable-a.shareMajors)};
   const cryptoVolume=baselineAnnual*a.volumeMultiple;
   const institutionalGross=a.desks*a.ordersPerDesk*a.orderSize*TRADING_DAYS;
@@ -89,8 +86,8 @@ export function run(inputs=DEFAULTS){
   const buybackUsd=retained*a.buybackAllocation/100;
   const tokensBought=buybackUsd/a.price;
   const tokensBurned=tokensBought*a.burnShare/100;
-  const issuanceTokens=MOCK.supply*a.issuancePct/100;
-  const marketCap=MOCK.supply*a.price;
+  const issuanceTokens=BASELINE.supply*a.issuancePct/100;
+  const marketCap=BASELINE.supply*a.price;
   const retainedBps=volume?retained/volume*10000:0;
   const requiredRevenue=marketCap/a.targetMultiple;
   return {
@@ -112,11 +109,11 @@ export function coverageGrid(inputs,multiples,payouts){
 
 export function supplyPath(inputs,years=5){
   const result=run(inputs),rows:{year:number,withBurn:number,issuanceOnly:number}[]=[];
-  let withBurn:number=MOCK.supply,issuanceOnly:number=MOCK.supply;
+  let withBurn:number=BASELINE.supply,issuanceOnly:number=BASELINE.supply;
   for(let year=0;year<=years;year++){
     rows.push({year,withBurn,issuanceOnly});
     issuanceOnly+=issuanceOnly*result.inputs.issuancePct/100;
-    withBurn+=withBurn*result.inputs.issuancePct/100-result.tokensBurned;
+    withBurn=Math.max(0,withBurn*(1+result.inputs.issuancePct/100)-result.tokensBurned);
   }
   return rows;
 }
@@ -125,11 +122,11 @@ export function flywheel(inputs,rounds=12){
   const a=sanitize(inputs),base=run(a),rows:{round:number,flow:number,solvers:number,spreadBps:number,retainedIndex:number}[]=[];
   let flow=1,previousQuality=1;
   for(let round=0;round<=rounds;round++){
-    const solvers=MOCK.solvers*flow**a.solverElasticity;
-    const quality=(solvers/MOCK.solvers)**a.qualityElasticity;
+    const solvers=BASELINE.solvers*flow**a.solverElasticity;
+    const quality=(solvers/BASELINE.solvers)**a.qualityElasticity;
     const result=run({...a,volumeMultiple:Math.min(LIMITS.volumeMultiple[1],a.volumeMultiple*flow)});
-    rows.push({round,flow,solvers,spreadBps:MOCK.spreadBps/quality,retainedIndex:base.retained?result.retained/base.retained:0});
-    flow=flow*(1+a.distributionGrowth/100)*(quality/previousQuality)**a.responsiveness;
+    rows.push({round,flow,solvers,spreadBps:BASELINE.spreadBps/quality,retainedIndex:base.retained?result.retained/base.retained:0});
+    flow=Math.min(a.volumeMultiple>0?LIMITS.volumeMultiple[1]/a.volumeMultiple:1,flow*(1+a.distributionGrowth/100)*(quality/previousQuality)**a.responsiveness);
     previousQuality=quality;
   }
   return rows;

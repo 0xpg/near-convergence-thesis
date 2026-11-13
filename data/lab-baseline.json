@@ -1,0 +1,100 @@
+{
+  "version": "near-lab-5092c25bebca-224353535",
+  "modelStatus": "Measured historical starting observations; every projection and discretionary policy remains an assumption.",
+  "operating": {
+    "sourceCutoff": "2026-11-10",
+    "defaultDays": 30,
+    "windows": [
+      {
+        "days": 30,
+        "start": "2026-10-12",
+        "end": "2026-11-10",
+        "volumeUsd": 3757732083.202671,
+        "grossFeesUsd": 5960786,
+        "capturedUsd": 1817568,
+        "grossBps": 15.862722163309982,
+        "cashCapturePct": 30.492086110791426,
+        "capturedBps": 4.8368749015520764,
+        "annualizedCapturedUsd": 22113744
+      },
+      {
+        "days": 90,
+        "start": "2026-08-13",
+        "end": "2026-11-10",
+        "volumeUsd": 12440102125.635805,
+        "grossFeesUsd": 18757458,
+        "capturedUsd": 5077609,
+        "grossBps": 15.078218659753421,
+        "cashCapturePct": 27.06981404409915,
+        "capturedBps": 4.08164575235791,
+        "annualizedCapturedUsd": 20592525.388888888
+      }
+    ]
+  },
+  "market": {
+    "priceUsd": 3.62401893,
+    "sourceDate": "2026-11-10",
+    "url": "https://dune.com/queries/9114284",
+    "status": "Dated reference quote; not a live price or synchronized operating cutoff."
+  },
+  "supply": {
+    "supplyNear": 1311600052.4561453,
+    "exactSupplyNear": "1311600052.456145253501788378818095",
+    "issuancePct": 2.5,
+    "blockHeight": 224353535,
+    "blockHash": "7gGjCRDZpkr3VzByZ43iFFkuyncsL4bAK2yUPhaqm4aZ",
+    "blockUtc": "2026-11-13T10:53:57.994Z",
+    "protocolVersion": 88,
+    "url": "https://rpc.mainnet.near.org",
+    "status": "Finalized total native supply; annual issuance is the protocol maximum, not measured future issuance or circulating supply."
+  },
+  "sources": [
+    {
+      "file": "data/glance-daily.json",
+      "sha256": "5092c25bebca04c0288a5bd030ca063b5970434a0a5fa8072a8d3ef1297b08c6",
+      "url": "https://dune.com/queries/9114284",
+      "cutoff": "2026-11-10"
+    },
+    {
+      "file": "data/glance-sources/glance-daily-dune.json",
+      "url": "https://dune.com/queries/9114284",
+      "retrievedAt": "2026-11-12T05:08:32Z",
+      "sha256": "69985b6eb766feea28a1297ab95f3683932f0d95b286d75fd781a5539455a1e2"
+    },
+    {
+      "file": "analysis/lab-sources/manifest.json",
+      "sha256": "2075f8978eee0de04c1821959a0d2018a34090f2fc2dc5570c029ce21c88e8ab",
+      "url": "https://rpc.mainnet.near.org",
+      "cutoff": "2026-11-13T10:53:57.994Z"
+    },
+    {
+      "file": "analysis/lab-sources/block.json",
+      "sha256": "fae43f9eb0dae015a8db4e46df408d5446773ff5721c233df517774bc1922947",
+      "url": "https://rpc.mainnet.near.org",
+      "method": "block",
+      "params": {
+        "finality": "final"
+      },
+      "cutoff": "2026-11-13T10:53:57.994Z"
+    },
+    {
+      "file": "analysis/lab-sources/protocol.json",
+      "sha256": "4f6492134ba19b164c85d72a7a3528f57542315cd49062b213f1b9a7896dd00b",
+      "url": "https://rpc.mainnet.near.org",
+      "method": "EXPERIMENTAL_protocol_config",
+      "params": {
+        "block_id": 224353535
+      },
+      "cutoff": "2026-11-13T10:53:57.994Z"
+    }
+  ],
+  "limitations": [
+    "Captured Intents receipts are cash observations, not accrued net income, a verified partner payout residual or legally enforceable tokenholder distributions.",
+    "Daily fees and receipts have different collection timing. Ratios of matched window sums are descriptive; they do not identify a contractual take rate.",
+    "30-day and 90-day annualization describe scale, not a forecast. Projection assumptions are separate from these observed inputs.",
+    "Total supply, reference quote and operating observations have separate timestamps; this is not a synchronized valuation mark.",
+    "Gas burn is excluded from the default receipt denominator and supply offset; the existing provider classification is not a canonical, protocol-version-reconciled burn series.",
+    "Solver identities, institutional-versus-agent attribution, route-specific economics, operating costs and future buyback or retirement policy are not identified by this baseline.",
+    "Dune and provider observations share upstream lineage; their agreement is not independent verification. Rerunning this builder validates the archived snapshot and does not ingest new upstream data."
+  ]
+}

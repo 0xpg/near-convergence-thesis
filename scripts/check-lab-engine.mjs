@@ -14,14 +14,14 @@ assert.equal(empty.volume,0);assert.equal(empty.grossFees,0);assert.equal(empty.
 const fullPayout=run({...DEFAULTS,partnerPayout:100});
 assert(fullPayout.grossFees>0);assert.equal(fullPayout.retained,0);assert.equal(fullPayout.tokensBought,0);
 
-const one=run({...nativeOnly,compression:1,volumeMultiple:1}),ten=run({...nativeOnly,compression:1,volumeMultiple:10});
+const one=run({...nativeOnly,compression:1,volumeMultiple:1,buybackAllocation:100}),ten=run({...nativeOnly,compression:1,volumeMultiple:10});
 assert(close(ten.volume,one.volume*10));assert(close(ten.grossFees,one.grossFees));
 const lowerRetention=run({...nativeOnly,compression:1,volumeMultiple:10,partnerPayout:90});
 assert(lowerRetention.retained<one.retained);
 
 assert.equal(run({...DEFAULTS,incrementalShare:0}).volume,run({...DEFAULTS,desks:0}).volume);
 
-const tenModerate=run({...nativeOnly,volumeMultiple:10,compression:.4});
+const tenModerate=run({...nativeOnly,volumeMultiple:10,compression:.4,buybackAllocation:100});
 assert(tenModerate.tokensBought<one.tokensBought*10*1.0001&&tenModerate.tokensBought>one.tokensBought);
 assert(close(compressionIndex(10,1),1));assert(close(compressionIndex(10,0),10));
 
@@ -29,16 +29,20 @@ assert.equal(base.tokensBurned,0,'Buybacks are not burns unless a burn share is 
 assert.equal(run({...DEFAULTS,burnShare:100}).tokensHeld,0);
 
 const clamped=sanitize({shareStable:80,shareMajors:60,price:-1,agents:'x'});
-assert.equal(clamped.shareStable+clamped.shareMajors,100);assert.equal(clamped.price,.5);assert.equal(clamped.agents,DEFAULTS.agents);
+assert.equal(clamped.shareStable+clamped.shareMajors,100);assert.equal(clamped.price,.01);assert.equal(clamped.agents,DEFAULTS.agents);
 
-const grid=coverageGrid(DEFAULTS,[1,10],[90,50]);
+const grid=coverageGrid({...DEFAULTS,buybackAllocation:100},[1,10],[90,50]);
 assert(grid[1][1]>grid[0][0]);
 const path=supplyPath({...DEFAULTS,burnShare:0});
 assert(path.every(row=>close(row.withBurn,row.issuanceOnly)));
-assert(supplyPath({...DEFAULTS,burnShare:100}).at(-1).withBurn<path.at(-1).issuanceOnly);
+assert(supplyPath({...DEFAULTS,burnShare:100,buybackAllocation:100}).at(-1).withBurn<path.at(-1).issuanceOnly);
 const loop=flywheel(DEFAULTS);
 assert.equal(loop.length,13);assert.equal(loop[0].flow,1);assert(loop.at(-1).flow>1);
 assert(loop.every(row=>Number.isFinite(row.retainedIndex)&&row.spreadBps>0));
 for(const preset of Object.values(PRESETS))assert(Number.isFinite(run({...DEFAULTS,...preset.inputs}).retained));
 
 console.log('Lab engine: zero volume, full payout, proportional compression, cannibalization, buybacks-not-burns, clamping and flywheel checks passed.');
+
+assert.equal(sanitize({volumeMultiple:null}).volumeMultiple,DEFAULTS.volumeMultiple);
+assert.equal(sanitize({volumeMultiple:true}).volumeMultiple,DEFAULTS.volumeMultiple);
+assert(supplyPath({...DEFAULTS,buybackAllocation:100,burnShare:100,price:.01,issuancePct:0,volumeMultiple:10}).every(row=>row.withBurn>=0));
