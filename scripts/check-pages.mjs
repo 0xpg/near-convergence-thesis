@@ -12,6 +12,7 @@ try{
  const routeFiles={'/':'index.html','/thesis':'thesis.html','/lab':'lab.html','/research':'research.html','/methodology':'methodology.html'};
  const {routes,resolveRoute}=await server.ssrLoadModule('/src/routes.ts');
  assert.deepEqual(Object.keys(routes).sort(),Object.keys(routeFiles).sort());
+ for(const route of Object.values(routes))assert(route.title.includes('Near Convergence Thesis'),'Website title must use renamed project');
  for(const [legacy,path] of [['/thesis.html','/thesis'],['/index.html','/'],['/lab/','/lab'],['/','/']])assert.equal(resolveRoute(legacy).path,path);
  assert.equal(resolveRoute('/explore').redirect,'/research#explore');
  const rendered=Object.fromEntries(Object.entries(components).map(([file,Component])=>[file,renderToStaticMarkup(createElement(Component))]));

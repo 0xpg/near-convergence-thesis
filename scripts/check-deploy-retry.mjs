@@ -7,6 +7,13 @@ assert(block,'Deployment retry block missing');
 const script='deploy_log='+block[1].replace(/^          /gm,'');
 const stub=`calls=0
 sleep(){ :; }
+curl(){
+ case "$*" in
+  *--write-out*) case "$MODE" in missing|createfail) echo 404 ;; lookupfail) echo 503 ;; *) echo 200 ;; esac ;;
+  *) echo '{"success":true}' ;;
+ esac
+}
+jq(){ cat >/dev/null; [ "$MODE" != createfail ]; }
 npx(){
  calls=$((calls + 1))
  echo ATTEMPT
@@ -18,8 +25,8 @@ npx(){
 }
 `;
 const bash=process.platform==='win32'?'C:/Program Files/Git/bin/bash.exe':'bash';
-for(const [mode,attempts,status] of [['success',1,0],['transient',2,0],['exhausted',3,1],['auth',1,1]]){
- const result=spawnSync(bash,['-c',stub+script],{encoding:'utf8',env:{...process.env,MODE:mode}});
+for(const [mode,attempts,status] of [['success',1,0],['transient',2,0],['exhausted',3,1],['auth',1,1],['missing',1,0],['createfail',0,1],['lookupfail',0,1]]){
+ const result=spawnSync(bash,['-eo','pipefail','-c',stub+script],{encoding:'utf8',env:{...process.env,MODE:mode}});
  assert.ifError(result.error);assert.equal(result.status,status,result.stderr);
  assert.equal((result.stdout.match(/^ATTEMPT$/gm)||[]).length,attempts,mode);
 }

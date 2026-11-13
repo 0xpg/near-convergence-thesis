@@ -43,9 +43,17 @@ jobs:
           fi
           deploy_log=$(mktemp)
           trap 'rm -f "$deploy_log"' EXIT
+          project_url="https://api.cloudflare.com/client/v4/accounts/$CLOUDFLARE_ACCOUNT_ID/pages/projects/near-convergence-thesis"
+          project_status=$(curl --silent --show-error --retry 2 --max-time 30 --output "$deploy_log" --write-out '%{http_code}' -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" "$project_url")
+          if [ "$project_status" = 404 ]; then
+            curl --fail --silent --show-error --retry 2 --max-time 30 -X POST -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" -H 'Content-Type: application/json' --data '{"name":"near-convergence-thesis","production_branch":"main"}' "https://api.cloudflare.com/client/v4/accounts/$CLOUDFLARE_ACCOUNT_ID/pages/projects" | jq -e '.success == true' >/dev/null
+          elif [ "$project_status" != 200 ]; then
+            echo "::error::Cloudflare project lookup failed (HTTP $project_status)."
+            exit 1
+          fi
           for attempt in 1 2 3; do
             status=0
-            npx --yes wrangler@4.157.0 pages deploy dist-public --project-name near-evidence --branch main >"$deploy_log" 2>&1 || status=$?
+            npx --yes wrangler@4.157.0 pages deploy dist-public --project-name near-convergence-thesis --branch main >"$deploy_log" 2>&1 || status=$?
             cat "$deploy_log"
             if [ "$status" -eq 0 ]; then break; fi
             if [ "$attempt" -eq 3 ] || ! grep -Eq '503 Service Unavailable|502 Bad Gateway|504 Gateway Timeout|no healthy upstream|upstream connect error' "$deploy_log"; then
@@ -58,7 +66,7 @@ jobs:
         if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
         run: |
           for route in thesis lab research methodology; do
-            expected="https://near-evidence.pages.dev/$route"
+            expected="https://near-convergence-thesis.pages.dev/$route"
             for attempt in {1..10}; do
               actual=$(curl --fail --silent --show-error --location --retry 2 --max-time 15 --output /dev/null --write-out '%{url_effective}' "$expected") || actual=''
               if [ "$actual" = "$expected" ]; then break; fi
