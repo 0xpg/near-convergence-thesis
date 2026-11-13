@@ -1,0 +1,346 @@
+{
+  "query": "https://dune.com/queries/9122363",
+  "retrievedAt": "2026-11-13T10:36:13.408Z",
+  "rows": [
+    [
+      "day",
+      "reported_net_flow_usd",
+      "cumulative_reported_net_flow_usd",
+      "fund",
+      "attribution",
+      "source_url",
+      "coverage",
+      "query_executed_utc"
+    ],
+    [
+      "2026-09-29 00:00:00",
+      "35987000",
+      "35987000",
+      "NRR · U.S. spot NEAR ETF",
+      "Source: cryptoetf.today",
+      "https://cryptoetf.today/en/etf/nrr-etf-price",
+      "Reported net creations/redemptions, USD; 33 published sessions, 29 Sep–12 Nov 2026. Archived attributed chart excerpt, not live data, institutional investor identity, AUM or token-holdings change.",
+      "2026-11-13 10:35:44"
+    ],
+    [
+      "2026-09-30 00:00:00",
+      "14039000",
+      "50026000",
+      "NRR · U.S. spot NEAR ETF",
+      "Source: cryptoetf.today",
+      "https://cryptoetf.today/en/etf/nrr-etf-price",
+      "Reported net creations/redemptions, USD; 33 published sessions, 29 Sep–12 Nov 2026. Archived attributed chart excerpt, not live data, institutional investor identity, AUM or token-holdings change.",
+      "2026-11-13 10:35:44"
+    ],
+    [
+      "2026-10-01 00:00:00",
+      "8083000",
+      "58109000",
+      "NRR · U.S. spot NEAR ETF",
+      "Source: cryptoetf.today",
+      "https://cryptoetf.today/en/etf/nrr-etf-price",
+      "Reported net creations/redemptions, USD; 33 published sessions, 29 Sep–12 Nov 2026. Archived attributed chart excerpt, not live data, institutional investor identity, AUM or token-holdings change.",
+      "2026-11-13 10:35:44"
+    ],
+    [
+      "2026-10-02 00:00:00",
+      "242000",
+      "58351000",
+      "NRR · U.S. spot NEAR ETF",
+      "Source: cryptoetf.today",
+      "https://cryptoetf.today/en/etf/nrr-etf-price",
+      "Reported net creations/redemptions, USD; 33 published sessions, 29 Sep–12 Nov 2026. Archived attributed chart excerpt, not live data, institutional investor identity, AUM or token-holdings change.",
+      "2026-11-13 10:35:44"
+    ],
+    [
+      "2026-10-05 00:00:00",
+      "540000",
+      "58891000",
+      "NRR · U.S. spot NEAR ETF",
+      "Source: cryptoetf.today",
+      "https://cryptoetf.today/en/etf/nrr-etf-price",
+      "Reported net creations/redemptions, USD; 33 published sessions, 29 Sep–12 Nov 2026. Archived attributed chart excerpt, not live data, institutional investor identity, AUM or token-holdings change.",
+      "2026-11-13 10:35:44"
+    ],
+    [
+      "2026-10-06 00:00:00",
+      "0",
+      "58891000",
+      "NRR · U.S. spot NEAR ETF",
+      "Source: cryptoetf.today",
+      "https://cryptoetf.today/en/etf/nrr-etf-price",
+      "Reported net creations/redemptions, USD; 33 published sessions, 29 Sep–12 Nov 2026. Archived attributed chart excerpt, not live data, institutional investor identity, AUM or token-holdings change.",
+      "2026-11-13 10:35:44"
+    ],
+    [
+      "2026-10-07 00:00:00",
+      "3339000",
+      "62230000",
+      "NRR · U.S. spot NEAR ETF",
+      "Source: cryptoetf.today",
+      "https://cryptoetf.today/en/etf/nrr-etf-price",
+      "Reported net creations/redemptions, USD; 33 published sessions, 29 Sep–12 Nov 2026. Archived attributed chart excerpt, not live data, institutional investor identity, AUM or token-holdings change.",
+      "2026-11-13 10:35:44"
+    ],
+    [
+      "2026-10-08 00:00:00",
+      "4038000",
+      "66268000",
+      "NRR · U.S. spot NEAR ETF",
+      "Source: cryptoetf.today",
+      "https://cryptoetf.today/en/etf/nrr-etf-price",
+      "Reported net creations/redemptions, USD; 33 published sessions, 29 Sep–12 Nov 2026. Archived attributed chart excerpt, not live data, institutional investor identity, AUM or token-holdings change.",
+      "2026-11-13 10:35:44"
+    ],
+    [
+      "2026-10-09 00:00:00",
+      "5131000",
+      "71399000",
+      "NRR · U.S. spot NEAR ETF",
+      "Source: cryptoetf.today",
+      "https://cryptoetf.today/en/etf/nrr-etf-price",
+      "Reported net creations/redemptions, USD; 33 published sessions, 29 Sep–12 Nov 2026. Archived attributed chart excerpt, not live data, institutional investor identity, AUM or token-holdings change.",
+      "2026-11-13 10:35:44"
+    ],
+    [
+      "2026-10-12 00:00:00",
+      "3985000",
+      "75384000",
+      "NRR · U.S. spot NEAR ETF",
+      "Source: cryptoetf.today",
+      "https://cryptoetf.today/en/etf/nrr-etf-price",
+      "Reported net creations/redemptions, USD; 33 published sessions, 29 Sep–12 Nov 2026. Archived attributed chart excerpt, not live data, institutional investor identity, AUM or token-holdings change.",
+      "2026-11-13 10:35:44"
+    ],
+    [
+      "2026-10-13 00:00:00",
+      "3933000",
+      "79317000",
+      "NRR · U.S. spot NEAR ETF",
+      "Source: cryptoetf.today",
+      "https://cryptoetf.today/en/etf/nrr-etf-price",
+      "Reported net creations/redemptions, USD; 33 published sessions, 29 Sep–12 Nov 2026. Archived attributed chart excerpt, not live data, institutional investor identity, AUM or token-holdings change.",
+      "2026-11-13 10:35:44"
+    ],
+    [
+      "2026-10-14 00:00:00",
+      "0",
+      "79317000",
+      "NRR · U.S. spot NEAR ETF",
+      "Source: cryptoetf.today",
+      "https://cryptoetf.today/en/etf/nrr-etf-price",
+      "Reported net creations/redemptions, USD; 33 published sessions, 29 Sep–12 Nov 2026. Archived attributed chart excerpt, not live data, institutional investor identity, AUM or token-holdings change.",
+      "2026-11-13 10:35:44"
+    ],
+    [
+      "2026-10-15 00:00:00",
+      "1126000",
+      "80443000",
+      "NRR · U.S. spot NEAR ETF",
+      "Source: cryptoetf.today",
+      "https://cryptoetf.today/en/etf/nrr-etf-price",
+      "Reported net creations/redemptions, USD; 33 published sessions, 29 Sep–12 Nov 2026. Archived attributed chart excerpt, not live data, institutional investor identity, AUM or token-holdings change.",
+      "2026-11-13 10:35:44"
+    ],
+    [
+      "2026-10-16 00:00:00",
+      "2606000",
+      "83049000",
+      "NRR · U.S. spot NEAR ETF",
+      "Source: cryptoetf.today",
+      "https://cryptoetf.today/en/etf/nrr-etf-price",
+      "Reported net creations/redemptions, USD; 33 published sessions, 29 Sep–12 Nov 2026. Archived attributed chart excerpt, not live data, institutional investor identity, AUM or token-holdings change.",
+      "2026-11-13 10:35:44"
+    ],
+    [
+      "2026-10-19 00:00:00",
+      "5419000",
+      "88468000",
+      "NRR · U.S. spot NEAR ETF",
+      "Source: cryptoetf.today",
+      "https://cryptoetf.today/en/etf/nrr-etf-price",
+      "Reported net creations/redemptions, USD; 33 published sessions, 29 Sep–12 Nov 2026. Archived attributed chart excerpt, not live data, institutional investor identity, AUM or token-holdings change.",
+      "2026-11-13 10:35:44"
+    ],
+    [
+      "2026-10-20 00:00:00",
+      "-2539000",
+      "85929000",
+      "NRR · U.S. spot NEAR ETF",
+      "Source: cryptoetf.today",
+      "https://cryptoetf.today/en/etf/nrr-etf-price",
+      "Reported net creations/redemptions, USD; 33 published sessions, 29 Sep–12 Nov 2026. Archived attributed chart excerpt, not live data, institutional investor identity, AUM or token-holdings change.",
+      "2026-11-13 10:35:44"
+    ],
+    [
+      "2026-10-21 00:00:00",
+      "831000",
+      "86760000",
+      "NRR · U.S. spot NEAR ETF",
+      "Source: cryptoetf.today",
+      "https://cryptoetf.today/en/etf/nrr-etf-price",
+      "Reported net creations/redemptions, USD; 33 published sessions, 29 Sep–12 Nov 2026. Archived attributed chart excerpt, not live data, institutional investor identity, AUM or token-holdings change.",
+      "2026-11-13 10:35:44"
+    ],
+    [
+      "2026-10-22 00:00:00",
+      "513000",
+      "87273000",
+      "NRR · U.S. spot NEAR ETF",
+      "Source: cryptoetf.today",
+      "https://cryptoetf.today/en/etf/nrr-etf-price",
+      "Reported net creations/redemptions, USD; 33 published sessions, 29 Sep–12 Nov 2026. Archived attributed chart excerpt, not live data, institutional investor identity, AUM or token-holdings change.",
+      "2026-11-13 10:35:44"
+    ],
+    [
+      "2026-10-23 00:00:00",
+      "993000",
+      "88266000",
+      "NRR · U.S. spot NEAR ETF",
+      "Source: cryptoetf.today",
+      "https://cryptoetf.today/en/etf/nrr-etf-price",
+      "Reported net creations/redemptions, USD; 33 published sessions, 29 Sep–12 Nov 2026. Archived attributed chart excerpt, not live data, institutional investor identity, AUM or token-holdings change.",
+      "2026-11-13 10:35:44"
+    ],
+    [
+      "2026-10-26 00:00:00",
+      "1405000",
+      "89671000",
+      "NRR · U.S. spot NEAR ETF",
+      "Source: cryptoetf.today",
+      "https://cryptoetf.today/en/etf/nrr-etf-price",
+      "Reported net creations/redemptions, USD; 33 published sessions, 29 Sep–12 Nov 2026. Archived attributed chart excerpt, not live data, institutional investor identity, AUM or token-holdings change.",
+      "2026-11-13 10:35:44"
+    ],
+    [
+      "2026-10-27 00:00:00",
+      "-4839000",
+      "84832000",
+      "NRR · U.S. spot NEAR ETF",
+      "Source: cryptoetf.today",
+      "https://cryptoetf.today/en/etf/nrr-etf-price",
+      "Reported net creations/redemptions, USD; 33 published sessions, 29 Sep–12 Nov 2026. Archived attributed chart excerpt, not live data, institutional investor identity, AUM or token-holdings change.",
+      "2026-11-13 10:35:44"
+    ],
+    [
+      "2026-10-28 00:00:00",
+      "0",
+      "84832000",
+      "NRR · U.S. spot NEAR ETF",
+      "Source: cryptoetf.today",
+      "https://cryptoetf.today/en/etf/nrr-etf-price",
+      "Reported net creations/redemptions, USD; 33 published sessions, 29 Sep–12 Nov 2026. Archived attributed chart excerpt, not live data, institutional investor identity, AUM or token-holdings change.",
+      "2026-11-13 10:35:44"
+    ],
+    [
+      "2026-10-29 00:00:00",
+      "0",
+      "84832000",
+      "NRR · U.S. spot NEAR ETF",
+      "Source: cryptoetf.today",
+      "https://cryptoetf.today/en/etf/nrr-etf-price",
+      "Reported net creations/redemptions, USD; 33 published sessions, 29 Sep–12 Nov 2026. Archived attributed chart excerpt, not live data, institutional investor identity, AUM or token-holdings change.",
+      "2026-11-13 10:35:44"
+    ],
+    [
+      "2026-10-30 00:00:00",
+      "0",
+      "84832000",
+      "NRR · U.S. spot NEAR ETF",
+      "Source: cryptoetf.today",
+      "https://cryptoetf.today/en/etf/nrr-etf-price",
+      "Reported net creations/redemptions, USD; 33 published sessions, 29 Sep–12 Nov 2026. Archived attributed chart excerpt, not live data, institutional investor identity, AUM or token-holdings change.",
+      "2026-11-13 10:35:44"
+    ],
+    [
+      "2026-11-02 00:00:00",
+      "0",
+      "84832000",
+      "NRR · U.S. spot NEAR ETF",
+      "Source: cryptoetf.today",
+      "https://cryptoetf.today/en/etf/nrr-etf-price",
+      "Reported net creations/redemptions, USD; 33 published sessions, 29 Sep–12 Nov 2026. Archived attributed chart excerpt, not live data, institutional investor identity, AUM or token-holdings change.",
+      "2026-11-13 10:35:44"
+    ],
+    [
+      "2026-11-03 00:00:00",
+      "-3604000",
+      "81228000",
+      "NRR · U.S. spot NEAR ETF",
+      "Source: cryptoetf.today",
+      "https://cryptoetf.today/en/etf/nrr-etf-price",
+      "Reported net creations/redemptions, USD; 33 published sessions, 29 Sep–12 Nov 2026. Archived attributed chart excerpt, not live data, institutional investor identity, AUM or token-holdings change.",
+      "2026-11-13 10:35:44"
+    ],
+    [
+      "2026-11-04 00:00:00",
+      "0",
+      "81228000",
+      "NRR · U.S. spot NEAR ETF",
+      "Source: cryptoetf.today",
+      "https://cryptoetf.today/en/etf/nrr-etf-price",
+      "Reported net creations/redemptions, USD; 33 published sessions, 29 Sep–12 Nov 2026. Archived attributed chart excerpt, not live data, institutional investor identity, AUM or token-holdings change.",
+      "2026-11-13 10:35:44"
+    ],
+    [
+      "2026-11-05 00:00:00",
+      "-774000",
+      "80454000",
+      "NRR · U.S. spot NEAR ETF",
+      "Source: cryptoetf.today",
+      "https://cryptoetf.today/en/etf/nrr-etf-price",
+      "Reported net creations/redemptions, USD; 33 published sessions, 29 Sep–12 Nov 2026. Archived attributed chart excerpt, not live data, institutional investor identity, AUM or token-holdings change.",
+      "2026-11-13 10:35:44"
+    ],
+    [
+      "2026-11-06 00:00:00",
+      "0",
+      "80454000",
+      "NRR · U.S. spot NEAR ETF",
+      "Source: cryptoetf.today",
+      "https://cryptoetf.today/en/etf/nrr-etf-price",
+      "Reported net creations/redemptions, USD; 33 published sessions, 29 Sep–12 Nov 2026. Archived attributed chart excerpt, not live data, institutional investor identity, AUM or token-holdings change.",
+      "2026-11-13 10:35:44"
+    ],
+    [
+      "2026-11-09 00:00:00",
+      "0",
+      "80454000",
+      "NRR · U.S. spot NEAR ETF",
+      "Source: cryptoetf.today",
+      "https://cryptoetf.today/en/etf/nrr-etf-price",
+      "Reported net creations/redemptions, USD; 33 published sessions, 29 Sep–12 Nov 2026. Archived attributed chart excerpt, not live data, institutional investor identity, AUM or token-holdings change.",
+      "2026-11-13 10:35:44"
+    ],
+    [
+      "2026-11-10 00:00:00",
+      "0",
+      "80454000",
+      "NRR · U.S. spot NEAR ETF",
+      "Source: cryptoetf.today",
+      "https://cryptoetf.today/en/etf/nrr-etf-price",
+      "Reported net creations/redemptions, USD; 33 published sessions, 29 Sep–12 Nov 2026. Archived attributed chart excerpt, not live data, institutional investor identity, AUM or token-holdings change.",
+      "2026-11-13 10:35:44"
+    ],
+    [
+      "2026-11-11 00:00:00",
+      "-1358000",
+      "79096000",
+      "NRR · U.S. spot NEAR ETF",
+      "Source: cryptoetf.today",
+      "https://cryptoetf.today/en/etf/nrr-etf-price",
+      "Reported net creations/redemptions, USD; 33 published sessions, 29 Sep–12 Nov 2026. Archived attributed chart excerpt, not live data, institutional investor identity, AUM or token-holdings change.",
+      "2026-11-13 10:35:44"
+    ],
+    [
+      "2026-11-12 00:00:00",
+      "0",
+      "79096000",
+      "NRR · U.S. spot NEAR ETF",
+      "Source: cryptoetf.today",
+      "https://cryptoetf.today/en/etf/nrr-etf-price",
+      "Reported net creations/redemptions, USD; 33 published sessions, 29 Sep–12 Nov 2026. Archived attributed chart excerpt, not live data, institutional investor identity, AUM or token-holdings change.",
+      "2026-11-13 10:35:44"
+    ]
+  ]
+}

@@ -1,11 +1,12 @@
 import snapshot from '../data/institutional-demand.json';
 import type {Insight} from './glance-coverage-insights.ts';
-const {nrr,european}=snapshot;
+const {nrr,european,flowSummary:flow}=snapshot;
 const compact=(value:number,digits=1)=>new Intl.NumberFormat('en-US',{notation:'compact',maximumFractionDigits:digits}).format(value);
 const percent=(value:number,digits=1)=>(value<0?'−':'+')+Math.abs(value).toFixed(digits)+'%';
 const metadata={
   'investment-holdings':{title:'NEAR held by investment products',tab:'Holdings',description:'Latest issuer-reported NEAR holdings for two distinct products. Each bar retains its own issuer cutoff; these are not synchronized holdings, net flows or verified institutional ownership.'},
-  'investment-units':{title:'European NEAR product units outstanding',tab:'Units',description:'Two observed European product unit counts: the administrator’s baseline and latest issuer snapshot. Source dates are not a complete daily flow series.'}
+  'investment-units':{title:'European NEAR product units outstanding',tab:'Units',description:'Two observed European product unit counts: the administrator’s baseline and latest issuer snapshot. Source dates are not a complete daily flow series.'},
+  'investment-flows':{title:'NRR cumulative reported net flows',tab:'Net flows',description:'Cumulative secondary-provider reported net creations and redemptions for the U.S. NRR product. The area series sums reported daily USD flows; it is not AUM, NEAR holdings or an institutional-investor census.'}
 };
 export const institutionalCharts=snapshot.charts.map(chart=>{
   const labels=metadata[chart.id];
@@ -14,6 +15,15 @@ export const institutionalCharts=snapshot.charts.map(chart=>{
 });
 const common={snapshot:'data/institutional-demand.json',research:'data/institutional-demand.json',calculation:{method:'Issuer snapshots keyed by ISIN; NEAR/NEAS listings count once. Unit-count change = latest units / baseline units − 1. European entitlement × units reconciles to claim-backed NEAR within source rounding; NRR entitlement is derived from reported holdings / shares. Source hashes, accounting checks and independent RPC sample are retained in the research download.',retrievedAt:snapshot.retrievedAt}};
 export const institutionalInsights:Record<string,Insight>={
+  'investment-flows':{
+    value:(flow.cumulativeNetFlowUsd<0?'−$':'$')+compact(Math.abs(flow.cumulativeNetFlowUsd)),
+    headline:'Cumulative reported net flows into NRR, the U.S. NEAR product.',
+    date:`Reported flows · ${flow.start} to ${flow.end} · ${flow.sessions} sessions`,
+    takeaway:`The first three sessions account for ${flow.firstThreeSessionsShareOfLatestCumulativePct.toFixed(1)}% of the latest cumulative net inflow. The total is ${flow.changeSincePeakUsd<0?'$'+compact(Math.abs(flow.changeSincePeakUsd))+' below':'at'} its ${flow.peakDate} peak; launch demand has not translated into uninterrupted accumulation.`,
+    source:flow.sourceUrl,attribution:{label:flow.sourceLabel,url:flow.sourceUrl},
+    limitation:`This bounded ${flow.sessions}-session excerpt is reported by a secondary provider, not a primary-issuer daily share census. Checks against available share-count anchors and issuer NAV support consistency but do not independently establish every daily flow or transaction timing. Provider rounding, T+1 timing and later revisions apply. Reported zero sessions remain zero; missing sessions must not be manufactured. Product flows do not identify institutional beneficial owners or unhedged investor demand. This historical chart does not refresh automatically.`,
+    calculation:{method:'Cumulative net flow = running sum of provider-reported daily net creations/redemptions in USD, beginning at zero before the first listed session. Original chart values have 0.001 USD million granularity. First-three-session share = their net-flow sum / latest cumulative net flow; peak gap = latest cumulative total − maximum cumulative total. No AUM or holdings-change proxy substitutes for reported flows.',retrievedAt:snapshot.retrievedAt}
+  },
   'investment-holdings':{
     ...common,value:compact(nrr.nearHeld,2)+' NEAR',
     headline:`NRR, U.S. issuer-reported holdings. The European ETP separately reports ${compact(european.nearHeld,2)} NEAR.`,

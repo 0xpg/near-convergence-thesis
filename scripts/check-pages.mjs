@@ -78,8 +78,8 @@ try{
  const chartFrames=rendered['thesis.html'].match(/<iframe[^>]+Dune visualization[^>]*>/g)||[];
  assert.equal(chartFrames.length,14);
  for(const frame of chartFrames){assert(!frame.includes('aria-hidden'));assert(!frame.includes('tabindex="-1"'));}
- assert.equal(glanceCharts.length,31);assert.equal(new Set(glanceCharts.map(chart=>chart.id)).size,31);assert.equal(glanceGroups.length,14);
- assert.equal(glanceGroups.flatMap(group=>group.chartIds).length,31);
+ assert.equal(glanceCharts.length,32);assert.equal(new Set(glanceCharts.map(chart=>chart.id)).size,32);assert.equal(glanceGroups.length,14);
+ assert.equal(glanceGroups.flatMap(group=>group.chartIds).length,32);
  const insightData={insights:glanceInsights};
  for(const chart of glanceCharts){assert(insightData.insights[chart.id]);const snapshot=insightData.insights[chart.id].snapshot;if(snapshot)assert(existsSync('dist/'+snapshot));}assert(!rendered['thesis.html'].includes('Network fundamentals'));
  for(const insight of Object.values(insightData.insights)){assert(insight.value&&insight.headline&&insight.date&&insight.limitation&&insight.calculation.method);assert.equal(new URL(insight.source).protocol,'https:');}
@@ -102,13 +102,23 @@ try{
  }
 
  assert.equal(glanceTiles.filter(tile=>tile.includes('id="glance-institutional-title"')).length,1);
- assert.deepEqual(glanceGroups.find(group=>group.id==='institutional').chartIds,['investment-holdings','investment-units']);
+ assert.deepEqual(glanceGroups.find(group=>group.id==='institutional').chartIds,['investment-holdings','investment-units','investment-flows']);
  assert.equal(glanceInsights['investment-units'].value,(institutional.european.change.sharesChangePct<0?'−':'+')+Math.abs(institutional.european.change.sharesChangePct).toFixed(1)+'%');
  assert(glanceInsights['investment-holdings'].date.includes(institutional.nrr.holdingsIssuerDate)&&glanceInsights['investment-holdings'].date.includes(institutional.european.issuerDate));
  assert.equal(institutional.nrr.verifiedNetFlowUsd,null);
  assert.equal(institutional.european.verifiedInstitutionalOwnershipPct,null);
  assert(glanceInsights['investment-holdings'].limitation.includes('No combined holdings total'));
  assert.equal(glanceInsights['investment-holdings'].snapshot,'data/institutional-demand.json');
+ const flows=glanceInsights['investment-flows'];
+ assert.equal(flows.value,(institutional.flowSummary.cumulativeNetFlowUsd<0?'−$':'$')+new Intl.NumberFormat('en-US',{notation:'compact',maximumFractionDigits:1}).format(Math.abs(institutional.flowSummary.cumulativeNetFlowUsd)));
+ assert.equal(flows.attribution.url,institutional.flowSummary.sourceUrl);
+ assert.equal(flows.snapshot,undefined,'Provider excerpt must not offer a data export');
+ assert(flows.takeaway.includes(institutional.flowSummary.firstThreeSessionsShareOfLatestCumulativePct.toFixed(1)+'%'));
+ assert(flows.date.includes(institutional.flowSummary.start)&&flows.date.includes(institutional.flowSummary.end));
+ const attributed=renderToStaticMarkup(createElement(DuneGlance,{insights:{'investment-holdings':flows},economics:false}));
+ const attributedTile=(attributed.match(/<article class="glance-tile[\s\S]*?<\/article>/g)||[]).find(tile=>tile.includes('id="glance-institutional-title"'));
+ assert(attributedTile.includes('Source: <a href="'+flows.attribution.url+'"'),'Provider attribution renders its source link');
+ assert(attributedTile.indexOf('Source:')<attributedTile.indexOf('<details>'),'Provider attribution remains visible outside evidence details');
  const institutionalTile=glanceTiles.find(tile=>tile.includes('id="glance-institutional-title"'));
  assert.equal((institutionalTile.match(/href="data\/institutional-demand.json"/g)||[]).length,1,'Same source and research download must not duplicate links');
  assert(rendered['thesis.html'].includes('Observed economics'));

@@ -15,6 +15,14 @@
       "file": "02_european_units_observations.sql",
       "result": "units-result.json",
       "localSourceSha256": "3571f94a9b8d6693b40ff7804fe4b105321c63cc3681ba315f53a56c7c629a0e"
+    },
+    {
+      "id": "investment-flows",
+      "query": "9122363",
+      "visualization": "13174166",
+      "file": "03_nrr_cumulative_reported_flows.sql",
+      "result": "flow-result.json",
+      "localSourceSha256": "0ee4dfd50f336e3505cfd57a6e89b958adcb1eb655d32b5b69cc4c7a6346a211"
     }
   ]
 }

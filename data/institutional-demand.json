@@ -204,7 +204,7 @@
     "Finalized RPC block equality and delegation inclusion",
     "Pure accounting edge cases"
   ],
-  "retrievedAt": "2026-11-13T05:53:15.299Z",
+  "retrievedAt": "2026-11-13T10:36:13.408Z",
   "charts": [
     {
       "id": "investment-holdings",
@@ -215,8 +215,48 @@
       "id": "investment-units",
       "query": "9121081",
       "visualization": "13172860"
+    },
+    {
+      "id": "investment-flows",
+      "query": "9122363",
+      "visualization": "13174166"
     }
   ],
+  "flowSummary": {
+    "start": "2026-09-29",
+    "end": "2026-11-12",
+    "sessions": 33,
+    "cumulativeNetFlowUsd": 79096000,
+    "grossInflowsUsd": 92210000,
+    "grossOutflowsUsd": -13114000,
+    "positiveSessions": 17,
+    "negativeSessions": 5,
+    "reportedZeroSessions": 11,
+    "peakCumulativeUsd": 89671000,
+    "peakDate": "2026-10-26",
+    "changeSincePeakUsd": -10575000,
+    "firstThreeSessionNetFlowUsd": 58109000,
+    "firstThreeSessionsShareOfLatestCumulativePct": 73.46642055224032,
+    "sourceUrl": "https://cryptoetf.today/en/etf/nrr-etf-price",
+    "sourceLabel": "cryptoetf.today",
+    "sourceClass": "Secondary-provider reported net creations/redemptions; not a primary-issuer daily share census.",
+    "coverage": "Reported net creations/redemptions, USD; 33 published sessions, 29 Sep–12 Nov 2026. Archived attributed chart excerpt, not live data, institutional investor identity, AUM or token-holdings change.",
+    "precision": "US dollar millions in public chart payload, converted to USD without adding precision.",
+    "validation": {
+      "primaryNavDates": 32,
+      "publicArchiveShareAnchors": 20,
+      "directConsecutiveArchiveShareChecks": 18,
+      "interpretation": "Reported flow implies integer 10,000-share basket changes within published NAV and flow rounding; inferred changes reconcile every available archive share anchor and latest primary issuer shares. This consistency check does not independently verify each intermediate daily share record or transaction cash timing."
+    },
+    "limitations": [
+      "Provider chart values have 0.001 USD million granularity; cumulative values sum the excerpt and can differ from an unrounded provider total.",
+      "T+1 reporting and revisions are controlled by the provider; no automatic refresh configured here.",
+      "Neither product investor identity nor unhedged institutional demand is identified.",
+      "The separate NEAR everywhere archive misses several sessions; its adjacent-record endpoint pricing is not used to backfill daily flows."
+    ],
+    "licenseScope": "Terms section 6 permits small attributed chart/table excerpts. Dataset/feed redistribution is restricted. Use this bounded single-fund excerpt only for the attributed chart; do not publish the full page payload or offer a provider-data API/export.",
+    "candidateSha256": "38608a64867863d6f19dad82cdef868816b9941a80d0664048a6b33eda1c96fd"
+  },
   "duneExecution": [
     {
       "id": "investment-holdings",
@@ -307,8 +347,15 @@
       "retrievedAt": "2026-11-13T05:53:15.299Z",
       "resultSha256": "a9305fba5bc69106d097a2c9d376dffdec2daf0d520b5b92294821ee0d0c85e1",
       "sqlSha256": "3571f94a9b8d6693b40ff7804fe4b105321c63cc3681ba315f53a56c7c629a0e"
+    },
+    {
+      "id": "investment-flows",
+      "observations": 33,
+      "retrievedAt": "2026-11-13T10:36:13.408Z",
+      "resultSha256": "1f354b739ac98b08c67ef6354dbf6785a91f5f159f1fc13e68931f48bdffcf96",
+      "sqlSha256": "0ee4dfd50f336e3505cfd57a6e89b958adcb1eb655d32b5b69cc4c7a6346a211"
     }
   ],
-  "refreshPolicy": "Archived source observations, executed on Dune and reconciled before publication. Rerunning SQL does not ingest new issuer data. Embedded chart filters do not refresh these insights.",
+  "refreshPolicy": "Archived source observations, executed on Dune and reconciled before publication. Rerunning SQL does not ingest new issuer or provider data. Embedded chart filters do not refresh these insights.",
   "researchSourceSha256": "04a666b4c088333128c67c1f0f2f7c009d2ae25d94346e2ba82253d4c4260865"
 }

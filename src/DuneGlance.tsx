@@ -41,7 +41,7 @@ export const glanceCharts=[
   {id:'ir-channels',title:'Fees by distribution channel',tab:'Channels',query:'9080255',visualization:'13129759',description:'All-time fees by referral label, in USD. A different window from the volume mixes.'}
 ];
 export const glanceGroups=[
-  {id:'institutional',title:'Capital through investment products',chartIds:['investment-holdings','investment-units']},
+  {id:'institutional',title:'Capital through investment products',chartIds:['investment-holdings','investment-units','investment-flows']},
   {id:'fee-productivity',title:'What volume earns',chartIds:['fee-productivity']},
   {id:'public-participation',title:'Who signs public intents',chartIds:['public-participation']},
   {id:'public-pairs',title:'The public asset mix',chartIds:['public-pairs']},
@@ -147,7 +147,7 @@ export default function DuneGlance({insights=glanceInsights,economics=true}:{ins
         <div className="glance-chart" id={'glance-'+group.id+'-chart'}>
           <iframe key={chart.id} title={chart.title+' — Dune visualization'} src={`https://dune.com/embeds/${chart.query}/${chart.visualization}`} loading="lazy" referrerPolicy="no-referrer"/>
         </div>
-        {insight&&<blockquote className="glance-takeaway">{metricTakeaway(chart.id,insight)}</blockquote>}
+        {insight&&<blockquote className="glance-takeaway">{metricTakeaway(chart.id,insight)}{insight.attribution&&<footer className="glance-scorecard-foot">Source: <a href={insight.attribution.url} rel="noreferrer">{insight.attribution.label}</a></footer>}</blockquote>}
         <footer className="glance-footer">{insight&&<details><summary>Evidence & calculation</summary><p>{insight.date}</p><p>{chart.description} {insight.limitation}</p><p>{insight.calculation.method}</p><a href={insight.source} rel="noreferrer">Source</a>{insight.snapshot&&<a href={insight.snapshot} download>Download source snapshot</a>}{insight.research&&insight.research!==insight.snapshot&&<a href={insight.research} download>Download research & validation</a>}<a href="data/glance-insights.json" download>Download calculations</a><a href="data/glance-coverage.json" download>Download expanded findings</a></details>}<a className="glance-query" href={query} rel="noreferrer" aria-label={'View '+chart.title+' query on Dune'}>View query on Dune</a></footer>
       </article>;
     })}</div>

@@ -1,0 +1,667 @@
+{
+  "version": "nrr-reported-flow-excerpt-v1",
+  "source": "https://cryptoetf.today/en/etf/nrr-etf-price",
+  "sourceClass": "Secondary-provider reported net creations/redemptions; not a primary-issuer daily share census.",
+  "sourceUnits": "US dollar millions in public chart payload, converted to USD without adding precision.",
+  "attribution": "Source: cryptoetf.today",
+  "rows": [
+    {
+      "day": "2026-09-29",
+      "reportedNetFlowUsd": 35987000.0,
+      "cumulativeReportedNetFlowUsd": 35987000.0
+    },
+    {
+      "day": "2026-09-30",
+      "reportedNetFlowUsd": 14039000.0,
+      "cumulativeReportedNetFlowUsd": 50026000.0
+    },
+    {
+      "day": "2026-10-01",
+      "reportedNetFlowUsd": 8083000.0,
+      "cumulativeReportedNetFlowUsd": 58109000.0
+    },
+    {
+      "day": "2026-10-02",
+      "reportedNetFlowUsd": 242000.0,
+      "cumulativeReportedNetFlowUsd": 58351000.0
+    },
+    {
+      "day": "2026-10-05",
+      "reportedNetFlowUsd": 540000.0,
+      "cumulativeReportedNetFlowUsd": 58891000.0
+    },
+    {
+      "day": "2026-10-06",
+      "reportedNetFlowUsd": 0.0,
+      "cumulativeReportedNetFlowUsd": 58891000.0
+    },
+    {
+      "day": "2026-10-07",
+      "reportedNetFlowUsd": 3339000.0,
+      "cumulativeReportedNetFlowUsd": 62230000.0
+    },
+    {
+      "day": "2026-10-08",
+      "reportedNetFlowUsd": 4038000.0,
+      "cumulativeReportedNetFlowUsd": 66268000.0
+    },
+    {
+      "day": "2026-10-09",
+      "reportedNetFlowUsd": 5131000.0,
+      "cumulativeReportedNetFlowUsd": 71399000.0
+    },
+    {
+      "day": "2026-10-12",
+      "reportedNetFlowUsd": 3985000.0,
+      "cumulativeReportedNetFlowUsd": 75384000.0
+    },
+    {
+      "day": "2026-10-13",
+      "reportedNetFlowUsd": 3933000.0,
+      "cumulativeReportedNetFlowUsd": 79317000.0
+    },
+    {
+      "day": "2026-10-14",
+      "reportedNetFlowUsd": 0.0,
+      "cumulativeReportedNetFlowUsd": 79317000.0
+    },
+    {
+      "day": "2026-10-15",
+      "reportedNetFlowUsd": 1126000.0,
+      "cumulativeReportedNetFlowUsd": 80443000.0
+    },
+    {
+      "day": "2026-10-16",
+      "reportedNetFlowUsd": 2606000.0,
+      "cumulativeReportedNetFlowUsd": 83049000.0
+    },
+    {
+      "day": "2026-10-19",
+      "reportedNetFlowUsd": 5419000.0,
+      "cumulativeReportedNetFlowUsd": 88468000.0
+    },
+    {
+      "day": "2026-10-20",
+      "reportedNetFlowUsd": -2539000.0,
+      "cumulativeReportedNetFlowUsd": 85929000.0
+    },
+    {
+      "day": "2026-10-21",
+      "reportedNetFlowUsd": 831000.0,
+      "cumulativeReportedNetFlowUsd": 86760000.0
+    },
+    {
+      "day": "2026-10-22",
+      "reportedNetFlowUsd": 513000.0,
+      "cumulativeReportedNetFlowUsd": 87273000.0
+    },
+    {
+      "day": "2026-10-23",
+      "reportedNetFlowUsd": 993000.0,
+      "cumulativeReportedNetFlowUsd": 88266000.0
+    },
+    {
+      "day": "2026-10-26",
+      "reportedNetFlowUsd": 1405000.0,
+      "cumulativeReportedNetFlowUsd": 89671000.0
+    },
+    {
+      "day": "2026-10-27",
+      "reportedNetFlowUsd": -4839000.0,
+      "cumulativeReportedNetFlowUsd": 84832000.0
+    },
+    {
+      "day": "2026-10-28",
+      "reportedNetFlowUsd": 0.0,
+      "cumulativeReportedNetFlowUsd": 84832000.0
+    },
+    {
+      "day": "2026-10-29",
+      "reportedNetFlowUsd": 0.0,
+      "cumulativeReportedNetFlowUsd": 84832000.0
+    },
+    {
+      "day": "2026-10-30",
+      "reportedNetFlowUsd": 0.0,
+      "cumulativeReportedNetFlowUsd": 84832000.0
+    },
+    {
+      "day": "2026-11-02",
+      "reportedNetFlowUsd": 0.0,
+      "cumulativeReportedNetFlowUsd": 84832000.0
+    },
+    {
+      "day": "2026-11-03",
+      "reportedNetFlowUsd": -3604000.0,
+      "cumulativeReportedNetFlowUsd": 81228000.0
+    },
+    {
+      "day": "2026-11-04",
+      "reportedNetFlowUsd": 0.0,
+      "cumulativeReportedNetFlowUsd": 81228000.0
+    },
+    {
+      "day": "2026-11-05",
+      "reportedNetFlowUsd": -774000.0,
+      "cumulativeReportedNetFlowUsd": 80454000.0
+    },
+    {
+      "day": "2026-11-06",
+      "reportedNetFlowUsd": 0.0,
+      "cumulativeReportedNetFlowUsd": 80454000.0
+    },
+    {
+      "day": "2026-11-09",
+      "reportedNetFlowUsd": 0.0,
+      "cumulativeReportedNetFlowUsd": 80454000.0
+    },
+    {
+      "day": "2026-11-10",
+      "reportedNetFlowUsd": 0.0,
+      "cumulativeReportedNetFlowUsd": 80454000.0
+    },
+    {
+      "day": "2026-11-11",
+      "reportedNetFlowUsd": -1358000.0,
+      "cumulativeReportedNetFlowUsd": 79096000.0
+    },
+    {
+      "day": "2026-11-12",
+      "reportedNetFlowUsd": 0.0,
+      "cumulativeReportedNetFlowUsd": 79096000.0
+    }
+  ],
+  "summary": {
+    "start": "2026-09-29",
+    "end": "2026-11-12",
+    "sessions": 33,
+    "cumulativeNetFlowUsd": 79096000.0,
+    "grossInflowsUsd": 92210000.0,
+    "grossOutflowsUsd": -13114000.0,
+    "positiveSessions": 17,
+    "negativeSessions": 5,
+    "reportedZeroSessions": 11,
+    "peakCumulativeUsd": 89671000.0,
+    "peakDate": "2026-10-26",
+    "changeSincePeakUsd": -10575000.0,
+    "firstThreeSessionNetFlowUsd": 58109000.0,
+    "firstThreeSessionsShareOfLatestCumulativePct": 73.46642055224032
+  },
+  "validation": {
+    "primaryNavDates": 32,
+    "publicArchiveShareAnchors": 20,
+    "shareAnchorDates": [
+      "2026-09-29",
+      "2026-09-30",
+      "2026-10-01",
+      "2026-10-02",
+      "2026-10-05",
+      "2026-10-06",
+      "2026-10-07",
+      "2026-10-08",
+      "2026-10-09",
+      "2026-10-12",
+      "2026-10-13",
+      "2026-10-14",
+      "2026-10-15",
+      "2026-10-16",
+      "2026-10-19",
+      "2026-10-20",
+      "2026-10-21",
+      "2026-10-23",
+      "2026-10-26",
+      "2026-10-30"
+    ],
+    "latestIssuerShares": 2930000,
+    "inferredShareDiagnostic": [
+      {
+        "date": "2026-09-29",
+        "inferredNetBasketShares": 1360000,
+        "primaryNav": 26.46,
+        "residualUsd": 1400.0,
+        "roundingToleranceUsd": 7300.0
+      },
+      {
+        "date": "2026-09-30",
+        "inferredNetBasketShares": 500000,
+        "primaryNav": 28.08,
+        "residualUsd": -1000.0,
+        "roundingToleranceUsd": 3000.0
+      },
+      {
+        "date": "2026-10-01",
+        "inferredNetBasketShares": 320000,
+        "primaryNav": 25.26,
+        "residualUsd": -200.0,
+        "roundingToleranceUsd": 2100.0
+      },
+      {
+        "date": "2026-10-02",
+        "inferredNetBasketShares": 10000,
+        "primaryNav": 24.16,
+        "residualUsd": 400.0,
+        "roundingToleranceUsd": 550.0
+      },
+      {
+        "date": "2026-10-05",
+        "inferredNetBasketShares": 20000,
+        "primaryNav": 26.98,
+        "residualUsd": 400.0,
+        "roundingToleranceUsd": 600.0
+      },
+      {
+        "date": "2026-10-06",
+        "inferredNetBasketShares": 0,
+        "primaryNav": 26.47,
+        "residualUsd": 0.0,
+        "roundingToleranceUsd": 500.0
+      },
+      {
+        "date": "2026-10-07",
+        "inferredNetBasketShares": 120000,
+        "primaryNav": 27.829999999999995,
+        "residualUsd": -599.9999999994,
+        "roundingToleranceUsd": 1100.0
+      },
+      {
+        "date": "2026-10-08",
+        "inferredNetBasketShares": 170000,
+        "primaryNav": 23.749999999999996,
+        "residualUsd": 500.00000000068,
+        "roundingToleranceUsd": 1350.0
+      },
+      {
+        "date": "2026-10-09",
+        "inferredNetBasketShares": 210000,
+        "primaryNav": 24.429999999999996,
+        "residualUsd": 700.00000000084,
+        "roundingToleranceUsd": 1550.0
+      },
+      {
+        "date": "2026-10-12",
+        "inferredNetBasketShares": 140000,
+        "primaryNav": 28.459999999999997,
+        "residualUsd": 600.00000000042,
+        "roundingToleranceUsd": 1200.0
+      },
+      {
+        "date": "2026-10-13",
+        "inferredNetBasketShares": 150000,
+        "primaryNav": 26.219999999999995,
+        "residualUsd": 7.5e-10,
+        "roundingToleranceUsd": 1250.0
+      },
+      {
+        "date": "2026-10-14",
+        "inferredNetBasketShares": 0,
+        "primaryNav": 24.959999999999997,
+        "residualUsd": 0.0,
+        "roundingToleranceUsd": 500.0
+      },
+      {
+        "date": "2026-10-15",
+        "inferredNetBasketShares": 40000,
+        "primaryNav": 28.14999999999999,
+        "residualUsd": 4e-10,
+        "roundingToleranceUsd": 700.0
+      },
+      {
+        "date": "2026-10-16",
+        "inferredNetBasketShares": 100000,
+        "primaryNav": 26.05999999999999,
+        "residualUsd": 1e-09,
+        "roundingToleranceUsd": 1000.0
+      },
+      {
+        "date": "2026-10-19",
+        "inferredNetBasketShares": 210000,
+        "primaryNav": 25.799999999999994,
+        "residualUsd": 1000.00000000126,
+        "roundingToleranceUsd": 1550.0
+      },
+      {
+        "date": "2026-10-20",
+        "inferredNetBasketShares": -100000,
+        "primaryNav": 25.389999999999993,
+        "residualUsd": -7e-10,
+        "roundingToleranceUsd": 1000.0
+      },
+      {
+        "date": "2026-10-21",
+        "inferredNetBasketShares": 30000,
+        "primaryNav": 27.689999999999994,
+        "residualUsd": 300.00000000018,
+        "roundingToleranceUsd": 650.0
+      },
+      {
+        "date": "2026-10-22",
+        "inferredNetBasketShares": 20000,
+        "primaryNav": 25.64999999999999,
+        "residualUsd": 2e-10,
+        "roundingToleranceUsd": 600.0
+      },
+      {
+        "date": "2026-10-23",
+        "inferredNetBasketShares": 40000,
+        "primaryNav": 24.819999999999993,
+        "residualUsd": 200.00000000028,
+        "roundingToleranceUsd": 700.0
+      },
+      {
+        "date": "2026-10-26",
+        "inferredNetBasketShares": 60000,
+        "primaryNav": 23.409999999999993,
+        "residualUsd": 400.00000000042,
+        "roundingToleranceUsd": 800.0
+      },
+      {
+        "date": "2026-10-27",
+        "inferredNetBasketShares": -200000,
+        "primaryNav": 24.199999999999992,
+        "residualUsd": 999.9999999984,
+        "roundingToleranceUsd": 1500.0
+      },
+      {
+        "date": "2026-10-28",
+        "inferredNetBasketShares": 0,
+        "primaryNav": 24.619999999999994,
+        "residualUsd": 0.0,
+        "roundingToleranceUsd": 500.0
+      },
+      {
+        "date": "2026-10-29",
+        "inferredNetBasketShares": 0,
+        "primaryNav": 22.999999999999993,
+        "residualUsd": 0.0,
+        "roundingToleranceUsd": 500.0
+      },
+      {
+        "date": "2026-10-30",
+        "inferredNetBasketShares": 0,
+        "primaryNav": 22.419999999999995,
+        "residualUsd": 0.0,
+        "roundingToleranceUsd": 500.0
+      },
+      {
+        "date": "2026-11-02",
+        "inferredNetBasketShares": 0,
+        "primaryNav": 20.379999999999992,
+        "residualUsd": 0.0,
+        "roundingToleranceUsd": 500.0
+      },
+      {
+        "date": "2026-11-03",
+        "inferredNetBasketShares": -180000,
+        "primaryNav": 20.019999999999992,
+        "residualUsd": -400.00000000144,
+        "roundingToleranceUsd": 1400.0
+      },
+      {
+        "date": "2026-11-04",
+        "inferredNetBasketShares": 0,
+        "primaryNav": 20.969999999999988,
+        "residualUsd": 0.0,
+        "roundingToleranceUsd": 500.0
+      },
+      {
+        "date": "2026-11-05",
+        "inferredNetBasketShares": -40000,
+        "primaryNav": 19.34999999999999,
+        "residualUsd": -4e-10,
+        "roundingToleranceUsd": 700.0
+      },
+      {
+        "date": "2026-11-06",
+        "inferredNetBasketShares": 0,
+        "primaryNav": 19.399999999999988,
+        "residualUsd": 0.0,
+        "roundingToleranceUsd": 500.0
+      },
+      {
+        "date": "2026-11-09",
+        "inferredNetBasketShares": 0,
+        "primaryNav": 18.97999999999999,
+        "residualUsd": 0.0,
+        "roundingToleranceUsd": 500.0
+      },
+      {
+        "date": "2026-11-10",
+        "inferredNetBasketShares": 0,
+        "primaryNav": 18.61999999999999,
+        "residualUsd": 0.0,
+        "roundingToleranceUsd": 500.0
+      },
+      {
+        "date": "2026-11-11",
+        "inferredNetBasketShares": -70000,
+        "primaryNav": 19.399999999999988,
+        "residualUsd": -8.4e-10,
+        "roundingToleranceUsd": 850.0
+      }
+    ],
+    "directConsecutiveArchiveShareChecks": [
+      {
+        "date": "2026-09-29",
+        "observedArchiveShareChange": 1360000,
+        "primaryNav": 26.46,
+        "reportedFlowUsd": 35987000.0,
+        "recomputedFlowUsd": 35985600.0,
+        "residualUsd": 1400.0,
+        "roundingToleranceUsd": 7300.0,
+        "priorSessionNavResidualUsd": null
+      },
+      {
+        "date": "2026-09-30",
+        "observedArchiveShareChange": 500000,
+        "primaryNav": 28.08,
+        "reportedFlowUsd": 14039000.0,
+        "recomputedFlowUsd": 14040000.0,
+        "residualUsd": -1000.0,
+        "roundingToleranceUsd": 3000.0,
+        "priorSessionNavResidualUsd": 809000.0
+      },
+      {
+        "date": "2026-10-01",
+        "observedArchiveShareChange": 320000,
+        "primaryNav": 25.26,
+        "reportedFlowUsd": 8083000.0,
+        "recomputedFlowUsd": 8083200.0,
+        "residualUsd": -200.0,
+        "roundingToleranceUsd": 2100.0,
+        "priorSessionNavResidualUsd": -902600.0
+      },
+      {
+        "date": "2026-10-02",
+        "observedArchiveShareChange": 10000,
+        "primaryNav": 24.16,
+        "reportedFlowUsd": 242000.0,
+        "recomputedFlowUsd": 241600.0,
+        "residualUsd": 400.0,
+        "roundingToleranceUsd": 550.0,
+        "priorSessionNavResidualUsd": -10600.0
+      },
+      {
+        "date": "2026-10-05",
+        "observedArchiveShareChange": 20000,
+        "primaryNav": 26.98,
+        "reportedFlowUsd": 540000.0,
+        "recomputedFlowUsd": 539600.0,
+        "residualUsd": 400.0,
+        "roundingToleranceUsd": 600.0,
+        "priorSessionNavResidualUsd": 56800.0
+      },
+      {
+        "date": "2026-10-06",
+        "observedArchiveShareChange": 0,
+        "primaryNav": 26.47,
+        "reportedFlowUsd": 0.0,
+        "recomputedFlowUsd": 0.0,
+        "residualUsd": 0.0,
+        "roundingToleranceUsd": 500.0,
+        "priorSessionNavResidualUsd": 0.0
+      },
+      {
+        "date": "2026-10-07",
+        "observedArchiveShareChange": 120000,
+        "primaryNav": 27.829999999999995,
+        "reportedFlowUsd": 3339000.0,
+        "recomputedFlowUsd": 3339599.9999999995,
+        "residualUsd": -599.9999999994,
+        "roundingToleranceUsd": 1100.0,
+        "priorSessionNavResidualUsd": 162600.0
+      },
+      {
+        "date": "2026-10-08",
+        "observedArchiveShareChange": 170000,
+        "primaryNav": 23.749999999999996,
+        "reportedFlowUsd": 4038000.0,
+        "recomputedFlowUsd": 4037499.9999999995,
+        "residualUsd": 500.00000000068,
+        "roundingToleranceUsd": 1350.0,
+        "priorSessionNavResidualUsd": -693099.9999999992
+      },
+      {
+        "date": "2026-10-09",
+        "observedArchiveShareChange": 210000,
+        "primaryNav": 24.429999999999996,
+        "reportedFlowUsd": 5131000.0,
+        "recomputedFlowUsd": 5130299.999999999,
+        "residualUsd": 700.00000000084,
+        "roundingToleranceUsd": 1550.0,
+        "priorSessionNavResidualUsd": 143500.00000000084
+      },
+      {
+        "date": "2026-10-12",
+        "observedArchiveShareChange": 140000,
+        "primaryNav": 28.459999999999997,
+        "reportedFlowUsd": 3985000.0,
+        "recomputedFlowUsd": 3984399.9999999995,
+        "residualUsd": 600.00000000042,
+        "roundingToleranceUsd": 1200.0,
+        "priorSessionNavResidualUsd": 564800.0000000006
+      },
+      {
+        "date": "2026-10-13",
+        "observedArchiveShareChange": 150000,
+        "primaryNav": 26.219999999999995,
+        "reportedFlowUsd": 3933000.0,
+        "recomputedFlowUsd": 3932999.999999999,
+        "residualUsd": 7.5e-10,
+        "roundingToleranceUsd": 1250.0,
+        "priorSessionNavResidualUsd": -335999.99999999953
+      },
+      {
+        "date": "2026-10-14",
+        "observedArchiveShareChange": 0,
+        "primaryNav": 24.959999999999997,
+        "reportedFlowUsd": 0.0,
+        "recomputedFlowUsd": 0.0,
+        "residualUsd": 0.0,
+        "roundingToleranceUsd": 500.0,
+        "priorSessionNavResidualUsd": 0.0
+      },
+      {
+        "date": "2026-10-15",
+        "observedArchiveShareChange": 40000,
+        "primaryNav": 28.14999999999999,
+        "reportedFlowUsd": 1126000.0,
+        "recomputedFlowUsd": 1125999.9999999995,
+        "residualUsd": 4e-10,
+        "roundingToleranceUsd": 700.0,
+        "priorSessionNavResidualUsd": 127600.00000000012
+      },
+      {
+        "date": "2026-10-16",
+        "observedArchiveShareChange": 100000,
+        "primaryNav": 26.05999999999999,
+        "reportedFlowUsd": 2606000.0,
+        "recomputedFlowUsd": 2605999.999999999,
+        "residualUsd": 1e-09,
+        "roundingToleranceUsd": 1000.0,
+        "priorSessionNavResidualUsd": -208999.999999999
+      },
+      {
+        "date": "2026-10-19",
+        "observedArchiveShareChange": 210000,
+        "primaryNav": 25.799999999999994,
+        "reportedFlowUsd": 5419000.0,
+        "recomputedFlowUsd": 5417999.999999999,
+        "residualUsd": 1000.00000000126,
+        "roundingToleranceUsd": 1550.0,
+        "priorSessionNavResidualUsd": -53599.9999999979
+      },
+      {
+        "date": "2026-10-20",
+        "observedArchiveShareChange": -100000,
+        "primaryNav": 25.389999999999993,
+        "reportedFlowUsd": -2539000.0,
+        "recomputedFlowUsd": -2538999.999999999,
+        "residualUsd": -7e-10,
+        "roundingToleranceUsd": 1000.0,
+        "priorSessionNavResidualUsd": 40999.9999999994
+      },
+      {
+        "date": "2026-10-21",
+        "observedArchiveShareChange": 30000,
+        "primaryNav": 27.689999999999994,
+        "reportedFlowUsd": 831000.0,
+        "recomputedFlowUsd": 830699.9999999998,
+        "residualUsd": 300.00000000018,
+        "roundingToleranceUsd": 650.0,
+        "priorSessionNavResidualUsd": 69300.0000000002
+      },
+      {
+        "date": "2026-10-26",
+        "observedArchiveShareChange": 60000,
+        "primaryNav": 23.409999999999993,
+        "reportedFlowUsd": 1405000.0,
+        "recomputedFlowUsd": 1404599.9999999995,
+        "residualUsd": 400.00000000042,
+        "roundingToleranceUsd": 800.0,
+        "priorSessionNavResidualUsd": -84199.99999999958
+      }
+    ],
+    "interpretation": "Reported flow implies integer 10,000-share basket changes within published NAV and flow rounding; inferred changes reconcile every available archive share anchor and latest primary issuer shares. This consistency check does not independently verify each intermediate daily share record or transaction cash timing."
+  },
+  "limitations": [
+    "Provider chart values have 0.001 USD million granularity; cumulative values sum the excerpt and can differ from an unrounded provider total.",
+    "T+1 reporting and revisions are controlled by the provider; no automatic refresh configured here.",
+    "Neither product investor identity nor unhedged institutional demand is identified.",
+    "The separate NEAR everywhere archive misses several sessions; its adjacent-record endpoint pricing is not used to backfill daily flows."
+  ],
+  "licenseReview": {
+    "terms": "https://cryptoetf.today/en/terms",
+    "method": "https://cryptoetf.today/en/methodology",
+    "scope": "Terms section 6 permits small attributed chart/table excerpts. Dataset/feed redistribution is restricted. Use this bounded single-fund excerpt only for the attributed chart; do not publish the full page payload or offer a provider-data API/export."
+  },
+  "inputHashes": [
+    {
+      "file": "cryptoetf-nrr.html",
+      "sha256": "035770e6e8741c3c9723e6455316fc64f1426d48e45954bdac99e47e478a7af8"
+    },
+    {
+      "file": "cryptoetf-terms.html",
+      "sha256": "87d8ef1f84f927004004311ba6b7d974cf13e0a29445e568a9a09bfc298a8a62"
+    },
+    {
+      "file": "cryptoetf-methodology.html",
+      "sha256": "baa6687dc61a5d67fcb68ce895c36e246bbfffc649d3dce0a26f74d59ac41949"
+    },
+    {
+      "file": "cryptoetf-crypto-etf-flow-data.html",
+      "sha256": "e08ad86bbd2a7ad0fe9dfc4cb586f6e1a10782310f76cdd8fe7b219ab5978820"
+    },
+    {
+      "file": "nrr-page.html",
+      "sha256": "9b5f7084087f6a0ad9d058e81baa39189a04326fcdad43db67b01ed6070bbeff"
+    },
+    {
+      "file": "wallstreet-data.js",
+      "sha256": "7263f310c45ecd5b293f05f9d127340b456d2490555ea279084396cfe92ab83f"
+    },
+    {
+      "file": "build-flow-excerpt.py",
+      "sha256": "13b20b06febe640c4bd6082435115f1e1e7c7f9a648f09e11534dfeb76539456"
+    }
+  ]
+}
