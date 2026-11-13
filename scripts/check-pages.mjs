@@ -19,6 +19,8 @@ try{
  assert(!rendered['lab.html'].includes('What would $400–$500 require?'));
  assert(rendered['lab.html'].includes('calibrated upside hypothesis'),'Maximum calibration must be explicit');
  assert(!rendered['lab.html'].includes('Mock data'));
+ assert(!rendered['lab.html'].match(/<footer[\s\S]*Sources &amp; methodology/),'Lab footer must not retain methodology link');
+ for(const label of ['The economics behind the price.','Selected-case variables and evidence status','30D / 90D operating cross-check','Maximum reference at','https://arxiv.org/abs/2403.04914','https://docs.near-intents.org/resources/fees'])assert(rendered['lab.html'].includes(label),'Visible valuation framework missing '+label);
  assert(rendered['lab.html'].includes('2026-11-10')&&rendered['lab.html'].includes('224353535'),'Lab evidence cutoffs must be visible');
  const {default:CaseLab}=await server.ssrLoadModule('/src/lab/LabExperience.tsx');
  const {STARTING:caseStarting,VAL_DEFAULTS:caseDefaults,heatColors}=await server.ssrLoadModule('/src/lab/ValuationPanel.tsx');
@@ -37,6 +39,14 @@ try{
    const hero=html.match(/<section class="lab-hero"[\s\S]*?<\/section>/)?.[0];
    const summary=html.match(/<section id="lab"[\s\S]*?<\/section>/)?.[0];
    const lower=html.match(/<section class="lab-models lab-transmission"[\s\S]*?<\/section>/)?.[0];
+   const framework=html.match(/<section class="lab-models lab-framework"[\s\S]*?<\/section>/)?.[0];
+   assert(framework&&framework.includes(casePrice(t.futurePriceUsd))&&framework.includes(casePrice(t.presentPriceUsd)),'Visible equations follow selected valuation');
+   assert(!framework.includes('lab-card-meta'),'Framework must not restore redundant upper labels');
+   assert(framework.includes('lab-accrual-map')&&framework.includes('Combined annual REV'),'Connected calculation map must render');
+   const years=(Date.parse(input.exitDate)-Date.parse(caseStarting.asOf))/86400000/365,volume=caseStarting.annualVolumeUsd*(1+input.growthPct/100)**(12*years),fee=input.grossBps*Math.max(volume/caseStarting.annualVolumeUsd,1)**-input.compression;
+   const execution=volume*fee/10000*input.capturePct/100*(1-input.costPct/100),institution=input.institutionalVolumeAnnualUsd*input.institutionalFeeBps/10000*input.institutionalCapturePct/100*(1-input.costPct/100),ai=input.aiRevenueAnnualUsd*input.aiMarginPct/100*input.aiTokenLinkPct/100,supply=caseStarting.supplyNear*(1+input.issuancePct/100)**years;
+   const reconstructed=(execution+institution+ai)*input.multiple/supply;
+   caseClose(t.futurePriceUsd,reconstructed);caseClose(t.presentPriceUsd,reconstructed/(1+input.discountPct/100)**years);
    assert(hero&&summary&&lower,'One hero, selected-case summary and transmission section required');
    for(const section of [hero,summary]){assert(section.includes(caseMoney(t.totalUsd)),'Selected case REV must propagate');assert(section.includes(casePrice(t.futurePriceUsd)),'Selected price must propagate');}
    assert(hero.includes(`${input.multiple}×`));

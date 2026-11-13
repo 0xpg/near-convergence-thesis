@@ -3,6 +3,7 @@ import baseline from '../../data/lab-baseline.json' with {type:'json'};
 import ValuationPanel,{STARTING,VAL_DEFAULTS} from './ValuationPanel.tsx';
 import {MODEL_VERSION,cleanValuation,runValuation,buildValuationCases,type ValuationInputs} from './valuation.ts';
 import Transmission,{CaseSlider,transmissionMetrics} from './Transmission.tsx';
+import ValuationFramework from './ValuationFramework.tsx';
 import {startScenarioField} from './scenario-field.ts';
 import {startTypeDither} from '../overview/type-dither.ts';
 const money=(n:number)=>new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',notation:'compact',maximumFractionDigits:1}).format(n);
@@ -28,6 +29,7 @@ export default function LabExperience(){
    <dl className="lab-hero-stats"><div><dt>Capturable REV at exit</dt><dd>{money(t.totalUsd)}</dd></div><div><dt>Token value at exit</dt><dd>{price(t.futurePriceUsd)}</dd></div><div><dt>Exit REV multiple</dt><dd>{valuation.multiple}×</dd></div></dl>
   </div><figure className="lab-hero-field"><canvas ref={field} aria-hidden="true"/></figure></section>
   <ValuationPanel inputs={valuation} onChange={setValuation}/>
+  <ValuationFramework inputs={valuation} result={result} starting={STARTING}/>
   <section id="lab" className="lab-console lab-case-console" aria-label="Selected case controls">
    <div className="lab-console-controls"><div className="lab-presets" role="group" aria-label="Transmission cases">{cases.map(c=><button key={c.id} type="button" aria-pressed={selected?.id===c.id} onClick={()=>setValuation({...c.inputs})}>{c.label}</button>)}</div>
     <div className="lab-console-sliders">{(['growthPct','capturePct','aiTokenLinkPct','multiple'] as const).map(name=><CaseSlider key={name} name={name} inputs={valuation} onChange={setValuation}/>)}</div>

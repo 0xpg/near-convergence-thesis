@@ -36,6 +36,7 @@ export default function ValuationPanel({inputs,onChange}:{inputs:ValuationInputs
   multiples.forEach((m,j)=>{text(pen,`${m}x`,0,top+(j+.5)*ch+4,{size:10});cells[j].forEach((v,i)=>{
    const x=left+i*cw,y=top+j*ch,t=max>min?(v-min)/(max-min):0,colors=heatColors(t),gradient=pen.createLinearGradient(x,y,x+cw,y+ch);
    gradient.addColorStop(0,colors.light);gradient.addColorStop(1,colors.dark);pen.fillStyle=gradient;pen.fillRect(x,y,cw-3,ch-3);
+   pen.save();pen.globalAlpha=.12;const edge=Math.min(8,ch*.14);ditherRect(pen,x+2,y+2,cw-7,edge,.3,colors.ink);ditherRect(pen,x+2,y+ch-edge-5,cw-7,edge,.3,colors.ink);pen.restore();
    text(pen,v>=1000?usd(v):price(v),x+cw/2,y+ch/2+4,{align:'center',size:10,color:colors.ink});
    if(growths[i]===inputs.growthPct&&m===inputs.multiple){pen.save();pen.strokeStyle=colors.ink;pen.lineWidth=1.5;pen.strokeRect(x+3,y+3,cw-9,ch-9);pen.restore();}
   });});
