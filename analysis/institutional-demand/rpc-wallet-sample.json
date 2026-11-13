@@ -1,0 +1,67 @@
+{
+  "source": "https://rpc.mainnet.near.org",
+  "retrievedAt": "2026-11-13T05:37:20.058444+00:00",
+  "blockHeight": 224320638,
+  "samples": [
+    {
+      "issuerRecord": {
+        "active": true,
+        "address": "2230b37461c768dba66d256f706c7da8022a3569fd92010a26a1990106ae0b51",
+        "balance": 1827321.5127399373
+      },
+      "rpc": {
+        "jsonrpc": "2.0",
+        "result": {
+          "amount": "199466087004233600000000",
+          "block_hash": "6M7JKYuZ3XJEftPDyToo2g9GTcoJ7Ue8poPm4SHqTQnc",
+          "block_height": 224320638,
+          "code_hash": "11111111111111111111111111111111",
+          "locked": "0",
+          "storage_paid_at": 0,
+          "storage_usage": 182
+        },
+        "id": "near-institutional-research"
+      }
+    },
+    {
+      "issuerRecord": {
+        "active": true,
+        "address": "f17a11905a5ee355f54d98f379cf2e25ccbee70068cfebab0df0b0ad5af72adf",
+        "balance": 1304749.0283039573
+      },
+      "rpc": {
+        "jsonrpc": "2.0",
+        "result": {
+          "amount": "199466426003438600000000",
+          "block_hash": "6M7JKYuZ3XJEftPDyToo2g9GTcoJ7Ue8poPm4SHqTQnc",
+          "block_height": 224320638,
+          "code_hash": "11111111111111111111111111111111",
+          "locked": "0",
+          "storage_paid_at": 0,
+          "storage_usage": 182
+        },
+        "id": "near-institutional-research"
+      }
+    },
+    {
+      "issuerRecord": {
+        "active": true,
+        "address": "c10bae04ffbad00ac6098464c05e1c7fa5069af8a9282099860cdd5fbd56bd26",
+        "balance": 574444.0108781797
+      },
+      "rpc": {
+        "jsonrpc": "2.0",
+        "result": {
+          "amount": "199466588758706300000000",
+          "block_hash": "6M7JKYuZ3XJEftPDyToo2g9GTcoJ7Ue8poPm4SHqTQnc",
+          "block_height": 224320638,
+          "code_hash": "11111111111111111111111111111111",
+          "locked": "0",
+          "storage_paid_at": 0,
+          "storage_usage": 182
+        },
+        "id": "near-institutional-research"
+      }
+    }
+  ]
+}

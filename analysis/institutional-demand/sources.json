@@ -1,0 +1,44 @@
+[
+  {
+    "file": "analysis/institutional-demand/nrr-page.html",
+    "url": "https://nrretf.com/",
+    "resolvedUrl": "https://nrretf.com/",
+    "retrievedAt": "2026-11-13T05:35:20.696673+00:00",
+    "contentType": "text/html; charset=utf-8",
+    "sha256": "9b5f7084087f6a0ad9d058e81baa39189a04326fcdad43db67b01ed6070bbeff"
+  },
+  {
+    "file": "analysis/institutional-demand/eu-near-page.html",
+    "url": "https://bitwiseinvestments.eu/products/bitwise-near-staking-etp/",
+    "resolvedUrl": "https://bitwiseinvestments.eu/products/bitwise-near-staking-etp/",
+    "retrievedAt": "2026-11-13T05:35:22.018813+00:00",
+    "contentType": "text/html; charset=UTF-8",
+    "sha256": "9a9450d42314627d85d52e46967efa681212838c1c7cd281fd2aab8564d2275c"
+  },
+  {
+    "file": "analysis/institutional-demand/eu-weekly-report.pdf",
+    "url": "https://bitwiseinvestments.eu/resources/weekly_balance_report/bitwise-europe-gmbh_weekly_balance_report.pdf",
+    "resolvedUrl": "https://bitwiseinvestments.eu/resources/weekly_balance_report/bitwise-europe-gmbh_weekly_balance_report.pdf",
+    "retrievedAt": "2026-11-13T05:35:23.086597+00:00",
+    "contentType": "application/pdf",
+    "sha256": "bd18acc0deb26626df01f4211f11c1651b10dd5826f0b2055e70ee276ad38cb9"
+  },
+  {
+    "file": "analysis/institutional-demand/nrr-prospectus.pdf",
+    "url": "https://s3.us-east-1.amazonaws.com/static.bitwiseinvestments.com/NRR/NRR-Bitwise-NEAR-ETF-Prospectus.pdf",
+    "retrievedAt": "2026-11-13T05:37:32.090730+00:00",
+    "sha256": "ca9a468bd6e1a1c228db609c5cbd15b69c9559b21a28b52fb82997d6a8b76710"
+  },
+  {
+    "file": "analysis/institutional-demand/sec-13f-q3.pdf",
+    "url": "https://www.sec.gov/files/investment/13flist2026q3.pdf",
+    "retrievedAt": "2026-11-13T05:39:54.169538+00:00",
+    "sha256": "7916e77881b3dbd97707120a6610abdf29a40ee707fdb2a4d9f1f2155b763ef8"
+  },
+  {
+    "file": "analysis/institutional-demand/sec-13f-faq.html",
+    "url": "https://www.sec.gov/rules-regulations/staff-guidance/frequently-asked-questions-about-form-13f",
+    "retrievedAt": "2026-11-13T05:39:54.735635+00:00",
+    "sha256": "01aa32d40db271c7435fb9113ab89b04771a4001011c9404f65f1491be59db43"
+  }
+]

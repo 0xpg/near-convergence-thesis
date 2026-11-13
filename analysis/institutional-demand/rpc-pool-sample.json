@@ -1,0 +1,187 @@
+{
+  "blockHeight": 224320638,
+  "samples": [
+    {
+      "address": "2230b37461c768dba66d256f706c7da8022a3569fd92010a26a1990106ae0b51",
+      "discovery": {
+        "account_id": "2230b37461c768dba66d256f706c7da8022a3569fd92010a26a1990106ae0b51",
+        "pools": [
+          {
+            "pool_id": "bitwise_2.poolv1.near",
+            "last_update_block_height": 219862297
+          }
+        ]
+      },
+      "checks": [
+        {
+          "pool": "bitwise_2.poolv1.near",
+          "response": {
+            "jsonrpc": "2.0",
+            "result": {
+              "block_hash": "6M7JKYuZ3XJEftPDyToo2g9GTcoJ7Ue8poPm4SHqTQnc",
+              "block_height": 224320638,
+              "logs": [],
+              "result": [
+                34,
+                49,
+                56,
+                51,
+                52,
+                54,
+                54,
+                53,
+                48,
+                57,
+                52,
+                50,
+                56,
+                53,
+                48,
+                54,
+                54,
+                55,
+                57,
+                51,
+                57,
+                54,
+                55,
+                54,
+                48,
+                51,
+                55,
+                53,
+                51,
+                55,
+                51,
+                50,
+                34
+              ]
+            },
+            "id": "pool-validation"
+          }
+        }
+      ]
+    },
+    {
+      "address": "f17a11905a5ee355f54d98f379cf2e25ccbee70068cfebab0df0b0ad5af72adf",
+      "discovery": {
+        "account_id": "f17a11905a5ee355f54d98f379cf2e25ccbee70068cfebab0df0b0ad5af72adf",
+        "pools": [
+          {
+            "pool_id": "bitwise_2.poolv1.near",
+            "last_update_block_height": 218110287
+          }
+        ]
+      },
+      "checks": [
+        {
+          "pool": "bitwise_2.poolv1.near",
+          "response": {
+            "jsonrpc": "2.0",
+            "result": {
+              "block_hash": "6M7JKYuZ3XJEftPDyToo2g9GTcoJ7Ue8poPm4SHqTQnc",
+              "block_height": 224320638,
+              "logs": [],
+              "result": [
+                34,
+                49,
+                51,
+                49,
+                50,
+                49,
+                55,
+                56,
+                52,
+                51,
+                54,
+                49,
+                51,
+                50,
+                54,
+                50,
+                53,
+                51,
+                48,
+                57,
+                57,
+                49,
+                57,
+                49,
+                51,
+                57,
+                50,
+                54,
+                57,
+                52,
+                52,
+                55,
+                34
+              ]
+            },
+            "id": "pool-validation"
+          }
+        }
+      ]
+    },
+    {
+      "address": "c10bae04ffbad00ac6098464c05e1c7fa5069af8a9282099860cdd5fbd56bd26",
+      "discovery": {
+        "account_id": "c10bae04ffbad00ac6098464c05e1c7fa5069af8a9282099860cdd5fbd56bd26",
+        "pools": [
+          {
+            "pool_id": "bitwise_2.poolv1.near",
+            "last_update_block_height": 220837913
+          }
+        ]
+      },
+      "checks": [
+        {
+          "pool": "bitwise_2.poolv1.near",
+          "response": {
+            "jsonrpc": "2.0",
+            "result": {
+              "block_hash": "6M7JKYuZ3XJEftPDyToo2g9GTcoJ7Ue8poPm4SHqTQnc",
+              "block_height": 224320638,
+              "logs": [],
+              "result": [
+                34,
+                53,
+                55,
+                54,
+                50,
+                53,
+                50,
+                50,
+                57,
+                49,
+                51,
+                50,
+                55,
+                54,
+                48,
+                48,
+                55,
+                52,
+                55,
+                50,
+                50,
+                48,
+                55,
+                51,
+                50,
+                56,
+                53,
+                51,
+                54,
+                55,
+                48,
+                34
+              ]
+            },
+            "id": "pool-validation"
+          }
+        }
+      ]
+    }
+  ]
+}

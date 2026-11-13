@@ -1,0 +1,57 @@
+{
+  "query": "https://dune.com/queries/9121073",
+  "retrievedAt": "2026-11-13T05:51:46.586Z",
+  "rows": [
+    [
+      "product_isin",
+      "product",
+      "source_date",
+      "near_held",
+      "shares_outstanding",
+      "net_assets_usd",
+      "near_basis",
+      "source_url",
+      "cutoff_note",
+      "verified_net_flow_usd",
+      "verified_institutional_ownership_pct",
+      "synchronized_business_cutoff_verified",
+      "archived_sources_retrieved_through_utc",
+      "interpretation",
+      "query_executed_utc"
+    ],
+    [
+      "US0919521015",
+      "NRR · U.S.",
+      "2026-11-12 00:00:00",
+      "15331373.48610193",
+      "2930000",
+      "52568509.81",
+      "Issuer fund holdings",
+      "https://nrretf.com/",
+      "Raw issuer date 2026-11-12; rendered holdings label 11/11/2026. NAV has another cutoff; do not infer flows.",
+      "",
+      "",
+      "false",
+      "2026-11-13 05:39:54",
+      "Product holdings are not proof of institutional beneficial ownership, new spot buying or net investor flows. Do not sum products at mismatched cutoffs.",
+      "2026-11-13 05:51:22"
+    ],
+    [
+      "DE000A4A5GV2",
+      "NEAR ETP · Europe",
+      "2026-11-13 00:00:00",
+      "13219480.53",
+      "2545252",
+      "49272573.2",
+      "Issuer entitlement-backed holdings",
+      "https://bitwiseinvestments.eu/products/bitwise-near-staking-etp/",
+      "Last-updated label 13-11-2026 05:35:21; economic business date not independently verified.",
+      "",
+      "",
+      "false",
+      "2026-11-13 05:39:54",
+      "Product holdings are not proof of institutional beneficial ownership, new spot buying or net investor flows. Do not sum products at mismatched cutoffs.",
+      "2026-11-13 05:51:22"
+    ]
+  ]
+}

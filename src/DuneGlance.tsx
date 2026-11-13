@@ -2,12 +2,14 @@ import React,{useState} from 'react';
 import './dune-glance.css';
 import {glanceInsights as coverageInsights, type Insight} from './glance-coverage-insights.ts';
 import {flywheelInsights} from './flywheel-insights.ts';
-export const glanceInsights:Record<string,Insight>={...coverageInsights,...flywheelInsights};
+import {institutionalCharts,institutionalInsights} from './institutional-insights.ts';
+export const glanceInsights:Record<string,Insight>={...coverageInsights,...flywheelInsights,...institutionalInsights};
 import {GlanceScorecard,GlanceRetention,GlanceValidation} from './GlanceEconomics.tsx';
 import {analyzeWindow} from './glance-analytics.ts';
 import {useGlanceSnapshot} from './glance-data.ts';
 
 export const glanceCharts=[
+  ...institutionalCharts,
   {id:'fee-productivity',title:'Intents fee productivity',tab:'Fee productivity',query:'9119498',visualization:'13171198',description:'Matched reported volume and gross fees, expressed as fees per $1M of notional. Ratio of sums; not solver spread, captured revenue or tokenholder yield.'},
   {id:'public-participation',title:'Public Intents participation',tab:'Participation',query:'9119494',visualization:'13171200',description:'Validated public account-side token_diff intents and signing accounts. Nonreferral accounts are an unverified counterparty proxy, not solver identities. Confidential execution is excluded.'},
   {id:'public-pairs',title:'Public asset representation pairs',tab:'Asset pairs',query:'9119517',visualization:'13171202',description:'Public account-side intent counts classified by asset representation. Unknown and multi-asset cases remain explicit. These are not unique user swaps or actual funding-chain routes.'},
@@ -39,6 +41,7 @@ export const glanceCharts=[
   {id:'ir-channels',title:'Fees by distribution channel',tab:'Channels',query:'9080255',visualization:'13129759',description:'All-time fees by referral label, in USD. A different window from the volume mixes.'}
 ];
 export const glanceGroups=[
+  {id:'institutional',title:'Capital through investment products',chartIds:['investment-holdings','investment-units']},
   {id:'fee-productivity',title:'What volume earns',chartIds:['fee-productivity']},
   {id:'public-participation',title:'Who signs public intents',chartIds:['public-participation']},
   {id:'public-pairs',title:'The public asset mix',chartIds:['public-pairs']},
@@ -63,7 +66,7 @@ function byId<T extends {id:string}>(list:T[],id:string):T{
 export const glanceChapters=[
   {id:'execution',title:'Intents flywheel',context:'Reported network volume and fee productivity, alongside the observable public execution subset. Public-account patterns exclude confidential settlement and do not identify solvers.',items:['activity','fee-productivity','public-participation','public-pairs','public-patterns','reach','distribution']},
   {id:'economics',title:'Revenue and retention',context:'What users pay, what the protocol keeps and how that compares with new issuance.',items:['retention','revenue','issuance']},
-  {id:'capital',title:'Capital on NEAR',context:'Liquidity held on the base chain, separate from the inventory that fills Intents.',items:['capital','composition']},
+  {id:'capital',title:'Capital on NEAR',context:'Base-chain liquidity and investment-product holdings describe different channels of capital allocation.',items:['capital','composition','institutional']},
   {id:'network',title:'Network and token',context:'Base-chain activity and the token’s supply and price.',items:['network','token']}
 ];
 
@@ -74,7 +77,7 @@ const chapterIcons={
   network:<><circle cx="5" cy="6" r="2"/><circle cx="19" cy="6" r="2"/><circle cx="12" cy="18" r="2"/><path d="M7 6h10M6 7.8l5 8.4M18 7.8l-5 8.4"/></>
 };
 
-const categories={'fee-productivity':'Economics','public-participation':'Public activity','public-pairs':'Public activity','public-patterns':'Public activity',capital:'Liquidity',revenue:'Economics',issuance:'Economics',network:'Network',token:'Market',activity:'Intents',composition:'Liquidity',reach:'Intents',distribution:'Intents'};
+const categories={institutional:'Investment products','fee-productivity':'Economics','public-participation':'Public activity','public-pairs':'Public activity','public-patterns':'Public activity',capital:'Liquidity',revenue:'Economics',issuance:'Economics',network:'Network',token:'Market',activity:'Intents',composition:'Liquidity',reach:'Intents',distribution:'Intents'};
 
 
 
@@ -145,7 +148,7 @@ export default function DuneGlance({insights=glanceInsights,economics=true}:{ins
           <iframe key={chart.id} title={chart.title+' — Dune visualization'} src={`https://dune.com/embeds/${chart.query}/${chart.visualization}`} loading="lazy" referrerPolicy="no-referrer"/>
         </div>
         {insight&&<blockquote className="glance-takeaway">{metricTakeaway(chart.id,insight)}</blockquote>}
-        <footer className="glance-footer">{insight&&<details><summary>Evidence & calculation</summary><p>{insight.date}</p><p>{chart.description} {insight.limitation}</p><p>{insight.calculation.method}</p><a href={insight.source} rel="noreferrer">Source</a>{insight.snapshot&&<a href={insight.snapshot} download>Download source snapshot</a>}{insight.research&&<a href={insight.research} download>Download research & validation</a>}<a href="data/glance-insights.json" download>Download calculations</a><a href="data/glance-coverage.json" download>Download expanded findings</a></details>}<a className="glance-query" href={query} rel="noreferrer" aria-label={'View '+chart.title+' query on Dune'}>View query on Dune</a></footer>
+        <footer className="glance-footer">{insight&&<details><summary>Evidence & calculation</summary><p>{insight.date}</p><p>{chart.description} {insight.limitation}</p><p>{insight.calculation.method}</p><a href={insight.source} rel="noreferrer">Source</a>{insight.snapshot&&<a href={insight.snapshot} download>Download source snapshot</a>}{insight.research&&insight.research!==insight.snapshot&&<a href={insight.research} download>Download research & validation</a>}<a href="data/glance-insights.json" download>Download calculations</a><a href="data/glance-coverage.json" download>Download expanded findings</a></details>}<a className="glance-query" href={query} rel="noreferrer" aria-label={'View '+chart.title+' query on Dune'}>View query on Dune</a></footer>
       </article>;
     })}</div>
     </section>)}

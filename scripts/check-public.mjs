@@ -15,6 +15,11 @@ assert.equal(rigor.financial.causalIdentification,false);
 assert.equal(rigor.receiptValidation.matchedDuneEvents,4);
 assert(!JSON.stringify(rigor).toLowerCase().includes('bitwise'));
 assert(!existsSync('dist-public/analysis/intents-flywheel-rigor'),'Raw signed payloads and working research must not be published');
+const institutional=JSON.parse(readFileSync('dist-public/data/institutional-demand.json','utf8'));
+assert.equal(institutional.charts.length,2);
+assert.equal(institutional.nrr.verifiedNetFlowUsd,null);
+assert.equal(institutional.european.verifiedInstitutionalOwnershipPct,null);
+assert(!existsSync('dist-public/analysis/institutional-demand'),'Archived issuer documents remain internal working sources');
 console.log('Clean public output, supplied font integrity and PDF integrity passed.');
 
 const html=readFileSync('dist-public/index.html','utf8');assert(html.includes('id="root"'));assert(!html.includes('/src/main.tsx'));assert(/assets\/index-[^"]+\.js/.test(html));

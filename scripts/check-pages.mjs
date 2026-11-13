@@ -67,24 +67,25 @@ try{
  const counters=new Set(['13129722','13129725','13129731','13129732','13129757']);
  const expanded=JSON.parse(readFileSync('data/glance-coverage.json','utf8'));
  const flywheel=JSON.parse(readFileSync('data/intents-flywheel.json','utf8'));
+ const institutional=JSON.parse(readFileSync('data/institutional-demand.json','utf8'));
  const flywheelIds=['fee-productivity','public-participation','public-pairs','public-patterns'];
  assert.deepEqual(flywheel.charts.map(chart=>chart.id).sort(),[...flywheelIds].sort());
- const allowed=new Set([...dashboardVisuals.map(v=>v.query+'/'+v.visualization),...flywheel.charts.map(v=>v.query+'/'+v.visualization),...expanded.sources.flatMap(source=>(source.visualizations||[]).map(v=>source.query.split('/').at(-1)+'/'+v))]);
+ const allowed=new Set([...dashboardVisuals.map(v=>v.query+'/'+v.visualization),...flywheel.charts.map(v=>v.query+'/'+v.visualization),...institutional.charts.map(v=>v.query+'/'+v.visualization),...expanded.sources.flatMap(source=>(source.visualizations||[]).map(v=>source.query.split('/').at(-1)+'/'+v))]);
  for(const chart of glanceCharts)assert(allowed.has(chart.query+'/'+chart.visualization));
  for(const source of expanded.sources)for(const visual of source.visualizations||[])assert(glanceCharts.some(chart=>source.query.endsWith('/'+chart.query)&&chart.visualization===visual),'Expanded Dune chart must reach website');
  assert(rendered['thesis.html'].includes('https://dune.com/0xpanatagama/near-economic\"'));
  assert(!rendered['thesis.html'].includes('<a class="glance-chart"'));
  const chartFrames=rendered['thesis.html'].match(/<iframe[^>]+Dune visualization[^>]*>/g)||[];
- assert.equal(chartFrames.length,13);
+ assert.equal(chartFrames.length,14);
  for(const frame of chartFrames){assert(!frame.includes('aria-hidden'));assert(!frame.includes('tabindex="-1"'));}
- assert.equal(glanceCharts.length,29);assert.equal(new Set(glanceCharts.map(chart=>chart.id)).size,29);assert.equal(glanceGroups.length,13);
- assert.equal(glanceGroups.flatMap(group=>group.chartIds).length,29);
+ assert.equal(glanceCharts.length,31);assert.equal(new Set(glanceCharts.map(chart=>chart.id)).size,31);assert.equal(glanceGroups.length,14);
+ assert.equal(glanceGroups.flatMap(group=>group.chartIds).length,31);
  const insightData={insights:glanceInsights};
  for(const chart of glanceCharts){assert(insightData.insights[chart.id]);const snapshot=insightData.insights[chart.id].snapshot;if(snapshot)assert(existsSync('dist/'+snapshot));}assert(!rendered['thesis.html'].includes('Network fundamentals'));
  for(const insight of Object.values(insightData.insights)){assert(insight.value&&insight.headline&&insight.date&&insight.limitation&&insight.calculation.method);assert.equal(new URL(insight.source).protocol,'https:');}
  assert(rendered['thesis.html'].includes('Download calculations'));
  const glanceTiles=rendered['thesis.html'].match(/<article class="glance-tile[\s\S]*?<\/article>/g)||[];
- assert.equal(glanceTiles.length,14);
+ assert.equal(glanceTiles.length,15);
  assert(rendered['thesis.html'].includes('Intents flywheel'));
  const rigor=JSON.parse(readFileSync('data/intents-flywheel-rigor.json','utf8'));
  assert.equal(glanceInsights['fee-productivity'].value,'$'+Math.round(rigor.financial.summary.currentFeePerMillionUsd).toLocaleString('en-US'));
@@ -100,7 +101,16 @@ try{
   assert(glanceInsights[id].snapshot==='data/intents-flywheel.json','Flywheel insights must point to their own validated snapshot');
  }
 
- assert(!rendered['thesis.html'].includes('glance-institutional'));
+ assert.equal(glanceTiles.filter(tile=>tile.includes('id="glance-institutional-title"')).length,1);
+ assert.deepEqual(glanceGroups.find(group=>group.id==='institutional').chartIds,['investment-holdings','investment-units']);
+ assert.equal(glanceInsights['investment-units'].value,(institutional.european.change.sharesChangePct<0?'−':'+')+Math.abs(institutional.european.change.sharesChangePct).toFixed(1)+'%');
+ assert(glanceInsights['investment-holdings'].date.includes(institutional.nrr.holdingsIssuerDate)&&glanceInsights['investment-holdings'].date.includes(institutional.european.issuerDate));
+ assert.equal(institutional.nrr.verifiedNetFlowUsd,null);
+ assert.equal(institutional.european.verifiedInstitutionalOwnershipPct,null);
+ assert(glanceInsights['investment-holdings'].limitation.includes('No combined holdings total'));
+ assert.equal(glanceInsights['investment-holdings'].snapshot,'data/institutional-demand.json');
+ const institutionalTile=glanceTiles.find(tile=>tile.includes('id="glance-institutional-title"'));
+ assert.equal((institutionalTile.match(/href="data\/institutional-demand.json"/g)||[]).length,1,'Same source and research download must not duplicate links');
  assert(rendered['thesis.html'].includes('Observed economics'));
  assert(rendered['thesis.html'].includes('data/glance-daily.json'));
  assert(rendered['thesis.html'].includes('Observed analysis window'));

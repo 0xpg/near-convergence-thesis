@@ -4,7 +4,7 @@
 .thesis-page .thesis-data>header>a{color:#436851;font-size:12px;white-space:nowrap;text-underline-offset:4px}
 .thesis-data .thesis-data-grid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:24px;align-items:start}
 .glance-tile{display:flex;flex-direction:column;min-width:0;grid-column:span 3;border:1px solid #293b321a;border-radius:20px;overflow:hidden;overflow-wrap:anywhere;background:#fff;box-shadow:0 2px 4px #173b3003,0 10px 30px #173b3008}
-.glance-distribution,.glance-retention{grid-column:span 6}
+.glance-distribution,.glance-retention,.glance-institutional{grid-column:span 6}
 .glance-tile-head{padding:28px 28px 24px;background-image:radial-gradient(#59746350 .7px,transparent .9px);background-size:5px 5px;background-repeat:repeat-x}
 .glance-category{display:block;margin-bottom:10px;font:500 11px/1.3 Saans,Arial,sans-serif;letter-spacing:.02em;color:#5c6861}
 .glance-tile-head h4{font:400 22px/1.15 Saans,Arial,sans-serif;letter-spacing:-.03em;margin:0 0 18px;color:#293b32}

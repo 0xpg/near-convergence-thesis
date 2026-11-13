@@ -1,0 +1,314 @@
+{
+  "version": "near-investment-product-demand-published-v1",
+  "scope": "Institutional access and product capital, not an institutional-investor census.",
+  "nrr": {
+    "product": "Bitwise NEAR ETF",
+    "isin": "US0919521015",
+    "ticker": "NRR",
+    "issuerDate": "2026-11-12",
+    "holdingsIssuerDate": "2026-11-12",
+    "renderedHoldingsDate": "11/11/2026",
+    "renderedFundDate": "11/11/2026",
+    "sharesOutstanding": 2930000,
+    "nearHeld": 15331373.48610193,
+    "derivedNearPerShare": 5.232550677850488,
+    "netAssetsUsd": 52568509.81,
+    "holdingsMarketValueUsd": 52586611.06,
+    "impliedNetAssetValuePerShare": 17.941470924914675,
+    "displayedNav": 19.4,
+    "navIssuerDate": "2026-11-11",
+    "holdingsValueLessNetAssetsUsd": 18101.25,
+    "verifiedNetFlowUsd": null,
+    "verifiedInstitutionalOwnershipPct": null,
+    "fieldQualityWarning": "Raw fundDetails.expenseRatio is zero while issuer-configured Sponsor Fee is 0.75%; zero is not accepted as the fee. Date-only issuer fields and rendered labels differ by one day; no timezone-cause claim is made.",
+    "sponsorFeeLabel": "0.75%",
+    "navObservations": 32,
+    "datePolicy": "Keep raw issuer date and rendered label separately. NAV history does not supply historical shares; do not join different cutoffs or infer flows from price/NAV history."
+  },
+  "european": {
+    "product": "Bitwise NEAR Staking ETP",
+    "isin": "DE000A4A5GV2",
+    "ticker": "NEAR / NEAS",
+    "baselineDate": "2026-11-05",
+    "baselineShares": 3817562,
+    "baselineEntitlement": 5.1916866,
+    "baselineRequiredCollateralNear": 19819585.4642,
+    "baselineActualCollateralNear": 19855385.9286,
+    "baselineCollateralCoveragePct": 100.18063175168152,
+    "issuerDate": "2026-11-13",
+    "sourceLastUpdatedLabel": "13-11-2026 05:35:21",
+    "businessDateIndependentlyVerified": false,
+    "sharesOutstanding": 2545252,
+    "nearHeld": 13219480.53,
+    "nearEntitlement": 5.19378063,
+    "netAssetsUsd": 49272573.2,
+    "change": {
+      "sharesChange": -1272310,
+      "sharesChangePct": -33.32781497720273,
+      "entitlementChangePct": 0.040334291364962915,
+      "entitlementBackedNearChange": -6600104.94400044,
+      "symmetricUnitsEffectNear": -6606766.90570065,
+      "symmetricEntitlementEffectNear": 6661.96170021
+    },
+    "verifiedNetFlowUsd": null,
+    "verifiedInstitutionalOwnershipPct": null,
+    "interpretation": "Observed unit-count contraction from the 5 November administrator report to the latest issuer snapshot. The page last-updated label is not independently verified as an economic business-date cutoff. Corporate actions not exhaustively audited; contraction is consistent with net redemptions, not an exact USD flow or exchange-selling inference. Decomposition uses entitlement-backed amounts, not excess collateral or realized staking alone. NEAR/NEAS are listings of one ISIN, not two funds."
+  },
+  "onchainValidation": {
+    "blockHeight": 224320638,
+    "blockTimeUtc": "2026-11-13T05:37:17.473286+00:00",
+    "issuerWalletListUpdatedAt": "2026-11-13T05:18:45.207Z",
+    "issuerWalletCount": 77,
+    "issuerWalletSumNear": 15654037.629826693,
+    "differenceVersusFundHoldingsNear": 322664.14372476307,
+    "samples": [
+      {
+        "address": "2230b37461c768dba66d256f706c7da8022a3569fd92010a26a1990106ae0b51",
+        "issuerListedBalanceNear": 1827321.5127399373,
+        "rpcLiquidAndDiscoveredPoolBalanceNear": 1834665.2937511539,
+        "differenceNear": 7343.781011216498,
+        "differencePct": 0.4018877334949681
+      },
+      {
+        "address": "f17a11905a5ee355f54d98f379cf2e25ccbee70068cfebab0df0b0ad5af72adf",
+        "issuerListedBalanceNear": 1304749.0283039573,
+        "rpcLiquidAndDiscoveredPoolBalanceNear": 1312178.6355990514,
+        "differenceNear": 7429.607295094013,
+        "differencePct": 0.5694280765053917
+      },
+      {
+        "address": "c10bae04ffbad00ac6098464c05e1c7fa5069af8a9282099860cdd5fbd56bd26",
+        "issuerListedBalanceNear": 574444.0108781797,
+        "rpcLiquidAndDiscoveredPoolBalanceNear": 576252.4907941895,
+        "differenceNear": 1808.479916009806,
+        "differencePct": 0.31482266013098426
+      }
+    ],
+    "outcome": "Pool claims and native accounts verified at one finalized block for three purposively selected issuer-listed addresses. Amounts do not match issuer wallet figures; wallet-list timestamp is not proof of valuation cutoff. This does not independently reconcile total fund holdings or prove beneficial ownership. FastNEAR discovers pools; canonical NEAR RPC reads balances. No holder balance is inferred from direct account state alone."
+  },
+  "institutionalOwnership": {
+    "status": "Unknown, not zero",
+    "securityEligible": [
+      {
+        "pdfPage": 150,
+        "matchedLine": "091952 10 1 BITWISE NEAR ETF COM SHS BEN INT ADDED"
+      }
+    ],
+    "quarterEnd": "2026-09-30",
+    "filingDeadline": "2026-11-16",
+    "indexedCusipSearch": {
+      "url": "https://efts.sec.gov/LATEST/search-index?q=%22091952101%22&dateRange=custom&startdt=2026-09-29&enddt=2026-11-13&forms=13F-HR%2C13F-HR%2FA&from=0&size=100",
+      "retrievedAt": "2026-11-13T05:43:17.647995+00:00",
+      "indexedMatches": 0,
+      "scope": "Exact-CUSIP search of SEC full-text index, not a full scan of all 13F information tables. Zero indexed matches does not establish no holders."
+    },
+    "method": "SEC Q3 official list confirms CUSIP eligibility; SEC deadline verified. Exact-CUSIP SEC full-text index search executed; no complete 13F information-table census executed. Do not infer manager ownership from product AUM or authorized-participant names. Even manager-reported holdings may represent client mandates or hedged inventory."
+  },
+  "flowMethod": {
+    "usd": "Estimated net creations/redemptions = split-adjusted change in shares outstanding times same-business-date NAV. Actual transaction cash flow requires fund/AP records.",
+    "near": "Estimated NEAR-equivalent net creations/redemptions = split-adjusted change in shares times documented same-date basket entitlement; closing holdings/share is a proxy when transaction basket is absent.",
+    "identity": "A_t - A_(t-1) = (S_t-S_(t-1))*NAV_t + S_(t-1)*(NAV_t-NAV_(t-1)); exact accounting under consistent units, not exact transaction timing.",
+    "guards": [
+      "Use product ISIN/CUSIP, never ticker alone; deduplicate exchange listings.",
+      "Preserve issuer business date, section date and retrieval time separately.",
+      "No daily flow without consecutive validated share observations and same-date NAV/entitlement. Missing dates remain unknown, not zero.",
+      "Separate changes in token entitlement, valuation, fund expenses and share creation/redemption.",
+      "Do not infer new spot buying from in-kind creations, nor institutional conviction from AP inventory."
+    ]
+  },
+  "publishableNow": [
+    "Issuer-reported holdings and AUM with section-specific cutoff and date-render warning.",
+    "European unit-count comparison with independent administrator baseline and entitlement reconciliation.",
+    "Institutional reporting eligibility and deadline; ownership remains unknown."
+  ],
+  "withheld": [
+    "Verified NRR daily or cumulative USD flows: historical issuer shares not supplied by captured snapshot.",
+    "Combined synchronized US/EU holdings total while NRR rendered/raw cutoff disagreement remains unresolved.",
+    "Institutional ownership percentage or named institutional allocation without underlying filings.",
+    "Custody-address totals as independently verified NRR holdings: sample and timing reconciliation failed."
+  ],
+  "sources": [
+    {
+      "file": "analysis/institutional-demand/nrr-page.html",
+      "url": "https://nrretf.com/",
+      "resolvedUrl": "https://nrretf.com/",
+      "retrievedAt": "2026-11-13T05:35:20.696673+00:00",
+      "contentType": "text/html; charset=utf-8",
+      "sha256": "9b5f7084087f6a0ad9d058e81baa39189a04326fcdad43db67b01ed6070bbeff"
+    },
+    {
+      "file": "analysis/institutional-demand/eu-near-page.html",
+      "url": "https://bitwiseinvestments.eu/products/bitwise-near-staking-etp/",
+      "resolvedUrl": "https://bitwiseinvestments.eu/products/bitwise-near-staking-etp/",
+      "retrievedAt": "2026-11-13T05:35:22.018813+00:00",
+      "contentType": "text/html; charset=UTF-8",
+      "sha256": "9a9450d42314627d85d52e46967efa681212838c1c7cd281fd2aab8564d2275c"
+    },
+    {
+      "file": "analysis/institutional-demand/eu-weekly-report.pdf",
+      "url": "https://bitwiseinvestments.eu/resources/weekly_balance_report/bitwise-europe-gmbh_weekly_balance_report.pdf",
+      "resolvedUrl": "https://bitwiseinvestments.eu/resources/weekly_balance_report/bitwise-europe-gmbh_weekly_balance_report.pdf",
+      "retrievedAt": "2026-11-13T05:35:23.086597+00:00",
+      "contentType": "application/pdf",
+      "sha256": "bd18acc0deb26626df01f4211f11c1651b10dd5826f0b2055e70ee276ad38cb9"
+    },
+    {
+      "file": "analysis/institutional-demand/nrr-prospectus.pdf",
+      "url": "https://s3.us-east-1.amazonaws.com/static.bitwiseinvestments.com/NRR/NRR-Bitwise-NEAR-ETF-Prospectus.pdf",
+      "retrievedAt": "2026-11-13T05:37:32.090730+00:00",
+      "sha256": "ca9a468bd6e1a1c228db609c5cbd15b69c9559b21a28b52fb82997d6a8b76710"
+    },
+    {
+      "file": "analysis/institutional-demand/sec-13f-q3.pdf",
+      "url": "https://www.sec.gov/files/investment/13flist2026q3.pdf",
+      "retrievedAt": "2026-11-13T05:39:54.169538+00:00",
+      "sha256": "7916e77881b3dbd97707120a6610abdf29a40ee707fdb2a4d9f1f2155b763ef8"
+    },
+    {
+      "file": "analysis/institutional-demand/sec-13f-faq.html",
+      "url": "https://www.sec.gov/rules-regulations/staff-guidance/frequently-asked-questions-about-form-13f",
+      "retrievedAt": "2026-11-13T05:39:54.735635+00:00",
+      "sha256": "01aa32d40db271c7435fb9113ab89b04771a4001011c9404f65f1491be59db43"
+    }
+  ],
+  "inputHashes": [
+    {
+      "file": "analysis/institutional-demand/analyze.py",
+      "sha256": "a75bf10993a2c5ba1744a41677db985b5ffe6cead65bb4ef235a3da0fd7974a0"
+    },
+    {
+      "file": "analysis/institutional-demand/rpc-wallet-sample.json",
+      "sha256": "5511ed2cec0391d29609fc770131c6f004f51758e3ca19156974b1874570c1b0"
+    },
+    {
+      "file": "analysis/institutional-demand/rpc-pool-sample.json",
+      "sha256": "46636f03c33d232ba7d40270efa5e930ee09751fe4a9a4d0ec539fc4eb7df02e"
+    },
+    {
+      "file": "analysis/institutional-demand/rpc-final-block.json",
+      "sha256": "f457afb3cf63b441177bf890594d4b9e991c8fdc2504a6083a112a8988d4aaa0"
+    },
+    {
+      "file": "analysis/institutional-demand/sec-cusip-search.json",
+      "sha256": "36be320e6729ade4a5e3ce9df67da69a30ce61070bb6658c94073f4aa49a5fc5"
+    }
+  ],
+  "checks": [
+    "Source byte hashes",
+    "Stable product identifiers",
+    "Primary-document extraction",
+    "Unique NAV dates",
+    "Entitlement times units equals claim-backed holdings",
+    "Independent administrator baseline identity and collateral coverage",
+    "Exact symmetric decomposition",
+    "Finalized RPC block equality and delegation inclusion",
+    "Pure accounting edge cases"
+  ],
+  "retrievedAt": "2026-11-13T05:53:15.299Z",
+  "charts": [
+    {
+      "id": "investment-holdings",
+      "query": "9121073",
+      "visualization": "13172854"
+    },
+    {
+      "id": "investment-units",
+      "query": "9121081",
+      "visualization": "13172860"
+    }
+  ],
+  "duneExecution": [
+    {
+      "id": "investment-holdings",
+      "records": [
+        {
+          "product_isin": "US0919521015",
+          "product": "NRR · U.S.",
+          "source_date": "2026-11-12 00:00:00",
+          "near_held": "15331373.48610193",
+          "shares_outstanding": "2930000",
+          "net_assets_usd": "52568509.81",
+          "near_basis": "Issuer fund holdings",
+          "source_url": "https://nrretf.com/",
+          "cutoff_note": "Raw issuer date 2026-11-12; rendered holdings label 11/11/2026. NAV has another cutoff; do not infer flows.",
+          "verified_net_flow_usd": "",
+          "verified_institutional_ownership_pct": "",
+          "synchronized_business_cutoff_verified": "false",
+          "archived_sources_retrieved_through_utc": "2026-11-13 05:39:54",
+          "interpretation": "Product holdings are not proof of institutional beneficial ownership, new spot buying or net investor flows. Do not sum products at mismatched cutoffs.",
+          "query_executed_utc": "2026-11-13 05:51:22"
+        },
+        {
+          "product_isin": "DE000A4A5GV2",
+          "product": "NEAR ETP · Europe",
+          "source_date": "2026-11-13 00:00:00",
+          "near_held": "13219480.53",
+          "shares_outstanding": "2545252",
+          "net_assets_usd": "49272573.2",
+          "near_basis": "Issuer entitlement-backed holdings",
+          "source_url": "https://bitwiseinvestments.eu/products/bitwise-near-staking-etp/",
+          "cutoff_note": "Last-updated label 13-11-2026 05:35:21; economic business date not independently verified.",
+          "verified_net_flow_usd": "",
+          "verified_institutional_ownership_pct": "",
+          "synchronized_business_cutoff_verified": "false",
+          "archived_sources_retrieved_through_utc": "2026-11-13 05:39:54",
+          "interpretation": "Product holdings are not proof of institutional beneficial ownership, new spot buying or net investor flows. Do not sum products at mismatched cutoffs.",
+          "query_executed_utc": "2026-11-13 05:51:22"
+        }
+      ],
+      "retrievedAt": "2026-11-13T05:51:46.586Z",
+      "resultSha256": "1e7da098437be66730833ad7ec29f632d315b0dd0a00421b4fcbc5f6dc8e2cbe",
+      "sqlSha256": "130f88dca2de185e0230deb3bad4c6837dbe66f51b1e89f1ce65e6479451e6a2"
+    },
+    {
+      "id": "investment-units",
+      "records": [
+        {
+          "product_isin": "DE000A4A5GV2",
+          "product": "Bitwise NEAR Staking ETP · Europe",
+          "source_date": "2026-11-05 00:00:00",
+          "observation_label": "5 Nov · administrator",
+          "shares_outstanding": "3817562",
+          "near_entitlement_per_unit": "5.1916866",
+          "source_url": "https://bitwiseinvestments.eu/resources/weekly_balance_report/bitwise-europe-gmbh_weekly_balance_report.pdf",
+          "cutoff_note": "Administrator report explicitly dated 5 November 2026; required collateral is distinct from actual excess collateral.",
+          "baseline_shares": "3817562",
+          "baseline_entitlement": "5.1916866",
+          "units_change_from_baseline": "0",
+          "units_change_from_baseline_pct": "0",
+          "entitlement_change_from_baseline_pct": "0",
+          "verified_net_flow_usd": "",
+          "verified_institutional_ownership_pct": "",
+          "archived_sources_retrieved_through_utc": "2026-11-13 05:39:54",
+          "interpretation": "Two source observations only, not a daily flow series. Unit contraction is consistent with net redemptions, but corporate actions were not exhaustively audited. Entitlement includes net staking and expenses; do not label it pure staking return. NEAR/NEAS represent one ISIN.",
+          "query_executed_utc": "2026-11-13 05:51:38"
+        },
+        {
+          "product_isin": "DE000A4A5GV2",
+          "product": "Bitwise NEAR Staking ETP · Europe",
+          "source_date": "2026-11-13 00:00:00",
+          "observation_label": "13 Nov · issuer update",
+          "shares_outstanding": "2545252",
+          "near_entitlement_per_unit": "5.19378063",
+          "source_url": "https://bitwiseinvestments.eu/products/bitwise-near-staking-etp/",
+          "cutoff_note": "Page updated 13-11-2026 05:35:21; underlying economic business date not independently verified.",
+          "baseline_shares": "3817562",
+          "baseline_entitlement": "5.1916866",
+          "units_change_from_baseline": "-1272310",
+          "units_change_from_baseline_pct": "-33.32781497720273",
+          "entitlement_change_from_baseline_pct": "0.040334291364962915",
+          "verified_net_flow_usd": "",
+          "verified_institutional_ownership_pct": "",
+          "archived_sources_retrieved_through_utc": "2026-11-13 05:39:54",
+          "interpretation": "Two source observations only, not a daily flow series. Unit contraction is consistent with net redemptions, but corporate actions were not exhaustively audited. Entitlement includes net staking and expenses; do not label it pure staking return. NEAR/NEAS represent one ISIN.",
+          "query_executed_utc": "2026-11-13 05:51:38"
+        }
+      ],
+      "retrievedAt": "2026-11-13T05:53:15.299Z",
+      "resultSha256": "a9305fba5bc69106d097a2c9d376dffdec2daf0d520b5b92294821ee0d0c85e1",
+      "sqlSha256": "3571f94a9b8d6693b40ff7804fe4b105321c63cc3681ba315f53a56c7c629a0e"
+    }
+  ],
+  "refreshPolicy": "Archived source observations, executed on Dune and reconciled before publication. Rerunning SQL does not ingest new issuer data. Embedded chart filters do not refresh these insights.",
+  "researchSourceSha256": "04a666b4c088333128c67c1f0f2f7c009d2ae25d94346e2ba82253d4c4260865"
+}

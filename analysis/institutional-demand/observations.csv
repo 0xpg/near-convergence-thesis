@@ -1,0 +1,4 @@
+product_isin,issuer_date,shares_outstanding,near_entitlement_per_share,near_amount,near_amount_basis,net_assets_usd,net_flow_usd,institutional_ownership_pct
+US0919521015,2026-11-12,2930000,5.232550677850488054607508532,15331373.48610193,issuer fund holdings,52568509.81,,
+DE000A4A5GV2,2026-11-05,3817562,5.19168660,19819585.4642,administrator required collateral,,,
+DE000A4A5GV2,2026-11-13,2545252,5.19378063,13219480.53,issuer entitlement-backed holdings,49272573.20,,
