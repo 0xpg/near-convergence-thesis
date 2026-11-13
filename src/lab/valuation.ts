@@ -5,6 +5,7 @@ export type Starting={asOf:string,annualVolumeUsd:number,annualReceiptsUsd:numbe
 export const VALUATION_LIMITS={growthPct:[-10,30,.5],capturePct:[0,100,.5],grossBps:[0,60,.1],compression:[0,1,.05],costPct:[0,100,1],multiple:[10,1000,10],discountPct:[0,100,1],issuancePct:[0,8,.1],aiAnnualUsd:[0,1e10,1e6],otherAnnualUsd:[0,1e10,1e6],frontierYears:[1,15,1]} as const;
 export const VALUATION_PRESETS={constrained:{label:'Constrained monetization',inputs:{growthPct:-1,capturePct:20,compression:.25,multiple:100}},execution:{label:'Operating execution',inputs:{growthPct:4,multiple:200}},leadership:{label:'Scale leadership',inputs:{growthPct:8,capturePct:40,compression:.1,multiple:250}}};
 function date(value:string){const n=Date.parse(value+'T00:00:00Z');if(!/^\d{4}-\d{2}-\d{2}$/.test(value)||!Number.isFinite(n)||new Date(n).toISOString().slice(0,10)!==value)throw Error('Invalid model date');return n;}
+export const exitDateBounds=(asOf:string)=>({min:new Date(date(asOf)+86400000).toISOString().slice(0,10),max:new Date(date(asOf)+15*365*86400000).toISOString().slice(0,10)});
 export function cleanValuation(input:Partial<ValuationInputs>={},defaults=VALUATION_DEFAULTS):ValuationInputs{
  const a={...defaults};
  for(const key of Object.keys(VALUATION_LIMITS) as (keyof typeof VALUATION_LIMITS)[]){const v=input[key];if(typeof v!=='number'||!Number.isFinite(v))continue;const [min,max]=VALUATION_LIMITS[key];a[key]=Math.min(max,Math.max(min,v));}
@@ -20,6 +21,7 @@ export function runValuation(input:Partial<ValuationInputs>,starting:Starting){
  const rows=Array.from({length:Math.ceil(years*12)+1},(_,i)=>row(Math.min(i/12,years))),terminal=rows.at(-1)!;
  const reverse=(target:number,present:boolean)=>{const t=a.frontierYears,supply=starting.supplyNear*(1+a.issuancePct/100)**t,required=target*supply*(present?(1+a.discountPct/100)**t:1)/a.multiple,need=Math.max(0,required-addons),base=starting.annualVolumeUsd*baseRate;let scale:number|null=null;
   if(need===0)scale=0;else if(base>0){const ratio=need/base;if(ratio<=1)scale=ratio;else if(a.compression<1)scale=ratio**(1/(1-a.compression));}
+  if(scale!==null&&!Number.isFinite(starting.annualVolumeUsd*scale))scale=null;
   const volume=scale===null?null:starting.annualVolumeUsd*scale,growth=scale===null?null:((scale**(1/(12*t)))-1)*100;
   return {requiredAnnualUsd:required,requiredVolumeUsd:volume,requiredGrowthPct:growth,reachable:scale!==null&&Number.isFinite(scale),capitalizationUsd:target*supply*(present?(1+a.discountPct/100)**t:1)};};
  return {inputs:a,starting,years,rows,terminal,frontier:[400,450,500].map(target=>({target,future:reverse(target,false),present:reverse(target,true)})),baseAnnualReceiptsUsd:starting.annualReceiptsUsd};

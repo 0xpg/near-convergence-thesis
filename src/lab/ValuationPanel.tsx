@@ -1,6 +1,6 @@
 import {Fragment} from 'react';
 import {baseline} from './engine.ts';
-import {runValuation,VALUATION_DEFAULTS,VALUATION_LIMITS,VALUATION_PRESETS,type ValuationInputs} from './valuation.ts';
+import {runValuation,exitDateBounds,VALUATION_DEFAULTS,VALUATION_LIMITS,VALUATION_PRESETS,type ValuationInputs} from './valuation.ts';
 import {DitherCanvas,ditherArea,ditherLine,ditherRect,text,rule,INK,GREEN,SOFT,AMBER,BLUE} from './dither.tsx';
 const usd=(v:number|null)=>v===null||!Number.isFinite(v)?'Not reachable':new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',notation:'compact',maximumFractionDigits:1}).format(v);
 const price=(v:number)=>new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',maximumFractionDigits:2}).format(v);
@@ -8,7 +8,7 @@ const names={growthPct:'Monthly volume growth',capturePct:'Cash receipt / fee ra
 export const STARTING={asOf:baseline.supply.blockUtc.slice(0,10),annualVolumeUsd:baseline.operating.windows[0].volumeUsd*365/30,annualReceiptsUsd:baseline.operating.windows[0].annualizedCapturedUsd,supplyNear:baseline.supply.supplyNear,spotPriceUsd:baseline.market.priceUsd};
 export const VAL_DEFAULTS={...VALUATION_DEFAULTS,capturePct:baseline.operating.windows[0].cashCapturePct,grossBps:baseline.operating.windows[0].grossBps,issuancePct:baseline.supply.issuancePct};
 export default function ValuationPanel({inputs,onChange}:{inputs:ValuationInputs,onChange:(a:ValuationInputs)=>void}){
- const r=runValuation(inputs,STARTING),set=(patch:Partial<ValuationInputs>)=>onChange({...inputs,...patch});
+ const bounds=exitDateBounds(STARTING.asOf),r=runValuation(inputs,STARTING),set=(patch:Partial<ValuationInputs>)=>onChange({...inputs,...patch});
  const draw=(pen:CanvasRenderingContext2D,w:number,h:number)=>{const left=50,bottom=h-30,top=18,max=Math.max(...r.rows.map(x=>x.totalUsd),1)*1.12,x=(i:number)=>left+i/(r.rows.length-1)*(w-left-12),y=(v:number)=>bottom-v/max*(bottom-top);
   [0,max/2,max].forEach(v=>{rule(pen,left,y(v),w,y(v));text(pen,usd(v),0,y(v)+4,{size:10});});
   ditherArea(pen,r.rows.map((v,i)=>[x(i),y(v.totalUsd)]),bottom,.3,BLUE);ditherArea(pen,r.rows.map((v,i)=>[x(i),y(v.intentsUsd+v.aiUsd)]),bottom,.5,AMBER);ditherArea(pen,r.rows.map((v,i)=>[x(i),y(v.intentsUsd)]),bottom,.8,GREEN);
@@ -21,7 +21,7 @@ export default function ValuationPanel({inputs,onChange}:{inputs:ValuationInputs
   <header><h2 id="valuation-title">Price the conditions.</h2><p>Observed receipts anchor the model. Growth, capture, costs and the exit multiple are your assumptions.</p></header>
   <div className="lab-console-controls">
    <div className="lab-presets" role="group" aria-label="Valuation assumption sets">{Object.entries(VALUATION_PRESETS).map(([id,p])=><button key={id} type="button" onClick={()=>onChange({...VAL_DEFAULTS,...p.inputs})}>{p.label}</button>)}</div>
-   <div className="lab-console-sliders"><label className="lab-slider"><span className="lab-slider-head">Exit date</span><input type="date" aria-label="Valuation exit date" min="2026-11-14" max="2041-11-13" value={inputs.exitDate} onChange={e=>{const d=e.target.value;if(d>'2026-11-13'&&d<='2041-11-13')set({exitDate:d});}}/></label>
+   <div className="lab-console-sliders"><label className="lab-slider"><span className="lab-slider-head">Exit date</span><input type="date" aria-label="Valuation exit date" min={bounds.min} max={bounds.max} value={inputs.exitDate} onChange={e=>{const d=e.target.value;if(d>=bounds.min&&d<=bounds.max)set({exitDate:d});}}/></label>
     {(Object.keys(VALUATION_LIMITS) as (keyof typeof VALUATION_LIMITS)[]).map(key=>{const [min,max,step]=VALUATION_LIMITS[key];return <label key={key} className="lab-slider"><span className="lab-slider-head"><span>{names[key]}</span><output>{key.endsWith('Usd')?usd(inputs[key]):key==='multiple'?`${inputs[key]}x`:inputs[key].toFixed(key==='compression'?2:1)}</output></span><input type="range" aria-label={names[key]} min={min} max={max} step={step} value={inputs[key]} onChange={e=>set({[key]:Number(e.target.value)})}/></label>;})}
    </div>
   </div>

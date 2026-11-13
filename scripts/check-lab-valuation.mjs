@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
-import {VALUATION_DEFAULTS,runValuation,cleanValuation} from '../src/lab/valuation.ts';
+import {VALUATION_DEFAULTS,runValuation,cleanValuation,exitDateBounds} from '../src/lab/valuation.ts';
 const b=JSON.parse(readFileSync('data/lab-baseline.json')),w=b.operating.windows[0];
 const start={asOf:'2026-11-13',annualVolumeUsd:w.volumeUsd*365/30,annualReceiptsUsd:w.annualizedCapturedUsd,supplyNear:b.supply.supplyNear,spotPriceUsd:b.market.priceUsd};
 const a={...VALUATION_DEFAULTS,grossBps:w.grossBps,capturePct:w.cashCapturePct};
@@ -32,3 +32,6 @@ const leap=runValuation({...a,exitDate:'2028-11-13'},start);close(leap.years,731
 assert.equal(leap.rows.at(-1).date,'2028-11-13');
 assert(leap.rows.every(x=>x.supplyNear>0&&Number.isFinite(x.totalUsd)));
 console.log('Valuation: observed receipts, ACT/365, dilution/discount monotonicity, exact compression inverse, zero capture, invalid inputs and independent target reconstruction passed.');
+
+assert.equal(runValuation({...a,exitDate:exitDateBounds(start.asOf).max},start).years,15);
+const nearUnit=runValuation({...a,compression:.999999},start).frontier[0].future;assert.equal(nearUnit.reachable,false);assert.equal(nearUnit.requiredVolumeUsd,null);assert.equal(nearUnit.requiredGrowthPct,null);
