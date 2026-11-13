@@ -20,6 +20,36 @@ try{
  assert(rendered['lab.html'].includes('calibrated upside hypothesis'),'Maximum calibration must be explicit');
  assert(!rendered['lab.html'].includes('Mock data'));
  assert(rendered['lab.html'].includes('2026-11-10')&&rendered['lab.html'].includes('224353535'),'Lab evidence cutoffs must be visible');
+ const {default:CaseLab}=await server.ssrLoadModule('/src/lab/LabExperience.tsx');
+ const {STARTING:caseStarting,VAL_DEFAULTS:caseDefaults,heatColors}=await server.ssrLoadModule('/src/lab/ValuationPanel.tsx');
+ const {MODEL_VERSION:caseVersion,buildValuationCases:makeCases,runValuation:caseRun}=await server.ssrLoadModule('/src/lab/valuation.ts');
+ const {transmissionMetrics}=await server.ssrLoadModule('/src/lab/Transmission.tsx');
+ const caseBaseline=JSON.parse(readFileSync('data/lab-baseline.json','utf8'));
+ const oldLocation=Object.getOwnPropertyDescriptor(globalThis,'location');
+ const caseMoney=n=>new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',notation:'compact',maximumFractionDigits:1}).format(n);
+ const casePrice=n=>new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',maximumFractionDigits:2}).format(n);
+ const caseClose=(a,b)=>assert(Math.abs(a-b)<=Math.max(1e-7,Math.abs(b)*1e-10),'Case transmission accounting');
+ try{
+  const referenceCases=makeCases(caseStarting),custom={...referenceCases.at(-1).inputs,aiTokenLinkPct:0};
+  for(const input of [...referenceCases.map(c=>c.inputs),custom]){
+   Object.defineProperty(globalThis,'location',{configurable:true,value:{hash:'#s='+encodeURIComponent(JSON.stringify({model:caseVersion,baseline:caseBaseline.version,valuation:input}))}});
+   const html=renderToStaticMarkup(createElement(CaseLab)),r=caseRun(input,caseStarting),t=r.terminal,m=transmissionMetrics(r);
+   const hero=html.match(/<section class="lab-hero"[\s\S]*?<\/section>/)?.[0];
+   const summary=html.match(/<section id="lab"[\s\S]*?<\/section>/)?.[0];
+   const lower=html.match(/<section class="lab-models lab-transmission"[\s\S]*?<\/section>/)?.[0];
+   assert(hero&&summary&&lower,'One hero, selected-case summary and transmission section required');
+   for(const section of [hero,summary]){assert(section.includes(caseMoney(t.totalUsd)),'Selected case REV must propagate');assert(section.includes(casePrice(t.futurePriceUsd)),'Selected price must propagate');}
+   assert(hero.includes(`${input.multiple}×`));
+   for(const value of [t.intentsUsd,t.institutionalUsd,t.aiUsd])assert(lower.includes(caseMoney(value)),'Lower charts must reflect selected components');
+   caseClose(m.coreGrossUsd,m.uncapturedUsd+m.costsUsd+m.coreCapturedUsd);
+   caseClose(m.coreCapturedUsd+t.aiUsd,t.totalUsd);
+   caseClose(m.volumeUsd,t.volumeUsd+t.institutionalVolumeUsd);
+   for(const obsolete of ['Assumption sensitivity','Illustrative mix','Issuance covered','incompatible baseline or invalid assumptions','Observed starting scale','NEAR price'])assert(!html.includes(obsolete),'Obsolete independent model UI: '+obsolete);
+  }
+  Object.defineProperty(globalThis,'location',{configurable:true,value:{hash:'#s=%7Bbad-json'}});
+  const safe=renderToStaticMarkup(createElement(CaseLab));assert(safe.includes(casePrice(caseRun(caseDefaults,caseStarting).terminal.futurePriceUsd)),'Malformed links use safe defaults');
+ }finally{if(oldLocation)Object.defineProperty(globalThis,'location',oldLocation);else delete globalThis.location;}
+ for(let i=0;i<=200;i++)assert(heatColors(i/200).contrast>=4.5,'Heatmap label contrast');
  for(const [page,html] of Object.entries(rendered)){
   assert(!/\u00e2\u20ac|\u00c2\u00b7/.test(html),'UTF-8 text: '+page);
   const ids=[...html.matchAll(/\bid="([^"]+)"/g)].map(match=>match[1]);

@@ -2,7 +2,6 @@
 .lab-page main{display:block}
 .lab-page button{font-family:Saans,Arial,sans-serif}
 .lab-page button:focus-visible,.lab-page input:focus-visible,.lab-page summary:focus-visible,.lab-page a:focus-visible{outline:2px solid #436851;outline-offset:3px}
-.lab-mock{display:inline-flex;align-items:center;font:500 10px/1 Saans,Arial,sans-serif;letter-spacing:.02em;color:#9a7428;padding:5px 8px;border:1px solid #9a742840;border-radius:999px;background:#fbf7ee;white-space:nowrap}
 
 .lab-hero{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);gap:56px;align-items:center;max-width:1440px;margin:0 auto;padding:56px 48px 72px}
 .lab-hero .thesis-resolve h1{font:400 clamp(44px,5vw,80px)/1 Saans,Arial,sans-serif;letter-spacing:-.05em;margin:0;color:#20372d}
@@ -124,7 +123,6 @@
 .lab-frontier-table thead th{font-weight:500;color:#5c6861}
 .lab-valuation input[type=date]{height:32px;font:inherit;color:inherit;border:1px solid #293b3220;border-radius:6px;padding:4px 8px;appearance:auto;touch-action:auto}
 
-.lab-link-notice{margin:0 48px 24px;padding:16px;border:1px solid #9a742850;border-radius:12px;color:#785b24;font:400 14px/1.5 Saans,Arial,sans-serif}
 
 .lab-case-controls summary{font:400 13px/1.4 Saans,Arial,sans-serif;color:#436851;cursor:pointer}
 .lab-case-controls[open] summary{margin-bottom:24px}
@@ -139,3 +137,8 @@
 .lab-price-components strong{font:400 32px/1 Saans,Arial,sans-serif;letter-spacing:-.035em;font-variant-numeric:tabular-nums}
 .lab-price-components small{font-size:11px}
 @media(max-width:760px){.lab-price-components{grid-template-columns:1fr;margin-left:20px;margin-right:20px}.lab-case-table{padding-left:20px;padding-right:20px}}
+
+.lab-models>header p{text-align:justify}
+.lab-console-results{background:linear-gradient(135deg,#254d3c 0%,#173b30 58%,#102e26 100%)}
+.lab-case-context{font:400 12px/1.5 Saans,Arial,sans-serif;color:#5c6861;margin:24px 0 -20px}
+.lab-transmission-intro{text-align:justify}
