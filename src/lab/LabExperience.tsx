@@ -34,7 +34,7 @@ const LABEL:Partial<Record<InputKey,string>>={
   bpsStable:'Stablecoin route fee',bpsMajors:'Majors route fee',bpsLong:'Long-tail route fee',
   partnerPayout:'Uncaptured fee share',costs:'Other costs',buybackAllocation:'Buyback allocation',burnShare:'Share of buybacks burned',
   price:'NEAR price',issuancePct:'Annual issuance',
-  ordersPerDesk:'Orders per desk',orderSize:'Average order size',incrementalShare:'Incremental, not displaced',institutionalBps:'Institutional fee',
+  desks:'Additional institutional desks',agents:'Additional transacting agents',ordersPerDesk:'Orders per desk',orderSize:'Average order size',incrementalShare:'Incremental, not displaced',institutionalBps:'Institutional fee',
   intentsPerAgent:'Intents per agent',agentNotional:'Average agent notional',eligibleShare:'Routed through Intents',agentBps:'Agent fee',
   targetMultiple:'Target revenue multiple',
   solverElasticity:'Solver response to flow',qualityElasticity:'Execution gain per solver',responsiveness:'Flow response to quality',distributionGrowth:'Distribution growth per round'
