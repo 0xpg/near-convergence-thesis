@@ -1,0 +1,206 @@
+{
+  "version": "near-intents-event-grain-audit-v1",
+  "retrievedAt": "2026-11-13T04:48:25.523143+00:00",
+  "scope": "Contract/event identity, deterministic ingestion deduplication and an independent archival RPC reconciliation; no economic-order census or solver identity inference",
+  "verifiedFindings": [
+    {
+      "finding": "intent_hash identifies one signed payload, not one token_diff statement",
+      "evidence": [
+        "https://github.com/near/intents/blob/16d04f6ec4401263f8914638710260da50bb46b0/contracts/defuse/core/src/engine/mod.rs#L42",
+        "https://github.com/near/intents/blob/16d04f6ec4401263f8914638710260da50bb46b0/contracts/defuse/core/src/intents/mod.rs#L29",
+        "https://github.com/near/intents/blob/16d04f6ec4401263f8914638710260da50bb46b0/contracts/defuse/core/src/intents/mod.rs#L98"
+      ],
+      "mechanism": "Engine calculates the signed payload hash once, then executes its Vec<Intent> statements in sequence with that same hash. Each TokenDiff statement emits an event carrying that hash.",
+      "consequence": "Repeated intent_hash at distinct physical event locations is permitted by contract semantics. Removing all such statements is not deduplication and selectively withholds multi-statement execution."
+    },
+    {
+      "finding": "The old SQL excluded 25484 parsed statement appearances because their signed-payload hash repeated",
+      "basis": "Saved prior 30-day aggregate results: 1003979 parsed account payloads minus978495 retained statements; audit counts must be reconciled by rerunning corrected queries before claiming corrected population totals.",
+      "status": "Previously saved arithmetic; not a claim that all excluded appearances are legitimate until new physical-key/shape/version checks run."
+    },
+    {
+      "finding": "Public statement, signed payload, settlement receipt and economic swap are different grains",
+      "evidence": [
+        "https://github.com/near/intents#example",
+        "https://github.com/near/intents/blob/16d04f6ec4401263f8914638710260da50bb46b0/contracts/defuse/core/src/engine/mod.rs#L32",
+        "https://github.com/near/intents/blob/16d04f6ec4401263f8914638710260da50bb46b0/contracts/defuse/src/contract/intents/execute.rs#L26"
+      ],
+      "definition": {
+        "statement": [
+          "executor_account_id",
+          "receipt_id",
+          "index_in_execution_outcome_logs",
+          "data_ordinal"
+        ],
+        "signedPayload": [
+          "verifying_contract",
+          "intent_hash",
+          "account_id"
+        ],
+        "settlementReceipt": [
+          "receipt_id"
+        ],
+        "economicSwap": "No generally verified identifier in the observed contract logs. Multiple signed counterparties and token deltas can form one economic trade; receipts can batch several trades."
+      }
+    },
+    {
+      "finding": "Current on-chain source metadata attributes intents.near to the inspected commit",
+      "evidenceFile": "current-source-metadata-rpc.json",
+      "blockHeight": 224314858,
+      "contractVersion": "0.4.5",
+      "sourceCommit": "16d04f6ec4401263f8914638710260da50bb46b0",
+      "qualification": "Metadata attribution is independently queried, but not a reproduced WASM/source equivalence proof."
+    },
+    {
+      "finding": "TokenDiff event version0.4.3 is explicitly declared in inspected source and observed in RPC/Dune",
+      "evidence": [
+        "https://github.com/near/intents/blob/16d04f6ec4401263f8914638710260da50bb46b0/contracts/defuse/core/src/events/mod.rs#L48"
+      ],
+      "consequence": "Corrected queries retain only exact verified DIP4 token_diff0.4.3 and expose unsupported-version diagnostics. Other versions require a schema-specific audit."
+    },
+    {
+      "finding": "Official archival RPC independently matches four Dune token_diff events in a finalized successful receipt",
+      "evidenceFile": "rpc-reconciliation.json",
+      "validated": [
+        "Four exact event objects at their log positions",
+        "Four signed payload hashes via independent Borsh+SHA256 implementation",
+        "Four Ed25519 signature verifications",
+        "Signed input signer and deltas match events",
+        "Final successful transaction/receipt and block timestamp"
+      ],
+      "sampling": "One purposive receipt; this checks decoding and identity semantics, not aggregate completeness or representativeness."
+    },
+    {
+      "finding": "The October27 confidentiality change makes public logs an incomplete current swap census",
+      "evidence": [
+        "https://docs.agentsonintents.com/changelog/overview"
+      ],
+      "consequence": "An observed fall in public signing accounts cannot by itself establish user attrition or less protocol-wide activity. The announcement date is not itself a causal estimate."
+    }
+  ],
+  "engineeringChanges": {
+    "files": [
+      "02_public_account_intents_canonical.sql",
+      "03_public_account_intents_daily.sql",
+      "04_public_representation_pair_counts.sql",
+      "05_public_reverse_pattern_daily.sql"
+    ],
+    "deduplication": "Group exact raw business fields (block date/time/height,receipt,log index,status,event string); count distinct business versions by physical key; quarantine keys with multiple versions instead of selecting an arbitrary latest row. Keep data ordinals and all repeated signed-payload hashes.",
+    "numericValidation": "Validate signed i128 decimal strings lexically against exact positive2^127-1 and negative2^127 magnitudes. Preserve39digitvalid values, reject zero and noncanonical strings. No currency amount approximation for statement identity/pair sign classification.",
+    "diagnostics": [
+      "collapsed_exact_raw_copies",
+      "unsupported_event_version_log_rows",
+      "repeated_intent_hash_payloads (now multiplicity diagnostic, not exclusion)",
+      "invalid_or_repeated_raw_key_rows (conflicting physical keys, not legitimate signed-payload multiplicity)"
+    ],
+    "observationLimits": "Dune documentation exposes physical position and update/ingestion timestamps but does not establish a uniqueness or CDC conflict-resolution guarantee. Corrected queries validate observed versions; they do not assume updated_at authoritatively resolves conflicts."
+  },
+  "validationCommand": "C:/Users/LENOVO/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/python.exe analysis/intents-flywheel-rigor/check-event-audit.py",
+  "validationDependencies": "Python standard library plus already-installed cryptography for independent Ed25519 verification; no package added to project.",
+  "sources": [
+    {
+      "url": "https://docs.dune.com/data-catalog/near/logs",
+      "supports": "Physical receipt/log fields and ingestion timestamps, not a certified uniqueness guarantee"
+    },
+    {
+      "url": "https://docs.near.org/api/rpc/providers",
+      "supports": "Official archival RPC endpoint"
+    },
+    {
+      "url": "https://docs.near.org/api/rpc/transactions",
+      "supports": "Read-only receipt, transaction and finalized status methods"
+    },
+    {
+      "url": "https://github.com/near/intents/blob/16d04f6ec4401263f8914638710260da50bb46b0/crates/signatures/nep413/src/lib.rs#L30",
+      "supports": "Borsh signed payload hash and prefix2147484061"
+    },
+    {
+      "url": "https://github.com/near/intents/blob/16d04f6ec4401263f8914638710260da50bb46b0/contracts/defuse/core/src/payload/nep413.rs#L80",
+      "supports": "Signed payload hash and Ed25519 signature validation"
+    },
+    {
+      "url": "https://github.com/near/intents/blob/16d04f6ec4401263f8914638710260da50bb46b0/contracts/defuse/core/src/intents/token_diff.rs#L56",
+      "supports": "Statement execution and negative-delta fee map; arbitrary multi-asset balance changes"
+    }
+  ],
+  "remainingChecks": [
+    "Root must execute corrected SQL and refresh all dependent result snapshots, source hashes, interpretations and tests.",
+    "No automatic reinterpretation of nonreferral accounts as solver firms.",
+    "No bot/wash label from same-account reversal flags alone.",
+    "Full customer-order mapping and confidential history remain unavailable without authenticated source data."
+  ],
+  "lineage": [
+    {
+      "file": "analysis/intents-flywheel-rigor/canonical-prefix.sql",
+      "sha256": "1e2f3b0a5e62c388d91a6011d75637d76074e00b8203ca7f67d06f626173c717"
+    },
+    {
+      "file": "analysis/intents-flywheel-rigor/check-event-audit.py",
+      "sha256": "65ad1d6f4c86a47e94e13c77f69630e5280d1440c4f8a5dded7e23b6ee0ec186"
+    },
+    {
+      "file": "analysis/intents-flywheel-rigor/current-source-metadata-rpc.json",
+      "sha256": "0476e2c2e2103a2d61afbd270e79a21dc20c8e39919a8bab2906a256cce87990"
+    },
+    {
+      "file": "analysis/intents-flywheel-rigor/raw-contract/contracts__defuse__core__src__engine__mod.rs",
+      "sha256": "d1518444bc637686df75a5ff4f537fd110b622aeeda063ddb24d4ee14375f402"
+    },
+    {
+      "file": "analysis/intents-flywheel-rigor/raw-contract/contracts__defuse__core__src__events__mod.rs",
+      "sha256": "87db0e5af5d800545157a0aa47b62fad1bf060f7f5c487dad19736f9b3bdb095"
+    },
+    {
+      "file": "analysis/intents-flywheel-rigor/raw-contract/contracts__defuse__core__src__intents__auth.rs",
+      "sha256": "1979aaaf500613f679dcd52378756854d0f4badabd51a81bd2b00ba1bbffb2ed"
+    },
+    {
+      "file": "analysis/intents-flywheel-rigor/raw-contract/contracts__defuse__core__src__intents__mod.rs",
+      "sha256": "47d9a5711e596373cc0b7c45f2b0416df0396ae016c98eaf0e923a1c5b597241"
+    },
+    {
+      "file": "analysis/intents-flywheel-rigor/raw-contract/contracts__defuse__core__src__payload__mod.rs",
+      "sha256": "2c8821d9704f6fac3827070c68a1d7c5f891f90ef1eaa1c5ee4756ff9e7026b5"
+    },
+    {
+      "file": "analysis/intents-flywheel-rigor/raw-contract/contracts__defuse__core__src__payload__nep413.rs",
+      "sha256": "719427aceb87924417a903dcc37d955875822c8201924dc02124c524ce6c2ecb"
+    },
+    {
+      "file": "analysis/intents-flywheel-rigor/raw-contract/contracts__defuse__src__contract__events.rs",
+      "sha256": "05539e59aa513137ae9736b8eb69cae5c995122501b1d63b2aeda7db74162918"
+    },
+    {
+      "file": "analysis/intents-flywheel-rigor/raw-contract/contracts__defuse__src__contract__intents__execute.rs",
+      "sha256": "248d680e36fe8a6e7a9680206c845e8c163512f4e8d705a3b1fafa749ca40247"
+    },
+    {
+      "file": "analysis/intents-flywheel-rigor/raw-contract/crates__signatures__nep413__src__lib.rs",
+      "sha256": "24252a16c756edde94d6725ef09b10d62a3042621709f497b6c1185077fa9168"
+    },
+    {
+      "file": "analysis/intents-flywheel-rigor/receipt-sample-archival-rpc.json",
+      "sha256": "d64249db850996cd0b825b06bdd332a34f11678b1b7b1cd97f7d2fd9def2a3c0"
+    },
+    {
+      "file": "analysis/intents-flywheel-rigor/receipt-sample-rpc.json",
+      "sha256": "0464624756a24d72e5960138c917c70351b5fb27e8c6d049084e07cbf56f5a73"
+    },
+    {
+      "file": "analysis/intents-flywheel-rigor/receipt-to-tx-rpc.json",
+      "sha256": "3aebc097617b8bf1bd11b1a0863062415e85a3d780cd4a4f2a954bf0fb419c25"
+    },
+    {
+      "file": "analysis/intents-flywheel-rigor/rpc-reconciliation.json",
+      "sha256": "b328d9294c228b738804faf65715c86c798c8cbcec63268e48238af57e764ec8"
+    },
+    {
+      "file": "analysis/intents-flywheel-rigor/sample-block-rpc.json",
+      "sha256": "2fa9c34f6e6d96322752c0df92b361a7684e5c93e9b9c90ec55e09e65fd4c526"
+    },
+    {
+      "file": "analysis/intents-flywheel-rigor/sample-tx-status-rpc.json",
+      "sha256": "1e13849359bf7d3d836cd8269862d43d405331e73ef15b72064acb12fb8cbac0"
+    }
+  ]
+}

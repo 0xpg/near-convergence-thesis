@@ -1,18 +1,23 @@
--- Public account-side token_diff activity only; not unique user swaps or verified solvers.
--- Thirty completed event days ending at latest eligible public event within a bounded 90-day scan.
--- Every repeated raw key or intent hash is withheld, including legitimate repeated multi-statement hashes.
--- DECIMAL(38,0) validation is conservative: valid signed-i128 values beyond 38 digits are withheld.
--- Unlike the local adapter, SQL quarantines every repeated key/hash, including byte-identical duplicates.
--- Confidential execution is absent. Registry chain labels describe representations, not funding routes.
-WITH raw AS (
- SELECT block_date AS day, block_time, receipt_id, index_in_execution_outcome_logs AS log_index,
-  event, try(json_parse(event)) AS parsed,
-  count(*) OVER(PARTITION BY receipt_id,index_in_execution_outcome_logs) AS raw_key_rows
+-- Public token_diff statement grain: receipt_id/log_index/data_ordinal; not unique swaps or verified solvers.
+-- A signed payload can execute multiple statements with the SAME intent_hash. Repeated hashes are retained.
+-- Exact business-field raw copies collapse; conflicting physical-key versions are quarantined, never chosen by row order.
+-- DIP4 token_diff event version 0.4.3 is verified from observed events and deployed source; other versions are withheld.
+-- Signed i128 deltas validate lexically, including valid 39-digit values; no precision-losing quantity cast.
+-- Thirty completed event days ending at latest parsed public token_diff within a bounded 90-day scan. Confidential execution absent.
+WITH raw_versions AS (
+ SELECT block_date AS day,block_time,block_height,receipt_id,index_in_execution_outcome_logs AS log_index,
+  execution_status,event,count(*) AS source_copies
  FROM near.logs
  WHERE executor_account_id='intents.near' AND execution_status LIKE 'SUCCESS%'
- AND block_date >= current_date - INTERVAL '90' DAY AND block_date < current_date
+ AND block_date>=current_date-INTERVAL '90' DAY AND block_date<current_date
+ GROUP BY 1,2,3,4,5,6,7
+), raw AS (
+ SELECT *,try(json_parse(event)) AS parsed,
+  count(*) OVER(PARTITION BY receipt_id,log_index) AS raw_key_versions
+ FROM raw_versions
 ), typed AS (
- SELECT *,try(CAST(json_extract(parsed,'$.data') AS array(json))) AS payloads
+ SELECT *,json_extract_scalar(parsed,'$.version') AS event_version,
+  try(CAST(json_extract(parsed,'$.data') AS array(json))) AS payloads
  FROM raw WHERE json_extract_scalar(parsed,'$.standard')='dip4'
  AND json_extract_scalar(parsed,'$.event')='token_diff'
 ), cutoff AS (
@@ -28,38 +33,43 @@ WITH raw AS (
   try(CAST(json_extract(p,'$.fees_collected') AS map(varchar,varchar))) AS fees_map
  FROM in_window w CROSS JOIN UNNEST(w.payloads) WITH ORDINALITY AS u(p,ordinal)
 ), keyed AS (
- SELECT *,count(*) OVER(PARTITION BY intent_hash) AS intent_hash_rows
+ SELECT *,count(*) OVER(PARTITION BY intent_hash,account_id) AS intent_hash_rows
  FROM expanded
 ), profiled AS (
  SELECT k.*,
-  cardinality(filter(map_values(deltas),v->regexp_like(v,'^-?[0-9]+$') AND try_cast(v AS decimal(38,0))<0)) AS negative_assets,
-  cardinality(filter(map_values(deltas),v->regexp_like(v,'^-?[0-9]+$') AND try_cast(v AS decimal(38,0))>0)) AS positive_assets,
-  cardinality(filter(map_values(deltas),v->v IS NULL OR NOT regexp_like(v,'^-?[0-9]+$') OR try_cast(v AS decimal(38,0)) IS NULL OR try_cast(v AS decimal(38,0))=0)) AS invalid_amounts,
+  cardinality(filter(map_values(deltas),v->substr(v,1,1)='-')) AS negative_assets,
+  cardinality(filter(map_values(deltas),v->substr(v,1,1)<>'-')) AS positive_assets,
+  cardinality(filter(map_values(deltas),v->NOT coalesce((v IS NOT NULL AND regexp_like(v,'^-?(0|[1-9][0-9]*)$') AND v NOT IN ('0','-0')
+   AND (length(regexp_replace(v,'^-',''))<39
+    OR (length(regexp_replace(v,'^-',''))=39 AND regexp_replace(v,'^-','')<=
+     CASE WHEN substr(v,1,1)='-' THEN '170141183460469231731687303715884105728' ELSE '170141183460469231731687303715884105727' END))),false))) AS invalid_amounts,
   cardinality(filter(map_keys(deltas),a->a IS NULL OR trim(a)='')) AS invalid_token_keys,
-  element_at(map_keys(map_filter(deltas,(a,v)->regexp_like(v,'^-?[0-9]+$') AND try_cast(v AS decimal(38,0))<0)),1) AS input_asset,
-  element_at(map_keys(map_filter(deltas,(a,v)->regexp_like(v,'^-?[0-9]+$') AND try_cast(v AS decimal(38,0))>0)),1) AS output_asset
+  element_at(map_keys(map_filter(deltas,(a,v)->substr(v,1,1)='-')),1) AS input_asset,
+  element_at(map_keys(map_filter(deltas,(a,v)->substr(v,1,1)<>'-')),1) AS output_asset
  FROM keyed k
 ), canonical AS (
  SELECT *,negative_assets=1 AND positive_assets=1 AS simple_pair,
   cardinality(fees_map)>0 AS nonempty_fee_map
- FROM profiled WHERE receipt_id IS NOT NULL AND trim(receipt_id)<>'' AND log_index IS NOT NULL
- AND raw_key_rows=1 AND intent_hash_rows=1
+ FROM profiled WHERE receipt_id IS NOT NULL AND trim(receipt_id)<>'' AND log_index IS NOT NULL AND log_index>=0
+ AND raw_key_versions=1 AND event_version='0.4.3'
  AND nullif(trim(account_id),'') IS NOT NULL AND nullif(trim(intent_hash),'') IS NOT NULL
  AND deltas IS NOT NULL AND cardinality(deltas)>0 AND invalid_amounts=0 AND invalid_token_keys=0
 ), raw_audit AS (
  SELECT day,count(*) AS token_diff_log_rows,
-  count_if(raw_key_rows<>1 OR receipt_id IS NULL OR trim(receipt_id)='' OR log_index IS NULL) AS invalid_or_repeated_raw_key_rows,
+  sum(source_copies-1) AS collapsed_exact_raw_copies,
+  count_if(event_version IS NULL OR event_version<>'0.4.3') AS unsupported_event_version_log_rows,
+  count_if(raw_key_versions<>1 OR receipt_id IS NULL OR trim(receipt_id)='' OR log_index IS NULL) AS invalid_or_repeated_raw_key_rows,
   count_if(payloads IS NULL OR cardinality(payloads)=0) AS malformed_or_empty_data_log_rows
  FROM in_window GROUP BY 1
 ), contract_log_observations AS (
- SELECT day,count(*) AS successful_contract_log_rows FROM raw GROUP BY 1
+ SELECT day,sum(source_copies) AS successful_contract_log_rows FROM raw GROUP BY 1
 ), malformed_logs AS (
  SELECT r.day,count_if(parsed IS NULL) AS malformed_json_contract_log_rows
  FROM raw r CROSS JOIN cutoff c WHERE r.day BETWEEN c.end_day-INTERVAL '29' DAY AND c.end_day
  GROUP BY 1
 ), payload_audit AS (
  SELECT day,count(*) AS parsed_account_payloads,
-  count_if(intent_hash_rows<>1) AS repeated_intent_hash_payloads,
+  count_if(intent_hash_rows>1 AND nullif(trim(intent_hash),'') IS NOT NULL) AS repeated_intent_hash_payloads,
   count_if(nullif(trim(account_id),'') IS NULL OR nullif(trim(intent_hash),'') IS NULL) AS missing_identity_payloads,
   count_if(deltas IS NULL OR cardinality(deltas)=0 OR invalid_amounts>0 OR invalid_token_keys>0) AS malformed_delta_payloads
  FROM profiled GROUP BY 1
@@ -94,6 +104,8 @@ SELECT d.day,c.end_day-INTERVAL '29' DAY AS window_start,c.end_day AS window_end
  CASE WHEN o.successful_contract_log_rows>0 THEN coalesce(a.nonempty_fee_map_intents,0) END AS nonempty_fee_map_intents,
  CASE WHEN o.successful_contract_log_rows>0 THEN coalesce(r.token_diff_log_rows,0) END AS token_diff_log_rows,
  CASE WHEN o.successful_contract_log_rows>0 THEN coalesce(r.invalid_or_repeated_raw_key_rows,0) END AS invalid_or_repeated_raw_key_rows,
+ CASE WHEN o.successful_contract_log_rows>0 THEN coalesce(r.collapsed_exact_raw_copies,0) END AS collapsed_exact_raw_copies,
+ CASE WHEN o.successful_contract_log_rows>0 THEN coalesce(r.unsupported_event_version_log_rows,0) END AS unsupported_event_version_log_rows,
  CASE WHEN o.successful_contract_log_rows>0 THEN coalesce(r.malformed_or_empty_data_log_rows,0) END AS malformed_or_empty_data_log_rows,
  CASE WHEN o.successful_contract_log_rows>0 THEN coalesce(p.parsed_account_payloads,0) END AS parsed_account_payloads,
  CASE WHEN o.successful_contract_log_rows>0 THEN coalesce(p.repeated_intent_hash_payloads,0) END AS repeated_intent_hash_payloads,
@@ -101,7 +113,7 @@ SELECT d.day,c.end_day-INTERVAL '29' DAY AS window_start,c.end_day AS window_end
  CASE WHEN o.successful_contract_log_rows>0 THEN coalesce(p.malformed_delta_payloads,0) END AS malformed_delta_payloads,
  CASE WHEN o.successful_contract_log_rows>0 THEN coalesce(m.malformed_json_contract_log_rows,0) END AS malformed_json_contract_log_rows,
  x.window_nonreferral_accounts,x.window_nonreferral_top5_count_share_pct,x.window_nonreferral_hhi_count_basis,
- 'Nonreferral signing accounts are an unverified counterparty proxy, not solver identities; confidential activity excluded; DECIMAL38 conservative subset; null daily metrics mean no observed successful contract logs' AS scope,
+ 'Repeated intent_hash is a signed-payload multiplicity diagnostic, not an exclusion. Nonreferral signing accounts are an unverified counterparty proxy, not solver identities; confidential activity excluded; lexically validated signed i128; physical-key exact duplicates collapsed; repeated signed-payload hashes retained; event version 0.4.3 only; null daily metrics mean no observed successful contract logs' AS scope,
  current_timestamp AS retrieved_utc
 FROM days d CROSS JOIN cutoff c CROSS JOIN concentration x
 LEFT JOIN contract_log_observations o ON o.day=d.day

@@ -1,0 +1,805 @@
+{
+  "version": "near-intents-financial-rigor-v1",
+  "causalIdentification": false,
+  "summary": {
+    "currentWindow": {
+      "start": "2026-10-14",
+      "end": "2026-11-12"
+    },
+    "priorWindow": {
+      "start": "2026-09-14",
+      "end": "2026-10-13"
+    },
+    "currentFeePerMillionUsd": 1602.5333309511043,
+    "priorFeePerMillionUsd": 1703.2590840167204,
+    "productivityChangePct": -5.913707081372433,
+    "volumeChangePct": -21.562608600854784,
+    "feesChangePct": -26.201166170469847,
+    "rateChangeSensitivity95Pct": {
+      "blockDays": 7,
+      "noncircularMovingBlocks": [
+        -17.091729593373678,
+        -0.3790636583344648
+      ],
+      "circularEndpointSensitivity": [
+        -14.51901493660532,
+        4.232771139281509
+      ],
+      "interpretation": "Endpoint-sensitive resampling intervals, conditional on unverified within-window stationarity; not a forecast or a robust significance claim."
+    },
+    "firstDifferenceElasticity": {
+      "estimate": 0.9204091213016325,
+      "hacLag": 7,
+      "normalApprox95Interval": [
+        0.7356588752938037,
+        1.1051593673094613
+      ],
+      "intervalIncludesUnitElasticity": true
+    },
+    "reportingMix": {
+      "priorConfidentialVolumeSharePct": 33.390775227552815,
+      "currentConfidentialVolumeSharePct": 62.85666386411266,
+      "netWithinClassIntensityEffectPerMillionUsd": 490.6017819944866,
+      "netVolumeMixEffectPerMillionUsd": -590.9915801004347,
+      "unattributedProtocolIntensityEffectPerMillionUsd": -0.33595495966816263,
+      "observedRateChangePerMillionUsd": -100.72575306561635,
+      "interpretation": "Exact reporting-class accounting, not matched customer cohorts, quoted execution prices or causal attribution."
+    },
+    "superlinearFeeScalingEstablished": false,
+    "persistentProductivityDeclineEstablished": false,
+    "causalFlywheelEstablished": false,
+    "conclusion": "Reported fees per $1M changed from $1,703 to $1,603 between matched30daywindows. This comparison is descriptive; sensitivity tests do not establish persistence, superlinear fee scaling or a causal solver flywheel."
+  },
+  "inputs": [
+    {
+      "file": "analysis/intents-flywheel/fee-productivity-result.json",
+      "sha256": "44498a7c044d7f2d455b6e3eb7751e50a5a07ba8bbabdfd40c0655a39ba51c2a"
+    },
+    {
+      "file": "data/glance-daily.json",
+      "sha256": "5092c25bebca04c0288a5bd030ca063b5970434a0a5fa8072a8d3ef1297b08c6"
+    },
+    {
+      "file": "analysis/intents-flywheel-rigor/fee-component-panel-result.json",
+      "sha256": "2c1a20738ce4ee6d9c309845934ea170741e86c91ffa8876673445d5121f81d1"
+    },
+    {
+      "file": "analysis/intents-flywheel-rigor/statistics.py",
+      "sha256": "16f9c718d631a6a884b2f27d8d25c38ec9f956fe3e1021eeccfa10a25acd1e08"
+    }
+  ],
+  "runtime": {
+    "numpy": "2.3.5",
+    "seed": 20261113,
+    "bootstrapReplicates": 10000
+  },
+  "independentCalculationValidation": {
+    "method": "Separate centered scalar OLS slope and HAC7 influence-score autocovariance, without matrix sandwich helper. Explicit full score-pair and HC0 checks also execute in self_check.",
+    "results": [
+      {
+        "model": "log levels",
+        "separateCenteredScalarFormula": {
+          "elasticity": 1.1002503076770664,
+          "standardError": 0.15291660542368174,
+          "normalApprox95Interval": [
+            0.8005337610466503,
+            1.3999668543074826
+          ]
+        },
+        "agreesWithMatrixSandwich": true
+      },
+      {
+        "model": "first differences",
+        "separateCenteredScalarFormula": {
+          "elasticity": 0.9204091213016332,
+          "standardError": 0.09426032959583104,
+          "normalApprox95Interval": [
+            0.7356588752938044,
+            1.105159367309462
+          ]
+        },
+        "agreesWithMatrixSandwich": true
+      }
+    ],
+    "statsmodelsInstalled": false,
+    "newDependenciesInstalled": false
+  },
+  "windows": [
+    {
+      "start": "2026-08-15",
+      "end": "2026-09-13",
+      "days": 30,
+      "reportedVolumeUsd": 3981037372.9929357,
+      "reportedGrossFeesUsd": 5182457.683985683,
+      "reportedFeesPerMillionUsd": 1301.7857403557912,
+      "missingFeeRows": 540
+    },
+    {
+      "start": "2026-09-14",
+      "end": "2026-10-13",
+      "days": 30,
+      "reportedVolumeUsd": 4811676400.467687,
+      "reportedGrossFeesUsd": 8195531.5384454625,
+      "reportedFeesPerMillionUsd": 1703.2590840167204,
+      "missingFeeRows": 240
+    },
+    {
+      "start": "2026-10-14",
+      "end": "2026-11-12",
+      "days": 30,
+      "reportedVolumeUsd": 3774153451.0951414,
+      "reportedGrossFeesUsd": 6048206.701504103,
+      "reportedFeesPerMillionUsd": 1602.5333309511043,
+      "missingFeeRows": 202
+    }
+  ],
+  "reportingClassDecomposition": {
+    "query": "https://dune.com/queries/9120971",
+    "windows": [
+      {
+        "start": "2026-08-15",
+        "end": "2026-09-13",
+        "reportedVolumeUsd": 3981037372.992935,
+        "reportedGrossFeesUsd": 5182457.683985682,
+        "reportedFeesPerMillionUsd": 1301.7857403557912,
+        "protocolFeesUsd": 3458.975101992496,
+        "unattributedProtocolFeesPerTotalMillionUsd": 0.8688627555867546,
+        "otherAffiliateFeesPerTotalMillionUsd": 0.0,
+        "unclassifiedVolumeUsd": 0,
+        "classes": [
+          {
+            "reportingClass": "public",
+            "volumeUsd": 3207827451.6244226,
+            "affiliateFeesUsd": 4857680.912586011,
+            "volumeWeight": 0.8057767740102336,
+            "affiliateFeesPerClassMillionUsd": 1514.3211366079286
+          },
+          {
+            "reportingClass": "confidential",
+            "volumeUsd": 773209921.3685126,
+            "affiliateFeesUsd": 321317.7962976788,
+            "volumeWeight": 0.19422322598976635,
+            "affiliateFeesPerClassMillionUsd": 415.563467847095
+          }
+        ],
+        "missingFeeRows": 540,
+        "unpricedVolumeRows": 5
+      },
+      {
+        "start": "2026-09-14",
+        "end": "2026-10-13",
+        "reportedVolumeUsd": 4811676400.467687,
+        "reportedGrossFeesUsd": 8195531.5384454625,
+        "reportedFeesPerMillionUsd": 1703.2590840167204,
+        "protocolFeesUsd": 3652.3088262860956,
+        "unattributedProtocolFeesPerTotalMillionUsd": 0.7590512167300149,
+        "otherAffiliateFeesPerTotalMillionUsd": 0.0,
+        "unclassifiedVolumeUsd": 0,
+        "classes": [
+          {
+            "reportingClass": "public",
+            "volumeUsd": 3205020348.9103174,
+            "affiliateFeesUsd": 6586796.939726459,
+            "volumeWeight": 0.6660922477244718,
+            "affiliateFeesPerClassMillionUsd": 2055.1498033283688
+          },
+          {
+            "reportingClass": "confidential",
+            "volumeUsd": 1606656051.5573692,
+            "affiliateFeesUsd": 1605082.2898927175,
+            "volumeWeight": 0.33390775227552816,
+            "affiliateFeesPerClassMillionUsd": 999.0204738200648
+          }
+        ],
+        "missingFeeRows": 240,
+        "unpricedVolumeRows": 0
+      },
+      {
+        "start": "2026-10-14",
+        "end": "2026-11-12",
+        "reportedVolumeUsd": 3774153451.0951414,
+        "reportedGrossFeesUsd": 6048206.701504102,
+        "reportedFeesPerMillionUsd": 1602.533330951104,
+        "protocolFeesUsd": 1596.8301987354266,
+        "unattributedProtocolFeesPerTotalMillionUsd": 0.4230962570618522,
+        "otherAffiliateFeesPerTotalMillionUsd": 0.0,
+        "unclassifiedVolumeUsd": 0,
+        "classes": [
+          {
+            "reportingClass": "public",
+            "volumeUsd": 1401846502.6244607,
+            "affiliateFeesUsd": 4849926.656784633,
+            "volumeWeight": 0.3714333613588734,
+            "affiliateFeesPerClassMillionUsd": 3459.6702618331356
+          },
+          {
+            "reportingClass": "confidential",
+            "volumeUsd": 2372306948.4706807,
+            "affiliateFeesUsd": 1196683.2145207336,
+            "volumeWeight": 0.6285666386411266,
+            "affiliateFeesPerClassMillionUsd": 504.4386078674099
+          }
+        ],
+        "missingFeeRows": 202,
+        "unpricedVolumeRows": 0
+      }
+    ],
+    "latestVsPrior": {
+      "observedRateChangePerMillionUsd": -100.72575306561635,
+      "unattributedProtocolIntensityChangePerMillionUsd": -0.33595495966816263,
+      "otherAffiliateIntensityChangePerMillionUsd": 0.0,
+      "classes": [
+        {
+          "reportingClass": "public",
+          "withinClassIntensityEffectPerMillionUsd": 728.6129720900886,
+          "volumeMixEffectPerMillionUsd": -812.495369453573
+        },
+        {
+          "reportingClass": "confidential",
+          "withinClassIntensityEffectPerMillionUsd": -238.01119009560205,
+          "volumeMixEffectPerMillionUsd": 221.5037893531383
+        }
+      ],
+      "reconstructedRateChangePerMillionUsd": -100.7257530656162,
+      "accountingResidual": -1.4210854715202004e-13
+    },
+    "formula": "R = protocolFees / totalVolume + otherAffiliateFees / totalVolume + sum_s(volumeWeight_s * affiliateFees_s / classVolume_s). Each product change uses mean(weight)*change(rate) + mean(rate)*change(weight); all rates scaled per $1M.",
+    "interpretation": "Exact reporting-class accounting decomposition, not price power, causal attribution, independent customer cohorts or confidential trade-level reconstruction. Protocol fees remain privacy-unattributed. Two Dune queries use the same underlying datasets, so their reconciliation is not independent raw-source validation."
+  },
+  "latestVsPrior": {
+    "volumeChangePct": -21.562608600854784,
+    "feesChangePct": -26.201166170469847,
+    "productivityChangePct": -5.913707081372433,
+    "feeChangeUsd": -2147324.8369413596,
+    "symmetricVolumeEffectUsd": -1714917.7481954033,
+    "symmetricProductivityEffectUsd": -432407.088745956,
+    "interpretation": "Exact two-factor accounting decomposition F=V*(F/V), not causal attribution or quoted-fee change."
+  },
+  "blockBootstrap": [
+    {
+      "blockDays": 1,
+      "endpointMode": "noncircular moving blocks",
+      "replicates": 10000,
+      "latestRatePercentile95Interval": [
+        1498.9509820602957,
+        1707.8576816035013
+      ],
+      "priorRatePercentile95Interval": [
+        1609.448663663506,
+        1806.1330202714084
+      ],
+      "rateChangePercentile95IntervalPct": [
+        -13.748724937339489,
+        2.508999680660169
+      ],
+      "medianRateChangePct": -5.810137053293069,
+      "bootstrapFractionRateChangePositive": 0.0846,
+      "interpretation": "Sensitivity interval conditional on local within-window stationarity, not a forecast, identification interval or causal p-value. Block1 is the iid diagnostic. Circular wrapping equalizes endpoint inclusion but joins last and first dates artificially; noncircular blocks weight central dates more. Short30day windows and long blocks make edge assumptions material."
+    },
+    {
+      "blockDays": 1,
+      "endpointMode": "circular sensitivity",
+      "replicates": 10000,
+      "latestRatePercentile95Interval": [
+        1498.9509820602957,
+        1707.8576816035013
+      ],
+      "priorRatePercentile95Interval": [
+        1609.448663663506,
+        1806.1330202714084
+      ],
+      "rateChangePercentile95IntervalPct": [
+        -13.748724937339489,
+        2.508999680660169
+      ],
+      "medianRateChangePct": -5.810137053293069,
+      "bootstrapFractionRateChangePositive": 0.0846,
+      "interpretation": "Sensitivity interval conditional on local within-window stationarity, not a forecast, identification interval or causal p-value. Block1 is the iid diagnostic. Circular wrapping equalizes endpoint inclusion but joins last and first dates artificially; noncircular blocks weight central dates more. Short30day windows and long blocks make edge assumptions material."
+    },
+    {
+      "blockDays": 3,
+      "endpointMode": "noncircular moving blocks",
+      "replicates": 10000,
+      "latestRatePercentile95Interval": [
+        1475.23091223373,
+        1720.8048005770945
+      ],
+      "priorRatePercentile95Interval": [
+        1598.2785409142105,
+        1838.1646703722952
+      ],
+      "rateChangePercentile95IntervalPct": [
+        -15.985416763133916,
+        3.2141103781374136
+      ],
+      "medianRateChangePct": -6.5646129058764435,
+      "bootstrapFractionRateChangePositive": 0.0953,
+      "interpretation": "Sensitivity interval conditional on local within-window stationarity, not a forecast, identification interval or causal p-value. Block1 is the iid diagnostic. Circular wrapping equalizes endpoint inclusion but joins last and first dates artificially; noncircular blocks weight central dates more. Short30day windows and long blocks make edge assumptions material."
+    },
+    {
+      "blockDays": 3,
+      "endpointMode": "circular sensitivity",
+      "replicates": 10000,
+      "latestRatePercentile95Interval": [
+        1482.5145305939295,
+        1715.6005341850337
+      ],
+      "priorRatePercentile95Interval": [
+        1586.4654126564656,
+        1824.2299450783291
+      ],
+      "rateChangePercentile95IntervalPct": [
+        -15.150198370839593,
+        3.9168665050706912
+      ],
+      "medianRateChangePct": -5.85634525515486,
+      "bootstrapFractionRateChangePositive": 0.1186,
+      "interpretation": "Sensitivity interval conditional on local within-window stationarity, not a forecast, identification interval or causal p-value. Block1 is the iid diagnostic. Circular wrapping equalizes endpoint inclusion but joins last and first dates artificially; noncircular blocks weight central dates more. Short30day windows and long blocks make edge assumptions material."
+    },
+    {
+      "blockDays": 7,
+      "endpointMode": "noncircular moving blocks",
+      "replicates": 10000,
+      "latestRatePercentile95Interval": [
+        1474.6782539172204,
+        1690.5213835366037
+      ],
+      "priorRatePercentile95Interval": [
+        1629.1630433671082,
+        1836.485139825451
+      ],
+      "rateChangePercentile95IntervalPct": [
+        -17.091729593373678,
+        -0.3790636583344648
+      ],
+      "medianRateChangePct": -9.551721466498236,
+      "bootstrapFractionRateChangePositive": 0.0212,
+      "interpretation": "Sensitivity interval conditional on local within-window stationarity, not a forecast, identification interval or causal p-value. Block1 is the iid diagnostic. Circular wrapping equalizes endpoint inclusion but joins last and first dates artificially; noncircular blocks weight central dates more. Short30day windows and long blocks make edge assumptions material."
+    },
+    {
+      "blockDays": 7,
+      "endpointMode": "circular sensitivity",
+      "replicates": 10000,
+      "latestRatePercentile95Interval": [
+        1494.3533956662,
+        1708.778722743816
+      ],
+      "priorRatePercentile95Interval": [
+        1572.0513955766403,
+        1816.2044296957906
+      ],
+      "rateChangePercentile95IntervalPct": [
+        -14.51901493660532,
+        4.232771139281509
+      ],
+      "medianRateChangePct": -5.950556569573001,
+      "bootstrapFractionRateChangePositive": 0.1185,
+      "interpretation": "Sensitivity interval conditional on local within-window stationarity, not a forecast, identification interval or causal p-value. Block1 is the iid diagnostic. Circular wrapping equalizes endpoint inclusion but joins last and first dates artificially; noncircular blocks weight central dates more. Short30day windows and long blocks make edge assumptions material."
+    },
+    {
+      "blockDays": 14,
+      "endpointMode": "noncircular moving blocks",
+      "replicates": 10000,
+      "latestRatePercentile95Interval": [
+        1474.2909839592598,
+        1656.180782534447
+      ],
+      "priorRatePercentile95Interval": [
+        1671.740199726824,
+        1775.6129763371964
+      ],
+      "rateChangePercentile95IntervalPct": [
+        -15.472593429178907,
+        -3.637201224810294
+      ],
+      "medianRateChangePct": -10.710146774628043,
+      "bootstrapFractionRateChangePositive": 0.0024,
+      "interpretation": "Sensitivity interval conditional on local within-window stationarity, not a forecast, identification interval or causal p-value. Block1 is the iid diagnostic. Circular wrapping equalizes endpoint inclusion but joins last and first dates artificially; noncircular blocks weight central dates more. Short30day windows and long blocks make edge assumptions material."
+    },
+    {
+      "blockDays": 14,
+      "endpointMode": "circular sensitivity",
+      "replicates": 10000,
+      "latestRatePercentile95Interval": [
+        1495.7501645244292,
+        1708.7722369991222
+      ],
+      "priorRatePercentile95Interval": [
+        1628.71208332904,
+        1767.3558840400935
+      ],
+      "rateChangePercentile95IntervalPct": [
+        -13.245327061341756,
+        1.7630194261930194
+      ],
+      "medianRateChangePct": -5.909482294521867,
+      "bootstrapFractionRateChangePositive": 0.0665,
+      "interpretation": "Sensitivity interval conditional on local within-window stationarity, not a forecast, identification interval or causal p-value. Block1 is the iid diagnostic. Circular wrapping equalizes endpoint inclusion but joins last and first dates artificially; noncircular blocks weight central dates more. Short30day windows and long blocks make edge assumptions material."
+    }
+  ],
+  "regressions": [
+    {
+      "model": "log levels",
+      "observations": 90,
+      "fields": [
+        "intercept",
+        "logVolume"
+      ],
+      "coefficients": {
+        "intercept": -8.380063399375734,
+        "logVolume": 1.100250307677066
+      },
+      "hacSensitivity": [
+        {
+          "hacLag": 0,
+          "elasticity": 1.100250307677066,
+          "standardError": 0.11211896666755196,
+          "normalApprox95Interval": [
+            0.8804971330086642,
+            1.3200034823454678
+          ],
+          "intervalContainsUnitElasticity": true
+        },
+        {
+          "hacLag": 3,
+          "elasticity": 1.100250307677066,
+          "standardError": 0.14109444574968316,
+          "normalApprox95Interval": [
+            0.8237051940076869,
+            1.376795421346445
+          ],
+          "intervalContainsUnitElasticity": true
+        },
+        {
+          "hacLag": 7,
+          "elasticity": 1.100250307677066,
+          "standardError": 0.1529166054235855,
+          "normalApprox95Interval": [
+            0.8005337610468384,
+            1.3999668543072936
+          ],
+          "intervalContainsUnitElasticity": true
+        },
+        {
+          "hacLag": 14,
+          "elasticity": 1.100250307677066,
+          "standardError": 0.15933289341521828,
+          "normalApprox95Interval": [
+            0.7879578365832383,
+            1.4125427787708937
+          ],
+          "intervalContainsUnitElasticity": true
+        }
+      ],
+      "residualLag1Correlation": 0.5139314954335319,
+      "interpretation": "Contemporaneous descriptive association; levels may be nonstationary. HAC does not solve omitted variables, endogenous volume, common shocks or measurement changes."
+    },
+    {
+      "model": "log levels plus linear time",
+      "observations": 90,
+      "fields": [
+        "intercept",
+        "logVolume",
+        "time"
+      ],
+      "coefficients": {
+        "intercept": -8.574349084682899,
+        "logVolume": 1.1013319332363294,
+        "time": 0.003911476513671186
+      },
+      "hacSensitivity": [
+        {
+          "hacLag": 0,
+          "elasticity": 1.1013319332363294,
+          "standardError": 0.09439660550947065,
+          "normalApprox95Interval": [
+            0.9163145864377669,
+            1.286349280034892
+          ],
+          "intervalContainsUnitElasticity": true
+        },
+        {
+          "hacLag": 3,
+          "elasticity": 1.1013319332363294,
+          "standardError": 0.11436482407403133,
+          "normalApprox95Interval": [
+            0.877176878051228,
+            1.3254869884214309
+          ],
+          "intervalContainsUnitElasticity": true
+        },
+        {
+          "hacLag": 7,
+          "elasticity": 1.1013319332363294,
+          "standardError": 0.12960657026530964,
+          "normalApprox95Interval": [
+            0.8473030555163226,
+            1.3553608109563362
+          ],
+          "intervalContainsUnitElasticity": true
+        },
+        {
+          "hacLag": 14,
+          "elasticity": 1.1013319332363294,
+          "standardError": 0.1381571203291042,
+          "normalApprox95Interval": [
+            0.8305439773912852,
+            1.3721198890813735
+          ],
+          "intervalContainsUnitElasticity": true
+        }
+      ],
+      "residualLag1Correlation": 0.4031978819532506,
+      "interpretation": "Contemporaneous descriptive association; levels may be nonstationary. HAC does not solve omitted variables, endogenous volume, common shocks or measurement changes."
+    },
+    {
+      "model": "first differences",
+      "observations": 89,
+      "fields": [
+        "intercept",
+        "deltaLogVolume"
+      ],
+      "coefficients": {
+        "intercept": 0.008375238308703395,
+        "deltaLogVolume": 0.9204091213016325
+      },
+      "hacSensitivity": [
+        {
+          "hacLag": 0,
+          "elasticity": 0.9204091213016325,
+          "standardError": 0.08393116732455615,
+          "normalApprox95Interval": [
+            0.7559040333455025,
+            1.0849142092577626
+          ],
+          "intervalContainsUnitElasticity": true
+        },
+        {
+          "hacLag": 3,
+          "elasticity": 0.9204091213016325,
+          "standardError": 0.09075420339865488,
+          "normalApprox95Interval": [
+            0.742530882640269,
+            1.098287359962996
+          ],
+          "intervalContainsUnitElasticity": true
+        },
+        {
+          "hacLag": 7,
+          "elasticity": 0.9204091213016325,
+          "standardError": 0.09426032959583104,
+          "normalApprox95Interval": [
+            0.7356588752938037,
+            1.1051593673094613
+          ],
+          "intervalContainsUnitElasticity": true
+        },
+        {
+          "hacLag": 14,
+          "elasticity": 0.9204091213016325,
+          "standardError": 0.09688043112499646,
+          "normalApprox95Interval": [
+            0.7305234762966395,
+            1.1102947663066256
+          ],
+          "intervalContainsUnitElasticity": true
+        }
+      ],
+      "residualLag1Correlation": -0.3511187512418243,
+      "interpretation": "Contemporaneous descriptive association; levels may be nonstationary. HAC does not solve omitted variables, endogenous volume, common shocks or measurement changes."
+    },
+    {
+      "model": "lagged controls plus time",
+      "observations": 89,
+      "fields": [
+        "intercept",
+        "logVolume",
+        "lagLogFees",
+        "lagLogVolume",
+        "time"
+      ],
+      "coefficients": {
+        "intercept": -4.06321135359472,
+        "logVolume": 0.9456770364085985,
+        "lagLogFees": 0.43775353735026246,
+        "lagLogVolume": -0.36547363580631936,
+        "time": 0.001731232908340985
+      },
+      "hacSensitivity": [
+        {
+          "hacLag": 0,
+          "elasticity": 0.9456770364085985,
+          "standardError": 0.10148477265710569,
+          "normalApprox95Interval": [
+            0.7467668820006713,
+            1.1445871908165257
+          ],
+          "intervalContainsUnitElasticity": true
+        },
+        {
+          "hacLag": 3,
+          "elasticity": 0.9456770364085985,
+          "standardError": 0.09868540831616061,
+          "normalApprox95Interval": [
+            0.7522536361089236,
+            1.1391004367082733
+          ],
+          "intervalContainsUnitElasticity": true
+        },
+        {
+          "hacLag": 7,
+          "elasticity": 0.9456770364085985,
+          "standardError": 0.10653942153820385,
+          "normalApprox95Interval": [
+            0.736859770193719,
+            1.154494302623478
+          ],
+          "intervalContainsUnitElasticity": true
+        },
+        {
+          "hacLag": 14,
+          "elasticity": 0.9456770364085985,
+          "standardError": 0.11216176315306643,
+          "normalApprox95Interval": [
+            0.7258399806285882,
+            1.1655140921886087
+          ],
+          "intervalContainsUnitElasticity": true
+        }
+      ],
+      "residualLag1Correlation": -0.07699805669924333,
+      "interpretation": "Contemporaneous descriptive association; levels may be nonstationary. HAC does not solve omitted variables, endogenous volume, common shocks or measurement changes."
+    }
+  ],
+  "chronologicalHoldout": {
+    "trainStart": "2026-08-15",
+    "trainEnd": "2026-10-13",
+    "testStart": "2026-10-14",
+    "testEnd": "2026-11-12",
+    "models": [
+      {
+        "model": "log levels",
+        "trainDays": 60,
+        "testDays": 30,
+        "logRootMeanSquaredError": 0.22703070445270654,
+        "logMeanAbsoluteError": 0.1941530026397737,
+        "trainCoefficients": {
+          "intercept": -10.08459134016155,
+          "logVolume": 1.1893614622320317
+        }
+      },
+      {
+        "model": "log levels plus linear time",
+        "trainDays": 60,
+        "testDays": 30,
+        "logRootMeanSquaredError": 0.3023650821086412,
+        "logMeanAbsoluteError": 0.2401199426288768,
+        "trainCoefficients": {
+          "intercept": -8.839751136589031,
+          "logVolume": 1.1110163805552364,
+          "time": 0.007564091431005782
+        }
+      },
+      {
+        "model": "fixed proportional rate learned on first60days",
+        "trainDays": 60,
+        "testDays": 30,
+        "logRootMeanSquaredError": 0.18474463947583508,
+        "logMeanAbsoluteError": 0.15373922313530725
+      }
+    ],
+    "interpretation": "Exploratory chronological parameter split, not a preregistered untouched holdout. Conditional fitted fee association uses observed test-period volume, not an ex-ante forecast. Same provider history; no external venue controls."
+  },
+  "dependenceDiagnostics": {
+    "logFeesLag1Correlation": 0.583875099452464,
+    "logVolumeLag1Correlation": 0.4548738460001991,
+    "unitRootOrCointegrationEstablished": false,
+    "interpretation": "Autocorrelation motivates dependence-robust sensitivity; first differences and holdout challenge levels-only results. Formal stationarity and causal dynamics are not established."
+  },
+  "latestRateLeaveOneDayOut": {
+    "minimum": 1580.1556991150062,
+    "maximum": 1626.0005214740888,
+    "pointEstimate": 1602.5333309511043,
+    "interpretation": "Deterministic single-day influence range, not a confidence interval."
+  },
+  "receiptTimingDiagnostics": [
+    {
+      "days": 30,
+      "start": "2026-10-12",
+      "end": "2026-11-10",
+      "capturedUsd": 1817568.0,
+      "grossFeesUsd": 5960786.0,
+      "capturedPerMillionUsd": 483.6874901552077,
+      "captureSharePct": 30.492086110791426,
+      "zeroReceiptDays": 0,
+      "largestReceiptDaySharePct": 8.95526329688903,
+      "interpretation": "Receipt-date cash observations, not trade accrual matching, executed purchases or proven demand. Wider aggregation reduces collection-timing sensitivity without solving attribution."
+    },
+    {
+      "days": 90,
+      "start": "2026-08-13",
+      "end": "2026-11-10",
+      "capturedUsd": 5077609.0,
+      "grossFeesUsd": 18757458.0,
+      "capturedPerMillionUsd": 408.1645752357911,
+      "captureSharePct": 27.06981404409915,
+      "zeroReceiptDays": 0,
+      "largestReceiptDaySharePct": 3.2056032672070653,
+      "interpretation": "Receipt-date cash observations, not trade accrual matching, executed purchases or proven demand. Wider aggregation reduces collection-timing sensitivity without solving attribution."
+    },
+    {
+      "days": 364,
+      "start": "2025-11-12",
+      "end": "2026-11-10",
+      "capturedUsd": 9358304.05,
+      "grossFeesUsd": 53850323.0,
+      "capturedPerMillionUsd": 277.14322412934933,
+      "captureSharePct": 17.378361964514124,
+      "zeroReceiptDays": 76,
+      "largestReceiptDaySharePct": 3.8022487632254265,
+      "interpretation": "Receipt-date cash observations, not trade accrual matching, executed purchases or proven demand. Wider aggregation reduces collection-timing sensitivity without solving attribution."
+    }
+  ],
+  "sourceReconciliation": [
+    {
+      "metric": "reported_volume_usd",
+      "sharedDays": 88,
+      "rawDatasetTotal": 12277301810.524023,
+      "irSnapshotTotal": 12277301810.524023,
+      "differencePctOfIr": 0.0,
+      "independentEvidence": false,
+      "interpretation": "Related upstream reporting paths; exact volume reconciliation is not independent raw transaction validation. Fee differences require component/timing reconciliation before pooling."
+    },
+    {
+      "metric": "reported_gross_fees_usd",
+      "sharedDays": 88,
+      "rawDatasetTotal": 18934804.591341663,
+      "irSnapshotTotal": 18609082.0,
+      "differencePctOfIr": 1.7503420713695705,
+      "independentEvidence": false,
+      "interpretation": "Related upstream reporting paths; exact volume reconciliation is not independent raw transaction validation. Fee differences require component/timing reconciliation before pooling."
+    }
+  ],
+  "sources": [
+    {
+      "title": "Newey and West (1987), original covariance paper",
+      "url": "https://users.ssc.wisc.edu/~behansen/718/NeweyWest1987.pdf",
+      "role": "Method origin; scanned PDF lacked extractable text; exact Bartlett sandwich cross-checked against primary implementation below."
+    },
+    {
+      "title": "Statsmodels primary implementation: Bartlett and S_hac_simple",
+      "url": "https://www.statsmodels.org/stable/_modules/statsmodels/stats/sandwich_covariance.html",
+      "reviewedSections": [
+        "weights_bartlett",
+        "S_hac_simple",
+        "cov_hac_simple"
+      ],
+      "role": "Verified Bartlett weights 1-j/(L+1), lagged score cross-products and finite-sample correction n/(n-k). No package code downloaded or executed."
+    },
+    {
+      "title": "Buehlmann and Kuensch, The Blockwise Bootstrap for General Parameters of a Stationary Time Series",
+      "url": "https://www.research-collection.ethz.ch/server/api/core/bitstreams/6ee4a421-2a0b-4d08-bcf8-d2ed766f6b27/content",
+      "role": "Author-hosted primary method context. Indexed full-text abstract reviewed; direct PDF retrieval returned403; no full-paper validation claimed."
+    },
+    {
+      "title": "Zhang (2026), Incentives and Market Structure in Intent-Based Exchanges",
+      "url": "https://arxiv.org/html/2607.21955v1",
+      "reviewedSections": [
+        "4 Data",
+        "5 Empirical strategy",
+        "6.4 Mechanism",
+        "6.7 Robustness",
+        "8 Limitations"
+      ],
+      "role": "Unvalidated preprint used only as methodological inspiration. Root primary-governance review found a treatment-date conflict, so its empirical causal findings are not accepted as independently verified evidence and are not transferred to NEAR. The statistical estimators here are independently specified and checked."
+    }
+  ],
+  "limitations": [
+    "Reported gross fee numerator is incomplete and may differ in scope from receipt-based series; missing amounts are not recovered by statistical methods.",
+    "Ninety days cannot establish a durable equilibrium, and the latest two30daysegments show nonmonotonic productivity.",
+    "MBB intervals assume approximate within-segment stationarity and weak dependence; block-length sensitivity does not validate those assumptions.",
+    "No solver identities, order-size panels, execution-quality benchmarks, external controls or governance-dated NEAR experiment are available in these financial tables.",
+    "The cited2026 solver-reform preprint has an unresolved treatment-date conflict with primary governance evidence; its empirical causal conclusions are not validated or used as NEAR evidence.",
+    "No causal feedback coefficient, future revenue prediction, organic volume estimate or token valuation is identified."
+  ]
+}

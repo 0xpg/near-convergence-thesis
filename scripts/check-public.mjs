@@ -10,6 +10,11 @@ assert.deepEqual(readFileSync('dist-public/report.pdf'),readFileSync('report.pdf
 assert(!existsSync('dist-public/analysis/coverage-expansion'),'Internal research working files must not be published');
 const coverage=JSON.parse(readFileSync('dist-public/data/glance-coverage.json','utf8'));
 assert(!JSON.stringify(coverage).toLowerCase().includes('bitwise'),'Internal reference excluded from public research');
+const rigor=JSON.parse(readFileSync('dist-public/data/intents-flywheel-rigor.json','utf8'));
+assert.equal(rigor.financial.causalIdentification,false);
+assert.equal(rigor.receiptValidation.matchedDuneEvents,4);
+assert(!JSON.stringify(rigor).toLowerCase().includes('bitwise'));
+assert(!existsSync('dist-public/analysis/intents-flywheel-rigor'),'Raw signed payloads and working research must not be published');
 console.log('Clean public output, supplied font integrity and PDF integrity passed.');
 
 const html=readFileSync('dist-public/index.html','utf8');assert(html.includes('id="root"'));assert(!html.includes('/src/main.tsx'));assert(/assets\/index-[^"]+\.js/.test(html));

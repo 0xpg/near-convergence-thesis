@@ -1,0 +1,23 @@
+{
+  "independentSource": "Official archival NEAR RPC; not the Dune dataset",
+  "receiptId": "HsgbweGGWeX4mSzehNamMaypcTiofsCsg2owSE1ZyMLt",
+  "transactionHash": "3sLDRE2LS6C1Mtn2hAnB2gkrwa6DmjfF17yTnQ3FAoBp",
+  "finalStatus": "SuccessValue",
+  "blockHeight": 224135320,
+  "blockTimeUtc": "2026-11-11 23:57:10Z",
+  "matchedDuneEvents": 4,
+  "verifiedSignedPayloadHashes": 4,
+  "ed25519SignaturesVerified": 4,
+  "sourceCommit": "git+https://github.com/near/intents?rev=16d04f6ec4401263f8914638710260da50bb46b0",
+  "checks": [
+    "exact RPC log payload equality at log indices",
+    "NEP-413 Borsh+SHA256 intent hash reproduction",
+    "independent Ed25519 signature verification",
+    "signed input deltas and signer equal emitted event",
+    "finalized transaction and receipt success",
+    "block timestamp equality",
+    "signed-i128 lexical boundary tests",
+    "same canonical SQL prefix across four queries"
+  ],
+  "scope": "One purposive successful receipt; validates decoding and key semantics, not whole-dataset completeness or contract WASM reproducibility"
+}

@@ -1,0 +1,1263 @@
+{
+  "version": "near-intents-rigor-v1",
+  "retrievedAt": "2026-11-13T04:57:50.465Z",
+  "financial": {
+    "version": "near-intents-financial-rigor-v1",
+    "causalIdentification": false,
+    "summary": {
+      "currentWindow": {
+        "start": "2026-10-14",
+        "end": "2026-11-12"
+      },
+      "priorWindow": {
+        "start": "2026-09-14",
+        "end": "2026-10-13"
+      },
+      "currentFeePerMillionUsd": 1602.5333309511043,
+      "priorFeePerMillionUsd": 1703.2590840167204,
+      "productivityChangePct": -5.913707081372433,
+      "volumeChangePct": -21.562608600854784,
+      "feesChangePct": -26.201166170469847,
+      "rateChangeSensitivity95Pct": {
+        "blockDays": 7,
+        "noncircularMovingBlocks": [
+          -17.091729593373678,
+          -0.3790636583344648
+        ],
+        "circularEndpointSensitivity": [
+          -14.51901493660532,
+          4.232771139281509
+        ],
+        "interpretation": "Endpoint-sensitive resampling intervals, conditional on unverified within-window stationarity; not a forecast or a robust significance claim."
+      },
+      "firstDifferenceElasticity": {
+        "estimate": 0.9204091213016325,
+        "hacLag": 7,
+        "normalApprox95Interval": [
+          0.7356588752938037,
+          1.1051593673094613
+        ],
+        "intervalIncludesUnitElasticity": true
+      },
+      "reportingMix": {
+        "priorConfidentialVolumeSharePct": 33.390775227552815,
+        "currentConfidentialVolumeSharePct": 62.85666386411266,
+        "netWithinClassIntensityEffectPerMillionUsd": 490.6017819944866,
+        "netVolumeMixEffectPerMillionUsd": -590.9915801004347,
+        "unattributedProtocolIntensityEffectPerMillionUsd": -0.33595495966816263,
+        "observedRateChangePerMillionUsd": -100.72575306561635,
+        "interpretation": "Exact reporting-class accounting, not matched customer cohorts, quoted execution prices or causal attribution."
+      },
+      "superlinearFeeScalingEstablished": false,
+      "persistentProductivityDeclineEstablished": false,
+      "causalFlywheelEstablished": false,
+      "conclusion": "Reported fees per $1M changed from $1,703 to $1,603 between matched30daywindows. This comparison is descriptive; sensitivity tests do not establish persistence, superlinear fee scaling or a causal solver flywheel."
+    },
+    "inputs": [
+      {
+        "file": "analysis/intents-flywheel/fee-productivity-result.json",
+        "sha256": "44498a7c044d7f2d455b6e3eb7751e50a5a07ba8bbabdfd40c0655a39ba51c2a"
+      },
+      {
+        "file": "data/glance-daily.json",
+        "sha256": "5092c25bebca04c0288a5bd030ca063b5970434a0a5fa8072a8d3ef1297b08c6"
+      },
+      {
+        "file": "analysis/intents-flywheel-rigor/fee-component-panel-result.json",
+        "sha256": "2c1a20738ce4ee6d9c309845934ea170741e86c91ffa8876673445d5121f81d1"
+      },
+      {
+        "file": "analysis/intents-flywheel-rigor/statistics.py",
+        "sha256": "16f9c718d631a6a884b2f27d8d25c38ec9f956fe3e1021eeccfa10a25acd1e08"
+      }
+    ],
+    "runtime": {
+      "numpy": "2.3.5",
+      "seed": 20261113,
+      "bootstrapReplicates": 10000
+    },
+    "independentCalculationValidation": {
+      "method": "Separate centered scalar OLS slope and HAC7 influence-score autocovariance, without matrix sandwich helper. Explicit full score-pair and HC0 checks also execute in self_check.",
+      "results": [
+        {
+          "model": "log levels",
+          "separateCenteredScalarFormula": {
+            "elasticity": 1.1002503076770664,
+            "standardError": 0.15291660542368174,
+            "normalApprox95Interval": [
+              0.8005337610466503,
+              1.3999668543074826
+            ]
+          },
+          "agreesWithMatrixSandwich": true
+        },
+        {
+          "model": "first differences",
+          "separateCenteredScalarFormula": {
+            "elasticity": 0.9204091213016332,
+            "standardError": 0.09426032959583104,
+            "normalApprox95Interval": [
+              0.7356588752938044,
+              1.105159367309462
+            ]
+          },
+          "agreesWithMatrixSandwich": true
+        }
+      ],
+      "statsmodelsInstalled": false,
+      "newDependenciesInstalled": false
+    },
+    "windows": [
+      {
+        "start": "2026-08-15",
+        "end": "2026-09-13",
+        "days": 30,
+        "reportedVolumeUsd": 3981037372.9929357,
+        "reportedGrossFeesUsd": 5182457.683985683,
+        "reportedFeesPerMillionUsd": 1301.7857403557912,
+        "missingFeeRows": 540
+      },
+      {
+        "start": "2026-09-14",
+        "end": "2026-10-13",
+        "days": 30,
+        "reportedVolumeUsd": 4811676400.467687,
+        "reportedGrossFeesUsd": 8195531.5384454625,
+        "reportedFeesPerMillionUsd": 1703.2590840167204,
+        "missingFeeRows": 240
+      },
+      {
+        "start": "2026-10-14",
+        "end": "2026-11-12",
+        "days": 30,
+        "reportedVolumeUsd": 3774153451.0951414,
+        "reportedGrossFeesUsd": 6048206.701504103,
+        "reportedFeesPerMillionUsd": 1602.5333309511043,
+        "missingFeeRows": 202
+      }
+    ],
+    "reportingClassDecomposition": {
+      "query": "https://dune.com/queries/9120971",
+      "windows": [
+        {
+          "start": "2026-08-15",
+          "end": "2026-09-13",
+          "reportedVolumeUsd": 3981037372.992935,
+          "reportedGrossFeesUsd": 5182457.683985682,
+          "reportedFeesPerMillionUsd": 1301.7857403557912,
+          "protocolFeesUsd": 3458.975101992496,
+          "unattributedProtocolFeesPerTotalMillionUsd": 0.8688627555867546,
+          "otherAffiliateFeesPerTotalMillionUsd": 0,
+          "unclassifiedVolumeUsd": 0,
+          "classes": [
+            {
+              "reportingClass": "public",
+              "volumeUsd": 3207827451.6244226,
+              "affiliateFeesUsd": 4857680.912586011,
+              "volumeWeight": 0.8057767740102336,
+              "affiliateFeesPerClassMillionUsd": 1514.3211366079286
+            },
+            {
+              "reportingClass": "confidential",
+              "volumeUsd": 773209921.3685126,
+              "affiliateFeesUsd": 321317.7962976788,
+              "volumeWeight": 0.19422322598976635,
+              "affiliateFeesPerClassMillionUsd": 415.563467847095
+            }
+          ],
+          "missingFeeRows": 540,
+          "unpricedVolumeRows": 5
+        },
+        {
+          "start": "2026-09-14",
+          "end": "2026-10-13",
+          "reportedVolumeUsd": 4811676400.467687,
+          "reportedGrossFeesUsd": 8195531.5384454625,
+          "reportedFeesPerMillionUsd": 1703.2590840167204,
+          "protocolFeesUsd": 3652.3088262860956,
+          "unattributedProtocolFeesPerTotalMillionUsd": 0.7590512167300149,
+          "otherAffiliateFeesPerTotalMillionUsd": 0,
+          "unclassifiedVolumeUsd": 0,
+          "classes": [
+            {
+              "reportingClass": "public",
+              "volumeUsd": 3205020348.9103174,
+              "affiliateFeesUsd": 6586796.939726459,
+              "volumeWeight": 0.6660922477244718,
+              "affiliateFeesPerClassMillionUsd": 2055.1498033283688
+            },
+            {
+              "reportingClass": "confidential",
+              "volumeUsd": 1606656051.5573692,
+              "affiliateFeesUsd": 1605082.2898927175,
+              "volumeWeight": 0.33390775227552816,
+              "affiliateFeesPerClassMillionUsd": 999.0204738200648
+            }
+          ],
+          "missingFeeRows": 240,
+          "unpricedVolumeRows": 0
+        },
+        {
+          "start": "2026-10-14",
+          "end": "2026-11-12",
+          "reportedVolumeUsd": 3774153451.0951414,
+          "reportedGrossFeesUsd": 6048206.701504102,
+          "reportedFeesPerMillionUsd": 1602.533330951104,
+          "protocolFeesUsd": 1596.8301987354266,
+          "unattributedProtocolFeesPerTotalMillionUsd": 0.4230962570618522,
+          "otherAffiliateFeesPerTotalMillionUsd": 0,
+          "unclassifiedVolumeUsd": 0,
+          "classes": [
+            {
+              "reportingClass": "public",
+              "volumeUsd": 1401846502.6244607,
+              "affiliateFeesUsd": 4849926.656784633,
+              "volumeWeight": 0.3714333613588734,
+              "affiliateFeesPerClassMillionUsd": 3459.6702618331356
+            },
+            {
+              "reportingClass": "confidential",
+              "volumeUsd": 2372306948.4706807,
+              "affiliateFeesUsd": 1196683.2145207336,
+              "volumeWeight": 0.6285666386411266,
+              "affiliateFeesPerClassMillionUsd": 504.4386078674099
+            }
+          ],
+          "missingFeeRows": 202,
+          "unpricedVolumeRows": 0
+        }
+      ],
+      "latestVsPrior": {
+        "observedRateChangePerMillionUsd": -100.72575306561635,
+        "unattributedProtocolIntensityChangePerMillionUsd": -0.33595495966816263,
+        "otherAffiliateIntensityChangePerMillionUsd": 0,
+        "classes": [
+          {
+            "reportingClass": "public",
+            "withinClassIntensityEffectPerMillionUsd": 728.6129720900886,
+            "volumeMixEffectPerMillionUsd": -812.495369453573
+          },
+          {
+            "reportingClass": "confidential",
+            "withinClassIntensityEffectPerMillionUsd": -238.01119009560205,
+            "volumeMixEffectPerMillionUsd": 221.5037893531383
+          }
+        ],
+        "reconstructedRateChangePerMillionUsd": -100.7257530656162,
+        "accountingResidual": -1.4210854715202004e-13
+      },
+      "formula": "R = protocolFees / totalVolume + otherAffiliateFees / totalVolume + sum_s(volumeWeight_s * affiliateFees_s / classVolume_s). Each product change uses mean(weight)*change(rate) + mean(rate)*change(weight); all rates scaled per $1M.",
+      "interpretation": "Exact reporting-class accounting decomposition, not price power, causal attribution, independent customer cohorts or confidential trade-level reconstruction. Protocol fees remain privacy-unattributed. Two Dune queries use the same underlying datasets, so their reconciliation is not independent raw-source validation."
+    },
+    "latestVsPrior": {
+      "volumeChangePct": -21.562608600854784,
+      "feesChangePct": -26.201166170469847,
+      "productivityChangePct": -5.913707081372433,
+      "feeChangeUsd": -2147324.8369413596,
+      "symmetricVolumeEffectUsd": -1714917.7481954033,
+      "symmetricProductivityEffectUsd": -432407.088745956,
+      "interpretation": "Exact two-factor accounting decomposition F=V*(F/V), not causal attribution or quoted-fee change."
+    },
+    "blockBootstrap": [
+      {
+        "blockDays": 1,
+        "endpointMode": "noncircular moving blocks",
+        "replicates": 10000,
+        "latestRatePercentile95Interval": [
+          1498.9509820602957,
+          1707.8576816035013
+        ],
+        "priorRatePercentile95Interval": [
+          1609.448663663506,
+          1806.1330202714084
+        ],
+        "rateChangePercentile95IntervalPct": [
+          -13.748724937339489,
+          2.508999680660169
+        ],
+        "medianRateChangePct": -5.810137053293069,
+        "bootstrapFractionRateChangePositive": 0.0846,
+        "interpretation": "Sensitivity interval conditional on local within-window stationarity, not a forecast, identification interval or causal p-value. Block1 is the iid diagnostic. Circular wrapping equalizes endpoint inclusion but joins last and first dates artificially; noncircular blocks weight central dates more. Short30day windows and long blocks make edge assumptions material."
+      },
+      {
+        "blockDays": 1,
+        "endpointMode": "circular sensitivity",
+        "replicates": 10000,
+        "latestRatePercentile95Interval": [
+          1498.9509820602957,
+          1707.8576816035013
+        ],
+        "priorRatePercentile95Interval": [
+          1609.448663663506,
+          1806.1330202714084
+        ],
+        "rateChangePercentile95IntervalPct": [
+          -13.748724937339489,
+          2.508999680660169
+        ],
+        "medianRateChangePct": -5.810137053293069,
+        "bootstrapFractionRateChangePositive": 0.0846,
+        "interpretation": "Sensitivity interval conditional on local within-window stationarity, not a forecast, identification interval or causal p-value. Block1 is the iid diagnostic. Circular wrapping equalizes endpoint inclusion but joins last and first dates artificially; noncircular blocks weight central dates more. Short30day windows and long blocks make edge assumptions material."
+      },
+      {
+        "blockDays": 3,
+        "endpointMode": "noncircular moving blocks",
+        "replicates": 10000,
+        "latestRatePercentile95Interval": [
+          1475.23091223373,
+          1720.8048005770945
+        ],
+        "priorRatePercentile95Interval": [
+          1598.2785409142105,
+          1838.1646703722952
+        ],
+        "rateChangePercentile95IntervalPct": [
+          -15.985416763133916,
+          3.2141103781374136
+        ],
+        "medianRateChangePct": -6.5646129058764435,
+        "bootstrapFractionRateChangePositive": 0.0953,
+        "interpretation": "Sensitivity interval conditional on local within-window stationarity, not a forecast, identification interval or causal p-value. Block1 is the iid diagnostic. Circular wrapping equalizes endpoint inclusion but joins last and first dates artificially; noncircular blocks weight central dates more. Short30day windows and long blocks make edge assumptions material."
+      },
+      {
+        "blockDays": 3,
+        "endpointMode": "circular sensitivity",
+        "replicates": 10000,
+        "latestRatePercentile95Interval": [
+          1482.5145305939295,
+          1715.6005341850337
+        ],
+        "priorRatePercentile95Interval": [
+          1586.4654126564656,
+          1824.2299450783291
+        ],
+        "rateChangePercentile95IntervalPct": [
+          -15.150198370839593,
+          3.9168665050706912
+        ],
+        "medianRateChangePct": -5.85634525515486,
+        "bootstrapFractionRateChangePositive": 0.1186,
+        "interpretation": "Sensitivity interval conditional on local within-window stationarity, not a forecast, identification interval or causal p-value. Block1 is the iid diagnostic. Circular wrapping equalizes endpoint inclusion but joins last and first dates artificially; noncircular blocks weight central dates more. Short30day windows and long blocks make edge assumptions material."
+      },
+      {
+        "blockDays": 7,
+        "endpointMode": "noncircular moving blocks",
+        "replicates": 10000,
+        "latestRatePercentile95Interval": [
+          1474.6782539172204,
+          1690.5213835366037
+        ],
+        "priorRatePercentile95Interval": [
+          1629.1630433671082,
+          1836.485139825451
+        ],
+        "rateChangePercentile95IntervalPct": [
+          -17.091729593373678,
+          -0.3790636583344648
+        ],
+        "medianRateChangePct": -9.551721466498236,
+        "bootstrapFractionRateChangePositive": 0.0212,
+        "interpretation": "Sensitivity interval conditional on local within-window stationarity, not a forecast, identification interval or causal p-value. Block1 is the iid diagnostic. Circular wrapping equalizes endpoint inclusion but joins last and first dates artificially; noncircular blocks weight central dates more. Short30day windows and long blocks make edge assumptions material."
+      },
+      {
+        "blockDays": 7,
+        "endpointMode": "circular sensitivity",
+        "replicates": 10000,
+        "latestRatePercentile95Interval": [
+          1494.3533956662,
+          1708.778722743816
+        ],
+        "priorRatePercentile95Interval": [
+          1572.0513955766403,
+          1816.2044296957906
+        ],
+        "rateChangePercentile95IntervalPct": [
+          -14.51901493660532,
+          4.232771139281509
+        ],
+        "medianRateChangePct": -5.950556569573001,
+        "bootstrapFractionRateChangePositive": 0.1185,
+        "interpretation": "Sensitivity interval conditional on local within-window stationarity, not a forecast, identification interval or causal p-value. Block1 is the iid diagnostic. Circular wrapping equalizes endpoint inclusion but joins last and first dates artificially; noncircular blocks weight central dates more. Short30day windows and long blocks make edge assumptions material."
+      },
+      {
+        "blockDays": 14,
+        "endpointMode": "noncircular moving blocks",
+        "replicates": 10000,
+        "latestRatePercentile95Interval": [
+          1474.2909839592598,
+          1656.180782534447
+        ],
+        "priorRatePercentile95Interval": [
+          1671.740199726824,
+          1775.6129763371964
+        ],
+        "rateChangePercentile95IntervalPct": [
+          -15.472593429178907,
+          -3.637201224810294
+        ],
+        "medianRateChangePct": -10.710146774628043,
+        "bootstrapFractionRateChangePositive": 0.0024,
+        "interpretation": "Sensitivity interval conditional on local within-window stationarity, not a forecast, identification interval or causal p-value. Block1 is the iid diagnostic. Circular wrapping equalizes endpoint inclusion but joins last and first dates artificially; noncircular blocks weight central dates more. Short30day windows and long blocks make edge assumptions material."
+      },
+      {
+        "blockDays": 14,
+        "endpointMode": "circular sensitivity",
+        "replicates": 10000,
+        "latestRatePercentile95Interval": [
+          1495.7501645244292,
+          1708.7722369991222
+        ],
+        "priorRatePercentile95Interval": [
+          1628.71208332904,
+          1767.3558840400935
+        ],
+        "rateChangePercentile95IntervalPct": [
+          -13.245327061341756,
+          1.7630194261930194
+        ],
+        "medianRateChangePct": -5.909482294521867,
+        "bootstrapFractionRateChangePositive": 0.0665,
+        "interpretation": "Sensitivity interval conditional on local within-window stationarity, not a forecast, identification interval or causal p-value. Block1 is the iid diagnostic. Circular wrapping equalizes endpoint inclusion but joins last and first dates artificially; noncircular blocks weight central dates more. Short30day windows and long blocks make edge assumptions material."
+      }
+    ],
+    "regressions": [
+      {
+        "model": "log levels",
+        "observations": 90,
+        "fields": [
+          "intercept",
+          "logVolume"
+        ],
+        "coefficients": {
+          "intercept": -8.380063399375734,
+          "logVolume": 1.100250307677066
+        },
+        "hacSensitivity": [
+          {
+            "hacLag": 0,
+            "elasticity": 1.100250307677066,
+            "standardError": 0.11211896666755196,
+            "normalApprox95Interval": [
+              0.8804971330086642,
+              1.3200034823454678
+            ],
+            "intervalContainsUnitElasticity": true
+          },
+          {
+            "hacLag": 3,
+            "elasticity": 1.100250307677066,
+            "standardError": 0.14109444574968316,
+            "normalApprox95Interval": [
+              0.8237051940076869,
+              1.376795421346445
+            ],
+            "intervalContainsUnitElasticity": true
+          },
+          {
+            "hacLag": 7,
+            "elasticity": 1.100250307677066,
+            "standardError": 0.1529166054235855,
+            "normalApprox95Interval": [
+              0.8005337610468384,
+              1.3999668543072936
+            ],
+            "intervalContainsUnitElasticity": true
+          },
+          {
+            "hacLag": 14,
+            "elasticity": 1.100250307677066,
+            "standardError": 0.15933289341521828,
+            "normalApprox95Interval": [
+              0.7879578365832383,
+              1.4125427787708937
+            ],
+            "intervalContainsUnitElasticity": true
+          }
+        ],
+        "residualLag1Correlation": 0.5139314954335319,
+        "interpretation": "Contemporaneous descriptive association; levels may be nonstationary. HAC does not solve omitted variables, endogenous volume, common shocks or measurement changes."
+      },
+      {
+        "model": "log levels plus linear time",
+        "observations": 90,
+        "fields": [
+          "intercept",
+          "logVolume",
+          "time"
+        ],
+        "coefficients": {
+          "intercept": -8.574349084682899,
+          "logVolume": 1.1013319332363294,
+          "time": 0.003911476513671186
+        },
+        "hacSensitivity": [
+          {
+            "hacLag": 0,
+            "elasticity": 1.1013319332363294,
+            "standardError": 0.09439660550947065,
+            "normalApprox95Interval": [
+              0.9163145864377669,
+              1.286349280034892
+            ],
+            "intervalContainsUnitElasticity": true
+          },
+          {
+            "hacLag": 3,
+            "elasticity": 1.1013319332363294,
+            "standardError": 0.11436482407403133,
+            "normalApprox95Interval": [
+              0.877176878051228,
+              1.3254869884214309
+            ],
+            "intervalContainsUnitElasticity": true
+          },
+          {
+            "hacLag": 7,
+            "elasticity": 1.1013319332363294,
+            "standardError": 0.12960657026530964,
+            "normalApprox95Interval": [
+              0.8473030555163226,
+              1.3553608109563362
+            ],
+            "intervalContainsUnitElasticity": true
+          },
+          {
+            "hacLag": 14,
+            "elasticity": 1.1013319332363294,
+            "standardError": 0.1381571203291042,
+            "normalApprox95Interval": [
+              0.8305439773912852,
+              1.3721198890813735
+            ],
+            "intervalContainsUnitElasticity": true
+          }
+        ],
+        "residualLag1Correlation": 0.4031978819532506,
+        "interpretation": "Contemporaneous descriptive association; levels may be nonstationary. HAC does not solve omitted variables, endogenous volume, common shocks or measurement changes."
+      },
+      {
+        "model": "first differences",
+        "observations": 89,
+        "fields": [
+          "intercept",
+          "deltaLogVolume"
+        ],
+        "coefficients": {
+          "intercept": 0.008375238308703395,
+          "deltaLogVolume": 0.9204091213016325
+        },
+        "hacSensitivity": [
+          {
+            "hacLag": 0,
+            "elasticity": 0.9204091213016325,
+            "standardError": 0.08393116732455615,
+            "normalApprox95Interval": [
+              0.7559040333455025,
+              1.0849142092577626
+            ],
+            "intervalContainsUnitElasticity": true
+          },
+          {
+            "hacLag": 3,
+            "elasticity": 0.9204091213016325,
+            "standardError": 0.09075420339865488,
+            "normalApprox95Interval": [
+              0.742530882640269,
+              1.098287359962996
+            ],
+            "intervalContainsUnitElasticity": true
+          },
+          {
+            "hacLag": 7,
+            "elasticity": 0.9204091213016325,
+            "standardError": 0.09426032959583104,
+            "normalApprox95Interval": [
+              0.7356588752938037,
+              1.1051593673094613
+            ],
+            "intervalContainsUnitElasticity": true
+          },
+          {
+            "hacLag": 14,
+            "elasticity": 0.9204091213016325,
+            "standardError": 0.09688043112499646,
+            "normalApprox95Interval": [
+              0.7305234762966395,
+              1.1102947663066256
+            ],
+            "intervalContainsUnitElasticity": true
+          }
+        ],
+        "residualLag1Correlation": -0.3511187512418243,
+        "interpretation": "Contemporaneous descriptive association; levels may be nonstationary. HAC does not solve omitted variables, endogenous volume, common shocks or measurement changes."
+      },
+      {
+        "model": "lagged controls plus time",
+        "observations": 89,
+        "fields": [
+          "intercept",
+          "logVolume",
+          "lagLogFees",
+          "lagLogVolume",
+          "time"
+        ],
+        "coefficients": {
+          "intercept": -4.06321135359472,
+          "logVolume": 0.9456770364085985,
+          "lagLogFees": 0.43775353735026246,
+          "lagLogVolume": -0.36547363580631936,
+          "time": 0.001731232908340985
+        },
+        "hacSensitivity": [
+          {
+            "hacLag": 0,
+            "elasticity": 0.9456770364085985,
+            "standardError": 0.10148477265710569,
+            "normalApprox95Interval": [
+              0.7467668820006713,
+              1.1445871908165257
+            ],
+            "intervalContainsUnitElasticity": true
+          },
+          {
+            "hacLag": 3,
+            "elasticity": 0.9456770364085985,
+            "standardError": 0.09868540831616061,
+            "normalApprox95Interval": [
+              0.7522536361089236,
+              1.1391004367082733
+            ],
+            "intervalContainsUnitElasticity": true
+          },
+          {
+            "hacLag": 7,
+            "elasticity": 0.9456770364085985,
+            "standardError": 0.10653942153820385,
+            "normalApprox95Interval": [
+              0.736859770193719,
+              1.154494302623478
+            ],
+            "intervalContainsUnitElasticity": true
+          },
+          {
+            "hacLag": 14,
+            "elasticity": 0.9456770364085985,
+            "standardError": 0.11216176315306643,
+            "normalApprox95Interval": [
+              0.7258399806285882,
+              1.1655140921886087
+            ],
+            "intervalContainsUnitElasticity": true
+          }
+        ],
+        "residualLag1Correlation": -0.07699805669924333,
+        "interpretation": "Contemporaneous descriptive association; levels may be nonstationary. HAC does not solve omitted variables, endogenous volume, common shocks or measurement changes."
+      }
+    ],
+    "chronologicalHoldout": {
+      "trainStart": "2026-08-15",
+      "trainEnd": "2026-10-13",
+      "testStart": "2026-10-14",
+      "testEnd": "2026-11-12",
+      "models": [
+        {
+          "model": "log levels",
+          "trainDays": 60,
+          "testDays": 30,
+          "logRootMeanSquaredError": 0.22703070445270654,
+          "logMeanAbsoluteError": 0.1941530026397737,
+          "trainCoefficients": {
+            "intercept": -10.08459134016155,
+            "logVolume": 1.1893614622320317
+          }
+        },
+        {
+          "model": "log levels plus linear time",
+          "trainDays": 60,
+          "testDays": 30,
+          "logRootMeanSquaredError": 0.3023650821086412,
+          "logMeanAbsoluteError": 0.2401199426288768,
+          "trainCoefficients": {
+            "intercept": -8.839751136589031,
+            "logVolume": 1.1110163805552364,
+            "time": 0.007564091431005782
+          }
+        },
+        {
+          "model": "fixed proportional rate learned on first60days",
+          "trainDays": 60,
+          "testDays": 30,
+          "logRootMeanSquaredError": 0.18474463947583508,
+          "logMeanAbsoluteError": 0.15373922313530725
+        }
+      ],
+      "interpretation": "Exploratory chronological parameter split, not a preregistered untouched holdout. Conditional fitted fee association uses observed test-period volume, not an ex-ante forecast. Same provider history; no external venue controls."
+    },
+    "dependenceDiagnostics": {
+      "logFeesLag1Correlation": 0.583875099452464,
+      "logVolumeLag1Correlation": 0.4548738460001991,
+      "unitRootOrCointegrationEstablished": false,
+      "interpretation": "Autocorrelation motivates dependence-robust sensitivity; first differences and holdout challenge levels-only results. Formal stationarity and causal dynamics are not established."
+    },
+    "latestRateLeaveOneDayOut": {
+      "minimum": 1580.1556991150062,
+      "maximum": 1626.0005214740888,
+      "pointEstimate": 1602.5333309511043,
+      "interpretation": "Deterministic single-day influence range, not a confidence interval."
+    },
+    "receiptTimingDiagnostics": [
+      {
+        "days": 30,
+        "start": "2026-10-12",
+        "end": "2026-11-10",
+        "capturedUsd": 1817568,
+        "grossFeesUsd": 5960786,
+        "capturedPerMillionUsd": 483.6874901552077,
+        "captureSharePct": 30.492086110791426,
+        "zeroReceiptDays": 0,
+        "largestReceiptDaySharePct": 8.95526329688903,
+        "interpretation": "Receipt-date cash observations, not trade accrual matching, executed purchases or proven demand. Wider aggregation reduces collection-timing sensitivity without solving attribution."
+      },
+      {
+        "days": 90,
+        "start": "2026-08-13",
+        "end": "2026-11-10",
+        "capturedUsd": 5077609,
+        "grossFeesUsd": 18757458,
+        "capturedPerMillionUsd": 408.1645752357911,
+        "captureSharePct": 27.06981404409915,
+        "zeroReceiptDays": 0,
+        "largestReceiptDaySharePct": 3.2056032672070653,
+        "interpretation": "Receipt-date cash observations, not trade accrual matching, executed purchases or proven demand. Wider aggregation reduces collection-timing sensitivity without solving attribution."
+      },
+      {
+        "days": 364,
+        "start": "2025-11-12",
+        "end": "2026-11-10",
+        "capturedUsd": 9358304.05,
+        "grossFeesUsd": 53850323,
+        "capturedPerMillionUsd": 277.14322412934933,
+        "captureSharePct": 17.378361964514124,
+        "zeroReceiptDays": 76,
+        "largestReceiptDaySharePct": 3.8022487632254265,
+        "interpretation": "Receipt-date cash observations, not trade accrual matching, executed purchases or proven demand. Wider aggregation reduces collection-timing sensitivity without solving attribution."
+      }
+    ],
+    "sourceReconciliation": [
+      {
+        "metric": "reported_volume_usd",
+        "sharedDays": 88,
+        "rawDatasetTotal": 12277301810.524023,
+        "irSnapshotTotal": 12277301810.524023,
+        "differencePctOfIr": 0,
+        "independentEvidence": false,
+        "interpretation": "Related upstream reporting paths; exact volume reconciliation is not independent raw transaction validation. Fee differences require component/timing reconciliation before pooling."
+      },
+      {
+        "metric": "reported_gross_fees_usd",
+        "sharedDays": 88,
+        "rawDatasetTotal": 18934804.591341663,
+        "irSnapshotTotal": 18609082,
+        "differencePctOfIr": 1.7503420713695705,
+        "independentEvidence": false,
+        "interpretation": "Related upstream reporting paths; exact volume reconciliation is not independent raw transaction validation. Fee differences require component/timing reconciliation before pooling."
+      }
+    ],
+    "sources": [
+      {
+        "title": "Newey and West (1987), original covariance paper",
+        "url": "https://users.ssc.wisc.edu/~behansen/718/NeweyWest1987.pdf",
+        "role": "Method origin; scanned PDF lacked extractable text; exact Bartlett sandwich cross-checked against primary implementation below."
+      },
+      {
+        "title": "Statsmodels primary implementation: Bartlett and S_hac_simple",
+        "url": "https://www.statsmodels.org/stable/_modules/statsmodels/stats/sandwich_covariance.html",
+        "reviewedSections": [
+          "weights_bartlett",
+          "S_hac_simple",
+          "cov_hac_simple"
+        ],
+        "role": "Verified Bartlett weights 1-j/(L+1), lagged score cross-products and finite-sample correction n/(n-k). No package code downloaded or executed."
+      },
+      {
+        "title": "Buehlmann and Kuensch, The Blockwise Bootstrap for General Parameters of a Stationary Time Series",
+        "url": "https://www.research-collection.ethz.ch/server/api/core/bitstreams/6ee4a421-2a0b-4d08-bcf8-d2ed766f6b27/content",
+        "role": "Author-hosted primary method context. Indexed full-text abstract reviewed; direct PDF retrieval returned403; no full-paper validation claimed."
+      },
+      {
+        "title": "Zhang (2026), Incentives and Market Structure in Intent-Based Exchanges",
+        "url": "https://arxiv.org/html/2607.21955v1",
+        "reviewedSections": [
+          "4 Data",
+          "5 Empirical strategy",
+          "6.4 Mechanism",
+          "6.7 Robustness",
+          "8 Limitations"
+        ],
+        "role": "Unvalidated preprint used only as methodological inspiration. Root primary-governance review found a treatment-date conflict, so its empirical causal findings are not accepted as independently verified evidence and are not transferred to NEAR. The statistical estimators here are independently specified and checked."
+      }
+    ],
+    "limitations": [
+      "Reported gross fee numerator is incomplete and may differ in scope from receipt-based series; missing amounts are not recovered by statistical methods.",
+      "Ninety days cannot establish a durable equilibrium, and the latest two30daysegments show nonmonotonic productivity.",
+      "MBB intervals assume approximate within-segment stationarity and weak dependence; block-length sensitivity does not validate those assumptions.",
+      "No solver identities, order-size panels, execution-quality benchmarks, external controls or governance-dated NEAR experiment are available in these financial tables.",
+      "The cited2026 solver-reform preprint has an unresolved treatment-date conflict with primary governance evidence; its empirical causal conclusions are not validated or used as NEAR evidence.",
+      "No causal feedback coefficient, future revenue prediction, organic volume estimate or token valuation is identified."
+    ]
+  },
+  "identification": {
+    "version": "near-intents-identification-audit-v1",
+    "reviewedOn": "2026-11-13",
+    "causalIdentification": false,
+    "sourceWindow": {
+      "start": "2026-10-14",
+      "end": "2026-11-12",
+      "observedSuccessfulContractLogDays": 30
+    },
+    "observability": {
+      "documentedChange": {
+        "date": "2026-10-27",
+        "source": "https://docs.agentsonintents.com/changelog/overview",
+        "scope": "Official 1Click confidential-settlement announcement; not proof that every integration migrated at one instant."
+      },
+      "preAnnouncement": {
+        "start": "2026-10-14",
+        "end": "2026-10-26",
+        "days": 13,
+        "averageDailySigningAccounts": 14338.692307692309,
+        "averageDailyPublicAccountEvents": 45069.46153846154,
+        "averageDailyReportedPricedVolumeUsd": 116213617.01952638,
+        "confidentialShareOfReportedPricedVolumePct": 38.179477417963696
+      },
+      "postAnnouncement": {
+        "start": "2026-10-27",
+        "end": "2026-11-12",
+        "days": 17,
+        "averageDailySigningAccounts": 5576.176470588235,
+        "averageDailyPublicAccountEvents": 20633.470588235294,
+        "averageDailyReportedPricedVolumeUsd": 133139789.99066462,
+        "confidentialShareOfReportedPricedVolumePct": 79.32839421373582
+      },
+      "descriptivePrePostChange": {
+        "averageDailySigningAccountsChangePct": -61.11098312921624,
+        "averageDailyPublicAccountEventsChangePct": -54.21851097416146,
+        "averageDailyReportedPricedVolumeUsdChangePct": 14.564707136078802
+      },
+      "equalLengthEndpointCheck": {
+        "first7Days": {
+          "start": "2026-10-14",
+          "end": "2026-10-20",
+          "days": 7,
+          "averageDailySigningAccounts": 13950.142857142857,
+          "averageDailyPublicAccountEvents": 45855.71428571428,
+          "averageDailyReportedPricedVolumeUsd": 117415778.39197059,
+          "confidentialShareOfReportedPricedVolumePct": 35.26921884114231
+        },
+        "last7Days": {
+          "start": "2026-11-06",
+          "end": "2026-11-12",
+          "days": 7,
+          "averageDailySigningAccounts": 1319.857142857143,
+          "averageDailyPublicAccountEvents": 4980.285714285715,
+          "averageDailyReportedPricedVolumeUsd": 136076548.82630545,
+          "confidentialShareOfReportedPricedVolumePct": 96.99363668827151
+        },
+        "change": {
+          "averageDailySigningAccountsChangePct": -90.53875536348835,
+          "averageDailyPublicAccountEventsChangePct": -89.13922552104427,
+          "averageDailyReportedPricedVolumeUsdChangePct": 15.892898458705762
+        }
+      },
+      "dateScan": {
+        "signingAccounts": {
+          "minimumDaysPerSide": 7,
+          "candidateDates": 17,
+          "largestDescriptiveShift": {
+            "date": "2026-11-04",
+            "absoluteStandardizedLogMeanShift": 13.249220079062933
+          },
+          "announcedCutoverDate": "2026-10-27",
+          "announcedDateRank": 11,
+          "announcedDateStatistic": 5.341240315787593,
+          "interpretation": "Relative ranking of descriptive mean shifts only. Serial dependence, shared trends, endogenous migration and 30-day window selection preclude treating this rank as a randomization p-value or causal effect."
+        },
+        "reportedAllSourceVolume": {
+          "minimumDaysPerSide": 7,
+          "candidateDates": 17,
+          "largestDescriptiveShift": {
+            "date": "2026-11-02",
+            "absoluteStandardizedLogMeanShift": 1.980257764089641
+          },
+          "announcedCutoverDate": "2026-10-27",
+          "announcedDateRank": 4,
+          "announcedDateStatistic": 1.4260930313329698,
+          "interpretation": "Relative ranking of descriptive mean shifts only. Serial dependence, shared trends, endogenous migration and 30-day window selection preclude treating this rank as a randomization p-value or causal effect."
+        }
+      },
+      "conclusion": "Public signing-account counts and reported all-source notional cover different populations. Their divergence and documented confidential settlement invalidate interpreting the public count decline as total network demand loss. Neither the announcement nor this short-window date scan identifies a causal migration effect."
+    },
+    "paperAudit": [
+      {
+        "arxiv": "2403.02525v2",
+        "url": "https://arxiv.org/html/2403.02525v2",
+        "authors": [
+          "Tarun Chitra",
+          "Kshitij Kulkarni",
+          "Mallesh Pai",
+          "Theo Diamandis"
+        ],
+        "type": "Auction-theoretic and optimization models",
+        "verifiedSections": [
+          "2.2 Costly entry",
+          "2.3 Costly effort",
+          "3 Optimization approach"
+        ],
+        "usableImplication": "Entry costs, costly effort and congestion make more solver addresses an insufficient welfare statistic; optimal entry may be limited. This is a conditional model prediction, not a NEAR empirical estimate.",
+        "neededValidation": "Actual independent solver entities, submitted and winning quotes, order size, route, fills, latency, and user execution benchmarks."
+      },
+      {
+        "arxiv": "2607.21955v1",
+        "url": "https://arxiv.org/html/2607.21955v1",
+        "type": "CoW-specific empirical preprint",
+        "verifiedSections": [
+          "2.1 payoff model",
+          "4 data",
+          "5 empirical strategy",
+          "6 results",
+          "8 limitations",
+          "Data and Code Availability"
+        ],
+        "replicationPackage": {
+          "url": "https://github.com/ryonzhang/solver-reward-market-structure/tree/v1.0-preprint",
+          "status": "Public repository and tag exist; README names committed data, code and result targets. Execution and numerical replication were not performed."
+        },
+        "governanceDateDiscrepancy": {
+          "paperBundledTreatmentDate": "2025-12-08",
+          "independentForumPosts": [
+            {
+              "url": "https://forum.cow.fi/t/cip-74-align-solver-rewards-with-protocol-revenue-and-introduce-a-volume-based-fee/3234?page=2",
+              "postAuthor": "koeppelmann",
+              "postDate": "2025-11-27",
+              "evidence": "Reports that the 2bps volume fee activated the prior day."
+            },
+            {
+              "url": "https://forum.cow.fi/t/cip-74-align-solver-rewards-with-protocol-revenue-and-introduce-a-volume-based-fee/3234?page=2",
+              "postAuthor": "middleway.eth",
+              "postDate": "2025-11-28",
+              "evidence": "Reports that the 2bps fee went live on Wednesday, consistent with 26 November."
+            }
+          ],
+          "finding": "Fee rollout and reward-cap implementation must be dated separately before accepting a bundled 8 December treatment. Reward-cap activation date not independently established here."
+        },
+        "modelCheck": "Under the written common reward/fee conditional payoff, argmax(common term minus cost) equals argmin(cost). A change in winner concentration requires additional endogenous entry, cost, inventory, bid or order-selection mechanisms; the common payoff shift alone does not prove Proposition2. Finite-grid invariant self-check executes.",
+        "usableMethods": "Count-versus-value measures, leave-one-entity-out, order-size segmentation, time/placebo and cross-venue sensitivity. These require correctly observed solver/order identities and a validated event date.",
+        "nonTransferable": "The CoW treatment coefficients, venue counterfactual, size-bucket estimates and execution-quality bounds do not estimate a NEAR flywheel."
+      }
+    ],
+    "expertOverlookedQuestions": [
+      "Does one signed payload emit multiple valid token_diff statements? Establish event grain before counting orders.",
+      "Is an observed account an executor, signer, customer, relayer or independent solver entity?",
+      "Has public observability changed independently of underlying demand?",
+      "Do volume-weighted and count-weighted concentration agree, and survive exclusion of the largest verified entity?",
+      "Are protocol fees, affiliate fees, solver surplus, customer all-in costs and holder receipts separated?",
+      "What order-level reference execution, chain fees and latency establish whether customers actually benefit?"
+    ],
+    "claimPermissions": {
+      "verified": [
+        "Source-specific arithmetic and observed event-account statistics on completed dates.",
+        "Exact accounting decompositions with explicit component labels.",
+        "Announced confidentiality architecture and observed public-data composition changes."
+      ],
+      "inferenceOnly": [
+        "Restricted-entry and inventory advantages as economic hypotheses.",
+        "Possible role of reporting/settlement migration in public-count decline."
+      ],
+      "notIdentified": [
+        "Causal network flywheel or solver-competition effect.",
+        "Complete solver count or beneficial ownership.",
+        "Organic USD volume or proven wash-trading rate.",
+        "Execution-price welfare or market power from aggregate fee intensity."
+      ]
+    },
+    "inputs": [
+      {
+        "file": "analysis/intents-flywheel/public-participation-result.json",
+        "sha256": "f92e43a2c0f56f47797f28ebc735811fd4243b2a55e7a56b050f5811452c4acf"
+      },
+      {
+        "file": "analysis/intents-flywheel-rigor/fee-component-panel-result.json",
+        "sha256": "2c1a20738ce4ee6d9c309845934ea170741e86c91ffa8876673445d5121f81d1"
+      },
+      {
+        "file": "analysis/intents-flywheel-rigor/identification.py",
+        "sha256": "06b48f151655e04f00677e3c326a0ef65fda90404978bfae3a428c5cfbf5b684"
+      }
+    ]
+  },
+  "eventAudit": {
+    "version": "near-intents-event-grain-audit-v1",
+    "retrievedAt": "2026-11-13T04:48:25.523143+00:00",
+    "scope": "Contract/event identity, deterministic ingestion deduplication and an independent archival RPC reconciliation; no economic-order census or solver identity inference",
+    "verifiedFindings": [
+      {
+        "finding": "intent_hash identifies one signed payload, not one token_diff statement",
+        "evidence": [
+          "https://github.com/near/intents/blob/16d04f6ec4401263f8914638710260da50bb46b0/contracts/defuse/core/src/engine/mod.rs#L42",
+          "https://github.com/near/intents/blob/16d04f6ec4401263f8914638710260da50bb46b0/contracts/defuse/core/src/intents/mod.rs#L29",
+          "https://github.com/near/intents/blob/16d04f6ec4401263f8914638710260da50bb46b0/contracts/defuse/core/src/intents/mod.rs#L98"
+        ],
+        "mechanism": "Engine calculates the signed payload hash once, then executes its Vec<Intent> statements in sequence with that same hash. Each TokenDiff statement emits an event carrying that hash.",
+        "consequence": "Repeated intent_hash at distinct physical event locations is permitted by contract semantics. Removing all such statements is not deduplication and selectively withholds multi-statement execution."
+      },
+      {
+        "finding": "The old SQL excluded 25484 parsed statement appearances because their signed-payload hash repeated",
+        "basis": "Saved prior 30-day aggregate results: 1003979 parsed account payloads minus978495 retained statements; audit counts must be reconciled by rerunning corrected queries before claiming corrected population totals.",
+        "status": "Previously saved arithmetic; not a claim that all excluded appearances are legitimate until new physical-key/shape/version checks run."
+      },
+      {
+        "finding": "Public statement, signed payload, settlement receipt and economic swap are different grains",
+        "evidence": [
+          "https://github.com/near/intents#example",
+          "https://github.com/near/intents/blob/16d04f6ec4401263f8914638710260da50bb46b0/contracts/defuse/core/src/engine/mod.rs#L32",
+          "https://github.com/near/intents/blob/16d04f6ec4401263f8914638710260da50bb46b0/contracts/defuse/src/contract/intents/execute.rs#L26"
+        ],
+        "definition": {
+          "statement": [
+            "executor_account_id",
+            "receipt_id",
+            "index_in_execution_outcome_logs",
+            "data_ordinal"
+          ],
+          "signedPayload": [
+            "verifying_contract",
+            "intent_hash",
+            "account_id"
+          ],
+          "settlementReceipt": [
+            "receipt_id"
+          ],
+          "economicSwap": "No generally verified identifier in the observed contract logs. Multiple signed counterparties and token deltas can form one economic trade; receipts can batch several trades."
+        }
+      },
+      {
+        "finding": "Current on-chain source metadata attributes intents.near to the inspected commit",
+        "evidenceFile": "current-source-metadata-rpc.json",
+        "blockHeight": 224314858,
+        "contractVersion": "0.4.5",
+        "sourceCommit": "16d04f6ec4401263f8914638710260da50bb46b0",
+        "qualification": "Metadata attribution is independently queried, but not a reproduced WASM/source equivalence proof."
+      },
+      {
+        "finding": "TokenDiff event version0.4.3 is explicitly declared in inspected source and observed in RPC/Dune",
+        "evidence": [
+          "https://github.com/near/intents/blob/16d04f6ec4401263f8914638710260da50bb46b0/contracts/defuse/core/src/events/mod.rs#L48"
+        ],
+        "consequence": "Corrected queries retain only exact verified DIP4 token_diff0.4.3 and expose unsupported-version diagnostics. Other versions require a schema-specific audit."
+      },
+      {
+        "finding": "Official archival RPC independently matches four Dune token_diff events in a finalized successful receipt",
+        "evidenceFile": "rpc-reconciliation.json",
+        "validated": [
+          "Four exact event objects at their log positions",
+          "Four signed payload hashes via independent Borsh+SHA256 implementation",
+          "Four Ed25519 signature verifications",
+          "Signed input signer and deltas match events",
+          "Final successful transaction/receipt and block timestamp"
+        ],
+        "sampling": "One purposive receipt; this checks decoding and identity semantics, not aggregate completeness or representativeness."
+      },
+      {
+        "finding": "The October27 confidentiality change makes public logs an incomplete current swap census",
+        "evidence": [
+          "https://docs.agentsonintents.com/changelog/overview"
+        ],
+        "consequence": "An observed fall in public signing accounts cannot by itself establish user attrition or less protocol-wide activity. The announcement date is not itself a causal estimate."
+      }
+    ],
+    "engineeringChanges": {
+      "files": [
+        "02_public_account_intents_canonical.sql",
+        "03_public_account_intents_daily.sql",
+        "04_public_representation_pair_counts.sql",
+        "05_public_reverse_pattern_daily.sql"
+      ],
+      "deduplication": "Group exact raw business fields (block date/time/height,receipt,log index,status,event string); count distinct business versions by physical key; quarantine keys with multiple versions instead of selecting an arbitrary latest row. Keep data ordinals and all repeated signed-payload hashes.",
+      "numericValidation": "Validate signed i128 decimal strings lexically against exact positive2^127-1 and negative2^127 magnitudes. Preserve39digitvalid values, reject zero and noncanonical strings. No currency amount approximation for statement identity/pair sign classification.",
+      "diagnostics": [
+        "collapsed_exact_raw_copies",
+        "unsupported_event_version_log_rows",
+        "repeated_intent_hash_payloads (now multiplicity diagnostic, not exclusion)",
+        "invalid_or_repeated_raw_key_rows (conflicting physical keys, not legitimate signed-payload multiplicity)"
+      ],
+      "observationLimits": "Dune documentation exposes physical position and update/ingestion timestamps but does not establish a uniqueness or CDC conflict-resolution guarantee. Corrected queries validate observed versions; they do not assume updated_at authoritatively resolves conflicts."
+    },
+    "validationCommand": "C:/Users/LENOVO/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/python.exe analysis/intents-flywheel-rigor/check-event-audit.py",
+    "validationDependencies": "Python standard library plus already-installed cryptography for independent Ed25519 verification; no package added to project.",
+    "sources": [
+      {
+        "url": "https://docs.dune.com/data-catalog/near/logs",
+        "supports": "Physical receipt/log fields and ingestion timestamps, not a certified uniqueness guarantee"
+      },
+      {
+        "url": "https://docs.near.org/api/rpc/providers",
+        "supports": "Official archival RPC endpoint"
+      },
+      {
+        "url": "https://docs.near.org/api/rpc/transactions",
+        "supports": "Read-only receipt, transaction and finalized status methods"
+      },
+      {
+        "url": "https://github.com/near/intents/blob/16d04f6ec4401263f8914638710260da50bb46b0/crates/signatures/nep413/src/lib.rs#L30",
+        "supports": "Borsh signed payload hash and prefix2147484061"
+      },
+      {
+        "url": "https://github.com/near/intents/blob/16d04f6ec4401263f8914638710260da50bb46b0/contracts/defuse/core/src/payload/nep413.rs#L80",
+        "supports": "Signed payload hash and Ed25519 signature validation"
+      },
+      {
+        "url": "https://github.com/near/intents/blob/16d04f6ec4401263f8914638710260da50bb46b0/contracts/defuse/core/src/intents/token_diff.rs#L56",
+        "supports": "Statement execution and negative-delta fee map; arbitrary multi-asset balance changes"
+      }
+    ],
+    "remainingChecks": [
+      "Root must execute corrected SQL and refresh all dependent result snapshots, source hashes, interpretations and tests.",
+      "No automatic reinterpretation of nonreferral accounts as solver firms.",
+      "No bot/wash label from same-account reversal flags alone.",
+      "Full customer-order mapping and confidential history remain unavailable without authenticated source data."
+    ],
+    "lineage": [
+      {
+        "file": "analysis/intents-flywheel-rigor/canonical-prefix.sql",
+        "sha256": "1e2f3b0a5e62c388d91a6011d75637d76074e00b8203ca7f67d06f626173c717"
+      },
+      {
+        "file": "analysis/intents-flywheel-rigor/check-event-audit.py",
+        "sha256": "65ad1d6f4c86a47e94e13c77f69630e5280d1440c4f8a5dded7e23b6ee0ec186"
+      },
+      {
+        "file": "analysis/intents-flywheel-rigor/current-source-metadata-rpc.json",
+        "sha256": "0476e2c2e2103a2d61afbd270e79a21dc20c8e39919a8bab2906a256cce87990"
+      },
+      {
+        "file": "analysis/intents-flywheel-rigor/raw-contract/contracts__defuse__core__src__engine__mod.rs",
+        "sha256": "d1518444bc637686df75a5ff4f537fd110b622aeeda063ddb24d4ee14375f402"
+      },
+      {
+        "file": "analysis/intents-flywheel-rigor/raw-contract/contracts__defuse__core__src__events__mod.rs",
+        "sha256": "87db0e5af5d800545157a0aa47b62fad1bf060f7f5c487dad19736f9b3bdb095"
+      },
+      {
+        "file": "analysis/intents-flywheel-rigor/raw-contract/contracts__defuse__core__src__intents__auth.rs",
+        "sha256": "1979aaaf500613f679dcd52378756854d0f4badabd51a81bd2b00ba1bbffb2ed"
+      },
+      {
+        "file": "analysis/intents-flywheel-rigor/raw-contract/contracts__defuse__core__src__intents__mod.rs",
+        "sha256": "47d9a5711e596373cc0b7c45f2b0416df0396ae016c98eaf0e923a1c5b597241"
+      },
+      {
+        "file": "analysis/intents-flywheel-rigor/raw-contract/contracts__defuse__core__src__payload__mod.rs",
+        "sha256": "2c8821d9704f6fac3827070c68a1d7c5f891f90ef1eaa1c5ee4756ff9e7026b5"
+      },
+      {
+        "file": "analysis/intents-flywheel-rigor/raw-contract/contracts__defuse__core__src__payload__nep413.rs",
+        "sha256": "719427aceb87924417a903dcc37d955875822c8201924dc02124c524ce6c2ecb"
+      },
+      {
+        "file": "analysis/intents-flywheel-rigor/raw-contract/contracts__defuse__src__contract__events.rs",
+        "sha256": "05539e59aa513137ae9736b8eb69cae5c995122501b1d63b2aeda7db74162918"
+      },
+      {
+        "file": "analysis/intents-flywheel-rigor/raw-contract/contracts__defuse__src__contract__intents__execute.rs",
+        "sha256": "248d680e36fe8a6e7a9680206c845e8c163512f4e8d705a3b1fafa749ca40247"
+      },
+      {
+        "file": "analysis/intents-flywheel-rigor/raw-contract/crates__signatures__nep413__src__lib.rs",
+        "sha256": "24252a16c756edde94d6725ef09b10d62a3042621709f497b6c1185077fa9168"
+      },
+      {
+        "file": "analysis/intents-flywheel-rigor/receipt-sample-archival-rpc.json",
+        "sha256": "d64249db850996cd0b825b06bdd332a34f11678b1b7b1cd97f7d2fd9def2a3c0"
+      },
+      {
+        "file": "analysis/intents-flywheel-rigor/receipt-sample-rpc.json",
+        "sha256": "0464624756a24d72e5960138c917c70351b5fb27e8c6d049084e07cbf56f5a73"
+      },
+      {
+        "file": "analysis/intents-flywheel-rigor/receipt-to-tx-rpc.json",
+        "sha256": "3aebc097617b8bf1bd11b1a0863062415e85a3d780cd4a4f2a954bf0fb419c25"
+      },
+      {
+        "file": "analysis/intents-flywheel-rigor/rpc-reconciliation.json",
+        "sha256": "b328d9294c228b738804faf65715c86c798c8cbcec63268e48238af57e764ec8"
+      },
+      {
+        "file": "analysis/intents-flywheel-rigor/sample-block-rpc.json",
+        "sha256": "2fa9c34f6e6d96322752c0df92b361a7684e5c93e9b9c90ec55e09e65fd4c526"
+      },
+      {
+        "file": "analysis/intents-flywheel-rigor/sample-tx-status-rpc.json",
+        "sha256": "1e13849359bf7d3d836cd8269862d43d405331e73ef15b72064acb12fb8cbac0"
+      }
+    ]
+  },
+  "receiptValidation": {
+    "independentSource": "Official archival NEAR RPC; not the Dune dataset",
+    "receiptId": "HsgbweGGWeX4mSzehNamMaypcTiofsCsg2owSE1ZyMLt",
+    "transactionHash": "3sLDRE2LS6C1Mtn2hAnB2gkrwa6DmjfF17yTnQ3FAoBp",
+    "finalStatus": "SuccessValue",
+    "blockHeight": 224135320,
+    "blockTimeUtc": "2026-11-11 23:57:10Z",
+    "matchedDuneEvents": 4,
+    "verifiedSignedPayloadHashes": 4,
+    "ed25519SignaturesVerified": 4,
+    "sourceCommit": "git+https://github.com/near/intents?rev=16d04f6ec4401263f8914638710260da50bb46b0",
+    "checks": [
+      "exact RPC log payload equality at log indices",
+      "NEP-413 Borsh+SHA256 intent hash reproduction",
+      "independent Ed25519 signature verification",
+      "signed input deltas and signer equal emitted event",
+      "finalized transaction and receipt success",
+      "block timestamp equality",
+      "signed-i128 lexical boundary tests",
+      "same canonical SQL prefix across four queries"
+    ],
+    "scope": "One purposive successful receipt; validates decoding and key semantics, not whole-dataset completeness or contract WASM reproducibility"
+  },
+  "componentQuery": "https://dune.com/queries/9120971",
+  "reproduction": {
+    "commands": [
+      "python analysis/intents-flywheel-rigor/statistics.py --check",
+      "python analysis/intents-flywheel-rigor/identification.py --check",
+      "python analysis/intents-flywheel-rigor/check-event-audit.py",
+      "node analysis/intents-flywheel-rigor/publish.mjs --check"
+    ],
+    "pythonPackages": {
+      "numpy": "2.3.5",
+      "cryptography": "Ed25519 verification; installed runtime"
+    },
+    "ciScope": "Node checks recorded input hashes and accounting identities; Python statistical and signature checks run separately."
+  },
+  "sourceFiles": [
+    {
+      "file": "analysis/intents-flywheel-rigor/statistics-result.json",
+      "sha256": "2ee7b0ad09faebf6f686711f5348a5c51fe171492e36f69090af6887d5ff1a57"
+    },
+    {
+      "file": "analysis/intents-flywheel-rigor/identification.json",
+      "sha256": "0d93ae85eb43495cfc6afdcff24831c50eabedd91792dac0e0266a2c486d0a31"
+    },
+    {
+      "file": "analysis/intents-flywheel-rigor/event-audit.json",
+      "sha256": "05463da13fc5e283cab90727b40c10743ff6f7c0600c9c4f93064f0a42210ddf"
+    },
+    {
+      "file": "analysis/intents-flywheel-rigor/rpc-reconciliation.json",
+      "sha256": "b328d9294c228b738804faf65715c86c798c8cbcec63268e48238af57e764ec8"
+    },
+    {
+      "file": "analysis/intents-flywheel-rigor/11_fee_component_panel.sql",
+      "sha256": "388be7f717a02e1cfbbab621a9b685deb4fbdf43f2655967bbd8a476c75e11ae"
+    }
+  ]
+}

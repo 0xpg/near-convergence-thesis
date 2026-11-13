@@ -1,0 +1,21 @@
+{
+  "jsonrpc": "2.0",
+  "error": {
+    "name": "HANDLER_ERROR",
+    "cause": {
+      "info": {
+        "receipt_id": "HsgbweGGWeX4mSzehNamMaypcTiofsCsg2owSE1ZyMLt"
+      },
+      "name": "UNKNOWN_RECEIPT"
+    },
+    "code": -32000,
+    "message": "Server error",
+    "data": {
+      "info": {
+        "receipt_id": "HsgbweGGWeX4mSzehNamMaypcTiofsCsg2owSE1ZyMLt"
+      },
+      "name": "UNKNOWN_RECEIPT"
+    }
+  },
+  "id": "receipt_sample"
+}

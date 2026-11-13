@@ -1,0 +1,189 @@
+{
+  "version": "near-intents-identification-audit-v1",
+  "reviewedOn": "2026-11-13",
+  "causalIdentification": false,
+  "sourceWindow": {
+    "start": "2026-10-14",
+    "end": "2026-11-12",
+    "observedSuccessfulContractLogDays": 30
+  },
+  "observability": {
+    "documentedChange": {
+      "date": "2026-10-27",
+      "source": "https://docs.agentsonintents.com/changelog/overview",
+      "scope": "Official 1Click confidential-settlement announcement; not proof that every integration migrated at one instant."
+    },
+    "preAnnouncement": {
+      "start": "2026-10-14",
+      "end": "2026-10-26",
+      "days": 13,
+      "averageDailySigningAccounts": 14338.692307692309,
+      "averageDailyPublicAccountEvents": 45069.46153846154,
+      "averageDailyReportedPricedVolumeUsd": 116213617.01952638,
+      "confidentialShareOfReportedPricedVolumePct": 38.179477417963696
+    },
+    "postAnnouncement": {
+      "start": "2026-10-27",
+      "end": "2026-11-12",
+      "days": 17,
+      "averageDailySigningAccounts": 5576.176470588235,
+      "averageDailyPublicAccountEvents": 20633.470588235294,
+      "averageDailyReportedPricedVolumeUsd": 133139789.99066462,
+      "confidentialShareOfReportedPricedVolumePct": 79.32839421373582
+    },
+    "descriptivePrePostChange": {
+      "averageDailySigningAccountsChangePct": -61.11098312921624,
+      "averageDailyPublicAccountEventsChangePct": -54.21851097416146,
+      "averageDailyReportedPricedVolumeUsdChangePct": 14.564707136078802
+    },
+    "equalLengthEndpointCheck": {
+      "first7Days": {
+        "start": "2026-10-14",
+        "end": "2026-10-20",
+        "days": 7,
+        "averageDailySigningAccounts": 13950.142857142857,
+        "averageDailyPublicAccountEvents": 45855.71428571428,
+        "averageDailyReportedPricedVolumeUsd": 117415778.39197059,
+        "confidentialShareOfReportedPricedVolumePct": 35.26921884114231
+      },
+      "last7Days": {
+        "start": "2026-11-06",
+        "end": "2026-11-12",
+        "days": 7,
+        "averageDailySigningAccounts": 1319.857142857143,
+        "averageDailyPublicAccountEvents": 4980.285714285715,
+        "averageDailyReportedPricedVolumeUsd": 136076548.82630545,
+        "confidentialShareOfReportedPricedVolumePct": 96.99363668827151
+      },
+      "change": {
+        "averageDailySigningAccountsChangePct": -90.53875536348835,
+        "averageDailyPublicAccountEventsChangePct": -89.13922552104427,
+        "averageDailyReportedPricedVolumeUsdChangePct": 15.892898458705762
+      }
+    },
+    "dateScan": {
+      "signingAccounts": {
+        "minimumDaysPerSide": 7,
+        "candidateDates": 17,
+        "largestDescriptiveShift": {
+          "date": "2026-11-04",
+          "absoluteStandardizedLogMeanShift": 13.249220079062933
+        },
+        "announcedCutoverDate": "2026-10-27",
+        "announcedDateRank": 11,
+        "announcedDateStatistic": 5.341240315787593,
+        "interpretation": "Relative ranking of descriptive mean shifts only. Serial dependence, shared trends, endogenous migration and 30-day window selection preclude treating this rank as a randomization p-value or causal effect."
+      },
+      "reportedAllSourceVolume": {
+        "minimumDaysPerSide": 7,
+        "candidateDates": 17,
+        "largestDescriptiveShift": {
+          "date": "2026-11-02",
+          "absoluteStandardizedLogMeanShift": 1.980257764089641
+        },
+        "announcedCutoverDate": "2026-10-27",
+        "announcedDateRank": 4,
+        "announcedDateStatistic": 1.4260930313329698,
+        "interpretation": "Relative ranking of descriptive mean shifts only. Serial dependence, shared trends, endogenous migration and 30-day window selection preclude treating this rank as a randomization p-value or causal effect."
+      }
+    },
+    "conclusion": "Public signing-account counts and reported all-source notional cover different populations. Their divergence and documented confidential settlement invalidate interpreting the public count decline as total network demand loss. Neither the announcement nor this short-window date scan identifies a causal migration effect."
+  },
+  "paperAudit": [
+    {
+      "arxiv": "2403.02525v2",
+      "url": "https://arxiv.org/html/2403.02525v2",
+      "authors": [
+        "Tarun Chitra",
+        "Kshitij Kulkarni",
+        "Mallesh Pai",
+        "Theo Diamandis"
+      ],
+      "type": "Auction-theoretic and optimization models",
+      "verifiedSections": [
+        "2.2 Costly entry",
+        "2.3 Costly effort",
+        "3 Optimization approach"
+      ],
+      "usableImplication": "Entry costs, costly effort and congestion make more solver addresses an insufficient welfare statistic; optimal entry may be limited. This is a conditional model prediction, not a NEAR empirical estimate.",
+      "neededValidation": "Actual independent solver entities, submitted and winning quotes, order size, route, fills, latency, and user execution benchmarks."
+    },
+    {
+      "arxiv": "2607.21955v1",
+      "url": "https://arxiv.org/html/2607.21955v1",
+      "type": "CoW-specific empirical preprint",
+      "verifiedSections": [
+        "2.1 payoff model",
+        "4 data",
+        "5 empirical strategy",
+        "6 results",
+        "8 limitations",
+        "Data and Code Availability"
+      ],
+      "replicationPackage": {
+        "url": "https://github.com/ryonzhang/solver-reward-market-structure/tree/v1.0-preprint",
+        "status": "Public repository and tag exist; README names committed data, code and result targets. Execution and numerical replication were not performed."
+      },
+      "governanceDateDiscrepancy": {
+        "paperBundledTreatmentDate": "2025-12-08",
+        "independentForumPosts": [
+          {
+            "url": "https://forum.cow.fi/t/cip-74-align-solver-rewards-with-protocol-revenue-and-introduce-a-volume-based-fee/3234?page=2",
+            "postAuthor": "koeppelmann",
+            "postDate": "2025-11-27",
+            "evidence": "Reports that the 2bps volume fee activated the prior day."
+          },
+          {
+            "url": "https://forum.cow.fi/t/cip-74-align-solver-rewards-with-protocol-revenue-and-introduce-a-volume-based-fee/3234?page=2",
+            "postAuthor": "middleway.eth",
+            "postDate": "2025-11-28",
+            "evidence": "Reports that the 2bps fee went live on Wednesday, consistent with 26 November."
+          }
+        ],
+        "finding": "Fee rollout and reward-cap implementation must be dated separately before accepting a bundled 8 December treatment. Reward-cap activation date not independently established here."
+      },
+      "modelCheck": "Under the written common reward/fee conditional payoff, argmax(common term minus cost) equals argmin(cost). A change in winner concentration requires additional endogenous entry, cost, inventory, bid or order-selection mechanisms; the common payoff shift alone does not prove Proposition2. Finite-grid invariant self-check executes.",
+      "usableMethods": "Count-versus-value measures, leave-one-entity-out, order-size segmentation, time/placebo and cross-venue sensitivity. These require correctly observed solver/order identities and a validated event date.",
+      "nonTransferable": "The CoW treatment coefficients, venue counterfactual, size-bucket estimates and execution-quality bounds do not estimate a NEAR flywheel."
+    }
+  ],
+  "expertOverlookedQuestions": [
+    "Does one signed payload emit multiple valid token_diff statements? Establish event grain before counting orders.",
+    "Is an observed account an executor, signer, customer, relayer or independent solver entity?",
+    "Has public observability changed independently of underlying demand?",
+    "Do volume-weighted and count-weighted concentration agree, and survive exclusion of the largest verified entity?",
+    "Are protocol fees, affiliate fees, solver surplus, customer all-in costs and holder receipts separated?",
+    "What order-level reference execution, chain fees and latency establish whether customers actually benefit?"
+  ],
+  "claimPermissions": {
+    "verified": [
+      "Source-specific arithmetic and observed event-account statistics on completed dates.",
+      "Exact accounting decompositions with explicit component labels.",
+      "Announced confidentiality architecture and observed public-data composition changes."
+    ],
+    "inferenceOnly": [
+      "Restricted-entry and inventory advantages as economic hypotheses.",
+      "Possible role of reporting/settlement migration in public-count decline."
+    ],
+    "notIdentified": [
+      "Causal network flywheel or solver-competition effect.",
+      "Complete solver count or beneficial ownership.",
+      "Organic USD volume or proven wash-trading rate.",
+      "Execution-price welfare or market power from aggregate fee intensity."
+    ]
+  },
+  "inputs": [
+    {
+      "file": "analysis/intents-flywheel/public-participation-result.json",
+      "sha256": "f92e43a2c0f56f47797f28ebc735811fd4243b2a55e7a56b050f5811452c4acf"
+    },
+    {
+      "file": "analysis/intents-flywheel-rigor/fee-component-panel-result.json",
+      "sha256": "2c1a20738ce4ee6d9c309845934ea170741e86c91ffa8876673445d5121f81d1"
+    },
+    {
+      "file": "analysis/intents-flywheel-rigor/identification.py",
+      "sha256": "06b48f151655e04f00677e3c326a0ef65fda90404978bfae3a428c5cfbf5b684"
+    }
+  ]
+}

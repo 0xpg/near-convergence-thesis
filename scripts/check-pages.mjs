@@ -86,6 +86,12 @@ try{
  const glanceTiles=rendered['thesis.html'].match(/<article class="glance-tile[\s\S]*?<\/article>/g)||[];
  assert.equal(glanceTiles.length,14);
  assert(rendered['thesis.html'].includes('Intents flywheel'));
+ const rigor=JSON.parse(readFileSync('data/intents-flywheel-rigor.json','utf8'));
+ assert.equal(glanceInsights['fee-productivity'].value,'$'+Math.round(rigor.financial.summary.currentFeePerMillionUsd).toLocaleString('en-US'));
+ assert(glanceInsights['fee-productivity'].takeaway.includes('−$'+Math.round(Math.abs(rigor.financial.summary.reportingMix.netVolumeMixEffectPerMillionUsd)).toLocaleString('en-US')));
+ assert(!glanceInsights['public-participation'].calculation.method.includes('single-hash'));
+ for(const id of flywheelIds)assert.equal(glanceInsights[id].research,'data/intents-flywheel-rigor.json');
+ assert(rendered['thesis.html'].includes('Download research &amp; validation'));
  for(const id of flywheelIds){
   const group=glanceGroups.find(group=>group.id===id),chart=glanceCharts.find(chart=>chart.id===id);
   assert.deepEqual(group.chartIds,[id],'Flywheel findings must be independent visible defaults');

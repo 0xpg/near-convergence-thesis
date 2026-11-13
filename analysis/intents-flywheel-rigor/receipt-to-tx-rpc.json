@@ -1,0 +1,8 @@
+{
+  "jsonrpc": "2.0",
+  "result": {
+    "sender_account_id": "intents.near",
+    "transaction_hash": "3sLDRE2LS6C1Mtn2hAnB2gkrwa6DmjfF17yTnQ3FAoBp"
+  },
+  "id": "sample_receipt_tx"
+}
