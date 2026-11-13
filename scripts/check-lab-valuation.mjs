@@ -1,37 +1,58 @@
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
-import {VALUATION_DEFAULTS,runValuation,cleanValuation,exitDateBounds} from '../src/lab/valuation.ts';
+import {VALUATION_DEFAULTS,VALUATION_LIMITS,runValuation,cleanValuation,exitDateBounds,buildValuationCases} from '../src/lab/valuation.ts';
 const b=JSON.parse(readFileSync('data/lab-baseline.json')),w=b.operating.windows[0];
-const start={asOf:'2026-11-13',annualVolumeUsd:w.volumeUsd*365/30,annualReceiptsUsd:w.annualizedCapturedUsd,supplyNear:b.supply.supplyNear,spotPriceUsd:b.market.priceUsd};
+const start={asOf:b.supply.blockUtc.slice(0,10),annualVolumeUsd:w.volumeUsd*365/30,annualReceiptsUsd:w.annualizedCapturedUsd,supplyNear:b.supply.supplyNear,spotPriceUsd:b.market.priceUsd,grossBps:w.grossBps,capturePct:w.cashCapturePct};
 const a={...VALUATION_DEFAULTS,grossBps:w.grossBps,capturePct:w.cashCapturePct};
 const close=(x,y)=>assert(Math.abs(x-y)<=1e-9*Math.max(1,Math.abs(y)),`${x} != ${y}`);
 const flat=runValuation({...a,growthPct:0,issuancePct:0,discountPct:0},start);
-close(flat.terminal.totalUsd,start.annualReceiptsUsd);close(flat.terminal.presentPriceUsd,start.annualReceiptsUsd*a.multiple/start.supplyNear);
+close(flat.terminal.totalUsd,start.annualReceiptsUsd);
+close(flat.terminal.presentPriceUsd,start.annualReceiptsUsd*a.multiple/start.supplyNear);
+assert.equal(flat.terminal.aiUsd,0);assert.equal(flat.terminal.institutionalUsd,0);
 close(runValuation({...a,multiple:a.multiple*2},start).terminal.presentPriceUsd,2*runValuation(a,start).terminal.presentPriceUsd);
 assert(runValuation({...a,discountPct:50},start).terminal.presentPriceUsd<runValuation(a,start).terminal.presentPriceUsd);
 assert(runValuation({...a,issuancePct:5},start).terminal.presentPriceUsd<runValuation(a,start).terminal.presentPriceUsd);
 assert.equal(runValuation({...a,capturePct:0},start).terminal.presentPriceUsd,0);
-for(const compression of [0,.4,1]){
- const r=runValuation({...a,compression,aiAnnualUsd:1e7},start);
- for(const t of r.frontier)for(const [kind,v] of Object.entries({future:t.future,present:t.present})){
-  if(!v.reachable){assert.equal(compression,1);assert.equal(v.requiredVolumeUsd,null);continue;}
-  const scale=v.requiredVolumeUsd/start.annualVolumeUsd;
-  const receipts=v.requiredVolumeUsd*a.grossBps/10000*a.capturePct/100*(scale>1?scale**-compression:1)+1e7;
-  close(receipts,v.requiredAnnualUsd);
-  close(v.requiredVolumeUsd,start.annualVolumeUsd*(1+v.requiredGrowthPct/100)**(a.frontierYears*12));
-  const price=receipts*a.multiple/(start.supplyNear*(1+a.issuancePct/100)**a.frontierYears)/(kind==='present'?(1+a.discountPct/100)**a.frontierYears:1);
-  close(price,t.target);
- }
+const additions={...a,growthPct:0,institutionalVolumeAnnualUsd:1e12,institutionalFeeBps:4,institutionalCapturePct:50,costPct:20,aiRevenueAnnualUsd:1e9,aiMarginPct:40,aiTokenLinkPct:50};
+const added=runValuation(additions,start);
+close(added.terminal.institutionalUsd,160e6);close(added.terminal.aiUsd,200e6);
+close(added.terminal.intentsUsd,start.annualReceiptsUsd*.8);
+assert.equal(added.rows[0].institutionalUsd,0);assert.equal(added.rows[0].aiUsd,0);
+close(runValuation({...additions,aiTokenLinkPct:0},start).terminal.totalUsd,added.terminal.totalUsd-200e6);
+close(runValuation({...additions,costPct:0},start).terminal.aiUsd,200e6);
+for(const row of added.rows){close(row.intentsUsd+row.institutionalUsd+row.aiUsd,row.totalUsd);assert(row.supplyNear>0&&Number.isFinite(row.totalUsd));}
+const cases=buildValuationCases(start);
+assert.deepEqual(cases.map(c=>c.id),['bear','base','bull','maximum']);
+assert(cases.every(c=>c.inputs.exitDate==='2031-12-31'));
+assert(cases.every((c,i)=>!i||c.result.terminal.futurePriceUsd>cases[i-1].result.terminal.futurePriceUsd));
+for(const c of cases){
+ for(const [key,[min,max]] of Object.entries(VALUATION_LIMITS))assert(c.inputs[key]>=min&&c.inputs[key]<=max,key);
+ const x=c.result.terminal;
+ const t=(Date.parse(c.inputs.exitDate)-Date.parse(start.asOf))/86400000/365;
+ const volume=start.annualVolumeUsd*(1+c.inputs.growthPct/100)**(12*t),scale=volume/start.annualVolumeUsd;
+ const gross=volume*c.inputs.grossBps/10000*(scale>1?scale**-c.inputs.compression:1);
+ const intents=gross*c.inputs.capturePct/100*(1-c.inputs.costPct/100);
+ const institutional=c.inputs.institutionalVolumeAnnualUsd*c.inputs.institutionalFeeBps/10000*c.inputs.institutionalCapturePct/100*(1-c.inputs.costPct/100);
+ const ai=c.inputs.aiRevenueAnnualUsd*c.inputs.aiMarginPct/100*c.inputs.aiTokenLinkPct/100;
+ const supply=start.supplyNear*(1+c.inputs.issuancePct/100)**t;
+ close(x.grossIntentsUsd,gross);close(x.intentsUsd,intents);close(x.institutionalUsd,institutional);close(x.aiUsd,ai);close(x.supplyNear,supply);
+ close(x.futurePriceUsd,(intents+institutional+ai)*c.inputs.multiple/supply);
+ close(x.presentPriceUsd,x.futurePriceUsd/(1+c.inputs.discountPct/100)**t);
+ assert.equal(c.result.rows.at(-1).date,c.inputs.exitDate);
 }
+const maximum=cases.at(-1);
+assert.equal(maximum.calibration.status,'calibrated');assert.equal(maximum.calibration.solvedInput,'aiRevenueAnnualUsd');
+close(maximum.result.terminal.futurePriceUsd,400);
+close(maximum.calibration.requiredAnnualReceiptsUsd,400*maximum.result.terminal.supplyNear/maximum.inputs.multiple);
+assert(maximum.result.terminal.presentPriceUsd<400,'Future maximum is not a $400 value today');
+assert(runValuation({...maximum.inputs,aiRevenueAnnualUsd:maximum.inputs.aiRevenueAnnualUsd*2},start).terminal.futurePriceUsd>400,'No hidden price cap');
+assert.equal(buildValuationCases(start,exitDateBounds(start.asOf).max).at(-1).calibration.status,'already-above-target');
+const changed=buildValuationCases({...start,grossBps:10,capturePct:20});assert.equal(changed[1].inputs.grossBps,10);assert.equal(changed[1].inputs.capturePct,20);
 assert.equal(cleanValuation({growthPct:null}).growthPct,VALUATION_DEFAULTS.growthPct);
 assert.equal(cleanValuation({growthPct:true}).growthPct,VALUATION_DEFAULTS.growthPct);
 assert.equal(cleanValuation({exitDate:'2026-02-30'}).exitDate,VALUATION_DEFAULTS.exitDate);
-assert.throws(()=>runValuation({...a,exitDate:'2026-11-01'},start));
-assert.throws(()=>runValuation(a,{...start,supplyNear:0}));
-const leap=runValuation({...a,exitDate:'2028-11-13'},start);close(leap.years,731/365);
-assert.equal(leap.rows.at(-1).date,'2028-11-13');
-assert(leap.rows.every(x=>x.supplyNear>0&&Number.isFinite(x.totalUsd)));
-console.log('Valuation: observed receipts, ACT/365, dilution/discount monotonicity, exact compression inverse, zero capture, invalid inputs and independent target reconstruction passed.');
-
+assert.throws(()=>runValuation({...a,exitDate:'2026-11-01'},start));assert.throws(()=>runValuation(a,{...start,supplyNear:0}));assert.throws(()=>runValuation(a,{...start,supplyNear:undefined}));
+const leap=runValuation({...a,exitDate:'2028-11-13'},start);close(leap.years,731/365);assert.equal(leap.rows.at(-1).date,'2028-11-13');
 assert.equal(runValuation({...a,exitDate:exitDateBounds(start.asOf).max},start).years,15);
-const nearUnit=runValuation({...a,compression:.999999},start).frontier[0].future;assert.equal(nearUnit.reachable,false);assert.equal(nearUnit.requiredVolumeUsd,null);assert.equal(nearUnit.requiredGrowthPct,null);
+assert.deepEqual(runValuation(maximum.inputs,start),runValuation(JSON.parse(JSON.stringify(maximum.inputs)),start),'JSON inputs reproduce outputs');
+console.log(JSON.stringify({checks:'Observed baseline, common-horizon cases, independent segment reconstruction, single AI calibration to $400 future price, no price cap, ACT/365, dilution, discount, costs once, zero token linkage, input guards and JSON roundtrip',cases:cases.map(c=>({case:c.label,futurePriceUsd:c.result.terminal.futurePriceUsd,presentPriceUsd:c.result.terminal.presentPriceUsd,annualReceiptsUsd:c.result.terminal.totalUsd,aiGrossBillingUsd:c.inputs.aiRevenueAnnualUsd}))}));

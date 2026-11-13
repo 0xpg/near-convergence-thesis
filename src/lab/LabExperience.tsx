@@ -2,7 +2,7 @@ import {useEffect,useLayoutEffect,useMemo,useRef,useState,type CSSProperties,typ
 import {BASELINE,baseline,DEFAULTS,LIMITS,PRESETS,TRADING_DAYS,run,sanitize,compressionIndex,coverageGrid,supplyPath,flywheel,type Inputs,type InputKey} from './engine.ts';
 
 import ValuationPanel,{VAL_DEFAULTS} from './ValuationPanel.tsx';
-import {MODEL_VERSION,cleanValuation,runValuation,type ValuationInputs} from './valuation.ts';
+import {MODEL_VERSION,cleanValuation,runValuation,buildValuationCases,type ValuationInputs} from './valuation.ts';
 import {STARTING} from './ValuationPanel.tsx';
 
 type Result=ReturnType<typeof run>;
@@ -21,7 +21,7 @@ const nice=value=>{if(!(value>0))return value;const magnitude=10**Math.floor(Mat
 
 const FORMAT:Record<InputKey,(value:number)=>string>={
   volumeMultiple:value=>times(value),compression:value=>value.toFixed(2),
-  shareStable:pct,shareMajors:pct,bpsStable:value=>`${value} bps`,bpsMajors:value=>`${value} bps`,bpsLong:value=>`${value} bps`,
+  shareStable:pct,shareMajors:pct,bpsStable:value=>`${value.toFixed(2)} bps`,bpsMajors:value=>`${value.toFixed(2)} bps`,bpsLong:value=>`${value.toFixed(2)} bps`,
   partnerPayout:pct,costs:value=>pct(value,0),buybackAllocation:value=>pct(value,0),burnShare:value=>pct(value,0),
   price:value=>`$${value.toFixed(2)}`,issuancePct:pct,
   desks:value=>`${value}`,ordersPerDesk:value=>`${value} / day`,orderSize:money,incrementalShare:value=>pct(value,0),institutionalBps:value=>`${value} bps`,
@@ -398,7 +398,7 @@ export default function LabExperience(){
   },[inputs,valuation]);
   const share=async()=>{try{await navigator.clipboard.writeText(location.href);setCopied(true);setTimeout(()=>setCopied(false),1600);}catch{setCopied(false);}};
   const exportScenario=()=>{
-    const output={exportedAt:new Date().toISOString(),model:MODEL_VERSION,baseline,inputs,valuation,valuationOutputs:runValuation(valuation,STARTING),outputs:Object.fromEntries(Object.entries(result).filter(([,value])=>typeof value==='number').map(([key,value])=>[key,Number.isFinite(value)?value:null])),unreachableEncoding:'Non-finite operating outputs are null; see retained rate and volume for reachability.'};
+    const output={exportedAt:new Date().toISOString(),model:MODEL_VERSION,baseline,inputs,valuation,valuationOutputs:runValuation(valuation,STARTING),valuationCases:buildValuationCases(STARTING,valuation.exitDate),outputs:Object.fromEntries(Object.entries(result).filter(([,value])=>typeof value==='number').map(([key,value])=>[key,Number.isFinite(value)?value:null])),unreachableEncoding:'Non-finite operating outputs are null; see retained rate and volume for reachability.'};
     const url=URL.createObjectURL(new Blob([JSON.stringify(output,null,2)],{type:'application/json'}));
     const link=document.createElement('a');link.href=url;link.download='near-scenario.json';link.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
   };
@@ -414,7 +414,7 @@ export default function LabExperience(){
         <div className="lab-console-actions"><button type="button" onClick={()=>choose('base')}>Reset operating model</button><button type="button" onClick={exportScenario}>Export complete model</button><button type="button" onClick={share}>{copied?'Link copied':'Copy model link'}</button></div>
       </div>
       <div className="lab-console-results" aria-live="polite">
-        <p className="lab-console-label">Annual run rate · mock baseline</p>
+        <p className="lab-console-label">Annualized observed baseline · operating sensitivity</p>
         <p className="lab-console-big"><span>Captured receipts</span><strong>{money(result.retained)}</strong></p>
         <dl>
           <div><dt>Total volume</dt><dd>{money(result.volume)}</dd></div>

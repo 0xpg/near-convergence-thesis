@@ -15,7 +15,9 @@ try{
  for(const [legacy,path] of [['/thesis.html','/thesis'],['/index.html','/'],['/lab/','/lab'],['/','/']])assert.equal(resolveRoute(legacy).path,path);
  assert.equal(resolveRoute('/explore').redirect,'/research#explore');
  const rendered=Object.fromEntries(Object.entries(components).map(([file,Component])=>[file,renderToStaticMarkup(createElement(Component))]));
- for(const label of ['Price the conditions.','Constrained monetization','Operating execution','Scale leadership','What would $400–$500 require?','Export complete model'])assert(rendered['lab.html'].includes(label),'Lab model missing '+label);
+ for(const label of ['Four paths to value.','Bear','Base','Bull','Maximum','Operating assumptions to token value','Where the price comes from','Export complete model'])assert(rendered['lab.html'].includes(label),'Lab model missing '+label);
+ assert(!rendered['lab.html'].includes('What would $400–$500 require?'));
+ assert(rendered['lab.html'].includes('calibrated upside hypothesis'),'Maximum calibration must be explicit');
  assert(!rendered['lab.html'].includes('Mock data'));
  assert(rendered['lab.html'].includes('2026-11-10')&&rendered['lab.html'].includes('224353535'),'Lab evidence cutoffs must be visible');
  for(const [page,html] of Object.entries(rendered)){
