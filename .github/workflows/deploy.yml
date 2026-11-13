@@ -27,6 +27,7 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm test
+      - run: node scripts/check-deploy-retry.mjs
       - run: npm run build
       - run: npm run test:pages
       - run: npm run test:public
@@ -40,7 +41,19 @@ jobs:
             echo "::error::Add CLOUDFLARE_ACCOUNT_ID and CLOUDFLARE_API_TOKEN in repository Settings > Secrets and variables > Actions."
             exit 1
           fi
-          npx --yes wrangler@4.157.0 pages deploy dist-public --project-name near-evidence --branch main
+          deploy_log=$(mktemp)
+          trap 'rm -f "$deploy_log"' EXIT
+          for attempt in 1 2 3; do
+            status=0
+            npx --yes wrangler@4.157.0 pages deploy dist-public --project-name near-evidence --branch main >"$deploy_log" 2>&1 || status=$?
+            cat "$deploy_log"
+            if [ "$status" -eq 0 ]; then break; fi
+            if [ "$attempt" -eq 3 ] || ! grep -Eq '503 Service Unavailable|502 Bad Gateway|504 Gateway Timeout|no healthy upstream|upstream connect error' "$deploy_log"; then
+              exit "$status"
+            fi
+            echo "Cloudflare upstream unavailable; retrying deployment (attempt $((attempt + 1))/3)."
+            sleep $((attempt * 20))
+          done
       - name: Verify live routes
         if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
         run: |
