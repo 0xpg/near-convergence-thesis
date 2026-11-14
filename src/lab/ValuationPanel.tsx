@@ -6,8 +6,8 @@ import {CaseSlider} from './Transmission.tsx';
 import {DitherCanvas,ditherArea,ditherBand,ditherField,ditherLine,ditherRect,text,rule,prefersReducedMotion,INK,GREEN,AMBER,BLUE} from './dither.tsx';
 import {simulateBand,SIGMA_MONTHLY} from './uncertainty.ts';
 import rigor from '../../data/lab-rigor.json' with {type:'json'};
-const usd=(v:number|null)=>v===null||!Number.isFinite(v)?'Not reachable':new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',notation:'compact',maximumFractionDigits:1}).format(v);
-const price=(v:number)=>new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',maximumFractionDigits:2}).format(v);
+import {formatPrice as price,formatUsdCompact} from '../format.ts';
+const usd=(v:number|null)=>v===null||!Number.isFinite(v)?'Not reachable':formatUsdCompact(v);
 const pct=(v:number)=>`${v.toFixed(1)}%`;
 export const HOLDINGS_BASELINE_ID=`nrr:${institutional.nrr.holdingsIssuerDate}:${institutional.nrr.nearHeld}`;
 export function heatColors(value:number){

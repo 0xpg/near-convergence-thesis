@@ -9,8 +9,7 @@ import ConsoleDither from './ConsoleDither.tsx';
 import ValuationFramework from './ValuationFramework.tsx';
 import {startScenarioField} from './scenario-field.ts';
 import {startTypeDither} from '../overview/type-dither.ts';
-const money=(n:number)=>new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',notation:'compact',maximumFractionDigits:1}).format(n);
-const price=(n:number)=>new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',maximumFractionDigits:2}).format(n);
+import {formatPrice as price,formatUsdCompact as money} from '../format.ts';
 type CaseId=keyof typeof VALUATION_PRESETS;
 const inputKeys=Object.keys(VAL_DEFAULTS) as (keyof ValuationInputs)[];
 function changedValue(key:keyof ValuationInputs,value:string|number,other:string|number){

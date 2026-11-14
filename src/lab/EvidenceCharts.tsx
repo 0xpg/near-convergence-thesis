@@ -1,11 +1,11 @@
 import rigor from '../../data/lab-rigor.json' with {type:'json'};
 import baseline from '../../data/lab-baseline.json' with {type:'json'};
 import {DitherCanvas,ditherBand,ditherLine,ditherRect,text,rule,INK,MUTED,GREEN,RED,AMBER,BLUE,PAPER} from './dither.tsx';
+import {formatUsdCompact as usd} from '../format.ts';
 
 type Pen=CanvasRenderingContext2D;
 const CASES=[{id:'bear',label:'Bear',growth:-1,color:RED},{id:'base',label:'Base',growth:4,color:GREEN},{id:'bull',label:'Bull',growth:6,color:BLUE},{id:'max',label:'Maximum',growth:8,color:AMBER}] as const;
 const pct=(v:number,digits=1)=>`${v>0?'+':''}${v.toFixed(digits)}%`;
-const usd=(v:number)=>new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',notation:'compact',maximumFractionDigits:1}).format(v);
 const monthLabel=(m:string)=>new Date(m+'-01T00:00:00Z').toLocaleString('en-US',{month:'short',timeZone:'UTC'});
 const times=(v:number)=>`${v>=100?Math.round(v).toLocaleString('en-US'):v.toFixed(1)}×`;
 

@@ -3,9 +3,9 @@ import {runValuation,buildValuationCases,type Starting,type ValuationInputs} fro
 import baseline from '../../data/lab-baseline.json' with {type:'json'};
 import rigor from '../../data/lab-rigor.json' with {type:'json'};
 import EvidenceCharts,{BacktestChart} from './EvidenceCharts.tsx';
+import {formatPrice as price,formatUsdCompact} from '../format.ts';
 
-const money=(n:number)=>new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',notation:'compact',maximumFractionDigits:2}).format(n);
-const price=(n:number)=>new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',maximumFractionDigits:2}).format(n);
+const money=(n:number)=>formatUsdCompact(n,2);
 const percent=(n:number)=>`${n.toFixed(2)}%`;
 const number=(n:number)=>new Intl.NumberFormat('en-US',{maximumFractionDigits:3}).format(n);
 

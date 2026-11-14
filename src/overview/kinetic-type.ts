@@ -1,4 +1,4 @@
-const clamp=value=>Math.max(0,Math.min(1,value));
+import {clamp01 as clamp} from '../format.ts';
 export function wordReveal(index,count,seconds){
   const order=index/Math.max(1,count-1);
   return Math.min(clamp((seconds-order*.65)/.15),clamp((2.9+order*.7-seconds)/.15));

@@ -66,11 +66,6 @@ export function rule(pen:Pen,x1:number,y1:number,x2:number,y2:number,color=RULE,
   pen.save();pen.strokeStyle=color;pen.lineWidth=1;pen.setLineDash(dash);pen.beginPath();pen.moveTo(Math.round(x1)+.5,Math.round(y1)+.5);pen.lineTo(Math.round(x2)+.5,Math.round(y2)+.5);pen.stroke();pen.restore();
 }
 
-export function handle(pen:Pen,x:number,y:number,color=INK){
-  pen.save();pen.fillStyle=PAPER;pen.strokeStyle=color;pen.lineWidth=1.5;pen.beginPath();pen.arc(x,y,7,0,Math.PI*2);pen.fill();pen.stroke();
-  pen.fillStyle=color;pen.beginPath();pen.arc(x,y,2.5,0,Math.PI*2);pen.fill();pen.restore();
-}
-
 export const clamp=(value:number,min:number,max:number)=>Math.min(max,Math.max(min,value));
 export const logScale=(min,max)=>({to:(value,length)=>Math.log(value/min)/Math.log(max/min)*length,from:(position,length)=>min*(max/min)**clamp(position/length,0,1)});
 

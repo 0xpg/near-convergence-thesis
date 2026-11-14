@@ -1,4 +1,4 @@
-import React,{useLayoutEffect,useRef,useState} from 'react';
+import {useLayoutEffect,useRef,useState} from 'react';
 import {startAbsorption} from './overview/absorption.ts';
 import nearWordmark from '../assets/identity/near.svg';
 

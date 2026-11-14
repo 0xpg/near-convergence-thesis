@@ -1,9 +1,9 @@
 import coverage from '../data/glance-coverage.json';
 import evidence from '../data/glance-insights.json';
 import genesis from '../analysis/coverage-expansion/token/genesis-result.json';
+import {formatCompact as compact} from './format.ts';
 
 export type Insight={value:string,headline:string,date:string,limitation:string,source:string,snapshot?:string,research?:string,takeaway?:string,attribution?:{label:string,url:string},calculation:{method:string,[key:string]:unknown}};
-const compact=(value:number)=>new Intl.NumberFormat('en-US',{notation:'compact',maximumFractionDigits:1}).format(value);
 function fact(metric:string){
   const row=coverage.facts.find(row=>row.metric===metric);
   if(!row||!Number.isFinite(row.value))throw new Error('Missing validated overview fact: '+metric);

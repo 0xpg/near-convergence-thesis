@@ -1,3 +1,4 @@
+import {formatUsdCompact} from './format.ts';
 export type DailyObservation={
   day:string; volumeUsd:number; grossFeesUsd:number; capturedUsd:number;
   swaps?:number|null; transactions?:number|null; emissionsNear?:number|null; totalRevenueNear?:number|null;
@@ -46,7 +47,7 @@ function metrics(rows:DailyObservation[]):WindowMetrics{
     medianDailyVolumeUsd:ordered.length%2?ordered[middle]:(ordered[middle-1]+ordered[middle])/2,
     top5DaysVolumeSharePct:ratio(sum(ordered.slice(-5)),volumeUsd,100)};
 }
-const money=(value:number)=>new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',notation:'compact',maximumFractionDigits:2}).format(value);
+const money=(value:number)=>formatUsdCompact(value,2);
 const movement=(value:number|null)=>value===null?'has no comparable nonzero baseline':Math.abs(value)<.05?'was broadly unchanged':`${value>0?'rose':'fell'} ${Math.abs(value).toFixed(1)}%`;
 
 export function analyzeWindow(rows:DailyObservation[],options:{days:number;end?:string;asOf:string}):WindowAnalysis{

@@ -1,7 +1,7 @@
 import snapshot from '../data/institutional-demand.json';
 import type {Insight} from './glance-coverage-insights.ts';
+import {formatCompact as compact} from './format.ts';
 const {nrr,european,flowSummary:flow}=snapshot;
-const compact=(value:number,digits=1)=>new Intl.NumberFormat('en-US',{notation:'compact',maximumFractionDigits:digits}).format(value);
 const percent=(value:number,digits=1)=>(value<0?'−':'+')+Math.abs(value).toFixed(digits)+'%';
 const metadata={
   'investment-holdings':{title:'NEAR held by investment products',tab:'Holdings',description:'Latest issuer-reported NEAR holdings for two distinct products. Each bar retains its own issuer cutoff; these are not synchronized holdings, net flows or verified institutional ownership.'},
