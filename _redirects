@@ -1,5 +1,6 @@
 /thesis.html /thesis 301
-/lab.html /lab 301
+/lab.html /scenario-labs 301
+/lab /scenario-labs 301
 /research.html /thesis 301
 /methodology.html /thesis 301
 /explore.html /thesis 301
@@ -9,4 +10,4 @@
 /research /thesis 301
 /methodology /thesis 301
 /thesis / 200
-/lab / 200
+/scenario-labs / 200

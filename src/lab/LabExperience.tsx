@@ -47,8 +47,8 @@ export default function LabExperience(){
  const field=useRef<HTMLCanvasElement>(null),heading=useRef<HTMLHeadingElement>(null),canvas=useRef<HTMLCanvasElement>(null);
  useEffect(()=>startScenarioField(field.current),[]);
  useLayoutEffect(()=>canvas.current&&heading.current?startTypeDither(canvas.current,heading.current):undefined,[]);
- useEffect(()=>{const hash='#s='+encodeURIComponent(JSON.stringify({model:MODEL_VERSION,baseline:baseline.version,holdingsBaseline:HOLDINGS_BASELINE_ID,referenceCase,valuation}));if(location.hash!==hash)history.replaceState(null,'',location.pathname+location.search+hash);},[valuation,referenceCase]);
- const share=async()=>{try{await navigator.clipboard.writeText(location.href);setCopied(true);setTimeout(()=>setCopied(false),1600);}catch{setCopied(false);}};
+ useEffect(()=>{if(location.hash.startsWith('#s='))history.replaceState(null,'',location.pathname+location.search);},[]);
+ const share=async()=>{try{const link=location.origin+location.pathname+'#s='+encodeURIComponent(JSON.stringify({model:MODEL_VERSION,baseline:baseline.version,holdingsBaseline:HOLDINGS_BASELINE_ID,referenceCase,valuation}));await navigator.clipboard.writeText(link);setCopied(true);setTimeout(()=>setCopied(false),1600);}catch{setCopied(false);}};
  const exportScenario=()=>{const output={exportedAt:new Date().toISOString(),model:MODEL_VERSION,baseline,institutionalHoldingsBaseline:{source:'https://nrretf.com/',snapshot:institutional.version,issuerDate:institutional.nrr.holdingsIssuerDate,nearHeld:institutional.nrr.nearHeld,scope:'NRR tracked fund inventory, not total institutional ownership'},referenceCase,selectedCase:selected?.id||'custom',valuation,valuationOutputs:result,transmission:m,valuationCases:cases};const url=URL.createObjectURL(new Blob([JSON.stringify(output,null,2)],{type:'application/json'}));const link=document.createElement('a');link.href=url;link.download='near-scenario.json';link.click();setTimeout(()=>URL.revokeObjectURL(url),1000);};
  return <>
   <section className="lab-hero" aria-labelledby="lab-title"><div className="lab-hero-copy">

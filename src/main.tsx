@@ -22,7 +22,7 @@ function loadStyles(hrefs:string[]){
 async function start(){
   startPageTransitions();
   const target=resolveRoute(location.pathname);
-  if(target.redirect!==undefined){location.replace(target.redirect);return;}
+  if(target.redirect!==undefined){location.replace(target.redirect+(target.redirect.includes('#')?'':location.hash));return;}
   const path=target.path;
   if(path!==location.pathname)history.replaceState(null,'',path+location.search+location.hash);
   const route=routes[path];

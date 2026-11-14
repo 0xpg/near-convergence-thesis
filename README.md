@@ -12,7 +12,7 @@ Live: [near-convergence-thesis.pages.dev](https://near-convergence-thesis.pages.
 |---|---|
 | `/` | The thesis in one screen: humans, agents, NEAR and institutions |
 | `/thesis` | Convergence thesis, 3D investment framework, network map and **NEAR at a glance** |
-| `/lab` | Scenario Lab: Bear, Base, Bull and Maximum cases from Intents volume, fees, institutional routing and AI services to token value |
+| `/scenario-labs` | Scenario Lab: Bear, Base, Bull and Maximum cases from Intents volume, fees, institutional routing and AI services to token value |
 
 ## Data
 
