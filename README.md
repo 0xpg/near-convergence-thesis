@@ -4,7 +4,7 @@
 
 **Intent Is All You Need.** An investment research site on where NEAR sits between two emerging sources of demand, autonomous economic activity and institutional order flow, and how much revenue its infrastructure can capture from both.
 
-Live: [near-evidence.pages.dev](https://near-evidence.pages.dev)
+Live: [near-convergence-thesis]([https://near-evidence.pages.dev](https://near-convergence-thesis.pages.dev/))
 
 ## Pages
 
