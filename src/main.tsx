@@ -1,6 +1,7 @@
 import React,{Component,type ComponentType,type ReactNode} from 'react';
 import {createRoot} from 'react-dom/client';
 import {resolveRoute,routes} from './routes.ts';
+import {revealPage,startPageTransitions} from './page-transition.ts';
 import './root.css';
 
 class ErrorBoundary extends Component<{children:ReactNode},{failed:boolean}> {
@@ -19,6 +20,7 @@ function loadStyles(hrefs:string[]){
 }
 
 async function start(){
+  startPageTransitions();
   const target=resolveRoute(location.pathname);
   if(target.redirect!==undefined){location.replace(target.redirect);return;}
   const path=target.path;
@@ -32,6 +34,7 @@ async function start(){
     Page=component;
   }
   createRoot(document.getElementById('root') as HTMLElement).render(<React.StrictMode><ErrorBoundary><Page/></ErrorBoundary></React.StrictMode>);
+  revealPage();
 }
 
-start();
+start().catch(()=>document.body.classList.add('page-in'));
