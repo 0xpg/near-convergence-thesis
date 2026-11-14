@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import {startScenarioField} from '../src/lab/scenario-field.ts';
 let pending,resize;
 const listeners=new Map(),text=[],backs=[];
-const pen={clearRect(){},fillRect(...args){if(args[2]>50)backs.push(args);},save(){},restore(){},setLineDash(){},beginPath(){},moveTo(){},lineTo(){},stroke(){},arc(){},fill(){},setTransform(){},measureText(label){return {width:label.length*6};},fillText(...args){text.push(args);}};
+const pen={clearRect(){},fillRect(...args){if(args[2]>50)backs.push(args);},save(){},restore(){},setLineDash(){},beginPath(){},moveTo(){},lineTo(){},stroke(){},arc(){},fill(){},setTransform(){},measureText(label){return {width:label.length*parseFloat(this.font.match(/([\d.]+)px/)[1])*.55};},fillText(...args){text.push(args);}};
 let box={left:0,top:0,width:560,height:420};
 const canvas={getContext:()=>pen,getBoundingClientRect:()=>box,addEventListener:(name,fn)=>listeners.set(name,fn),removeEventListener:name=>listeners.delete(name)};
 globalThis.matchMedia=()=>({matches:true,addEventListener(){},removeEventListener(){}});
@@ -17,6 +17,7 @@ const stop=startScenarioField(canvas);
 const paint=()=>{const fn=pending;pending=null;text.length=0;backs.length=0;fn(100);assert.equal(pending,null,'Reduced motion draws one static frame');};
 for(const [width,height] of [[560,420],[460,345],[342,192]]){
  box={left:0,top:0,width,height};resize();paint();
+ assert(pen.font.includes(width>=420&&height>=240?'14px':'11px'),'Roomy charts use larger labels; compact charts retain 11px');
  assert.equal(canvas.width,width*2);assert.equal(canvas.height,height*2);
  for(const [x,y] of [[0,0],[width,0],[0,height],[width,height],[width/2,height/2]]){
   listeners.get('pointermove')({clientX:x,clientY:y});paint();

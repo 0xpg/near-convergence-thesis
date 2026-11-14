@@ -40,9 +40,11 @@ export default function LabExperience(){
   <section className="lab-hero" aria-labelledby="lab-title"><div className="lab-hero-copy">
    <div className="thesis-resolve"><canvas ref={canvas} aria-hidden="true"/><h1 id="lab-title" ref={heading} aria-label="What makes value endure?"><span>What makes</span> <span>value endure?</span></h1></div>
    <p className="lab-deck">Not all activity creates value, and not all value accrues to the asset enabling it. Examine the conditions under which NEAR's growing execution network becomes a source of durable token demand.</p>
-   <p className="lab-case-context">{caseName}</p>
+  </div><figure className="lab-hero-field"><canvas ref={field} aria-hidden="true"/></figure>
+   <div className="lab-hero-readout"><div className="lab-hero-orientation"><p className="lab-case-context">{caseName}</p></div>
    <dl className="lab-hero-stats"><div><dt>Capturable REV at exit</dt><dd>{money(t.totalUsd)}</dd></div><div><dt>Forecast token value</dt><dd>{price(t.futurePriceUsd)}</dd></div><div><dt>Exit REV multiple</dt><dd>{valuation.multiple}×</dd></div></dl>
-  </div><figure className="lab-hero-field"><canvas ref={field} aria-hidden="true"/></figure></section>
+   </div>
+  </section>
   <section className="lab-models lab-working" aria-labelledby="working-case-title"><header><h2 id="working-case-title">Choose a case. Trace its value.</h2><p>One forecast model connects execution, institutional routing, AI services and institutional demand. Every result follows these shared inputs.</p></header>
    <section id="lab" className="lab-console lab-case-console" aria-label="Selected case controls">
     <div className="lab-console-controls"><div className="lab-presets" role="group" aria-label="Valuation cases">{cases.map(c=><button key={c.id} type="button" aria-pressed={referenceCase===c.id} onClick={()=>chooseCase(c.id)}>{c.label}</button>)}</div>

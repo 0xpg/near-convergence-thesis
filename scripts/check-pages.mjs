@@ -17,6 +17,7 @@ try{
  for(const legacy of ['/explore','/report','/research','/methodology'])assert.equal(resolveRoute(legacy).redirect,'/thesis');
  assert.equal(resolveRoute('/lab').redirect,'/scenario-labs');assert.equal(resolveRoute('/lab.html').redirect,'/scenario-labs');
  const rendered=Object.fromEntries(Object.entries(components).map(([file,Component])=>[file,renderToStaticMarkup(createElement(Component))]));
+ assert(rendered['lab.html'].includes('class="lab-hero-readout"')&&!rendered['lab.html'].includes('Scroll to explore'),'Opening chapter retains forecast metrics without a scroll instruction');
  assert(!/not as forecasts|directional evidence|hypothesis token value/i.test(rendered['lab.html']),'Scenario Lab consistently presents scenario forecasts');
  assert(rendered['lab.html'].includes('Forecast token value'),'Forecast output label remains visible');
  assert(rendered['lab.html'].includes('<canvas aria-hidden="true"></canvas><h1 id="lab-title"'),'Scenario Lab retains its animated heading canvas');
