@@ -41,6 +41,7 @@ export default function LabExperience(){
  const changes=reference?inputKeys.filter(key=>reference.inputs[key]!==valuation[key]):[];
  const caseName=reference?`${reference.label}${changes.length?' · modified':''}`:'Custom case',t=result.terminal,m=transmissionMetrics(result);
  const bounds=exitDateBounds(STARTING.asOf),delta=reference?t.futurePriceUsd-reference.result.terminal.futurePriceUsd:0;
+ const setExitDate=(exitDate:string)=>{if(exitDate>=bounds.min&&exitDate<=bounds.max)setValuation({...valuation,exitDate});};
  const chooseCase=(id:CaseId)=>setModel(current=>({referenceCase:id,valuation:{...buildValuationCases(STARTING,current.valuation.exitDate).find(c=>c.id===id)!.inputs,institutionalHoldingsPct:current.valuation.institutionalHoldingsPct,holdingsElasticity:current.valuation.holdingsElasticity}}));
  const reset=()=>setModel(current=>{const id=current.referenceCase??'base';return {referenceCase:id,valuation:{...buildValuationCases(STARTING,current.valuation.exitDate).find(c=>c.id===id)!.inputs}};});
  const field=useRef<HTMLCanvasElement>(null),heading=useRef<HTMLHeadingElement>(null),canvas=useRef<HTMLCanvasElement>(null);
@@ -61,7 +62,7 @@ export default function LabExperience(){
    <section id="lab" className="lab-console lab-case-console" aria-label="Selected case controls">
     <div className="lab-console-controls"><div className="lab-presets" role="group" aria-label="Valuation cases">{cases.map(c=><button key={c.id} type="button" aria-pressed={referenceCase===c.id} onClick={()=>chooseCase(c.id)}>{c.label}</button>)}</div>
      <p className="lab-control-hint">Switching cases preserves the ETF inputs. Reset restores all assumptions for the selected reference at this exit.</p>
-     <label className="lab-exit-date">Common exit date<input type="date" aria-label="Valuation exit date" min={bounds.min} max={bounds.max} value={valuation.exitDate} onChange={e=>{const exitDate=e.target.value;if(exitDate>=bounds.min&&exitDate<=bounds.max)setValuation({...valuation,exitDate});}}/><small>All reference cases use this date.</small></label>
+     <label className="lab-exit-date">Common exit date<input type="date" aria-label="Valuation exit date" min={bounds.min} max={bounds.max} value={valuation.exitDate} onInput={e=>setExitDate(e.currentTarget.value)} onChange={e=>setExitDate(e.currentTarget.value)}/><small>All reference cases use this date.</small></label>
      <AssumptionControls inputs={valuation} onChange={setValuation}/>
      <div className="lab-console-actions"><button type="button" onClick={reset}>Reset {reference?.label||'Base'} assumptions</button><button type="button" onClick={exportScenario}>Export complete model</button><button type="button" onClick={share}>{copied?'Link copied':'Copy model link'}</button></div>
     </div>
