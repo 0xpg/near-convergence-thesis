@@ -1,11 +1,12 @@
-import React,{useState} from 'react';
+import {useState} from 'react';
 import economics from '../data/glance-economics.json';
 import type {WindowAnalysis} from './glance-analytics.ts';
 import {ANALYTICS_VERSION} from './glance-analytics.ts';
 import type {GlanceSnapshot} from './glance-data.ts';
 import {DitherCanvas,ditherRect,ditherLine,text,rule,INK,MUTED,GREEN,SOFT,RED,AMBER} from './lab/dither.tsx';
+import {formatUsdCompact} from './format.ts';
 
-const usd=(v:number|null)=>v===null||!Number.isFinite(v)?'—':new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',notation:'compact',maximumFractionDigits:2}).format(v);
+const usd=(v:number|null)=>v===null||!Number.isFinite(v)?'—':formatUsdCompact(v,2);
 const pct=(v:number|null)=>v===null?'—':v.toFixed(1)+'%';
 const period=(a:WindowAnalysis)=>a.window.start&&a.window.end?`${a.window.start} – ${a.window.end}`:'Unavailable source window';
 const queries={scorecard:'https://dune.com/queries/9114284',waterfall:'https://dune.com/queries/9114284',daily:'https://dune.com/queries/9114284'};

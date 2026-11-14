@@ -1,11 +1,12 @@
 import {useEffect,useState,type ReactNode,type CSSProperties} from 'react';
 import {runValuation,cleanValuation,VALUATION_LIMITS,type ValuationInputs} from './valuation.ts';
 import {DitherCanvas,ditherRect,ditherArea,ditherLine,text,rule,INK,GREEN,BLUE,AMBER,RED,SOFT} from './dither.tsx';
+import {formatCompact,formatUsdCompact} from '../format.ts';
 type Result=ReturnType<typeof runValuation>;
 type Change=(inputs:ValuationInputs)=>void;
 type Props={result:Result,inputs:ValuationInputs};
-const money=(n:number|null)=>n===null?'—':new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',notation:'compact',maximumFractionDigits:1}).format(n);
-const number=(n:number)=>new Intl.NumberFormat('en-US',{notation:'compact',maximumFractionDigits:2}).format(n);
+const money=(n:number|null)=>n===null?'—':formatUsdCompact(n);
+const number=(n:number)=>formatCompact(n,2);
 export const assumptionLabels={growthPct:'Monthly Intents growth',capturePct:'Intents receipt / fee ratio',grossBps:'Intents gross fee',compression:'Fee compression',costPct:'Execution cost haircut',multiple:'Exit REV multiple',discountPct:'Required annual return',issuancePct:'Annual issuance',institutionalVolumeAnnualUsd:'Institutional volume at exit',institutionalFeeBps:'Institutional fee',institutionalCapturePct:'Institutional receipt / fee ratio',institutionalHoldingsPct:'Tracked-fund target share',holdingsElasticity:'Other-holder demand elasticity',aiRevenueAnnualUsd:'AI gross billing',aiMarginPct:'AI cash margin',aiTokenLinkPct:'AI allocation to protocol'};
 export const formatAssumptionValue=(name:keyof typeof VALUATION_LIMITS,value:number)=>name.endsWith('Usd')?money(value):name==='multiple'?`${value}×`:name.endsWith('Pct')?`${value.toFixed(name==='institutionalHoldingsPct'?2:1)}%`:name.endsWith('Bps')?`${value.toFixed(2)} bps`:value.toFixed(2);
 export const commitAssumptionValue=(raw:string,name:keyof typeof VALUATION_LIMITS,inputs:ValuationInputs)=>raw.trim()===''||!Number.isFinite(Number(raw))?inputs:cleanValuation({...inputs,[name]:Number(raw)},inputs);

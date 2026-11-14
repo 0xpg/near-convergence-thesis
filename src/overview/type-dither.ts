@@ -1,4 +1,4 @@
-const clamp=value=>Math.max(0,Math.min(1,value));
+import {clamp01 as clamp} from '../format.ts';
 export function typePoint(point,seconds){
   const progress=clamp((seconds-point.delay)/1.8),arrival=1-(1-progress)**3;
   return {x:point.x+point.dx*(1-arrival),y:point.y+point.dy*(1-arrival),alpha:clamp(progress*5)*clamp((3.1-seconds)/.35)};

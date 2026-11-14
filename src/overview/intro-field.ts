@@ -1,4 +1,4 @@
-const clamp=value=>Math.max(0,Math.min(1,value));
+import {clamp01 as clamp} from '../format.ts';
 
 export function fieldPoint(column,row,time){
   const depth=row/35,u=column/95;

@@ -1,4 +1,4 @@
-import React,{useState} from 'react';
+import {useState} from 'react';
 import './dune-glance.css';
 import {glanceInsights as coverageInsights, type Insight} from './glance-coverage-insights.ts';
 import {flywheelInsights} from './flywheel-insights.ts';

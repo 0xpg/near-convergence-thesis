@@ -3,9 +3,10 @@ import research from '../data/intents-flywheel-rigor.json';
 const statistics=research.financial;
 const observability=research.identification.observability.equalLengthEndpointCheck.change;
 import type {Insight} from './glance-coverage-insights.ts';
+import {formatCompact} from './format.ts';
 const s=snapshot.summary;
 const r=statistics.summary;
-const compact=(value:number|null)=>value===null?'Unavailable':new Intl.NumberFormat('en-US',{notation:'compact',maximumFractionDigits:1}).format(value);
+const compact=(value:number|null)=>value===null?'Unavailable':formatCompact(value);
 const percent=(value:number|null)=>value===null?'Unavailable':value.toFixed(2)+'%';
 const signedUsd=(value:number)=>(value<0?'−':'+')+'$'+Math.abs(value).toLocaleString('en-US',{maximumFractionDigits:0});
 function evidence(id:string,value:string,headline:string,takeaway:string,limitation:string):Insight{

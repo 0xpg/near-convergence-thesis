@@ -178,7 +178,7 @@ export function startCinematic() {
       ctx.globalAlpha=1;
       const boxes=focus.map((node,i)=>focusBox(node,width,height,labelCenters[i]*2,descriptionWidths[i]));
       for(let i=0;i<labels.length;i++) {
-        const a=focus[i],box=boxes[i],next=boxes[(i+1)%labels.length];
+        const box=boxes[i],next=boxes[(i+1)%labels.length];
         ctx.globalAlpha=1;ctx.strokeStyle=colors[i];ctx.lineWidth=.75;
         ctx.beginPath();ctx.moveTo(box.labelX+labelCenters[i],box.y+7);ctx.lineTo(next.labelX+labelCenters[(i+1)%labels.length],next.y+7);ctx.stroke();
         ctx.strokeStyle=colors[i];ctx.lineWidth=attention===i?1.2:.6;ctx.strokeRect(box.x,box.boxY,box.boxWidth,box.boxHeight);

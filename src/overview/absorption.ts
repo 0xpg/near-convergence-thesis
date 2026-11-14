@@ -1,8 +1,8 @@
+import {clamp01 as clamp} from '../format.ts';
 const TAU=Math.PI*2;
 const colors=['#4c5947','#a07839','#86607a','#536f79','#9c754c','#4a6890','#8e6252','#746a9b','#6c6454','#66774e'];
 const SECTOR_TILES=162,TRAIL_START=131,ARC=8/10;
 const CATEGORY_COUNT=colors.length;
-const clamp=value=>Math.max(0,Math.min(1,value));
 const smooth=value=>value*value*(3-2*value);
 function modeCheck(mode){if(!Number.isInteger(mode)||mode<0||mode>2)throw new RangeError('Unknown absorption direction');}
 

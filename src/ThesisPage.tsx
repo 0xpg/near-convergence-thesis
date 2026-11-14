@@ -1,4 +1,4 @@
-import React,{useLayoutEffect,useRef} from 'react';
+import {useLayoutEffect,useRef} from 'react';
 import OverviewScene from './OverviewScene.tsx';
 import InvestmentFramework from './InvestmentFramework.tsx';
 import DuneGlance from './DuneGlance.tsx';

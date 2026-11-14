@@ -15,11 +15,10 @@
 .lab-console{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:24px;align-items:stretch;padding:0 max(48px,calc((100vw - 1344px)/2));scroll-margin-top:80px}
 .lab-console-controls{display:flex;flex-direction:column;justify-content:space-between;gap:24px;padding:28px;border:1px solid #293b321a;border-radius:20px;background:#fff;box-shadow:0 2px 4px #173b3003,0 10px 30px #173b3008;background-image:radial-gradient(#59746350 .7px,transparent .9px);background-size:5px 5px;background-repeat:repeat-x}
 .lab-presets,.lab-console-actions{display:flex;flex-wrap:wrap;gap:6px}
-.lab-presets button,.lab-console-actions button,.lab-run{min-height:32px;padding:6px 14px;font-size:12px;line-height:1.2;color:#5c6861;background:#fff;border:1px solid #293b3220;border-radius:8px;cursor:pointer;transition:background-color 180ms ease,color 180ms ease,border-color 180ms ease,transform 120ms ease}
+.lab-presets button,.lab-console-actions button{min-height:32px;padding:6px 14px;font-size:12px;line-height:1.2;color:#5c6861;background:#fff;border:1px solid #293b3220;border-radius:8px;cursor:pointer;transition:background-color 180ms ease,color 180ms ease,border-color 180ms ease,transform 120ms ease}
 .lab-presets button:hover,.lab-console-actions button:hover{color:#20372d;border-color:#293b3240}
-.lab-presets button[aria-pressed=true],.lab-run{color:#fafaf8;background:#20372d;border-color:#20372d}
-.lab-run:hover{color:#fff;background:#2f5a45}
-.lab-presets button:active,.lab-console-actions button:active,.lab-run:active{transform:translateY(1px) scale(.98)}
+.lab-presets button[aria-pressed=true]{color:#fafaf8;background:#20372d;border-color:#20372d}
+.lab-presets button:active,.lab-console-actions button:active{transform:translateY(1px) scale(.98)}
 .lab-console-sliders{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px 32px}
 .lab-console-results{padding:32px;border-radius:20px;background:#173b30;color:#eef3ec;background-image:radial-gradient(#eef3ec14 .7px,transparent .9px);background-size:5px 5px}
 .lab-console-label{font:400 12px/1.4 Saans,Arial,sans-serif;color:#b6ccc1;margin:0 0 24px}
@@ -105,13 +104,13 @@
   .lab-card-controls{margin:18px 20px 0}
   .lab-card figcaption{margin:18px 20px 0}
   .lab-card-headline{flex-direction:column;gap:6px}
-  .lab-presets button,.lab-console-actions button,.lab-run{min-height:40px}
+  .lab-presets button,.lab-console-actions button{min-height:40px}
   .lab-method{padding:0 20px}
   .lab-method dl{grid-template-columns:1fr;gap:4px}
   .lab-method dd{margin-bottom:12px}
   .lab-footer{grid-template-columns:1fr;gap:16px;padding:32px 24px 40px}
 }
-@media(prefers-reduced-motion:reduce){.lab-presets button,.lab-console-actions button,.lab-run,.lab-slider input::-webkit-slider-thumb{transition:none}}
+@media(prefers-reduced-motion:reduce){.lab-presets button,.lab-console-actions button,.lab-slider input::-webkit-slider-thumb{transition:none}}
 
 
 .lab-valuation{padding-top:12px;padding-bottom:40px}
@@ -122,10 +121,6 @@
 .lab-frontier-table th,.lab-frontier-table td{padding:14px 12px;border-bottom:1px solid #293b3220;text-align:left}
 .lab-frontier-table thead th{font-weight:500;color:#5c6861}
 .lab-valuation input[type=date]{height:32px;font:inherit;color:inherit;border:1px solid #293b3220;border-radius:6px;padding:4px 8px;appearance:auto;touch-action:auto}
-
-
-.lab-case-controls summary{font:400 13px/1.4 Saans,Arial,sans-serif;color:#436851;cursor:pointer}
-.lab-case-controls[open] summary{margin-bottom:24px}
 .lab-case-table{padding-bottom:4px}
 .lab-case-table table{min-width:820px}
 .lab-case-table th:first-child{width:34%;min-width:240px}
@@ -188,7 +183,6 @@
 @media(max-width:760px){.lab-holdings-results{grid-template-columns:repeat(2,minmax(0,1fr))}}
 .lab-working{padding-top:12px;padding-bottom:44px}
 .lab-working>header p{text-align:left;max-width:420px}
-.lab-source-dates{font:400 12px/1.6 Saans,Arial,sans-serif;color:#5c6861;margin:0 0 20px;max-width:1100px}
 .lab-working .lab-console{padding:0;align-items:start}
 .lab-working .lab-console-results{position:sticky;top:80px}
 .lab-exit-date{display:grid;grid-template-columns:1fr auto;align-items:center;gap:10px 20px;font:400 13px/1.5 Saans,Arial,sans-serif;color:#3d4f45;padding:0 0 20px;border-bottom:1px solid #293b321a}
