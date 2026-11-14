@@ -1,0 +1,28 @@
+import assert from 'node:assert/strict';
+import {startLabReveals} from '../src/lab/scroll-reveal.ts';
+let enter,change,observerCount=0,disconnects=0,reduced=false;
+const observed=new Set(),listeners=new Map();
+globalThis.innerHeight=800;
+globalThis.matchMedia=query=>query.includes('reduce')?{get matches(){return reduced;},addEventListener(_,fn){change=fn;},removeEventListener(){change=null;}}:{matches:true};
+globalThis.IntersectionObserver=class{constructor(fn,options){enter=fn;observerCount++;assert.equal(options.threshold,0);}observe(target){observed.add(target);}unobserve(target){observed.delete(target);}disconnect(){disconnects++;observed.clear();}};
+globalThis.document={addEventListener:(name,fn)=>listeners.set(name,fn),removeEventListener:name=>listeners.delete(name)};
+const make=top=>{
+ const classes=new Set(),styles=new Map();
+ return {classes,styles,getBoundingClientRect:()=>({top}),classList:{contains:name=>classes.has(name),add:(...names)=>names.forEach(n=>classes.add(n)),remove:(...names)=>names.forEach(n=>classes.delete(n))},style:{setProperty:(key,value)=>styles.set(key,value),removeProperty:key=>styles.delete(key)}};
+};
+const visible=make(100),first=make(900),second=make(900),far=make(1600),targets=[visible,first,second,far];
+const parent={classList:{contains:name=>name==='lab-grid'},children:[first,second]};first.parentElement=parent;second.parentElement=parent;
+const root={querySelectorAll:()=>targets};
+const stop=startLabReveals(root);
+assert(!visible.classes.size,'Above-fold content stays visible');
+assert.equal(observed.size,3);assert(first.classes.has('lab-reveal-pending'));
+assert.equal(first.styles.get('--lab-reveal-delay'),'0ms');assert.equal(second.styles.get('--lab-reveal-delay'),'45ms');
+enter([{target:first,isIntersecting:true}]);assert(!first.classes.has('lab-reveal-pending'));assert(!observed.has(first));
+enter([{target:first,isIntersecting:false},{target:first,isIntersecting:true}]);assert(!first.classes.has('lab-reveal-pending'),'Re-entry cannot replay a completed reveal');
+listeners.get('keydown')({key:'Tab'});assert(!second.classes.size&&!far.classes.size,'Keyboard navigation reveals remaining content immediately');assert(!observed.size);
+stop();assert.equal(listeners.size,0);assert.equal(change,null);assert(targets.every(t=>t.classes.size===0&&t.styles.size===0));
+const count=observerCount;reduced=true;startLabReveals(root)();assert.equal(observerCount,count,'Reduced motion does not initialize scroll effects');
+reduced=false;const stopChange=startLabReveals(root);reduced=true;change();assert(targets.every(t=>!t.classes.has('lab-reveal-pending')),'Changing motion preference immediately exposes content');stopChange();
+reduced=false;delete globalThis.IntersectionObserver;startLabReveals(root)();assert(targets.every(t=>!t.classes.size),'Unsupported browsers keep all content readable');
+assert(disconnects>0);
+console.log('Scroll reveals run once, stagger neighbours, preserve initial visibility, bypass keyboard/reduced motion and clean up safely.');
