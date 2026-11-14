@@ -76,10 +76,9 @@
 .lab-method dd{margin:0;font:400 13px/1.55 'Saans Mono',Saans,monospace;color:#3d4f45;overflow-wrap:anywhere}
 .lab-method p{font:400 13px/1.6 Saans,Arial,sans-serif;color:#5c6861;max-width:760px;margin:0 0 28px}
 
-.lab-page .thesis-finale h2 span{mask-image:radial-gradient(circle,#000 1px,transparent 1.2px);mask-size:3px 3px}
-.lab-footer{display:grid;grid-template-columns:auto 1fr auto;gap:40px;align-items:start;padding:40px max(48px,calc((100vw - 1344px)/2)) 56px;border-top:1px solid #293b321a}
-.lab-footer .tidal-brand{color:#20372d;text-decoration:none}
-.lab-footer p{margin:0;font:400 12px/1.6 Saans,Arial,sans-serif;color:#5c6861}
+.lab-footer{display:grid;grid-template-columns:auto 1fr;gap:40px;align-items:start;padding:56px max(48px,calc((100vw - 1344px)/2)) 64px;background:#173b30;color:#fafaf8}
+.lab-footer .tidal-brand{color:#fafaf8;text-decoration:none}
+.lab-footer p{margin:0;font:400 12px/1.6 Saans,Arial,sans-serif;color:#dbe8df}
 .lab-footer>a:last-child{font-size:12px;color:#436851;text-underline-offset:4px}
 
 @media(max-width:1100px){

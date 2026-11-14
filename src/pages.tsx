@@ -11,6 +11,6 @@ export function Lab(){
     <a className="tidal-skip" href="#lab">Skip to scenario lab</a>
     <header className="tidal-header thesis-header"><a className="tidal-brand" href="/" aria-label="NEAR research home">NEAR</a><nav aria-label="Main navigation"><a href="/thesis">Thesis</a><a href="/scenario-labs" aria-current="page">Scenario lab</a></nav><a className="tidal-close" href="/">Home</a></header>
     <main id="main"><LabExperience/></main>
-    <footer className="thesis-finale" aria-labelledby="lab-finale-title"><div className="thesis-finale-type"><div className="thesis-resolve"><canvas ref={closingCanvas} aria-hidden="true"/><h2 id="lab-finale-title" ref={closing}><span>Convergence</span></h2></div></div></footer>
+    <footer className="thesis-finale" aria-labelledby="lab-finale-title"><div className="thesis-finale-type"><div className="thesis-resolve"><canvas ref={closingCanvas} aria-hidden="true"/><h2 id="lab-finale-title" ref={closing}><span>Convergence</span></h2></div></div><div className="lab-footer"><a className="tidal-brand" href="/">NEAR</a><p>Near Convergence Thesis.<br/>Dated observations, explicit assumptions and reproducible valuation sensitivities.</p></div></footer>
   </div>;
 }
