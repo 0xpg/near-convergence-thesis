@@ -273,9 +273,14 @@ const groupStats=group=>{
 };
 const nearRow=peerRows.find(r=>r.slug==='near');
 const capturedAnnualUsd=baseline.operating.windows[0].annualizedCapturedUsd;
+const intentsRevenue=read('analysis/lab-rigor/sources/volume/revenue_near-intents.json').totalDataChart.map(([t,v])=>[new Date(t*1000).toISOString().slice(0,10),v]).filter(([day])=>day<='2026-11-13');
+const trailingEnd=intentsRevenue.at(-1)[0],trailingStart=new Date(Date.parse(trailingEnd+'T00:00:00Z')-364*86400000).toISOString().slice(0,10);
+const trailingRevenueUsd=intentsRevenue.filter(([day])=>day>=trailingStart).reduce((t,[,v])=>t+v,0);
 const peers={retrievedAt:'2026-11-14',protocols:peerRows.filter(r=>r.group==='protocol'),chains:peerRows.filter(r=>r.group==='chain'),excluded:peerExcluded,
   stats:{protocols:groupStats('protocol'),chains:groupStats('chain')},
   nearSpecific:{mcapUsd:nearRow.mcapUsd,capturedAnnualUsd:round(capturedAnnualUsd,0),multipleOnCapturedRevenue:round(nearRow.mcapUsd/capturedAnnualUsd,1),
+    trailingRevenue:{from:trailingStart,to:trailingEnd,usd:round(trailingRevenueUsd,0),multiple:round(nearRow.mcapUsd/trailingRevenueUsd,1),
+      note:'Peer multiples divide by trailing-year revenue. On that basis NEAR Intents receipts give a higher multiple than the annualized 30-day run rate, because receipts grew through the year.'},
     impliedMcapAtCaseMultiples:Object.fromEntries([100,200,250].map(m=>[m,round(m*capturedAnnualUsd,0)])),
     burnDefinitionMultiple1y:nearRow.multiple1y,
     note:'The model multiple applies to captured Intents receipts; DefiLlama chain revenue counts burned gas only, a roughly twenty-fold smaller denominator.'},
@@ -342,6 +347,7 @@ const rate={asOf:near.at(-1).day,riskFree:{pct:rfNow.yield,date:rfNow.day,source
 
 const sources=[
   {file:'data/glance-daily.json',sha256:hash('data/glance-daily.json'),url:daily.queries.daily},
+  {file:'analysis/lab-rigor/sources/volume/revenue_near-intents.json',sha256:hash('analysis/lab-rigor/sources/volume/revenue_near-intents.json'),url:'https://api.llama.fi/summary/fees/near-intents?dataType=dailyRevenue&excludeTotalDataChartBreakdown=true'},
   {file:'analysis/lab-rigor/sources/volume/fees_near-intents.json',sha256:hash('analysis/lab-rigor/sources/volume/fees_near-intents.json'),url:'https://api.llama.fi/summary/fees/near-intents?dataType=dailyFees&excludeTotalDataChartBreakdown=true'},
   {file:'analysis/lab-rigor/sources/volume/dexs_near-intents.json',sha256:hash('analysis/lab-rigor/sources/volume/dexs_near-intents.json'),url:'https://api.llama.fi/summary/dexs/near-intents?excludeTotalDataChartBreakdown=true'},
   ...readdirSync(new URL('analysis/lab-rigor/sources/peers/',root)).sort().map(f=>({file:'analysis/lab-rigor/sources/peers/'+f,sha256:hash('analysis/lab-rigor/sources/peers/'+f),url:f==='mcaps.json'?'https://coins.llama.fi/mcaps':`https://api.llama.fi/summary/fees/${f.replace(/^fees_(revenue|holders)_/,'').replace(/\.json$/,'').replace('pump_fun','pump.fun')}?dataType=${f.startsWith('fees_holders')?'dailyHoldersRevenue':'dailyRevenue'}&excludeTotalDataChart=true&excludeTotalDataChartBreakdown=true`})),

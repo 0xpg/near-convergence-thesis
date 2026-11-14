@@ -5,6 +5,7 @@ import rigor from '../../data/lab-rigor.json' with {type:'json'};
 import EvidenceCharts,{BacktestChart} from './EvidenceCharts.tsx';
 import {formatPrice as price,formatUsdCompact} from '../format.ts';
 import {dataHistory} from './history.ts';
+import MultipleFade from './MultipleFade.tsx';
 
 const money=(n:number)=>formatUsdCompact(n,2);
 const percent=(n:number)=>`${n.toFixed(2)}%`;
@@ -102,6 +103,7 @@ export default function ValuationFramework({inputs:a,result:r,starting:s}:{input
     <p>NEAR Intents is young. Volume has {dataHistory.volumeMonths} complete months of history since {dataHistory.volumeSince}, and the first twelve were a launch ramp from near zero. Fee and capture data cover {dataHistory.feeMonths} complete months from {dataHistory.feesSince}, and the fee switch has been live only since {dataHistory.feeSwitch}. DefiLlama records fees from {dataHistory.rollout.since}, but the fee rate climbed from {dataHistory.rollout.fromBps} to {dataHistory.rollout.toBps} bps while fees were being switched on, so those months measure the rollout and stay out of the fee-compression test. Some results below are borderline: the rise in capture after the fee switch has p = {dataHistory.captureP.toFixed(2)}. Read every estimate on this page as directional evidence, not proof, and expect it to move as months are added.</p>
    </div></article>
    <EvidenceCharts/>
+   <MultipleFade starting={s} exitDate={a.exitDate}/>
    <article className="lab-card is-wide"><div className="lab-card-head"><h3>What is measured, and what the case asks to become true.</h3></div><div className="lab-frontier-table lab-case-table"><table><caption>Selected-case variables and evidence status</caption><thead><tr><th scope="col">Variable</th><th scope="col">Selected value</th><th scope="col">Definition, basis and source</th></tr></thead><tbody>{variables.map(([name,value,basis,key])=><tr key={name}><th scope="row">{name}</th><td>{value}</td><td>{basis}<p className="lab-evidence"><span className="lab-evidence-status">{evidence[key][0]}</span>{evidence[key][1]}</p></td></tr>)}</tbody></table></div>
     <div className="lab-framework-copy"><p><strong>The cases test different economic outcomes.</strong> Bear contracts execution activity and capture, with no incremental institutional or AI contribution. Base preserves the observed aggregate starting fee and capture while requiring continued growth and new services. Bull and Maximum combine faster adoption with fee compression, improved capture and larger incremental services; the upside therefore depends on revenue quality as well as scale.</p>
      <p><strong>The $400 case is a reverse valuation.</strong> After fixing growth, fee economics, institutional routing, supply and the multiple, the model solves the AI billing needed for a $400 REV-based value with unchanged tracked holdings. Changing the holdings target then changes the hypothesis result without re-solving AI billing to force $400. Other cases and custom inputs calculate their resulting prices directly.</p>

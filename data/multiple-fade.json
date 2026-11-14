@@ -1,0 +1,254 @@
+{
+ "version": "multiple-fade-1-61f47ceb6a18",
+ "results": "analysis/multiple-fade/results.json",
+ "preregisteredUtc": "2026-11-14T09:45:07Z",
+ "rulesSha256": "4fb620a1489384ab5645f14080634dcce242de2108a37903209b0670ae628e6d",
+ "model": "ln M(t) = ln L + (ln M0 - ln L) * phi^t, with t in years from the snapshot",
+ "multipleDefinition": "circulating market cap (CoinMarketCap daily quote, summed over legacy+new token for migrations) / trailing-365-day DefiLlama revenue, sampled at calendar month-ends 2018-12..2026-10",
+ "panel": {
+  "protocols": {
+   "observations": 1276,
+   "entities": 33
+  },
+  "chains": {
+   "observations": 478,
+   "entities": 13
+  }
+ },
+ "ar1": {
+  "protocols": {
+   "phi": 0.734,
+   "phiCi95": [
+    0.51,
+    0.8853
+   ],
+   "halfLifeYears": 2.24,
+   "halfLifeCi95": [
+    1.03,
+    5.69
+   ],
+   "pairs": 886,
+   "entities": 30,
+   "longRunMultiple": 9.7,
+   "longRunCi95": [
+    1.8,
+    20.5
+   ]
+  },
+  "protocolsMarketNeutral": {
+   "phi": 0.8121,
+   "phiCi95": [
+    0.6246,
+    0.9263
+   ],
+   "halfLifeYears": 3.33,
+   "halfLifeCi95": [
+    1.47,
+    9.06
+   ],
+   "pairs": 866,
+   "entities": 30
+  },
+  "protocolsDecember": {
+   "phi": 0.6717,
+   "phiCi95": [
+    0.3653,
+    0.918
+   ],
+   "halfLifeYears": 1.74,
+   "halfLifeCi95": [
+    0.69,
+    8.1
+   ],
+   "pairs": 69,
+   "entities": 27,
+   "longRunMultiple": 10.7,
+   "longRunCi95": [
+    0.5,
+    22.7
+   ]
+  },
+  "chains": {
+   "phi": 0.7394,
+   "phiCi95": [
+    0.191,
+    0.9415
+   ],
+   "halfLifeYears": 2.3,
+   "halfLifeCi95": [
+    0.43,
+    11.57
+   ],
+   "pairs": 320,
+   "entities": 11,
+   "longRunMultiple": 525.2,
+   "longRunCi95": [
+    98.6,
+    5814.1
+   ]
+  }
+ },
+ "above100": {
+  "protocols": [
+   {
+    "years": 1,
+    "startObservations": 138,
+    "startEntities": 13,
+    "outcomes": 109,
+    "outcomeEntities": 11,
+    "median": 75.1,
+    "q1": 54,
+    "q3": 105,
+    "shareAbove100": 0.266,
+    "shareAbove100Ci95": [
+     0.122,
+     0.452
+    ]
+   },
+   {
+    "years": 2,
+    "startObservations": 138,
+    "startEntities": 13,
+    "outcomes": 66,
+    "outcomeEntities": 10,
+    "median": 69.8,
+    "q1": 21.2,
+    "q3": 97,
+    "shareAbove100": 0.242,
+    "shareAbove100Ci95": [
+     0,
+     0.365
+    ]
+   },
+   {
+    "years": 3,
+    "startObservations": 138,
+    "startEntities": 13,
+    "outcomes": 39,
+    "outcomeEntities": 5,
+    "median": 78.6,
+    "q1": 63.3,
+    "q3": 108.9,
+    "shareAbove100": 0.282,
+    "shareAbove100Ci95": [
+     0,
+     0.421
+    ]
+   }
+  ],
+  "chains": [
+   {
+    "years": 1,
+    "startObservations": 366,
+    "startEntities": 13,
+    "outcomes": 244,
+    "outcomeEntities": 11,
+    "median": 598,
+    "q1": 213.9,
+    "q3": 1734.7,
+    "shareAbove100": 0.906,
+    "shareAbove100Ci95": [
+     0.787,
+     1
+    ]
+   },
+   {
+    "years": 3,
+    "startObservations": 366,
+    "startEntities": 13,
+    "outcomes": 89,
+    "outcomeEntities": 7,
+    "median": 591.6,
+    "q1": 191.5,
+    "q3": 1905.5,
+    "shareAbove100": 0.809,
+    "shareAbove100Ci95": [
+     0.552,
+     0.963
+    ]
+   }
+  ]
+ },
+ "crossSection": {
+  "month": "2026-10",
+  "protocols": {
+   "n": 24,
+   "median": 15.1,
+   "q1": 8.1,
+   "q3": 23.8
+  },
+  "chains": {
+   "n": 7,
+   "median": 1362.1,
+   "q1": 150,
+   "q3": 3731.6
+  }
+ },
+ "cases": {
+  "bear": {
+   "longRun": 9.7,
+   "phi": 0.6717,
+   "halfLifeYears": 1.74,
+   "basis": "L = protocol panel long-run mean exp(a/(1-b)); phi = December-only (non-overlapping) protocol AR(1), fastest point estimate"
+  },
+  "base": {
+   "longRun": 15.1,
+   "phi": 0.734,
+   "halfLifeYears": 2.24,
+   "basis": "L = protocol cross-section median 2026-10; phi = pre-registered primary protocol AR(1)"
+  },
+  "bull": {
+   "longRun": 23.8,
+   "phi": 0.8121,
+   "halfLifeYears": 3.33,
+   "basis": "L = protocol cross-section upper quartile 2026-10; phi = protocol AR(1) relative to date mean (slower, cycle-neutral fade)"
+  },
+  "maximum": {
+   "longRun": 23.8,
+   "phi": 0.9263,
+   "halfLifeYears": 9.05,
+   "basis": "L = protocol upper quartile; phi = upper 95% bound of cycle-neutral protocol AR(1) (slowest fade the protocol data do not reject)"
+  }
+ },
+ "consistency": {
+  "payout": 1,
+  "stableGrowth": 0.03,
+  "impliedRequiredReturn": {
+   "100": 0.0403,
+   "200": 0.0352,
+   "250": 0.0341
+  },
+  "yearsOfGrowthAfterExit": {
+   "25": 6,
+   "100": 16,
+   "200": 21
+  },
+  "twoStage": "Years of 30% annual receipt growth needed after the exit to justify the multiple at a 15% mature required return and 3% stable growth."
+ },
+ "sources": [
+  {
+   "label": "Damodaran, Investment Valuation, ch. 12",
+   "url": "https://pages.stern.nyu.edu/~adamodar/pdfiles/valn2ed/ch12.pdf",
+   "page": "p.3",
+   "finding": "Terminal multiples taken from comparable firms mix relative and discounted cash-flow valuation; a stable-growth model is the consistent alternative."
+  },
+  {
+   "label": "Chan, Karceski and Lakonishok (2003)",
+   "url": "https://www.lsvasset.com/pdf/research-papers/Level+Persistence_of_Growth_Rates_FINAL.pdf",
+   "page": "pp. 643, 649",
+   "finding": "No persistence in long-term earnings growth beyond chance; a multiple of 100 falling to 20 over ten years needs about 29% annual growth, near the 95th percentile."
+  },
+  {
+   "label": "Fama and French (2000)",
+   "url": "https://ideas.repec.org/a/ucp/jnlbus/v73y2000i2p161-75.html",
+   "page": "abstract",
+   "finding": "Profitability mean-reverts at about 38% a year."
+  }
+ ],
+ "limitations": [
+  "The panel covers 2020-2026, about one and a half crypto cycles; three-year outcomes rest on few protocols.",
+  "Only protocols still listed today are included.",
+  "Part of the reversion is mechanical: noise in the revenue denominator pulls extreme multiples back.",
+  "Raw market-cap and revenue files are not redistributed; analysis/multiple-fade/raw_sha256.json lists the hash of each file that analysis/multiple-fade/run_all.sh downloads."
+ ]
+}

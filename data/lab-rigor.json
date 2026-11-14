@@ -1366,6 +1366,13 @@
    "mcapUsd": 4358227905,
    "capturedAnnualUsd": 22113744,
    "multipleOnCapturedRevenue": 197.1,
+   "trailingRevenue": {
+    "from": "2025-11-14",
+    "to": "2026-11-13",
+    "usd": 9398853,
+    "multiple": 463.7,
+    "note": "Peer multiples divide by trailing-year revenue. On that basis NEAR Intents receipts give a higher multiple than the annualized 30-day run rate, because receipts grew through the year."
+   },
    "impliedMcapAtCaseMultiples": {
     "100": 2211374400,
     "200": 4422748800,
@@ -1523,6 +1530,11 @@
    "file": "data/glance-daily.json",
    "sha256": "5092c25bebca04c0288a5bd030ca063b5970434a0a5fa8072a8d3ef1297b08c6",
    "url": "https://dune.com/queries/9114284"
+  },
+  {
+   "file": "analysis/lab-rigor/sources/volume/revenue_near-intents.json",
+   "sha256": "b0bb0b08f5bdb2c35012a05b464ef51d5352c174a97fcb564899c93f91f199ca",
+   "url": "https://api.llama.fi/summary/fees/near-intents?dataType=dailyRevenue&excludeTotalDataChartBreakdown=true"
   },
   {
    "file": "analysis/lab-rigor/sources/volume/fees_near-intents.json",
