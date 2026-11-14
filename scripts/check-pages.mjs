@@ -29,6 +29,8 @@ try{
  assert(!rendered['lab.html'].includes('What would $400–$500 require?'));
  assert(rendered['lab.html'].includes('Forward operating cases')&&!rendered['lab.html'].includes('The $400 case is a reverse valuation'),'Operating cases must not imply a target-price solve');
  assert(!rendered['lab.html'].includes('Mock data'));
+ assert.equal((rendered['lab.html'].match(/<summary aria-label="Read more about /g)||[]).length,7,'Long assumption sources use seven closed native disclosures');
+ assert(!/<details class="lab-inline-method" open[^>]*><summary aria-label="Read more about /.test(rendered['lab.html']),'Assumption evidence starts collapsed');
  assert(!rendered['lab.html'].match(/<footer[\s\S]*Sources &amp; methodology/),'Lab footer must not retain methodology link');
  for(const label of ['The economics<br/>behind the price.','Selected-case variables and evidence status','30D / 90D operating cross-check','Maximum reference at','https://arxiv.org/abs/2403.04914','https://docs.near-intents.org/resources/fees'])assert(rendered['lab.html'].includes(label),'Visible valuation framework missing '+label);
  assert(rendered['lab.html'].includes('2026-11-10')&&rendered['lab.html'].includes('224353535'),'Lab evidence cutoffs must be visible');
