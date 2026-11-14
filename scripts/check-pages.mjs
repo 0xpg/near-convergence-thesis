@@ -17,6 +17,8 @@ try{
  for(const legacy of ['/explore','/report','/research','/methodology'])assert.equal(resolveRoute(legacy).redirect,'/thesis');
  assert.equal(resolveRoute('/lab').redirect,'/scenario-labs');assert.equal(resolveRoute('/lab.html').redirect,'/scenario-labs');
  const rendered=Object.fromEntries(Object.entries(components).map(([file,Component])=>[file,renderToStaticMarkup(createElement(Component))]));
+ assert(!/not as forecasts|directional evidence|hypothesis token value/i.test(rendered['lab.html']),'Scenario Lab consistently presents scenario forecasts');
+ assert(rendered['lab.html'].includes('Forecast token value'),'Forecast output label remains visible');
  assert(rendered['lab.html'].includes('<canvas aria-hidden="true"></canvas><h1 id="lab-title"'),'Scenario Lab retains its animated heading canvas');
  assert.equal((rendered['lab.html'].match(/class="lab-card lab-research-card/g)||[]).length,13,'Thirteen research cards retain their evidence in native disclosures');
  assert.equal((rendered['lab.html'].match(/class="lab-research-takeaway"/g)||[]).length,13,'Each compact card has a readable takeaway');
@@ -24,7 +26,7 @@ try{
  assert(rendered['lab.html'].indexOf('class="lab-footer"')>rendered['lab.html'].indexOf('id="lab-finale-title"')&&rendered['lab.html'].includes('Dated observations, explicit assumptions and reproducible valuation sensitivities.'),'Original footer identity remains below the wordmark');
  for(const label of ['Choose a case. Trace its value.','Bear','Base','Bull','Maximum','Operating assumptions to token value','Where the price comes from','Export complete model'])assert(rendered['lab.html'].includes(label),'Lab model missing '+label);
  assert(!rendered['lab.html'].includes('What would $400–$500 require?'));
- assert(rendered['lab.html'].includes('calibrated upside hypothesis'),'Maximum calibration must be explicit');
+ assert(rendered['lab.html'].includes('target-based upside forecast'),'Maximum calibration must be explicit');
  assert(!rendered['lab.html'].includes('Mock data'));
  assert(!rendered['lab.html'].match(/<footer[\s\S]*Sources &amp; methodology/),'Lab footer must not retain methodology link');
  for(const label of ['The economics<br/>behind the price.','Selected-case variables and evidence status','30D / 90D operating cross-check','Maximum reference at','https://arxiv.org/abs/2403.04914','https://docs.near-intents.org/resources/fees'])assert(rendered['lab.html'].includes(label),'Visible valuation framework missing '+label);
