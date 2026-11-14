@@ -1,6 +1,6 @@
 import rigor from '../../data/lab-rigor.json' with {type:'json'};
 import baseline from '../../data/lab-baseline.json' with {type:'json'};
-import {DitherCanvas,ditherBand,ditherLine,ditherRect,text,rule,INK,MUTED,GREEN,RED,AMBER,BLUE,PAPER} from './dither.tsx';
+import {DitherCanvas,ditherLine,ditherRect,text,rule,INK,MUTED,GREEN,RED,AMBER,BLUE,PAPER} from './dither.tsx';
 import {formatUsdCompact as usd} from '../format.ts';
 
 type Pen=CanvasRenderingContext2D;
@@ -106,10 +106,10 @@ function drawPeers(pen:Pen,w:number,h:number){
 }
 
 function drawRates(pen:Pen,w:number,h:number){
-  const rowsData=rigor.rate.requiredReturnTable,left=170,right=w-12,top=22,bottom=h-26,lo=0,hi=50;
+  const rowsData=rigor.rate.requiredReturnTable,left=170,right=w-12,top=34,bottom=h-26,lo=0,hi=50;
   const x=(v:number)=>left+(Math.min(hi,v)-lo)/(hi-lo)*(right-left),rowH=(bottom-top)/rowsData.length;
-  ditherRect(pen,x(25),top,x(35)-x(25),bottom-top,.22,AMBER);text(pen,'Damodaran 25–35%',x(30),top-6,{align:'center',size:9,color:AMBER});
-  ditherRect(pen,x(12),top,x(18)-x(12),bottom-top,.16,BLUE);text(pen,'CoinShares 12–18%',x(15),top-6,{align:'center',size:9,color:BLUE});
+  ditherRect(pen,x(25),top,x(35)-x(25),bottom-top,.22,AMBER);text(pen,'Damodaran 25–35%',x(30),top-18,{align:'center',size:9,color:AMBER});
+  ditherRect(pen,x(12),top,x(25)-x(12),bottom-top,.16,BLUE);text(pen,'Published crypto 12–25%',x(18.5),top-6,{align:'center',size:9,color:BLUE});
   [0,10,20,30,40,50].forEach(v=>{rule(pen,x(v),top,x(v),bottom);text(pen,`${v}%`,x(v),bottom+16,{align:'center',size:9});});
   rowsData.forEach((r,i)=>{
     const cy=top+(i+.5)*rowH,a=Math.min(r.rBlendBetaPct,r.rBtcBetaPct),b=Math.max(r.rBlendBetaPct,r.rBtcBetaPct);
@@ -121,25 +121,25 @@ function drawRates(pen:Pen,w:number,h:number){
   rule(pen,x(26.3),top-2,x(26.3),bottom,RED);labelOn(pen,'Selected 26.3%',x(26.3)+4,bottom-4,RED);
 }
 
+const rolling=rigor.backtest.rollingOrigin;
 function drawBacktest(pen:Pen,w:number,h:number){
-  const left=54,right=w-10,top=18,bottom=h-28,list=months.map(m=>m.month),volume=months.map(m=>m.avgDailyVolumeUsd*m.days);
-  const all=[...volume,...rigor.backtest.cutoffs.flatMap(c=>c.paths.flatMap(p=>[p.bear,p.max]))];
-  const lo=Math.log(Math.min(...all)*.85),hi=Math.log(Math.max(...all)*1.1);
-  const x=(m:string)=>left+list.indexOf(m)/(list.length-1)*(right-left),y=(v:number)=>bottom-(Math.log(v)-lo)/(hi-lo)*(bottom-top);
-  [2e9,3e9,5e9].forEach(v=>{if(Math.log(v)>lo&&Math.log(v)<hi){rule(pen,left,y(v),right,y(v));text(pen,usd(v),0,y(v)+4,{size:10});}});
-  list.forEach((m,i)=>{if(i%2===0||i===list.length-1)text(pen,monthLabel(m),x(m),bottom+16,{align:'center',size:9});});
-  rigor.backtest.cutoffs.forEach(c=>{
-    const cx=x(c.paths[0].month);
-    ditherBand(pen,c.paths.map(p=>[x(p.month),y(p.max)] as [number,number]),c.paths.map(p=>[x(p.month),y(p.bear)] as [number,number]),.4,GREEN);
-    ditherLine(pen,c.paths.map(p=>[x(p.month),y(p.base)]),GREEN,1);
-    rule(pen,cx,top,cx,bottom,'#293b3240',[3,3]);text(pen,`cutoff ${monthLabel(c.paths[0].month)}`,cx+3,top+8,{size:9,color:MUTED});
-  });
-  ditherLine(pen,list.map((m,i)=>[x(m),y(volume[i])]),INK,1.8);
-  list.forEach((m,i)=>dot(pen,x(m),y(volume[i]),3,INK));
+  const left=46,right=w-10,top=22,bottom=h-28,points=rolling.threeMonth,list=points.map(f=>f.target);
+  const error=points.map(f=>Math.log(f.realized/f.base)),bear=Math.log(points[0].bear/points[0].base),max=Math.log(points[0].max/points[0].base);
+  const ticks=[-.5,0,1,3,9].map(v=>Math.log(1+v)),lo=Math.min(...error,bear,ticks[0])-.1,hi=Math.max(...error,max)+.15;
+  const x=(i:number)=>left+i/(list.length-1)*(right-left),y=(v:number)=>bottom-(v-lo)/(hi-lo)*(bottom-top);
+  const split=points.findIndex(f=>f.regime==='secondYear');
+  ditherRect(pen,left,top,(x(split)+x(split-1))/2-left,bottom-top,.06,MUTED);
+  labelOn(pen,'From launch-year origins',left+4,top+8,MUTED);labelOn(pen,'From second-year origins',(x(split)+x(split-1))/2+6,top+8,GREEN);
+  ticks.forEach(v=>{if(v>lo&&v<hi){rule(pen,left,y(v),right,y(v),v===0?'#293b3266':undefined);text(pen,pct((Math.exp(v)-1)*100,0),0,y(v)+4,{size:10});}});
+  ditherRect(pen,left,y(max),right-left,y(bear)-y(max),.35,GREEN);
+  labelOn(pen,'Bear–Maximum range',right,y(max)-5,GREEN,'right');
+  list.forEach((m,i)=>{if(i%3===0||i===list.length-1)text(pen,monthLabel(m)+' '+m.slice(2,4),x(i),bottom+16,{align:i===list.length-1?'right':'center',size:9});});
+  ditherLine(pen,error.map((v,i)=>[x(i),y(v)]),'#293b3255',1);
+  points.forEach((f,i)=>dot(pen,x(i),y(error[i]),3.2,f.regime==='launchYear'?MUTED:INK));
 }
 
 export function BacktestChart(){
-  return <div className="lab-card-chart"><DitherCanvas draw={drawBacktest} height={280} label="Realized monthly Intents volume against the Bear-to-Maximum envelope projected from each walk-forward cutoff."/><ul className="lab-legend"><li style={{color:INK}}>Realized monthly volume</li><li style={{color:GREEN}}>Bear–Maximum envelope from each cutoff · Base line</li></ul></div>;
+  return <div className="lab-card-chart"><DitherCanvas draw={drawBacktest} height={280} label="How far realized Intents volume landed from the Base projection made three months earlier, for every month-end origin since launch, against the Bear-to-Maximum range."/><ul className="lab-legend"><li style={{color:INK}}>Realized vs Base, 3 months after each origin</li><li style={{color:GREEN}}>Range the four cases cover</li><li style={{color:MUTED}}>Launch-year origins</li></ul></div>;
 }
 
 export default function EvidenceCharts(){
@@ -160,7 +160,7 @@ export default function EvidenceCharts(){
    <article className="lab-card is-wide"><div className="lab-card-head"><h3>The multiple and the hurdle against outside evidence.</h3><p>Market capitalization over trailing-year DefiLlama revenue for {rigor.peers.protocols.length+rigor.peers.chains.length} assets on {rigor.peers.retrievedAt}, and the required return implied by NEAR’s beta under each published or realized crypto market premium.</p></div>
     <div className="lab-evidence-pair">
      <div><DitherCanvas draw={drawPeers} height={250} label="Peer market-capitalization-to-revenue multiples on a log scale, with the case multiple range and NEAR's current multiple on captured receipts."/><p className="lab-evidence-caption">Every case multiple falls in the empty gap between fee-capturing protocols and base layers. On captured Intents receipts NEAR already trades near the Base 200×; on DefiLlama’s burn-only revenue it would read {times(rigor.peers.nearSpecific.burnDefinitionMultiple1y)}.</p></div>
-     <div><DitherCanvas draw={drawRates} height={250} label="Required annual return ranges implied by NEAR's beta under five market premium variants, against the selected 26.3% hurdle."/><p className="lab-evidence-caption">Bars span NEAR’s beta of {rigor.rate.beta.blendWeekly.beta.toFixed(2)} (BTC+ETH) to {rigor.rate.beta.btcWeekly.beta.toFixed(2)} (BTC) over {rigor.rate.beta.btcWeekly.n} post-ETF weeks, with the {rigor.rate.riskFree.pct.toFixed(2)}% five-year Treasury as the risk-free rate. The spread between variants is the finding.</p></div>
+     <div><DitherCanvas draw={drawRates} height={250} label="Required annual return ranges implied by NEAR's beta under five market premium variants, against the selected 26.3% hurdle."/><p className="lab-evidence-caption">Bars span NEAR’s beta of {rigor.rate.weeklyAnchors.blend.mean.toFixed(2)} (BTC+ETH) to {rigor.rate.weeklyAnchors.btc.mean.toFixed(2)} (BTC), averaged over all seven week start days since the spot ETF launch, with the {rigor.rate.riskFree.pct.toFixed(2)}% five-year Treasury as the risk-free rate. Published crypto valuations use VanEck 12%, CoinShares 12–18% and Bitwise 15–25%. The spread between variants is the finding.</p></div>
     </div>
     <table className="tidal-sr"><caption>Peer multiples</caption><tbody>{[...rigor.peers.protocols,...rigor.peers.chains].map(p=><tr key={p.slug}><th>{p.name}</th><td>{times(p.multiple1y)}</td></tr>)}</tbody></table>
    </article>

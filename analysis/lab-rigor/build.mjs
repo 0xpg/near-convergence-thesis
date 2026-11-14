@@ -178,6 +178,73 @@ backtest.conclusions=[
   `A lognormal 10-90% band around Base covered ${backtest.coverage.inside} of ${backtest.coverage.total} holdout months against an 80% nominal target (small sample, indicative only).`
 ];
 
+const llama=read('analysis/lab-rigor/sources/volume/dexs_near-intents.json');
+const llamaDay=new Map(llama.totalDataChart.map(([t,v])=>[new Date(t*1000).toISOString().slice(0,10),v]));
+const llamaMonths=[];
+for(const [day,v] of llamaDay){const key=day.slice(0,7);let m=llamaMonths.at(-1);if(!m||m.month!==key){m={month:key,days:0,volumeUsd:0};llamaMonths.push(m);}m.days++;m.volumeUsd+=v;}
+const fullMonths=llamaMonths.filter(m=>m.days===daysInMonth(m.month));
+assert(fullMonths.length>=22,'Expected the full DefiLlama history');
+const trailing30=endDay=>{const end=Date.parse(endDay+'T00:00:00Z');let v=0;for(let d=0;d<30;d++){const x=llamaDay.get(new Date(end-d*86400000).toISOString().slice(0,10));assert(x!==undefined,'Missing DefiLlama day '+endDay);v+=x;}return v/30;};
+const monthEnd=key=>key+'-'+String(daysInMonth(key)).padStart(2,'0');
+const LAUNCH_YEAR_END='2025-11';
+const regimeOf=key=>key<=LAUNCH_YEAR_END?'launchYear':'secondYear';
+const HORIZONS=[1,3,6],forecasts=[];
+fullMonths.forEach((origin,oi)=>{
+  if(oi===fullMonths.length-1)return;
+  const v0=trailing30(monthEnd(origin.month)),logs=fullMonths.slice(0,oi+1).map(m=>Math.log(m.volumeUsd/m.days));
+  const growthLogs=logs.slice(1).map((v,i)=>v-logs[i]),sigma=growthLogs.length>=3?sd(growthLogs):null;
+  for(let h=1;h<=6&&oi+h<fullMonths.length;h++){
+    const target=fullMonths[oi+h],realized=target.volumeUsd/target.days;
+    const projected=Object.fromEntries(Object.entries(CASES).map(([id,g])=>[id,v0*(1+g)**h]));
+    const width=sigma===null?null:Math.exp(1.28155*sigma*Math.sqrt(h)),fanWidth=Math.exp(1.28155*sigmaRaw*Math.sqrt(h));
+    forecasts.push({origin:origin.month,target:target.month,h,regime:regimeOf(origin.month),realized,projected,
+      position:realized>projected.max?'aboveMax':realized<projected.bear?'belowBear':'inside',
+      inBand:width===null?null:realized>=projected.base/width&&realized<=projected.base*width,
+      inFan:realized>=projected.base/fanWidth&&realized<=projected.base*fanWidth});
+  }
+});
+const summarize=list=>({n:list.length,aboveMax:list.filter(f=>f.position==='aboveMax').length,inside:list.filter(f=>f.position==='inside').length,belowBear:list.filter(f=>f.position==='belowBear').length,
+  medianLogErrorBase:list.length?round(quantile(list.map(f=>Math.log(f.realized/f.projected.base)),.5),3):null,
+  mapeBase:list.length?round(mean(list.map(f=>Math.abs(f.projected.base-f.realized)/f.realized)),3):null,
+  band:{n:list.filter(f=>f.inBand!==null).length,inside:list.filter(f=>f.inBand===true).length},
+  fan:{n:list.length,inside:list.filter(f=>f.inFan).length}});
+const overlap=months.map(m=>{const l=fullMonths.find(x=>x.month===m.month);return l?l.volumeUsd/m.volumeUsd:null;}).filter(r=>r!==null);
+const rollingOrigin={
+  source:'DefiLlama dexs/near-intents daily volume, first day '+[...llamaDay.keys()][0],
+  design:'Every complete month end is a forecast origin. The trailing 30-day average daily volume at the origin is projected forward under each fixed case growth rate and compared with realized average daily volume 1 to 6 months later. The 80% band uses only growth volatility observed up to the origin.',
+  regimes:{launchYear:'Origins through '+LAUNCH_YEAR_END+', the first twelve months after launch',secondYear:'Origins after '+LAUNCH_YEAR_END},
+  months:fullMonths.map(m=>({month:m.month,avgDailyVolumeUsd:round(m.volumeUsd/m.days,0)})),
+  origins:new Set(forecasts.map(f=>f.origin)).size,
+  all:summarize(forecasts),
+  byRegime:Object.fromEntries(['launchYear','secondYear'].map(r=>[r,summarize(forecasts.filter(f=>f.regime===r))])),
+  byHorizon:Object.fromEntries(HORIZONS.map(h=>[h,Object.fromEntries(['launchYear','secondYear'].map(r=>[r,summarize(forecasts.filter(f=>f.h===h&&f.regime===r))]))])),
+  threeMonth:forecasts.filter(f=>f.h===3).map(f=>({origin:f.origin,target:f.target,regime:f.regime,realized:round(f.realized,0),bear:round(f.projected.bear,0),base:round(f.projected.base,0),max:round(f.projected.max,0)})),
+  duneCrossCheck:{months:overlap.length,medianRatio:round(quantile(overlap,.5),3),min:round(Math.min(...overlap),3),max:round(Math.max(...overlap),3),
+    note:'DefiLlama monthly volume divided by the Dune series used elsewhere in the lab, over the months both cover.'}
+};
+backtest.rollingOrigin=rollingOrigin;
+const llamaFees=new Map(read('analysis/lab-rigor/sources/volume/fees_near-intents.json').totalDataChart.map(([t,v])=>[new Date(t*1000).toISOString().slice(0,10),v]));
+const feeRollout=fullMonths.filter(m=>m.month<months[0].month).map(m=>{let fees=0,volume=0,days=0;for(const [day,v] of llamaDay)if(day.startsWith(m.month)&&llamaFees.has(day)){fees+=llamaFees.get(day);volume+=v;days++;}return days===m.days&&fees>0?{month:m.month,grossBps:round(fees/volume*1e4,1)}:null;}).filter(Boolean);
+{
+  const second=forecasts.filter(f=>f.regime==='secondYear'),origins=[...new Set(second.map(f=>f.origin))],rand=mulberry32(SEED+7),draws=[];
+  const errorsByOrigin=new Map(origins.map(o=>[o,second.filter(f=>f.origin===o).map(f=>Math.log(f.realized/f.projected.base))]));
+  for(let b=0;b<5000;b++){const pick=[];for(let k=0;k<origins.length;k++)pick.push(...errorsByOrigin.get(origins[Math.floor(rand()*origins.length)]));draws.push(quantile(pick,.5));}
+  rollingOrigin.secondYearMedianErrorCi90=[round(Math.exp(quantile(draws,.05))-1,3),round(Math.exp(quantile(draws,.95))-1,3)];
+  rollingOrigin.bootstrap='Medians recomputed on 5,000 resamples of whole origins, because forecasts from one origin share a baseline and overlapping horizons; seeded with the lab seed plus 7.';
+  rollingOrigin.fanSigma=round(sigmaRaw);
+}
+{
+  const two=rollingOrigin.byRegime.secondYear,one=rollingOrigin.byRegime.launchYear,x=rollingOrigin.duneCrossCheck;
+  const signed=v=>(v>=0?'+':'−')+Math.abs(v*100).toFixed(1)+'%',secondOrigins=new Set(forecasts.filter(f=>f.regime==='secondYear').map(f=>f.origin)).size;
+  rollingOrigin.conclusions=[
+    `After the launch year the Base path showed no detectable bias: across ${two.n} forecasts from ${secondOrigins} origins, realized volume landed a median ${signed(Math.exp(two.medianLogErrorBase)-1)} from Base. Forecasts from one origin overlap, so the honest sample is ${secondOrigins} origins, and resampling whole origins gives a 90% interval of ${signed(rollingOrigin.secondYearMedianErrorCi90[0])} to ${signed(rollingOrigin.secondYearMedianErrorCi90[1])}.`,
+    `The fixed cases were too narrow: only ${two.inside} of ${two.n} outcomes fell between Bear and Maximum, with ${two.aboveMax} above Maximum and ${two.belowBear} below Bear. Month-to-month swings are wider than the whole case range.`,
+    `The uncertainty band the lab draws (σ = ${rollingOrigin.fanSigma} a month) covered ${two.fan.inside} of ${two.fan.n} second-year outcomes against an 80% target. Its σ is measured over these same months, so this is an in-sample check. A band using only volatility known at each origin covered ${two.band.inside} of ${two.band.n}, because launch-year swings inflate it.`,
+    `In the launch year volume beat Maximum in ${one.aboveMax} of ${one.n} forecasts. That ramp from near zero is a different regime and is not evidence for or against the 2031 cases.`,
+    `DefiLlama, which supplies the full history, matches the Dune series used elsewhere in the lab to a median ratio of ${x.medianRatio.toFixed(3)} over ${x.months} shared months (range ${x.min.toFixed(2)}–${x.max.toFixed(2)}).`
+  ];
+}
+
 const PEERS={
   aerodrome:['Aerodrome','protocol'],gmx:['GMX','protocol'],'pump.fun':['Pump.fun','protocol'],sky:['Sky (Maker)','protocol'],lido:['Lido','protocol'],jupiter:['Jupiter','protocol'],pancakeswap:['PancakeSwap','protocol'],'curve-finance':['Curve','protocol'],raydium:['Raydium','protocol'],dydx:['dYdX','protocol'],aave:['Aave','protocol'],jito:['Jito','protocol'],hyperliquid:['Hyperliquid','protocol'],uniswap:['Uniswap','protocol'],'compound-finance':['Compound','protocol'],ethena:['Ethena','protocol'],morpho:['Morpho','protocol'],
   tron:['TRON','chain'],avalanche:['Avalanche','chain'],solana:['Solana','chain'],ethereum:['Ethereum','chain'],bsc:['BNB Chain','chain'],sui:['Sui','chain'],near:['NEAR','chain']
@@ -206,9 +273,14 @@ const groupStats=group=>{
 };
 const nearRow=peerRows.find(r=>r.slug==='near');
 const capturedAnnualUsd=baseline.operating.windows[0].annualizedCapturedUsd;
+const intentsRevenue=read('analysis/lab-rigor/sources/volume/revenue_near-intents.json').totalDataChart.map(([t,v])=>[new Date(t*1000).toISOString().slice(0,10),v]).filter(([day])=>day<='2026-11-13');
+const trailingEnd=intentsRevenue.at(-1)[0],trailingStart=new Date(Date.parse(trailingEnd+'T00:00:00Z')-364*86400000).toISOString().slice(0,10);
+const trailingRevenueUsd=intentsRevenue.filter(([day])=>day>=trailingStart).reduce((t,[,v])=>t+v,0);
 const peers={retrievedAt:'2026-11-14',protocols:peerRows.filter(r=>r.group==='protocol'),chains:peerRows.filter(r=>r.group==='chain'),excluded:peerExcluded,
   stats:{protocols:groupStats('protocol'),chains:groupStats('chain')},
   nearSpecific:{mcapUsd:nearRow.mcapUsd,capturedAnnualUsd:round(capturedAnnualUsd,0),multipleOnCapturedRevenue:round(nearRow.mcapUsd/capturedAnnualUsd,1),
+    trailingRevenue:{from:trailingStart,to:trailingEnd,usd:round(trailingRevenueUsd,0),multiple:round(nearRow.mcapUsd/trailingRevenueUsd,1),
+      note:'Peer multiples divide by trailing-year revenue. On that basis NEAR Intents receipts give a higher multiple than the annualized 30-day run rate, because receipts grew through the year.'},
     impliedMcapAtCaseMultiples:Object.fromEntries([100,200,250].map(m=>[m,round(m*capturedAnnualUsd,0)])),
     burnDefinitionMultiple1y:nearRow.multiple1y,
     note:'The model multiple applies to captured Intents receipts; DefiLlama chain revenue counts burned gas only, a roughly twenty-fold smaller denominator.'},
@@ -237,6 +309,9 @@ function weekly(returnsDaily){
   return out;
 }
 const wNear=weekly(dNear),wBtc=weekly(dBtc),wBlend=weekly(dBlend);
+const weeklyFrom=(returnsDaily,offset)=>{const out=[];for(let s=offset;s+7<=returnsDaily.length;s+=7)out.push(returnsDaily.slice(s,s+7).reduce((t,v)=>t+v,0));return out;};
+const anchorBetas=[0,1,2,3,4,5,6].map(offset=>({offset,btc:ols(weeklyFrom(dBtc,offset),weeklyFrom(dNear,offset)).slope,blend:ols(weeklyFrom(dBlend,offset),weeklyFrom(dNear,offset)).slope}));
+const betaBtcAnchors=mean(anchorBetas.map(a=>a.btc)),betaBlendAnchors=mean(anchorBetas.map(a=>a.blend));
 const betaBtcW=ols(wBtc,wNear),betaBlendW=ols(wBlend,wNear),betaBtcD=ols(dBtc,dNear),betaBlendD=ols(dBlend,dNear);
 const fred=readFileSync(new URL('analysis/lab-rigor/sources/rate/fred_dgs5.csv',root),'utf8').trim().split('\n').slice(1).map(line=>line.split(',')).filter(([,v])=>v!=='').map(([d,v])=>({day:d,yield:Number(v)}));
 const rfNow=fred.at(-1);
@@ -248,9 +323,9 @@ const btcLong=round(annualGeometric(logReturns(btcMap,longDays))*100,1);
 const premiums=[
   {label:'Realized BTC, post-ETF window',premiumPct:round(btcPostEtf-rfWindowMean,1),basis:'Geometric annualized BTC return minus the window-average five-year Treasury yield, computed from the archived series.'},
   {label:`Realized BTC since ${longDays[0].slice(0,4)}`,premiumPct:round(btcLong-rfWindowMean,1),basis:'Long-window realized return; inflated by early-cycle growth and backward-looking.'},
-  {label:'Brigida latent-factor estimate',premiumPct:24.5,basis:'arXiv:2601.07664, three-pass latent-factor price of crypto market risk, annualized 24.5% (p = 0.062).'},
-  {label:'Brigida Fama-MacBeth estimate',premiumPct:6.0,basis:'arXiv:2601.07664, 0.116% per week annualized (p < 0.001); the paper shows this naive estimate is biased by omitted factors.'},
-  {label:'Borri et al. 2022 estimate',premiumPct:26.0,basis:'As quoted in arXiv:2601.07664: a similar annualized crypto market premium of 26%.'}
+  {label:'Brigida latent-factor estimate',premiumPct:24.5,basis:'arXiv:2601.07664 v3, Sec. 2.2 p.7 and Table 3 p.8: 0.471% a week on the total-crypto-market factor, annualized 24.5% (p = 0.062, called suggestive). Estimated on 105 weeks of 2023-2024, when that market returned about 74% a year; the author calls the results exploratory. Applied here to a BTC beta as a proxy for the market beta.',url:'https://arxiv.org/abs/2601.07664',sensitivity:'upper'},
+  {label:'Brigida Fama-MacBeth estimate',premiumPct:6.0,basis:'arXiv:2601.07664 v3, Sec. 2.2 p.7: 0.116% a week annualized (p < 0.001); the paper shows this naive estimate is biased by omitted factors.',url:'https://arxiv.org/abs/2601.07664',sensitivity:'lower'},
+  {label:'Borri et al. 2022, as cited by Brigida',premiumPct:26.0,basis:'Quoted in arXiv:2601.07664 v3, Sec. 2.2 p.7 as a similar annualized crypto market premium of 26% (Borri, Massacci, Rubin and Ruzzi, Crypto Risk Premia, SSRN 4154627). The primary paper could not be retrieved, so this figure is second-hand.',url:'https://arxiv.org/abs/2601.07664',sensitivity:'upper'}
 ];
 const rate={asOf:near.at(-1).day,riskFree:{pct:rfNow.yield,date:rfNow.day,source:'FRED DGS5'},windowStart:'2024-01-11',
   beta:{btcWeekly:{beta:round(betaBtcW.slope,2),se:round(betaBtcW.olsSe,2),n:wBtc.length,r2:round(betaBtcW.r2,2)},
@@ -258,12 +333,23 @@ const rate={asOf:near.at(-1).day,riskFree:{pct:rfNow.yield,date:rfNow.day,source
     btcDaily:round(betaBtcD.slope,2),blendDaily:round(betaBlendD.slope,2)},
   annualizedVolPct:{near:round(sd(dNear)*Math.sqrt(365)*100,0),btc:round(sd(dBtc)*Math.sqrt(365)*100,0)},
   realizedBtcAnnualPct:{postEtf:btcPostEtf,long:btcLong,longStart:longDays[0]},
-  requiredReturnTable:premiums.map(p=>({...p,rBtcBetaPct:round(rfNow.yield+betaBtcW.slope*p.premiumPct,1),rBlendBetaPct:round(rfNow.yield+betaBlendW.slope*p.premiumPct,1)})),
-  reading:'Formal cross-sectional premium estimates give a required return near 36-41%; the selected 26.3% hurdle sits at the bottom of that defensible range and inside the 25-35% bridge-stage venture band.',
-  caveats:['BTC understates total-crypto-market beta; the BTC+ETH blend only partly mitigates this.','Short-window realized premia are noise-dominated; long-window realized premia are inflated by early-cycle hypergrowth. The spread across variants is the finding.','Weekly returns are sampled in seven-day blocks back from the last complete candle.']};
+  weeklyAnchors:{note:'Weekly returns depend on which weekday a week starts. Betas are averaged over all seven start days; the earlier single anchor gave the lowest BTC beta of the seven.',
+    btc:{mean:round(betaBtcAnchors,2),min:round(Math.min(...anchorBetas.map(a=>a.btc)),2),max:round(Math.max(...anchorBetas.map(a=>a.btc)),2)},
+    blend:{mean:round(betaBlendAnchors,2),min:round(Math.min(...anchorBetas.map(a=>a.blend)),2),max:round(Math.max(...anchorBetas.map(a=>a.blend)),2)}},
+  requiredReturnTable:premiums.map(p=>({...p,rBtcBetaPct:round(rfNow.yield+betaBtcAnchors*p.premiumPct,1),rBlendBetaPct:round(rfNow.yield+betaBlendAnchors*p.premiumPct,1)})),
+  practitioner:[
+    {source:'VanEck, ETH 2030 model',ratePct:[12,12],role:'Hurdle to the exit price, from ETH beta',url:'https://www.vaneck.com/us/en/blogs/digital-assets/matthew-sigel-ethereum-price-prediction-118k-by-2030/'},
+    {source:'CoinShares, Hyperliquid framework',ratePct:[12,18],role:'Whole-life DCF cost of equity with 5% terminal growth (Section 6)',url:'https://coinshares.com/insights/research-data/hyperliquid-primer-and-5-year-valuation-framework/'},
+    {source:'Bitwise, NEAR investment case',ratePct:[15,25],role:'Hurdle on 2030 NEAR scenarios with a 50x multiple (p.33)',url:'https://bitwiseinvestments.eu/blog/special-reports/the-investment-case-for-near/pdf/Near_investment_case_ENG.pdf'},
+    {source:'Damodaran, bridge/IPO venture targets',ratePct:[25,35],role:'Target rates with survival risk built in (Table 2, p.15)',url:'https://pages.stern.nyu.edu/~adamodar/pdfiles/papers/younggrowth.pdf'}],
+  reading:'Published valuations discount crypto exit prices at 12-25%, and bridge-stage venture targets are 25-35%. The selected 26.3% sits where the two meet. The higher figures from total-crypto-market premia rest on one exploratory 2023-2024 bull-market sample applied to a BTC beta, so they are an upper sensitivity, not the central estimate.',
+  caveats:['BTC understates total-crypto-market beta; the BTC+ETH blend only partly mitigates this.','Short-window realized premia are noise-dominated; long-window realized premia are inflated by early-cycle hypergrowth. The spread across variants is the finding.','Weekly betas are averaged over all seven possible week start days.']};
 
 const sources=[
   {file:'data/glance-daily.json',sha256:hash('data/glance-daily.json'),url:daily.queries.daily},
+  {file:'analysis/lab-rigor/sources/volume/revenue_near-intents.json',sha256:hash('analysis/lab-rigor/sources/volume/revenue_near-intents.json'),url:'https://api.llama.fi/summary/fees/near-intents?dataType=dailyRevenue&excludeTotalDataChartBreakdown=true'},
+  {file:'analysis/lab-rigor/sources/volume/fees_near-intents.json',sha256:hash('analysis/lab-rigor/sources/volume/fees_near-intents.json'),url:'https://api.llama.fi/summary/fees/near-intents?dataType=dailyFees&excludeTotalDataChartBreakdown=true'},
+  {file:'analysis/lab-rigor/sources/volume/dexs_near-intents.json',sha256:hash('analysis/lab-rigor/sources/volume/dexs_near-intents.json'),url:'https://api.llama.fi/summary/dexs/near-intents?excludeTotalDataChartBreakdown=true'},
   ...readdirSync(new URL('analysis/lab-rigor/sources/peers/',root)).sort().map(f=>({file:'analysis/lab-rigor/sources/peers/'+f,sha256:hash('analysis/lab-rigor/sources/peers/'+f),url:f==='mcaps.json'?'https://coins.llama.fi/mcaps':`https://api.llama.fi/summary/fees/${f.replace(/^fees_(revenue|holders)_/,'').replace(/\.json$/,'').replace('pump_fun','pump.fun')}?dataType=${f.startsWith('fees_holders')?'dailyHoldersRevenue':'dailyRevenue'}&excludeTotalDataChart=true&excludeTotalDataChartBreakdown=true`})),
   ...readdirSync(new URL('analysis/lab-rigor/sources/rate/',root)).sort().map(f=>({file:'analysis/lab-rigor/sources/rate/'+f,sha256:hash('analysis/lab-rigor/sources/rate/'+f),url:f==='fred_dgs5.csv'?'https://fred.stlouisfed.org/graph/fredgraph.csv?id=DGS5':`https://data-api.binance.vision/api/v3/klines?symbol=${f.split('_')[1]}&interval=1d`}))
 ];
@@ -274,6 +360,7 @@ const output={version:'lab-rigor-1-'+hash('data/glance-daily.json').slice(0,12),
     cmgr:cmgrWindows,originSweep:{fits:originFits,minGrowth:Math.min(...originGrowths),maxGrowth:Math.max(...originGrowths),
       verdict:'The fitted trend ranges from 6.7% to 16.6% per month depending only on the start month; no single fitted growth rate is the trend.'},
     casePlacement,elasticity,capture,
+    feeRollout:{months:feeRollout,note:'DefiLlama gross fees before the Dune window. The fee rate climbed while fees were being switched on, so these months measure the rollout and are kept out of the fee-compression test.'},
     note:'Eleven complete months and ten growth observations; every statistic is noisy and the bootstrap intervals are honest about it.'},
   calibration,backtest,peers,rate,sources};
 

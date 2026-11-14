@@ -252,6 +252,35 @@
    },
    "caveat": "Capture was rising before the fee switch, so the pre/post split measures a continuing trend, not a clean step; attribution to the switch is confounded and the test assumes iid on a trending series."
   },
+  "feeRollout": {
+   "months": [
+    {
+     "month": "2025-06",
+     "grossBps": 5.2
+    },
+    {
+     "month": "2025-07",
+     "grossBps": 9.2
+    },
+    {
+     "month": "2025-08",
+     "grossBps": 12.7
+    },
+    {
+     "month": "2025-09",
+     "grossBps": 14.7
+    },
+    {
+     "month": "2025-10",
+     "grossBps": 14.5
+    },
+    {
+     "month": "2025-11",
+     "grossBps": 21.2
+    }
+   ],
+   "note": "DefiLlama gross fees before the Dune window. The fee rate climbed while fees were being switched on, so these months measure the rollout and are kept out of the fee-compression test."
+  },
   "note": "Eleven complete months and ten growth observations; every statistic is noisy and the bootstrap intervals are honest about it."
  },
  "calibration": {
@@ -536,7 +565,453 @@
    "Error concentrates in jump months: case MAPE 1-15% in the calm month versus 28-40% pooled across jump months.",
    "A log-linear trend fitted at each cutoff beat no fixed case out of sample; it extrapolated flat exactly when the regime flipped.",
    "A lognormal 10-90% band around Base covered 6 of 9 holdout months against an 80% nominal target (small sample, indicative only)."
-  ]
+  ],
+  "rollingOrigin": {
+   "source": "DefiLlama dexs/near-intents daily volume, first day 2024-12-10",
+   "design": "Every complete month end is a forecast origin. The trailing 30-day average daily volume at the origin is projected forward under each fixed case growth rate and compared with realized average daily volume 1 to 6 months later. The 80% band uses only growth volatility observed up to the origin.",
+   "regimes": {
+    "launchYear": "Origins through 2025-11, the first twelve months after launch",
+    "secondYear": "Origins after 2025-11"
+   },
+   "months": [
+    {
+     "month": "2025-01",
+     "avgDailyVolumeUsd": 206629
+    },
+    {
+     "month": "2025-02",
+     "avgDailyVolumeUsd": 471230
+    },
+    {
+     "month": "2025-03",
+     "avgDailyVolumeUsd": 756672
+    },
+    {
+     "month": "2025-04",
+     "avgDailyVolumeUsd": 1510731
+    },
+    {
+     "month": "2025-05",
+     "avgDailyVolumeUsd": 2926988
+    },
+    {
+     "month": "2025-06",
+     "avgDailyVolumeUsd": 6137387
+    },
+    {
+     "month": "2025-07",
+     "avgDailyVolumeUsd": 7610752
+    },
+    {
+     "month": "2025-08",
+     "avgDailyVolumeUsd": 10695492
+    },
+    {
+     "month": "2025-09",
+     "avgDailyVolumeUsd": 16126373
+    },
+    {
+     "month": "2025-10",
+     "avgDailyVolumeUsd": 55583937
+    },
+    {
+     "month": "2025-11",
+     "avgDailyVolumeUsd": 122035160
+    },
+    {
+     "month": "2025-12",
+     "avgDailyVolumeUsd": 64831778
+    },
+    {
+     "month": "2026-01",
+     "avgDailyVolumeUsd": 87886088
+    },
+    {
+     "month": "2026-02",
+     "avgDailyVolumeUsd": 84937896
+    },
+    {
+     "month": "2026-03",
+     "avgDailyVolumeUsd": 67086937
+    },
+    {
+     "month": "2026-04",
+     "avgDailyVolumeUsd": 63184683
+    },
+    {
+     "month": "2026-05",
+     "avgDailyVolumeUsd": 64377032
+    },
+    {
+     "month": "2026-06",
+     "avgDailyVolumeUsd": 78489734
+    },
+    {
+     "month": "2026-07",
+     "avgDailyVolumeUsd": 71147733
+    },
+    {
+     "month": "2026-08",
+     "avgDailyVolumeUsd": 89591202
+    },
+    {
+     "month": "2026-09",
+     "avgDailyVolumeUsd": 160103146
+    },
+    {
+     "month": "2026-10",
+     "avgDailyVolumeUsd": 128569084
+    }
+   ],
+   "origins": 21,
+   "all": {
+    "n": 111,
+    "aboveMax": 75,
+    "inside": 15,
+    "belowBear": 21,
+    "medianLogErrorBase": 0.529,
+    "mapeBase": 0.542,
+    "band": {
+     "n": 93,
+     "inside": 53
+    },
+    "fan": {
+     "n": 111,
+     "inside": 49
+    }
+   },
+   "byRegime": {
+    "launchYear": {
+     "n": 66,
+     "aboveMax": 57,
+     "inside": 3,
+     "belowBear": 6,
+     "medianLogErrorBase": 1.482,
+     "mapeBase": 0.725,
+     "band": {
+      "n": 48,
+      "inside": 8
+     },
+     "fan": {
+      "n": 66,
+      "inside": 9
+     }
+    },
+    "secondYear": {
+     "n": 45,
+     "aboveMax": 18,
+     "inside": 12,
+     "belowBear": 15,
+     "medianLogErrorBase": 0.001,
+     "mapeBase": 0.272,
+     "band": {
+      "n": 45,
+      "inside": 45
+     },
+     "fan": {
+      "n": 45,
+      "inside": 40
+     }
+    }
+   },
+   "byHorizon": {
+    "1": {
+     "launchYear": {
+      "n": 11,
+      "aboveMax": 10,
+      "inside": 0,
+      "belowBear": 1,
+      "medianLogErrorBase": 0.622,
+      "mapeBase": 0.481,
+      "band": {
+       "n": 8,
+       "inside": 0
+      },
+      "fan": {
+       "n": 11,
+       "inside": 2
+      }
+     },
+     "secondYear": {
+      "n": 10,
+      "aboveMax": 4,
+      "inside": 1,
+      "belowBear": 5,
+      "medianLogErrorBase": -0.058,
+      "mapeBase": 0.2,
+      "band": {
+       "n": 10,
+       "inside": 10
+      },
+      "fan": {
+       "n": 10,
+       "inside": 9
+      }
+     }
+    },
+    "3": {
+     "launchYear": {
+      "n": 11,
+      "aboveMax": 10,
+      "inside": 0,
+      "belowBear": 1,
+      "medianLogErrorBase": 1.499,
+      "mapeBase": 0.723,
+      "band": {
+       "n": 8,
+       "inside": 2
+      },
+      "fan": {
+       "n": 11,
+       "inside": 2
+      }
+     },
+     "secondYear": {
+      "n": 8,
+      "aboveMax": 3,
+      "inside": 3,
+      "belowBear": 2,
+      "medianLogErrorBase": 0.016,
+      "mapeBase": 0.274,
+      "band": {
+       "n": 8,
+       "inside": 8
+      },
+      "fan": {
+       "n": 8,
+       "inside": 7
+      }
+     }
+    },
+    "6": {
+     "launchYear": {
+      "n": 11,
+      "aboveMax": 9,
+      "inside": 1,
+      "belowBear": 1,
+      "medianLogErrorBase": 2.202,
+      "mapeBase": 0.874,
+      "band": {
+       "n": 8,
+       "inside": 2
+      },
+      "fan": {
+       "n": 11,
+       "inside": 1
+      }
+     },
+     "secondYear": {
+      "n": 5,
+      "aboveMax": 2,
+      "inside": 2,
+      "belowBear": 1,
+      "medianLogErrorBase": -0.007,
+      "mapeBase": 0.331,
+      "band": {
+       "n": 5,
+       "inside": 5
+      },
+      "fan": {
+       "n": 5,
+       "inside": 5
+      }
+     }
+    }
+   },
+   "threeMonth": [
+    {
+     "origin": "2025-01",
+     "target": "2025-04",
+     "regime": "launchYear",
+     "realized": 1510731,
+     "bear": 206026,
+     "base": 238845,
+     "max": 267477
+    },
+    {
+     "origin": "2025-02",
+     "target": "2025-05",
+     "regime": "launchYear",
+     "realized": 2926988,
+     "bear": 433813,
+     "base": 502917,
+     "max": 563207
+    },
+    {
+     "origin": "2025-03",
+     "target": "2025-06",
+     "regime": "launchYear",
+     "realized": 6137387,
+     "bear": 727783,
+     "base": 843716,
+     "max": 944861
+    },
+    {
+     "origin": "2025-04",
+     "target": "2025-07",
+     "regime": "launchYear",
+     "realized": 7610752,
+     "bear": 1465860,
+     "base": 1699366,
+     "max": 1903085
+    },
+    {
+     "origin": "2025-05",
+     "target": "2025-08",
+     "regime": "launchYear",
+     "realized": 10695492,
+     "bear": 2791830,
+     "base": 3236558,
+     "max": 3624554
+    },
+    {
+     "origin": "2025-06",
+     "target": "2025-09",
+     "regime": "launchYear",
+     "realized": 16126373,
+     "bear": 5955101,
+     "base": 6903726,
+     "max": 7731340
+    },
+    {
+     "origin": "2025-07",
+     "target": "2025-10",
+     "regime": "launchYear",
+     "realized": 55583937,
+     "bear": 7449283,
+     "base": 8635926,
+     "max": 9671196
+    },
+    {
+     "origin": "2025-08",
+     "target": "2025-11",
+     "regime": "launchYear",
+     "realized": 122035160,
+     "bear": 10195192,
+     "base": 11819247,
+     "max": 13236131
+    },
+    {
+     "origin": "2025-09",
+     "target": "2025-12",
+     "regime": "launchYear",
+     "realized": 64831778,
+     "bear": 15647403,
+     "base": 18139976,
+     "max": 20314585
+    },
+    {
+     "origin": "2025-10",
+     "target": "2026-01",
+     "regime": "launchYear",
+     "realized": 87886088,
+     "bear": 54105936,
+     "base": 62724809,
+     "max": 70244221
+    },
+    {
+     "origin": "2025-11",
+     "target": "2026-02",
+     "regime": "launchYear",
+     "realized": 84937896,
+     "bear": 118410594,
+     "base": 137272958,
+     "max": 153729155
+    },
+    {
+     "origin": "2025-12",
+     "target": "2026-03",
+     "regime": "secondYear",
+     "realized": 67086937,
+     "bear": 60635257,
+     "base": 70294227,
+     "max": 78721055
+    },
+    {
+     "origin": "2026-01",
+     "target": "2026-04",
+     "regime": "secondYear",
+     "realized": 63184683,
+     "bear": 87144079,
+     "base": 101025805,
+     "max": 113136716
+    },
+    {
+     "origin": "2026-02",
+     "target": "2026-05",
+     "regime": "secondYear",
+     "realized": 64377032,
+     "bear": 83018691,
+     "base": 96243258,
+     "max": 107780840
+    },
+    {
+     "origin": "2026-03",
+     "target": "2026-06",
+     "regime": "secondYear",
+     "realized": 78489734,
+     "bear": 65674058,
+     "base": 76135690,
+     "max": 85262789
+    },
+    {
+     "origin": "2026-04",
+     "target": "2026-07",
+     "regime": "secondYear",
+     "realized": 71147733,
+     "bear": 61308035,
+     "base": 71074176,
+     "max": 79594504
+    },
+    {
+     "origin": "2026-05",
+     "target": "2026-08",
+     "regime": "secondYear",
+     "realized": 89591202,
+     "bear": 62761607,
+     "base": 72759296,
+     "max": 81481636
+    },
+    {
+     "origin": "2026-06",
+     "target": "2026-09",
+     "regime": "secondYear",
+     "realized": 160103146,
+     "bear": 76158510,
+     "base": 88290276,
+     "max": 98874460
+    },
+    {
+     "origin": "2026-07",
+     "target": "2026-10",
+     "regime": "secondYear",
+     "realized": 128569084,
+     "bear": 68131948,
+     "base": 78985113,
+     "max": 88453799
+    }
+   ],
+   "duneCrossCheck": {
+    "months": 11,
+    "medianRatio": 0.999,
+    "min": 0.867,
+    "max": 1.02,
+    "note": "DefiLlama monthly volume divided by the Dune series used elsewhere in the lab, over the months both cover."
+   },
+   "secondYearMedianErrorCi90": [
+    -0.172,
+    0.219
+   ],
+   "bootstrap": "Medians recomputed on 5,000 resamples of whole origins, because forecasts from one origin share a baseline and overlapping horizons; seeded with the lab seed plus 7.",
+   "fanSigma": 0.2362,
+   "conclusions": [
+    "After the launch year the Base path showed no detectable bias: across 45 forecasts from 10 origins, realized volume landed a median +0.1% from Base. Forecasts from one origin overlap, so the honest sample is 10 origins, and resampling whole origins gives a 90% interval of −17.2% to +21.9%.",
+    "The fixed cases were too narrow: only 12 of 45 outcomes fell between Bear and Maximum, with 18 above Maximum and 15 below Bear. Month-to-month swings are wider than the whole case range.",
+    "The uncertainty band the lab draws (σ = 0.2362 a month) covered 40 of 45 second-year outcomes against an 80% target. Its σ is measured over these same months, so this is an in-sample check. A band using only volatility known at each origin covered 45 of 45, because launch-year swings inflate it.",
+    "In the launch year volume beat Maximum in 57 of 66 forecasts. That ramp from near zero is a different regime and is not evidence for or against the 2031 cases.",
+    "DefiLlama, which supplies the full history, matches the Dune series used elsewhere in the lab to a median ratio of 0.999 over 11 shared months (range 0.87–1.02)."
+   ]
+  }
  },
  "peers": {
   "retrievedAt": "2026-11-14",
@@ -891,6 +1366,13 @@
    "mcapUsd": 4358227905,
    "capturedAnnualUsd": 22113744,
    "multipleOnCapturedRevenue": 197.1,
+   "trailingRevenue": {
+    "from": "2025-11-14",
+    "to": "2026-11-13",
+    "usd": 9398853,
+    "multiple": 463.7,
+    "note": "Peer multiples divide by trailing-year revenue. On that basis NEAR Intents receipts give a higher multiple than the annualized 30-day run rate, because receipts grew through the year."
+   },
    "impliedMcapAtCaseMultiples": {
     "100": 2211374400,
     "200": 4422748800,
@@ -942,48 +1424,105 @@
    "long": 34.2,
    "longStart": "2020-10-14"
   },
+  "weeklyAnchors": {
+   "note": "Weekly returns depend on which weekday a week starts. Betas are averaged over all seven start days; the earlier single anchor gave the lowest BTC beta of the seven.",
+   "btc": {
+    "mean": 1.54,
+    "min": 1.39,
+    "max": 1.79
+   },
+   "blend": {
+    "mean": 1.37,
+    "min": 1.26,
+    "max": 1.5
+   }
+  },
   "requiredReturnTable": [
    {
     "label": "Realized BTC, post-ETF window",
     "premiumPct": 10.5,
     "basis": "Geometric annualized BTC return minus the window-average five-year Treasury yield, computed from the archived series.",
-    "rBtcBetaPct": 19.6,
-    "rBlendBetaPct": 18.1
+    "rBtcBetaPct": 21.1,
+    "rBlendBetaPct": 19.3
    },
    {
     "label": "Realized BTC since 2020",
     "premiumPct": 30.1,
     "basis": "Long-window realized return; inflated by early-cycle growth and backward-looking.",
-    "rBtcBetaPct": 46.9,
-    "rBlendBetaPct": 42.8
+    "rBtcBetaPct": 51.3,
+    "rBlendBetaPct": 46.1
    },
    {
     "label": "Brigida latent-factor estimate",
     "premiumPct": 24.5,
-    "basis": "arXiv:2601.07664, three-pass latent-factor price of crypto market risk, annualized 24.5% (p = 0.062).",
-    "rBtcBetaPct": 39.1,
-    "rBlendBetaPct": 35.7
+    "basis": "arXiv:2601.07664 v3, Sec. 2.2 p.7 and Table 3 p.8: 0.471% a week on the total-crypto-market factor, annualized 24.5% (p = 0.062, called suggestive). Estimated on 105 weeks of 2023-2024, when that market returned about 74% a year; the author calls the results exploratory. Applied here to a BTC beta as a proxy for the market beta.",
+    "url": "https://arxiv.org/abs/2601.07664",
+    "sensitivity": "upper",
+    "rBtcBetaPct": 42.7,
+    "rBlendBetaPct": 38.4
    },
    {
     "label": "Brigida Fama-MacBeth estimate",
     "premiumPct": 6,
-    "basis": "arXiv:2601.07664, 0.116% per week annualized (p < 0.001); the paper shows this naive estimate is biased by omitted factors.",
-    "rBtcBetaPct": 13.3,
-    "rBlendBetaPct": 12.5
+    "basis": "arXiv:2601.07664 v3, Sec. 2.2 p.7: 0.116% a week annualized (p < 0.001); the paper shows this naive estimate is biased by omitted factors.",
+    "url": "https://arxiv.org/abs/2601.07664",
+    "sensitivity": "lower",
+    "rBtcBetaPct": 14.2,
+    "rBlendBetaPct": 13.1
    },
    {
-    "label": "Borri et al. 2022 estimate",
+    "label": "Borri et al. 2022, as cited by Brigida",
     "premiumPct": 26,
-    "basis": "As quoted in arXiv:2601.07664: a similar annualized crypto market premium of 26%.",
-    "rBtcBetaPct": 41.2,
-    "rBlendBetaPct": 37.6
+    "basis": "Quoted in arXiv:2601.07664 v3, Sec. 2.2 p.7 as a similar annualized crypto market premium of 26% (Borri, Massacci, Rubin and Ruzzi, Crypto Risk Premia, SSRN 4154627). The primary paper could not be retrieved, so this figure is second-hand.",
+    "url": "https://arxiv.org/abs/2601.07664",
+    "sensitivity": "upper",
+    "rBtcBetaPct": 45,
+    "rBlendBetaPct": 40.5
    }
   ],
-  "reading": "Formal cross-sectional premium estimates give a required return near 36-41%; the selected 26.3% hurdle sits at the bottom of that defensible range and inside the 25-35% bridge-stage venture band.",
+  "practitioner": [
+   {
+    "source": "VanEck, ETH 2030 model",
+    "ratePct": [
+     12,
+     12
+    ],
+    "role": "Hurdle to the exit price, from ETH beta",
+    "url": "https://www.vaneck.com/us/en/blogs/digital-assets/matthew-sigel-ethereum-price-prediction-118k-by-2030/"
+   },
+   {
+    "source": "CoinShares, Hyperliquid framework",
+    "ratePct": [
+     12,
+     18
+    ],
+    "role": "Whole-life DCF cost of equity with 5% terminal growth (Section 6)",
+    "url": "https://coinshares.com/insights/research-data/hyperliquid-primer-and-5-year-valuation-framework/"
+   },
+   {
+    "source": "Bitwise, NEAR investment case",
+    "ratePct": [
+     15,
+     25
+    ],
+    "role": "Hurdle on 2030 NEAR scenarios with a 50x multiple (p.33)",
+    "url": "https://bitwiseinvestments.eu/blog/special-reports/the-investment-case-for-near/pdf/Near_investment_case_ENG.pdf"
+   },
+   {
+    "source": "Damodaran, bridge/IPO venture targets",
+    "ratePct": [
+     25,
+     35
+    ],
+    "role": "Target rates with survival risk built in (Table 2, p.15)",
+    "url": "https://pages.stern.nyu.edu/~adamodar/pdfiles/papers/younggrowth.pdf"
+   }
+  ],
+  "reading": "Published valuations discount crypto exit prices at 12-25%, and bridge-stage venture targets are 25-35%. The selected 26.3% sits where the two meet. The higher figures from total-crypto-market premia rest on one exploratory 2023-2024 bull-market sample applied to a BTC beta, so they are an upper sensitivity, not the central estimate.",
   "caveats": [
    "BTC understates total-crypto-market beta; the BTC+ETH blend only partly mitigates this.",
    "Short-window realized premia are noise-dominated; long-window realized premia are inflated by early-cycle hypergrowth. The spread across variants is the finding.",
-   "Weekly returns are sampled in seven-day blocks back from the last complete candle."
+   "Weekly betas are averaged over all seven possible week start days."
   ]
  },
  "sources": [
@@ -991,6 +1530,21 @@
    "file": "data/glance-daily.json",
    "sha256": "5092c25bebca04c0288a5bd030ca063b5970434a0a5fa8072a8d3ef1297b08c6",
    "url": "https://dune.com/queries/9114284"
+  },
+  {
+   "file": "analysis/lab-rigor/sources/volume/revenue_near-intents.json",
+   "sha256": "b0bb0b08f5bdb2c35012a05b464ef51d5352c174a97fcb564899c93f91f199ca",
+   "url": "https://api.llama.fi/summary/fees/near-intents?dataType=dailyRevenue&excludeTotalDataChartBreakdown=true"
+  },
+  {
+   "file": "analysis/lab-rigor/sources/volume/fees_near-intents.json",
+   "sha256": "0979ccdc7e9033edfb586a75c9efbd2989ea806f04c88f4f0f436a979229381a",
+   "url": "https://api.llama.fi/summary/fees/near-intents?dataType=dailyFees&excludeTotalDataChartBreakdown=true"
+  },
+  {
+   "file": "analysis/lab-rigor/sources/volume/dexs_near-intents.json",
+   "sha256": "2a2c27e41896770770d5c9f2a7c53dc5e881550554d4a6093d762520b7820bf9",
+   "url": "https://api.llama.fi/summary/dexs/near-intents?excludeTotalDataChartBreakdown=true"
   },
   {
    "file": "analysis/lab-rigor/sources/peers/fees_holders_aave.json",

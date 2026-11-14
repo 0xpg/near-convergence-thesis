@@ -1,0 +1,32 @@
+{
+ "written_utc": "2026-11-14T09:45:07Z",
+ "rules_sha256": "4fb620a1489384ab5645f14080634dcce242de2108a37903209b0670ae628e6d",
+ "rules": {
+  "multiple_definition": "circulating market cap (CoinMarketCap daily quote, summed over legacy+new token for migrations) / trailing-365-day DefiLlama revenue, sampled at calendar month-ends 2018-12..2026-10",
+  "E1_coverage": "DefiLlama series must start >=365 days before the observation date and contain >=330 daily records in the trailing window",
+  "E2_denominator_floor_usd": 1000000,
+  "E3_mature_revenue": "revenue > 0 in >= 11 of the 12 trailing 30-day blocks (removes fee-switch starts, launches and revenue-definition ramps)",
+  "E4_mcap": "circulating mcap present and >= $10M at the observation date (nearest CMC quote within 4 days)",
+  "E5_manual_breaks_sensitivity_only": {
+   "Uniswap": "2025-12-29 (first nonzero DefiLlama revenue = fee switch)",
+   "Ethereum": "2021-08-05 (EIP-1559 burn starts)",
+   "dYdX": "2023-10-26 (v4 chain launch; revenue definition changes)",
+   "Solana": "2025-02-13 (SIMD-0096: priority fees fully to validators, cuts burned revenue)",
+   "rule": "drop observations whose trailing 365d window contains the break date"
+  },
+  "outcome_rule": "future observation (t+k years) must itself pass E1-E4 to enter transition statistics; future observations failing only E2/E3 (revenue collapse) with mcap present are counted separately as 'revenue-collapse' and, in the conservative variant, treated as still >100x",
+  "ar1_spec_primary": "pooled OLS of log M(t+12m) on log M(t), all month-ends (overlapping), separate for protocols and L1s; inference by cluster (entity) bootstrap, 2000 reps, seed 42",
+  "ar1_spec_relative": "same but log M demeaned by the cross-sectional mean of its group at each date (removes common crypto-cycle swings)",
+  "ar1_spec_nonoverlap": "December observations only (one per entity-year)",
+  "groups": "protocol vs l1 analysed separately; l2 and NEAR-receipts reported, never pooled",
+  "sensitivities": [
+   "no E2/E3 (revenue>0 only)",
+   "floor $5M",
+   "E5 manual breaks",
+   "holders revenue denominator (protocols)",
+   "fees denominator (L1)",
+   "winsorise log M at 1/99 pct"
+  ]
+ },
+ "note": "written before analysis.py was run"
+}
