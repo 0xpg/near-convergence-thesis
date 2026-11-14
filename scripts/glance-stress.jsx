@@ -2,7 +2,7 @@ import React,{useState} from 'react';
 import {createRoot} from 'react-dom/client';
 import DuneGlance from '../src/DuneGlance.tsx';
 import evidence from '../data/glance-insights.json';
-import '../styles/styles.css';
+import '../styles/overview.css';
 import '../styles/fonts.css';
 
 const worst=Object.fromEntries(Object.entries(evidence.insights).map(([id,item],index)=>[id,{

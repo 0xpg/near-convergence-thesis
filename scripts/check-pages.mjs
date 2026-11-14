@@ -8,13 +8,13 @@ try{
  const pages=await server.ssrLoadModule('/src/pages.tsx');
  const {default:Story}=await server.ssrLoadModule('/src/ThesisPage.tsx');
  const {topics}=await server.ssrLoadModule('/src/OverviewScene.tsx');
- const components={'index.html':pages.Landing,'lab.html':pages.Lab,'research.html':pages.Research,'methodology.html':pages.Methodology,'thesis.html':Story};
- const routeFiles={'/':'index.html','/thesis':'thesis.html','/lab':'lab.html','/research':'research.html','/methodology':'methodology.html'};
+ const components={'index.html':pages.Landing,'lab.html':pages.Lab,'thesis.html':Story};
+ const routeFiles={'/':'index.html','/thesis':'thesis.html','/lab':'lab.html'};
  const {routes,resolveRoute}=await server.ssrLoadModule('/src/routes.ts');
  assert.deepEqual(Object.keys(routes).sort(),Object.keys(routeFiles).sort());
  for(const route of Object.values(routes))assert(route.title.includes('Near Convergence Thesis'),'Website title must use renamed project');
  for(const [legacy,path] of [['/thesis.html','/thesis'],['/index.html','/'],['/lab/','/lab'],['/','/']])assert.equal(resolveRoute(legacy).path,path);
- assert.equal(resolveRoute('/explore').redirect,'/research#explore');
+ for(const legacy of ['/explore','/report','/research','/methodology'])assert.equal(resolveRoute(legacy).redirect,'/thesis');
  const rendered=Object.fromEntries(Object.entries(components).map(([file,Component])=>[file,renderToStaticMarkup(createElement(Component))]));
  for(const label of ['Choose a case. Trace its value.','Bear','Base','Bull','Maximum','Operating assumptions to token value','Where the price comes from','Export complete model'])assert(rendered['lab.html'].includes(label),'Lab model missing '+label);
  assert(!rendered['lab.html'].includes('What would $400–$500 require?'));
@@ -215,7 +215,6 @@ try{
  assert(rendered['thesis.html'].includes('NEAR at a glance'));
  assert(rendered['thesis.html'].indexOf('id="thesis-proposition-title"')<rendered['thesis.html'].indexOf('id="network"'));
  assert.equal(new Set(topics.map(topic=>topic.title)).size,10);
- assert(rendered['research.html'].includes('id="model-controls"'));
  assert(rendered['thesis.html'].includes('NEAR overview'));
  assert(rendered['thesis.html'].includes('Intelligence'));
  assert(rendered['thesis.html'].includes('meets execution.'));

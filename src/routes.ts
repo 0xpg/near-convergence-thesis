@@ -5,12 +5,10 @@ export type Route={title:string,description:string,styles:string[],load:()=>Prom
 export const routes:Record<string,Route>={
   '/':{title:"Near Convergence Thesis",description:"Explore NEAR’s place in the agent economy: financial infrastructure, cross-chain settlement, and the evidence behind the investment case.",styles:['/styles/landing.css?v=layout-25'],load:()=>import('./pages.tsx').then(module=>module.Landing)},
   '/thesis':{title:"Thesis · Near Convergence Thesis",description:"Explore NEAR architecture, AI convergence and token economics through interactive frameworks and linked Dune research.",styles:['/styles/overview.css'],load:()=>import('./ThesisPage.tsx').then(module=>module.default)},
-  '/lab':{title:"Scenario Lab · Near Convergence Thesis",description:"An evidence-backed study of NEAR's distribution franchise, token economics and the assumptions between them.",styles:['/styles/overview.css'],load:()=>import('./pages.tsx').then(module=>module.Lab)},
-  '/research':{title:"Research · Near Convergence Thesis",description:"An evidence-backed study of NEAR's distribution franchise, token economics and the assumptions between them.",styles:['/styles/styles.css?v=controls-25'],load:()=>import('./pages.tsx').then(module=>module.Research)},
-  '/methodology':{title:"Methodology · Near Convergence Thesis",description:"How the NEAR research snapshot was collected, calculated and reproduced.",styles:['/styles/styles.css?v=controls-25','/styles/methodology.css'],load:()=>import('./pages.tsx').then(module=>module.Methodology)}
+  '/lab':{title:"Scenario Lab · Near Convergence Thesis",description:"An evidence-backed study of NEAR's distribution franchise, token economics and the assumptions between them.",styles:['/styles/overview.css'],load:()=>import('./pages.tsx').then(module=>module.Lab)}
 };
 
-const redirects:Record<string,string>={'/explore':'/research#explore','/report':'/thesis'};
+const redirects:Record<string,string>={'/explore':'/thesis','/report':'/thesis','/research':'/thesis','/methodology':'/thesis'};
 
 export function resolveRoute(pathname:string):{path:string,redirect?:undefined}|{redirect:string,path?:undefined}{
   let path=pathname.replace(/\/+$/,'').replace(/\.html$/,'')||'/';

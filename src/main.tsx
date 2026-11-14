@@ -7,7 +7,7 @@ import './root.css';
 class ErrorBoundary extends Component<{children:ReactNode},{failed:boolean}> {
   state={failed:false};
   static getDerivedStateFromError(){return {failed:true};}
-  render(){return this.state.failed?<main className="app-error"><h1>This page could not load.</h1><p>Reload to try again. The saved research report remains available.</p><a href="/report.pdf" download>Download PDF</a></main>:this.props.children;}
+  render(){return this.state.failed?<main className="app-error"><h1>This page could not load.</h1><p>Reload to try again.</p><a href="/">Return home</a></main>:this.props.children;}
 }
 
 function NotFound(){return <main className="app-error"><h1>Page not found</h1><a href="/">Return home</a></main>;}

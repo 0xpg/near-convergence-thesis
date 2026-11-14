@@ -12,8 +12,7 @@ Live: [near-convergence-thesis.pages.dev](https://near-convergence-thesis.pages.
 |---|---|
 | `/` | The thesis in one screen: humans, agents, NEAR and institutions |
 | `/thesis` | Convergence thesis, 3D investment framework, network map and **NEAR at a glance** |
-| `/lab` | Scenario Lab: ten draggable models from volume to fees to token demand (mock baseline) |
-| `/research`, `/methodology` | Evidence ledger and how to reproduce every number |
+| `/lab` | Scenario Lab: Bear, Base, Bull and Maximum cases from Intents volume, fees, institutional routing and AI services to token value |
 
 ## Data
 
@@ -31,7 +30,7 @@ Requires Node 22.18 or newer.
 
 ```bash
 npm ci
-npm test           # type check, models and scenes
+npm test           # type check, data checks, models and scenes
 npm run build      # outputs dist/
 npm run preview    # http://127.0.0.1:4173
 ```
