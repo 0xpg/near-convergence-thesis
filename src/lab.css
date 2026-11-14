@@ -220,7 +220,7 @@
 .lab-deep-dive{margin:0 max(48px,calc((100vw - 1344px)/2)) 64px;border-top:1px solid #293b3220;padding-top:24px}
 .lab-deep-dive>summary{font:400 22px/1.4 Saans,Arial,sans-serif;color:#20372d;cursor:pointer}
 .lab-deep-dive>.lab-framework{padding:8px 0 0}
-@media(max-width:1100px){.lab-working .lab-console-results{position:static}}
+@media(max-width:1100px){.lab-working .lab-working .lab-console-results{position:static}}
 @media(max-width:760px){.lab-holdings-inline{margin-left:20px;margin-right:20px}.lab-card.is-wide .lab-holdings-controls{grid-template-columns:1fr}.lab-deep-dive{margin-left:16px;margin-right:16px}.lab-changes{padding:16px}.lab-changes li{flex-direction:column;gap:2px}.lab-changes strong{text-align:left}.lab-exact-entry{max-width:50%}.lab-working>header h2{max-width:500px}}
 .lab-evidence{margin:8px 0 0;color:#5c6861;font-size:12.5px;line-height:1.55}
 .lab-evidence a{color:inherit;text-decoration:underline;text-underline-offset:2px;text-decoration-color:#293b3266}
@@ -235,3 +235,52 @@
 .lab-evidence-caption{margin:10px 0 0;font:400 12.5px/1.55 Saans,Arial,sans-serif;color:#5c6861}
 @media(max-width:860px){.lab-evidence-pair{grid-template-columns:1fr;padding:0 20px 24px}}
 .lab-framework-copy>.lab-card-chart{margin:12px 0 24px}
+
+/* Long-form desktop reading; progressive disclosure on phones. */
+.lab-page :is(.lab-deck,.lab-models>header p,.lab-framework-copy p,.lab-evidence-caption,.lab-card figcaption,.lab-research-basis dd){text-align:justify;hyphens:auto}
+.lab-page .lab-framework-copy p.lab-equation-work{text-align:left;hyphens:none}
+.lab-research-card{display:block}
+.lab-research-card>summary{list-style:none;cursor:pointer}
+.lab-research-card>summary::-webkit-details-marker,.lab-research-card>summary::before{display:none}
+.lab-research-card::details-content{transition:none}
+.lab-research-card[open]>:not(summary){animation:none}
+.lab-research-card>summary h3{margin-bottom:0}
+.lab-research-takeaway,.lab-research-action{display:none}
+.lab-research-intro{padding:0 28px 16px;font:400 14px/1.6 Saans,Arial,sans-serif;color:#3d4f45}
+.lab-research-intro p{margin:0;text-align:justify}
+@media(max-width:760px){
+ .lab-hero{padding:24px 20px 32px;gap:24px}
+ .lab-deck{margin-top:20px;font-size:15px;line-height:1.5}
+ .lab-case-context{margin-top:16px;margin-bottom:0}
+ .lab-hero-stats{margin-top:20px;padding-top:16px;gap:10px}
+ .lab-hero-stats dt{font-size:11px}
+ .lab-hero-stats dd{font-size:24px}
+ .lab-models{padding:32px 16px}
+ .lab-models>header{margin-bottom:20px;gap:10px}
+ .lab-models>header h2{font-size:34px}
+ .lab-grid{gap:16px}
+ .lab-console-controls,.lab-console-results{padding:20px 16px;gap:18px}
+ .lab-assumption-group summary{padding-top:14px;padding-bottom:14px}
+ .lab-card-head{padding:20px 18px 14px}
+ .lab-card h3{font-size:20px;margin-bottom:12px}
+ .lab-card-headline strong{font-size:36px}
+ .lab-card-chart{padding:8px 16px 0}
+ .lab-card figcaption{margin:14px 18px 0;padding:12px 0 18px}
+ .lab-framework-copy{padding:0 18px 18px;font-size:14px;line-height:1.55}
+ .lab-framework-copy p{margin-bottom:14px}
+ .lab-framework{padding-top:20px;padding-bottom:24px}
+ .lab-research-card>summary{padding:18px}
+ .lab-research-card>summary h3{font-size:19px;line-height:1.2;margin:0}
+ .lab-research-takeaway{display:block;margin:10px 0 0;font:400 13px/1.45 Saans,Arial,sans-serif;color:#5c6861}
+ .lab-research-action{display:block;margin-top:12px;font:500 12px/1.4 Saans,Arial,sans-serif;color:#315b47;text-decoration:underline;text-underline-offset:3px}
+ .lab-research-intro{padding:0 18px 14px;font-size:14px}
+ .lab-page :is(.lab-deck,.lab-models>header p,.lab-framework-copy p,.lab-evidence-caption,.lab-card figcaption,.lab-research-basis dd,.lab-research-intro p){text-align:left;hyphens:none}
+ .lab-research-card .lab-evidence-pair{gap:18px;padding:0 18px 18px}
+ .lab-research-card .lab-canvas,.lab-transmission .lab-canvas{max-height:220px}
+ .lab-holdings-inline{padding-top:16px;margin-top:16px}
+ .lab-holdings-results{padding:16px 0;gap:16px}
+ .lab-holdings-results dd{font-size:26px}
+ .lab-working .lab-console-results{position:static}
+ .lab-console-big{padding-bottom:16px;margin-bottom:16px}
+ .lab-footer{padding:28px 20px 32px;gap:12px}
+}

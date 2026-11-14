@@ -1,3 +1,4 @@
+import ResearchCard from './ResearchCard.tsx';
 import type {ReactNode} from 'react';
 import {runValuation,buildValuationCases,type Starting,type ValuationInputs} from './valuation.ts';
 import baseline from '../../data/lab-baseline.json' with {type:'json'};
@@ -53,7 +54,7 @@ export default function ValuationFramework({inputs:a,result:r,starting:s}:{input
  return <section className="lab-models lab-framework" aria-labelledby="lab-framework-title">
   <header><h2 id="lab-framework-title">The economics<br/>behind the price.</h2><p>A common accounting bridge connects operating activity to protocol-capturable revenue, dilution and token value. The equations below substitute the selected case’s inputs and rerun with every change.</p></header>
   <div className="lab-grid">
-   <article className="lab-card is-wide"><div className="lab-card-head"><h3>Value accrual, before valuation.</h3></div>
+   <ResearchCard title="Value accrual, before valuation." takeaway="Follow captured revenue through the multiple, supply and holdings adjustment." wide>
     <div className="lab-framework-copy"><p>Transaction notional is not revenue. Gross fees are multiplied by the protocol capture share, then reduced by execution costs. AI contributes service cash after its own margin and protocol allocation. Only then is the combined annual run rate capitalized.</p>
      <div className="lab-accrual-map" aria-label="Selected case revenue connects to token value">
       <dl className="lab-accrual-streams">{[{name:'Intents',value:t.intentsUsd,shape:'disc'},{name:'Institutional routing',value:t.institutionalUsd,shape:'arch'},{name:'AI services',value:t.aiUsd,shape:'lens'}].map(stream=><div key={stream.name} className={'lab-accrual-stream is-'+stream.shape}><span className="lab-accrual-glyph" aria-hidden="true"/><dt>{stream.name}</dt><dd>{money(stream.value)}<small>annual capturable REV</small></dd></div>)}</dl>
@@ -65,8 +66,8 @@ export default function ValuationFramework({inputs:a,result:r,starting:s}:{input
      <p className="lab-equation-units">Fees f are in basis points and divided by 10,000. Growth, capture, costs, margin, allocation and issuance are decimal fractions; 45% means 0.45. T uses actual calendar days / 365. Displayed substitutions are rounded; calculations use full precision.</p>
      <p>This is an exit run-rate revenue-multiple model. The displayed present value discounts that exit token value; it does not sum interim distributions as a full discounted cash-flow model would. ETF assets, investor subscriptions and monetary demand are not inserted as revenue.</p>
     </div>
-   </article>
-   <article className="lab-card"><div className="lab-card-head"><h3>Growth must survive fee compression.</h3></div><div className="lab-framework-copy">
+   </ResearchCard>
+   <ResearchCard title="Growth must survive fee compression." takeaway="Higher volume only helps if fee yield and capture hold up."><div className="lab-framework-copy">
     <div className="lab-equation" role="math" aria-label="Exit annual volume equals starting annual volume times one plus monthly growth to the power twelve times years"><var>V</var><sub>T</sub> = <var>V</var><sub>0</sub> (1 + <var>g</var>)<sup>12T</sup></div>
     <p className="lab-equation-work">{money(s.annualVolumeUsd)} × (1 + {percent(a.growthPct)})<sup>{(12*r.years).toFixed(3)}</sup> = {money(t.volumeUsd)} / year</p>
     <div className="lab-equation" role="math" aria-label="Effective fee equals starting fee times the maximum of volume scale and one to the power negative compression"><var>f</var><sub>T</sub> = <var>f</var><sub>0</sub> max(1, <var>V</var><sub>T</sub>/<var>V</var><sub>0</sub>)<sup>−ε</sup></div>
@@ -74,20 +75,20 @@ export default function ValuationFramework({inputs:a,result:r,starting:s}:{input
     <div className="lab-equation" role="math" aria-label="Intents revenue equals annual volume times fee divided by ten thousand times capture times one minus costs"><var>R</var><sub>Intents,T</sub> = <var>V</var><sub>T</sub> × (<var>f</var><sub>T</sub>/10,000) × <var>c</var> × (1 − <var>k</var>)</div>
     <p className="lab-equation-work">{money(t.volumeUsd)} × {t.effectiveGrossBps.toFixed(3)} / 10,000 × {percent(a.capturePct)} × (1 − {percent(a.costPct)}) = {money(t.intentsUsd)}</p>
     <p>Compression applies only when volume exceeds its starting scale; shrinking volume does not automatically raise the fee. A positive elasticity makes revenue grow more slowly than volume. The same cost haircut is applied once, after fee capture.</p>
-   </div></article>
-   <article className="lab-card"><div className="lab-card-head"><h3>Capital becomes revenue only when it transacts.</h3></div><div className="lab-framework-copy">
+   </div></ResearchCard>
+   <ResearchCard title="Capital becomes revenue only when it transacts." takeaway="Institutional holdings are separate from fee-paying routing."><div className="lab-framework-copy">
     <div className="lab-equation" role="math" aria-label="Institutional revenue equals incremental annual volume times institutional fee divided by ten thousand times capture times one minus costs"><var>R</var><sub>Institutional,T</sub> = <var>U</var><sub>T</sub> × (<var>f</var><sub>i</sub>/10,000) × <var>c</var><sub>i</sub> × (1 − <var>k</var>)</div>
     <p className="lab-equation-work">{money(a.institutionalVolumeAnnualUsd)} × {a.institutionalFeeBps.toFixed(2)} / 10,000 × {percent(a.institutionalCapturePct)} × (1 − {percent(a.costPct)}) = {money(t.institutionalUsd)} / year</p>
     <p>Institutional demand is represented by incremental fee-paying settlement, not ETF inflows or assets under management. The case requires observable integrations to become sustained routing volume at the assumed net yield. Reclassifying existing Intents users as institutional would not justify adding their activity again.</p>
-   </div></article>
-   <article className="lab-card"><div className="lab-card-head"><h3>Billing needs a measurable route to the protocol.</h3></div><div className="lab-framework-copy">
+   </div></ResearchCard>
+   <ResearchCard title="Billing needs a measurable route to the protocol." takeaway="AI billing contributes after costs and protocol allocation."><div className="lab-framework-copy">
     <div className="lab-equation" role="math" aria-label="AI protocol revenue equals annual billing times cash margin times protocol allocation"><var>R</var><sub>AI,T</sub> = <var>B</var><sub>T</sub> × <var>m</var> × <var>λ</var></div>
     <p className="lab-equation-work">{money(a.aiRevenueAnnualUsd)} × {percent(a.aiMarginPct)} × {percent(a.aiTokenLinkPct)} = {money(t.aiUsd)} / year</p>
     <p>The margin absorbs AI service costs; the execution cost haircut is not applied again. Agent counts alone cannot establish this revenue: paid usage, realized billing, service margin and the protocol’s actual allocation must reconcile. Setting allocation to zero leaves an exit token value of {price(withoutAi)}.</p>
     <p>Agent-driven settlement has three operating drivers: active agents, annual transactions per agent and average transaction value. Their product contributes to execution volume; it is not counted a second time as AI service billing. Aggregate notional does not identify how many agents generated it.</p>
     <p>Institutional and AI annual run rates ramp linearly from zero incremental contribution at the snapshot to their exit assumptions. This defines the chart’s intermediate path; it is not a fitted adoption curve.</p>
-   </div></article>
-   <article className="lab-card"><div className="lab-card-head"><h3>Capitalize revenue, then divide by future supply.</h3></div><div className="lab-framework-copy">
+   </div></ResearchCard>
+   <ResearchCard title="Capitalize revenue, then divide by future supply." takeaway="Revenue, dilution and holdings demand determine the result."><div className="lab-framework-copy">
     <div className="lab-equation" role="math" aria-label="Exit supply equals starting supply times one plus issuance to the power years"><var>S</var><sub>T</sub> = <var>S</var><sub>0</sub> (1 + <var>i</var>)<sup>T</sup></div>
     <p className="lab-equation-work">{number(s.supplyNear)} × (1 + {percent(a.issuancePct)})<sup>{r.years.toFixed(3)}</sup> = {number(t.supplyNear)} NEAR</p>
     <div className="lab-equation" role="math" aria-label="REV-based token price equals annual capturable revenue times multiple divided by total exit supply"><var>P</var><sub>REV,T</sub> = (<var>REV</var><sub>T</sub> × <var>M</var>) / <var>S</var><sub>T</sub></div>
@@ -98,21 +99,21 @@ export default function ValuationFramework({inputs:a,result:r,starting:s}:{input
     <div className="lab-equation" role="math" aria-label="Present reference price equals exit price divided by one plus required return to the power years"><var>P</var><sub>0</sub> = <var>P</var><sub>T</sub> / (1 + <var>r</var>)<sup>T</sup></div>
     <p className="lab-equation-work">{price(t.futurePriceUsd)} / (1 + {percent(a.discountPct)})<sup>{r.years.toFixed(3)}</sup> = {price(t.presentPriceUsd)}</p>
     <p>Total supply keeps locked and newly issued tokens in the denominator. A revenue multiple prices future durability, growth and risk together; it does not establish that protocol receipts are legally distributable tokenholder cash flow.</p>
-   </div></article>
-   <article className="lab-card is-wide"><div className="lab-card-head"><h3>How much history there is.</h3></div><div className="lab-framework-copy">
+   </div></ResearchCard>
+   <ResearchCard title="How much history there is." takeaway="Short operating history makes estimates provisional." wide><div className="lab-framework-copy">
     <p>NEAR Intents is young. Volume has {dataHistory.volumeMonths} complete months of history since {dataHistory.volumeSince}, and the first twelve were a launch ramp from near zero. Fee and capture data cover {dataHistory.feeMonths} complete months from {dataHistory.feesSince}, and the fee switch has been live only since {dataHistory.feeSwitch}. DefiLlama records fees from {dataHistory.rollout.since}, but the fee rate climbed from {dataHistory.rollout.fromBps} to {dataHistory.rollout.toBps} bps while fees were being switched on, so those months measure the rollout and stay out of the fee-compression test. Some results below are borderline: the rise in capture after the fee switch has p = {dataHistory.captureP.toFixed(2)}. Read every estimate on this page as directional evidence, not proof, and expect it to move as months are added.</p>
-   </div></article>
+   </div></ResearchCard>
    <EvidenceCharts/>
    <MultipleFade starting={s} exitDate={a.exitDate}/>
-   <article className="lab-card is-wide"><div className="lab-card-head"><h3>What is measured, and what the case asks to become true.</h3></div><div className="lab-frontier-table lab-case-table"><table><caption>Selected-case variables and evidence status</caption><thead><tr><th scope="col">Variable</th><th scope="col">Selected value</th><th scope="col">Definition, basis and source</th></tr></thead><tbody>{variables.map(([name,value,basis,key])=><tr key={name}><th scope="row">{name}</th><td>{value}</td><td>{basis}<p className="lab-evidence"><span className="lab-evidence-status">{evidence[key][0]}</span>{evidence[key][1]}</p></td></tr>)}</tbody></table></div>
+   <ResearchCard title="What is measured, and what the case asks to become true." takeaway="Separate measured inputs from the assumptions each case needs." wide><div className="lab-frontier-table lab-case-table"><table><caption>Selected-case variables and evidence status</caption><thead><tr><th scope="col">Variable</th><th scope="col">Selected value</th><th scope="col">Definition, basis and source</th></tr></thead><tbody>{variables.map(([name,value,basis,key])=><tr key={name}><th scope="row">{name}</th><td>{value}</td><td>{basis}<p className="lab-evidence"><span className="lab-evidence-status">{evidence[key][0]}</span>{evidence[key][1]}</p></td></tr>)}</tbody></table></div>
     <div className="lab-framework-copy"><p><strong>The cases test different economic outcomes.</strong> Bear contracts execution activity and capture, with no incremental institutional or AI contribution. Base preserves the observed aggregate starting fee and capture while requiring continued growth and new services. Bull and Maximum combine faster adoption with fee compression, improved capture and larger incremental services; the upside therefore depends on revenue quality as well as scale.</p>
      <p><strong>The $400 case is a reverse valuation.</strong> After fixing growth, fee economics, institutional routing, supply and the multiple, the model solves the AI billing needed for a $400 REV-based value with unchanged tracked holdings. Changing the holdings target then changes the hypothesis result without re-solving AI billing to force $400. Other cases and custom inputs calculate their resulting prices directly.</p>
      <div className="lab-equation" role="math" aria-label="For the Maximum case, required AI billing equals the maximum of zero and four hundred dollars times exit supply divided by multiple minus Intents revenue minus institutional revenue, divided by AI margin times protocol allocation"><var>B</var><sub>required</sub> = max(0, 400<var>S</var><sub>T</sub>/<var>M</var> − <var>R</var><sub>Intents,T</sub> − <var>R</var><sub>Institutional,T</sub>) / (<var>m</var> × <var>λ</var>)</div>
      <p className="lab-equation-work">Maximum reference at {a.exitDate}: max(0, $400 × {number(mx.supplyNear)} / {ma.multiple} − {money(mx.intentsUsd)} − {money(mx.institutionalUsd)}) / ({percent(ma.aiMarginPct)} × {percent(ma.aiTokenLinkPct)}) = {money(maximum.calibration!.requiredAiRevenueAnnualUsd)} annual AI billing.</p>
      <p><strong>Multiple discipline.</strong> The reference cases use 100×, 200× and 250×. These are scenario choices, not statistically estimated terminal multiples or validated peer medians. Their reciprocal annual REV yields are 1.00%, 0.50% and 0.40%; the selected {number(a.multiple)}× implies {(100/a.multiple).toFixed(2)}% before any tokenholder distribution. A high multiple must be supported by durable future expansion beyond this exit run rate.</p>
     </div>
-   </article>
-   <article className="lab-card is-wide"><div className="lab-card-head"><h3>Anchor the baseline. Test the expansion.</h3></div><div className="lab-framework-copy">
+   </ResearchCard>
+   <ResearchCard title="Anchor the baseline. Test the expansion." takeaway="Reconcile the starting economics and inspect the primary sources." wide><div className="lab-framework-copy">
     <p>The matched {short.days}-day window ({short.start}–{short.end}) contains {money(short.volumeUsd)} of volume, {money(short.grossFeesUsd)} of gross fees and {money(short.capturedUsd)} of receipts. Ratios use sums over the same window, rather than averages of daily percentages. <a href={baseline.market.url}>Inspect the executed Dune source</a>.</p>
     <div className="lab-equation" role="math" aria-label="Observed blended fee equals total fees divided by total volume times ten thousand; capture equals receipts divided by fees">f₀ = 10,000 × Σ fees / Σ volume; c₀ = Σ receipts / Σ fees</div>
     <div className="lab-frontier-table lab-baseline-table"><table><caption>30D / 90D operating cross-check · same archived source</caption><thead><tr><th scope="col">Window</th><th scope="col">Gross fee</th><th scope="col">Capture</th><th scope="col">Net receipt yield</th><th scope="col">Annualized receipts</th></tr></thead><tbody>{[short,long].map(w=><tr key={w.days}><th scope="row">{w.days} days</th><td>{w.grossBps.toFixed(3)} bps</td><td>{percent(w.cashCapturePct)}</td><td>{w.capturedBps.toFixed(3)} bps</td><td>{money(w.annualizedCapturedUsd)}</td></tr>)}</tbody></table></div>
@@ -129,14 +130,14 @@ export default function ValuationFramework({inputs:a,result:r,starting:s}:{input
      <dt>Forecast validation</dt><dd><a href="https://arxiv.org/abs/2605.21316">Baquero and Menezes</a> show fitted growth laws swing with the chosen time origin, and <a href="https://arxiv.org/abs/2608.01599">regime-conditional audits</a> motivate reporting backtest error by regime; both are applied to this model above. <a href="https://arxiv.org/abs/2610.36274">Brigida’s TVL study</a> is the standing caution that revenue ratios generated no priced return signal in 2022–2025.</dd>
      <dt>What would validate the cases</dt><dd>Comparable-window paid volume, reconciled collection receipts, durable realized fee capture, incremental institutional routing without overlap, and AI billing reconciled through costs to protocol allocations. <a href="https://near.com/terms">NEAR’s terms</a> allow discretionary uses of captured revenue; collection alone is not a guaranteed tokenholder distribution.</dd>
     </dl>
-   </div></article>
-   <article className="lab-card is-wide"><div className="lab-card-head"><h3>Out of sample, centred but too narrow.</h3></div><div className="lab-framework-copy">
+   </div></ResearchCard>
+   <ResearchCard title="Out of sample, centred but too narrow." takeaway="The four cases understate the variation observed in realized volume." wide><div className="lab-framework-copy">
     <p>Rolling-origin check on the full volume history since launch. {rolling.design} {rolling.conclusions[0]}</p>
     <BacktestChart/>
     <div className="lab-frontier-table lab-backtest-table"><table><caption>{rolling.all.n} forecasts from {rolling.origins} origins · realized volume against the fixed cases</caption><thead><tr><th scope="col">Origins</th><th scope="col">Horizon</th><th scope="col">Forecasts</th><th scope="col">Base median error</th><th scope="col">Base MAPE</th><th scope="col">Realized vs Bear–Maximum</th><th scope="col">Lab band (80%)</th></tr></thead><tbody>{(['secondYear','launchYear'] as const).flatMap(regime=>(['1','3','6'] as const).map(horizon=>{const r=rolling.byHorizon[horizon][regime];return <tr key={regime+horizon}><th scope="row">{regime==='secondYear'?'Second year':'Launch year'}</th><td>{horizon} mo</td><td>{r.n}</td><td>{signedPercent((Math.exp(r.medianLogErrorBase??0)-1)*100)}</td><td>{((r.mapeBase??0)*100).toFixed(1)}%</td><td>{r.aboveMax} above Max · {r.inside} inside · {r.belowBear} below Bear</td><td>{r.fan.inside} of {r.fan.n}</td></tr>;}))}</tbody></table></div>
     <p>{rolling.conclusions[1]} {rolling.conclusions[2]}</p>
     <p>{rolling.conclusions[3]} {rolling.conclusions[4]} Treat the four cases as reference paths through the centre of a wide distribution, not as its limits; the uncertainty band above is the better guide to range. <a href="data/lab-rigor.json" download>Download the full estimation record</a>; every figure in it is recomputed from the archived sources by the repository’s test suite.</p>
-   </div></article>
+   </div></ResearchCard>
   </div>
  </section>;
 }

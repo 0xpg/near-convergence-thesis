@@ -17,6 +17,8 @@ try{
  for(const legacy of ['/explore','/report','/research','/methodology'])assert.equal(resolveRoute(legacy).redirect,'/thesis');
  assert.equal(resolveRoute('/lab').redirect,'/scenario-labs');assert.equal(resolveRoute('/lab.html').redirect,'/scenario-labs');
  const rendered=Object.fromEntries(Object.entries(components).map(([file,Component])=>[file,renderToStaticMarkup(createElement(Component))]));
+ assert.equal((rendered['lab.html'].match(/class="lab-card lab-research-card/g)||[]).length,13,'Thirteen research cards retain their evidence in native disclosures');
+ assert.equal((rendered['lab.html'].match(/class="lab-research-takeaway"/g)||[]).length,13,'Each compact card has a readable takeaway');
  assert(rendered['lab.html'].includes('<footer class="thesis-finale" aria-labelledby="lab-finale-title">')&&rendered['lab.html'].includes('<span>Convergence</span>'),'Scenario Lab closes with the shared Convergence wordmark');
  assert(rendered['lab.html'].indexOf('class="lab-footer"')>rendered['lab.html'].indexOf('id="lab-finale-title"')&&rendered['lab.html'].includes('Dated observations, explicit assumptions and reproducible valuation sensitivities.'),'Original footer identity remains below the wordmark');
  for(const label of ['Choose a case. Trace its value.','Bear','Base','Bull','Maximum','Operating assumptions to token value','Where the price comes from','Export complete model'])assert(rendered['lab.html'].includes(label),'Lab model missing '+label);

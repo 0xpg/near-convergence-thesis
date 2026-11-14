@@ -1,3 +1,4 @@
+import ResearchCard from './ResearchCard.tsx';
 import rigor from '../../data/lab-rigor.json' with {type:'json'};
 import baseline from '../../data/lab-baseline.json' with {type:'json'};
 import {DitherCanvas,ditherLine,ditherRect,text,rule,INK,MUTED,GREEN,RED,AMBER,BLUE,PAPER} from './dither.tsx';
@@ -145,24 +146,24 @@ export function BacktestChart(){
 export default function EvidenceCharts(){
   const growth=econ.growth;
   return <>
-   <article className="lab-card is-wide"><div className="lab-card-head"><h3>Where the growth cases sit in the record.</h3><p>Ten month-over-month observations from the archived Dune series, then the trailing compound rates with seeded bootstrap intervals and the trend implied by every possible start month. The dashed lines are the four case rates.</p></div>
+   <ResearchCard title="Where the growth cases sit in the record." takeaway="Growth estimates change materially with the measurement window." wide><div className="lab-research-intro"><p>Ten month-over-month observations from the archived Dune series, then the trailing compound rates with seeded bootstrap intervals and the trend implied by every possible start month. The dashed lines are the four case rates.</p></div>
     <div className="lab-evidence-pair">
      <div><DitherCanvas draw={drawMoM} height={250} label="Monthly growth of average daily Intents volume with the four case growth rates marked."/><ul className="lab-legend">{CASES.map(c=><li key={c.id} style={{color:c.color}}>{c.label} {c.growth}% a month</li>)}</ul><p className="lab-evidence-caption">Median {pct(growth.median*100)}, mean {pct(growth.mean*100)}, standard deviation {(growth.sdMoM*100).toFixed(1)}%. The record is bimodal: flat or falling months, then +30% surges.</p></div>
      <div><DitherCanvas draw={drawIntervals} height={250} label="Trailing three, six and nine month compound growth with bootstrap intervals, and fitted trend growth by start month."/><ul className="lab-legend">{CASES.map(c=><li key={c.id} style={{color:c.color}}>{c.label} {c.growth}% a month</li>)}</ul><p className="lab-evidence-caption">{econ.originSweep.verdict} Base 4% sits near the middle of the 9-month interval but below the 6-month one.</p></div>
     </div>
-   </article>
-   <article className="lab-card is-wide"><div className="lab-card-head"><h3>Fees have not compressed; capture has risen.</h3><p>Monthly gross fee rate against volume, and the share of gross fees captured as receipts, from the same archived series.</p></div>
+   </ResearchCard>
+   <ResearchCard title="Fees have not compressed; capture has risen." takeaway="Compression remains an assumption; capture has risen in the record." wide><div className="lab-research-intro"><p>Monthly gross fee rate against volume, and the share of gross fees captured as receipts, from the same archived series.</p></div>
     <div className="lab-evidence-pair">
      <div><DitherCanvas draw={drawFees} height={250} label="Monthly gross fee basis points against average daily volume on a log scale, with the fitted elasticity line."/><p className="lab-evidence-caption">The fitted slope is statistically indistinguishable from zero (n = {econ.elasticity.monthly.n}). Any compression in Bull and Maximum is an assumption the record neither confirms nor rejects.</p></div>
      <div><DitherCanvas draw={drawCapture} height={250} label="Monthly capture share of gross fees, with the fee switch date and the model starting capture marked."/><p className="lab-evidence-caption">Capture was already rising before the switch (Welch p = {econ.capture.welch.p.toFixed(2)}), so the step cannot be cleanly attributed to it. The model’s 30.5% matches recent months, above the year’s pooled {econ.capture.lifetimePooledPct.toFixed(1)}%.</p></div>
     </div>
-   </article>
-   <article className="lab-card is-wide"><div className="lab-card-head"><h3>The multiple and the hurdle against outside evidence.</h3><p>Market capitalization over trailing-year DefiLlama revenue for {rigor.peers.protocols.length+rigor.peers.chains.length} assets on {rigor.peers.retrievedAt}, and the required return implied by NEAR’s beta under each published or realized crypto market premium.</p></div>
+   </ResearchCard>
+   <ResearchCard title="The multiple and the hurdle against outside evidence." takeaway="Compare selected multiples and returns with outside benchmarks." wide><div className="lab-research-intro"><p>Market capitalization over trailing-year DefiLlama revenue for {rigor.peers.protocols.length+rigor.peers.chains.length} assets on {rigor.peers.retrievedAt}, and the required return implied by NEAR’s beta under each published or realized crypto market premium.</p></div>
     <div className="lab-evidence-pair">
      <div><DitherCanvas draw={drawPeers} height={250} label="Peer market-capitalization-to-revenue multiples on a log scale, with the case multiple range and NEAR's current multiple on captured receipts."/><p className="lab-evidence-caption">Every case multiple falls in the empty gap between fee-capturing protocols and base layers. On captured Intents receipts NEAR already trades near the Base 200×; on DefiLlama’s burn-only revenue it would read {times(rigor.peers.nearSpecific.burnDefinitionMultiple1y)}.</p></div>
      <div><DitherCanvas draw={drawRates} height={250} label="Required annual return ranges implied by NEAR's beta under five market premium variants, against the selected 26.3% hurdle."/><p className="lab-evidence-caption">Bars span NEAR’s beta of {rigor.rate.weeklyAnchors.blend.mean.toFixed(2)} (BTC+ETH) to {rigor.rate.weeklyAnchors.btc.mean.toFixed(2)} (BTC), averaged over all seven week start days since the spot ETF launch, with the {rigor.rate.riskFree.pct.toFixed(2)}% five-year Treasury as the risk-free rate. Published crypto valuations use VanEck 12%, CoinShares 12–18% and Bitwise 15–25%. The spread between variants is the finding.</p></div>
     </div>
     <table className="tidal-sr"><caption>Peer multiples</caption><tbody>{[...rigor.peers.protocols,...rigor.peers.chains].map(p=><tr key={p.slug}><th>{p.name}</th><td>{times(p.multiple1y)}</td></tr>)}</tbody></table>
-   </article>
+   </ResearchCard>
   </>;
 }
