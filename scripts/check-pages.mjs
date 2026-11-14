@@ -24,7 +24,7 @@ try{
  for(const label of ['The economics behind the price.','Selected-case variables and evidence status','30D / 90D operating cross-check','Maximum reference at','https://arxiv.org/abs/2403.04914','https://docs.near-intents.org/resources/fees'])assert(rendered['lab.html'].includes(label),'Visible valuation framework missing '+label);
  assert(rendered['lab.html'].includes('2026-11-10')&&rendered['lab.html'].includes('224353535'),'Lab evidence cutoffs must be visible');
  const {default:CaseLab}=await server.ssrLoadModule('/src/lab/LabExperience.tsx');
- const {STARTING:caseStarting,VAL_DEFAULTS:caseDefaults,heatColors}=await server.ssrLoadModule('/src/lab/ValuationPanel.tsx');
+ const {STARTING:caseStarting,VAL_DEFAULTS:caseDefaults,heatColors,HOLDINGS_BASELINE_ID:holdingsBaselineId}=await server.ssrLoadModule('/src/lab/ValuationPanel.tsx');
  const {MODEL_VERSION:caseVersion,buildValuationCases:makeCases,runValuation:caseRun}=await server.ssrLoadModule('/src/lab/valuation.ts');
  const {transmissionMetrics}=await server.ssrLoadModule('/src/lab/Transmission.tsx');
  const caseBaseline=JSON.parse(readFileSync('data/lab-baseline.json','utf8'));
@@ -34,8 +34,8 @@ try{
  const caseClose=(a,b)=>assert(Math.abs(a-b)<=Math.max(1e-7,Math.abs(b)*1e-10),'Case transmission accounting');
  try{
   const referenceCases=makeCases(caseStarting),custom={...referenceCases.at(-1).inputs,aiTokenLinkPct:0};
-  for(const input of [...referenceCases.map(c=>c.inputs),custom]){
-   Object.defineProperty(globalThis,'location',{configurable:true,value:{hash:'#s='+encodeURIComponent(JSON.stringify({model:caseVersion,baseline:caseBaseline.version,valuation:input}))}});
+  for(const input of [...referenceCases.map(c=>c.inputs),custom,{...referenceCases[1].inputs,institutionalHoldingsPct:5},{...referenceCases[1].inputs,institutionalHoldingsPct:0}]){
+   Object.defineProperty(globalThis,'location',{configurable:true,value:{hash:'#s='+encodeURIComponent(JSON.stringify({model:caseVersion,baseline:caseBaseline.version,holdingsBaseline:holdingsBaselineId,valuation:input}))}});
    const html=renderToStaticMarkup(createElement(CaseLab)),r=caseRun(input,caseStarting),t=r.terminal,m=transmissionMetrics(r);
    const hero=html.match(/<section class="lab-hero"[\s\S]*?<\/section>/)?.[0];
    const summary=html.match(/<section id="lab"[\s\S]*?<\/section>/)?.[0];
@@ -46,12 +46,14 @@ try{
    assert(framework.includes('lab-accrual-map')&&framework.includes('Combined annual REV'),'Connected calculation map must render');
    const years=(Date.parse(input.exitDate)-Date.parse(caseStarting.asOf))/86400000/365,volume=caseStarting.annualVolumeUsd*(1+input.growthPct/100)**(12*years),fee=input.grossBps*Math.max(volume/caseStarting.annualVolumeUsd,1)**-input.compression;
    const execution=volume*fee/10000*input.capturePct/100*(1-input.costPct/100),institution=input.institutionalVolumeAnnualUsd*input.institutionalFeeBps/10000*input.institutionalCapturePct/100*(1-input.costPct/100),ai=input.aiRevenueAnnualUsd*input.aiMarginPct/100*input.aiTokenLinkPct/100,supply=caseStarting.supplyNear*(1+input.issuancePct/100)**years;
-   const reconstructed=(execution+institution+ai)*input.multiple/supply;
+   const revAnchor=(execution+institution+ai)*input.multiple/supply,reconstructed=revAnchor*((supply-caseStarting.institutionalHoldingsNear)/(supply-supply*input.institutionalHoldingsPct/100))**(1/input.holdingsElasticity);
    caseClose(t.futurePriceUsd,reconstructed);caseClose(t.presentPriceUsd,reconstructed/(1+input.discountPct/100)**years);
    assert(hero&&summary&&lower,'One hero, selected-case summary and transmission section required');
    for(const section of [hero,summary]){assert(section.includes(caseMoney(t.totalUsd)),'Selected case REV must propagate');assert(section.includes(casePrice(t.futurePriceUsd)),'Selected price must propagate');}
    assert(hero.includes(`${input.multiple}×`));
    for(const value of [t.intentsUsd,t.institutionalUsd,t.aiUsd])assert(lower.includes(caseMoney(value)),'Lower charts must reflect selected components');
+   assert(framework.includes(casePrice(t.revenuePriceUsd))&&framework.includes('Holdings demand factor'),'Formula map must separate REV anchor from holdings demand');
+   assert(html.includes('Tracked ETF holdings effect')&&html.includes(casePrice(t.holdingsImpactUsd)),'Price bridge must include positive and negative holdings effects');
    caseClose(m.coreGrossUsd,m.uncapturedUsd+m.costsUsd+m.coreCapturedUsd);
    caseClose(m.coreCapturedUsd+t.aiUsd,t.totalUsd);
    caseClose(m.volumeUsd,t.volumeUsd+t.institutionalVolumeUsd);
@@ -59,6 +61,11 @@ try{
   }
   Object.defineProperty(globalThis,'location',{configurable:true,value:{hash:'#s=%7Bbad-json'}});
   const safe=renderToStaticMarkup(createElement(CaseLab));assert(safe.includes(casePrice(caseRun(caseDefaults,caseStarting).terminal.futurePriceUsd)),'Malformed links use safe defaults');
+  Object.defineProperty(globalThis,'location',{configurable:true,value:{hash:'#s='+encodeURIComponent(JSON.stringify({model:caseVersion,baseline:caseBaseline.version,holdingsBaseline:'different-source',valuation:custom}))}});
+  assert(renderToStaticMarkup(createElement(CaseLab)).includes(casePrice(caseRun(caseDefaults,caseStarting).terminal.futurePriceUsd)),'Changed holdings sources must not silently rerun old links');
+  const legacy={...referenceCases[1].inputs};delete legacy.institutionalHoldingsPct;delete legacy.holdingsElasticity;
+  Object.defineProperty(globalThis,'location',{configurable:true,value:{hash:'#s='+encodeURIComponent(JSON.stringify({model:'near-lab-v3',baseline:caseBaseline.version,valuation:legacy}))}});
+  assert(renderToStaticMarkup(createElement(CaseLab)).includes(casePrice(referenceCases[1].result.terminal.revenuePriceUsd)),'Legacy v3 links migrate to neutral holdings');
  }finally{if(oldLocation)Object.defineProperty(globalThis,'location',oldLocation);else delete globalThis.location;}
  for(let i=0;i<=200;i++)assert(heatColors(i/200).contrast>=4.5,'Heatmap label contrast');
  for(const [page,html] of Object.entries(rendered)){

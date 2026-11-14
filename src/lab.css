@@ -132,7 +132,7 @@
 .lab-case-table td{font-variant-numeric:tabular-nums;white-space:nowrap}
 .lab-case-table tr.is-result{background:#f2f5ef;color:#20372d}
 .lab-case-table tr.is-result td{font-weight:500}
-.lab-price-components{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;margin:18px 28px 0}
+.lab-price-components{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:20px;margin:18px 28px 0}
 .lab-price-components>div{display:flex;flex-direction:column;gap:7px;font:400 13px/1.4 Saans,Arial,sans-serif;color:#5c6861}
 .lab-price-components strong{font:400 32px/1 Saans,Arial,sans-serif;letter-spacing:-.035em;font-variant-numeric:tabular-nums}
 .lab-price-components small{font-size:11px}
@@ -175,8 +175,16 @@
 .lab-accrual-junction{position:relative;display:flex;justify-content:space-around;height:36px;margin:22px 15% 0;border:1px dashed #56776070;border-top:0;border-radius:0 0 28px 28px}
 .lab-accrual-junction:after{content:'';position:absolute;top:100%;left:50%;height:22px;border-left:1px dashed #56776070}
 .lab-accrual-junction span{display:grid;place-items:center;width:22px;height:22px;margin-top:23px;background:#fafcf9;font:400 20px/1 Saans,Arial,sans-serif;color:#5c6861}
-.lab-accrual-output{display:grid;grid-template-columns:1.3fr 1fr 1fr 1.3fr;align-items:center;gap:20px;margin:22px 0 0;padding:24px 0 0}
+.lab-accrual-output{display:grid;grid-template-columns:1.3fr 1fr 1fr 1fr 1.3fr;align-items:center;gap:20px;margin:22px 0 0;padding:24px 0 0}
 .lab-accrual-output>div{text-align:center;min-width:0}.lab-accrual-output dd{font-size:clamp(20px,2.2vw,30px)}
 .lab-accrual-output .lab-accrual-price{padding:22px 8px;background:#203d31;border-radius:38% 38% 14px 14px;color:#eef3ec}
 .lab-accrual-price dt{color:#d5e2d5}.lab-accrual-price dd{color:#eef3ec}
 @media(max-width:760px){.lab-framework-copy{padding:0 20px 22px}.lab-research-basis{grid-template-columns:1fr;gap:4px}.lab-research-basis dd{margin-bottom:16px}.lab-equation{font-size:15px}.lab-equation-work{font-size:12px}.lab-accrual-map{padding:20px 12px}.lab-accrual-streams{gap:8px}.lab-accrual-glyph{width:48px;height:48px}.lab-accrual-map dd{font-size:22px}.lab-accrual-output{grid-template-columns:repeat(2,minmax(0,1fr));gap:22px 12px}.lab-accrual-output .lab-accrual-price{border-radius:22px}.lab-accrual-streams small{max-width:90px}}
+.lab-holdings{padding-top:8px;padding-bottom:36px}
+.lab-holdings>header p{text-align:left;max-width:420px}
+.lab-holdings-source{font:400 13px/1.6 Saans,Arial,sans-serif;color:#5c6861;margin:0;max-width:1050px}
+.lab-holdings-source a{color:#315b47;text-underline-offset:3px}
+.lab-holdings-results{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:22px;margin:0;padding:24px 0;border-top:1px solid #293b321a;border-bottom:1px solid #293b321a}
+.lab-holdings-results dt{font:400 12px/1.5 Saans,Arial,sans-serif;color:#5c6861}
+.lab-holdings-results dd{font:400 clamp(23px,2.6vw,36px)/1.2 Saans,Arial,sans-serif;color:#315b47;margin:8px 0 0;letter-spacing:-.035em;font-variant-numeric:tabular-nums}
+@media(max-width:760px){.lab-holdings-results{grid-template-columns:repeat(2,minmax(0,1fr))}}

@@ -55,4 +55,21 @@ assert.throws(()=>runValuation({...a,exitDate:'2026-11-01'},start));assert.throw
 const leap=runValuation({...a,exitDate:'2028-11-13'},start);close(leap.years,731/365);assert.equal(leap.rows.at(-1).date,'2028-11-13');
 assert.equal(runValuation({...a,exitDate:exitDateBounds(start.asOf).max},start).years,15);
 assert.deepEqual(runValuation(maximum.inputs,start),runValuation(JSON.parse(JSON.stringify(maximum.inputs)),start),'JSON inputs reproduce outputs');
+const product=JSON.parse(readFileSync('data/institutional-demand.json')),heldStart={...start,institutionalHoldingsNear:product.nrr.nearHeld};
+const heldCases=buildValuationCases(heldStart),heldBase=heldCases.find(c=>c.id==='base');
+for(const c of heldCases){close(c.result.terminal.futurePriceUsd,c.result.terminal.revenuePriceUsd);close(c.result.terminal.institutionalHeldNear,heldStart.institutionalHoldingsNear);}
+const holdFive=runValuation({...heldBase.inputs,institutionalHoldingsPct:5},heldStart),holdTen=runValuation({...heldBase.inputs,institutionalHoldingsPct:10},heldStart),redeemed=runValuation({...heldBase.inputs,institutionalHoldingsPct:0},heldStart),elastic=runValuation({...holdFive.inputs,holdingsElasticity:2},heldStart);
+const held=holdFive.terminal,expectedHeld=held.supplyNear*.05;
+close(held.institutionalHeldNear,expectedHeld);
+close(held.futurePriceUsd,held.revenuePriceUsd*((held.supplyNear-heldStart.institutionalHoldingsNear)/(held.supplyNear-expectedHeld))**(1/holdFive.inputs.holdingsElasticity));
+close(held.holdingsImpactUsd+held.revenuePriceUsd,held.futurePriceUsd);
+for(const r of [holdFive,holdTen,redeemed,elastic]){close(r.terminal.totalUsd,heldBase.result.terminal.totalUsd);close(r.terminal.supplyNear,heldBase.result.terminal.supplyNear);close(r.terminal.presentPriceUsd,r.terminal.futurePriceUsd/(1+r.inputs.discountPct/100)**r.years);}
+assert(holdTen.terminal.futurePriceUsd>held.futurePriceUsd&&held.futurePriceUsd>held.revenuePriceUsd);
+assert(redeemed.terminal.futurePriceUsd<redeemed.terminal.revenuePriceUsd);
+assert(elastic.terminal.futurePriceUsd<held.futurePriceUsd&&elastic.terminal.futurePriceUsd>held.revenuePriceUsd);
+assert.equal(runValuation({...holdFive.inputs,capturePct:0,institutionalCapturePct:0,aiTokenLinkPct:0},heldStart).terminal.futurePriceUsd,0);
+assert.throws(()=>runValuation(heldBase.inputs,{...heldStart,institutionalHoldingsNear:NaN}));
+assert.throws(()=>runValuation(heldBase.inputs,{...heldStart,institutionalHoldingsNear:heldStart.supplyNear}));
+assert.deepEqual(runValuation(JSON.parse(JSON.stringify(holdFive.inputs)),heldStart),holdFive);
+console.log(JSON.stringify({holdingsChecks:'neutral anchor, independent clearing equation, redemptions, monotonic accumulation, elasticity damping, zero REV, no revenue or supply inflation, input guards and export roundtrip',base:heldBase.result.terminal.futurePriceUsd,fivePercent:held.futurePriceUsd,tenPercent:holdTen.terminal.futurePriceUsd,etaTwo:elastic.terminal.futurePriceUsd,redemptions:redeemed.terminal.futurePriceUsd}));
 console.log(JSON.stringify({checks:'Observed baseline, common-horizon cases, independent segment reconstruction, single AI calibration to $400 future price, no price cap, ACT/365, dilution, discount, costs once, zero token linkage, input guards and JSON roundtrip',cases:cases.map(c=>({case:c.label,futurePriceUsd:c.result.terminal.futurePriceUsd,presentPriceUsd:c.result.terminal.presentPriceUsd,annualReceiptsUsd:c.result.terminal.totalUsd,aiGrossBillingUsd:c.inputs.aiRevenueAnnualUsd}))}));
