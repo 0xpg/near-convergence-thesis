@@ -29,6 +29,22 @@ try{
  const {MODEL_VERSION:caseVersion,buildValuationCases:makeCases,runValuation:caseRun}=await server.ssrLoadModule('/src/lab/valuation.ts');
  const {transmissionMetrics,commitAssumptionValue}=await server.ssrLoadModule('/src/lab/Transmission.tsx');
  const {assumptionGroups}=await server.ssrLoadModule('/src/lab/AssumptionControls.tsx');
+ for(const marker of ['Where the growth cases sit in the record.','Fees have not compressed; capture has risen.','The multiple and the hurdle against outside evidence.','Realized monthly volume','Out of sample, the envelope broke upward.','The same case under historical volatility.','data/lab-rigor.json','10–90% growth band'])assert(rendered['lab.html'].includes(marker),'Rigor layer missing '+marker);
+ const {simulateBand,SIGMA_MONTHLY:bandSigma}=await server.ssrLoadModule('/src/lab/uncertainty.ts');
+ {
+  const reference=(await server.ssrLoadModule('/src/lab/valuation.ts')).runValuation((await server.ssrLoadModule('/src/lab/ValuationPanel.tsx')).VAL_DEFAULTS,(await server.ssrLoadModule('/src/lab/ValuationPanel.tsx')).STARTING);
+  const band=simulateBand(reference.inputs,reference.starting);
+  assert.equal(band.months,reference.rows.length-1,'Band aligns with the model path');
+  assert(bandSigma>0&&band.sigma===bandSigma);
+  for(let m=0;m<=band.months;m++)assert(band.rev.q10[m]<=band.rev.q50[m]+1e-9&&band.rev.q50[m]<=band.rev.q90[m]+1e-9,'Quantiles ordered');
+  assert(band.terminal.q10<band.terminal.q50&&band.terminal.q50<band.terminal.q90,'Terminal quantiles ordered');
+  assert(Math.abs(band.rev.q50[band.months]/reference.terminal.totalUsd-1)<.12,'Median path tracks the deterministic case');
+  assert(band.rev.q90[band.months]>band.rev.q50[band.months]*1.2,'Band is materially wide at the horizon');
+  const again=simulateBand({...reference.inputs},reference.starting);
+  assert.deepEqual(again,band,'Seeded band is reproducible');
+  const bear=simulateBand({...reference.inputs,growthPct:-1},reference.starting);
+  assert(bear.terminal.q50<band.terminal.q50,'Band responds to the growth input');
+ }
  const nonHoldings=Object.keys(caseDefaults).filter(k=>!['exitDate','institutionalHoldingsPct','holdingsElasticity'].includes(k));
  assert.deepEqual(assumptionGroups.flatMap(g=>[...g.fields]).sort(),nonHoldings.sort(),'Every non-ETF assumption has one primary group');
  assert.equal(commitAssumptionValue('26.3','discountPct',caseDefaults).discountPct,26.3);

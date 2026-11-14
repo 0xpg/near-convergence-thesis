@@ -37,6 +37,20 @@ export function ditherArea(pen:Pen,points:Point[],baseline:number,density:number
   }
 }
 
+export function ditherBand(pen:Pen,top:Point[],bottom:Point[],density:number,color:string){
+  if(top.length<2||top.length!==bottom.length)return;
+  pen.fillStyle=color;
+  const first=Math.ceil(top[0][0]/STEP),last=Math.floor(top[top.length-1][0]/STEP);
+  let segment=0;
+  for(let column=first;column<=last;column++){
+    const x=column*STEP;
+    while(segment<top.length-2&&top[segment+1][0]<x)segment++;
+    const [x0,y0]=top[segment],[x1,y1]=top[segment+1],t=x1===x0?0:Math.min(1,Math.max(0,(x-x0)/(x1-x0)));
+    const upper=y0+(y1-y0)*t,lower=bottom[segment][1]+(bottom[segment+1][1]-bottom[segment][1])*t;
+    for(let row=Math.ceil(upper/STEP);row*STEP<lower;row++)if(BAYER[(row&3)*4+(column&3)]<density)pen.fillRect(x,row*STEP,DOT,DOT);
+  }
+}
+
 export function ditherLine(pen:Pen,points:Point[],color:string,weight=1){
   pen.save();pen.strokeStyle=color;pen.lineWidth=weight;pen.lineJoin='round';pen.beginPath();
   points.forEach(([x,y],index)=>index?pen.lineTo(x,y):pen.moveTo(x,y));pen.stroke();pen.restore();

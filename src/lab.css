@@ -234,3 +234,9 @@
 .lab-console-dither{position:absolute;inset:0;z-index:-1;display:block;width:100%;height:100%;pointer-events:none}
 .lab-sensitivities{padding-bottom:28px}
 .lab-sensitivities-title{margin:0;padding:22px 0;font:400 14px/1.4 Saans,Arial,sans-serif;color:#436851}
+.lab-backtest-table table{min-width:760px}
+.lab-uncertainty .lab-card-headline strong{font-variant-numeric:tabular-nums}
+.lab-evidence-pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:28px;padding:0 28px 28px}
+.lab-evidence-caption{margin:10px 0 0;font:400 12.5px/1.55 Saans,Arial,sans-serif;color:#5c6861}
+@media(max-width:860px){.lab-evidence-pair{grid-template-columns:1fr;padding:0 20px 24px}}
+.lab-framework-copy>.lab-card-chart{margin:12px 0 24px}

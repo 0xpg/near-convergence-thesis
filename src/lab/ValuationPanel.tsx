@@ -3,7 +3,9 @@ import baseline from '../../data/lab-baseline.json' with {type:'json'};
 import institutional from '../../data/institutional-demand.json' with {type:'json'};
 import {runValuation,buildValuationCases,type ValuationInputs} from './valuation.ts';
 import {CaseSlider} from './Transmission.tsx';
-import {DitherCanvas,ditherArea,ditherField,ditherLine,ditherRect,text,rule,prefersReducedMotion,INK,GREEN,AMBER,BLUE} from './dither.tsx';
+import {DitherCanvas,ditherArea,ditherBand,ditherField,ditherLine,ditherRect,text,rule,prefersReducedMotion,INK,GREEN,AMBER,BLUE} from './dither.tsx';
+import {simulateBand,SIGMA_MONTHLY} from './uncertainty.ts';
+import rigor from '../../data/lab-rigor.json' with {type:'json'};
 const usd=(v:number|null)=>v===null||!Number.isFinite(v)?'Not reachable':new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',notation:'compact',maximumFractionDigits:1}).format(v);
 const price=(v:number)=>new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',maximumFractionDigits:2}).format(v);
 const pct=(v:number)=>`${v.toFixed(1)}%`;
@@ -31,6 +33,20 @@ export default function ValuationPanel({inputs,onChange,caseName}:{inputs:Valuat
   ditherArea(pen,r.rows.map((v,i)=>[x(i),y(v.intentsUsd+v.institutionalUsd)]),bottom,.6,BLUE);
   ditherArea(pen,r.rows.map((v,i)=>[x(i),y(v.intentsUsd)]),bottom,.85,GREEN);
   ditherLine(pen,r.rows.map((v,i)=>[x(i),y(v.totalUsd)]),INK,1.4);
+  text(pen,STARTING.asOf,left,bottom+18,{size:10});text(pen,inputs.exitDate,w-10,bottom+18,{align:'right',size:10});
+ };
+ const band=simulateBand(inputs,STARTING);
+ const fairMultiple=rigor.peers.stats.protocols.median,baselinePriceUsd=r.terminal.totalUsd*fairMultiple/r.terminal.supplyNear,wedgeUsd=r.terminal.revenuePriceUsd-baselinePriceUsd;
+ const fan=(pen:CanvasRenderingContext2D,w:number,h:number)=>{
+  const left=50,bottom=h-30,top=18;
+  const lo=Math.max(1,Math.min(...band.rev.q10)*.7),hi=Math.max(...band.rev.q90)*1.15,logLo=Math.log(lo),logSpan=Math.log(hi)-logLo;
+  const x=(i:number)=>left+i/Math.max(band.months,1)*(w-left-12),y=(v:number)=>bottom-(Math.log(Math.max(v,lo))-logLo)/logSpan*(bottom-top);
+  [lo,Math.exp(logLo+logSpan/2),hi].forEach(v=>{rule(pen,left,y(v),w,y(v));text(pen,usd(v),0,y(v)+4,{size:10});});
+  const points=(series:number[])=>series.map((v,i)=>[x(i),y(v)] as [number,number]);
+  ditherBand(pen,points(band.rev.q90),points(band.rev.q10),.26,INK);
+  pen.save();pen.setLineDash([5,4]);ditherLine(pen,points(band.rev.q50),'#20372d99',1);pen.restore();
+  ditherLine(pen,r.rows.map((v,i)=>[x(i),y(v.totalUsd)]),GREEN,1.6);
+  text(pen,'log scale',w-10,14,{align:'right',size:10});
   text(pen,STARTING.asOf,left,bottom+18,{size:10});text(pen,inputs.exitDate,w-10,bottom+18,{align:'right',size:10});
  };
  const growths=[...new Set([-1,4,6,8,inputs.growthPct])].sort((a,b)=>a-b),multiples=[...new Set([100,150,200,250,inputs.multiple])].sort((a,b)=>a-b);
@@ -102,13 +118,17 @@ export default function ValuationPanel({inputs,onChange,caseName}:{inputs:Valuat
     <div className="lab-card-chart"><DitherCanvas draw={draw} height={260} label="Projected annualized capturable REV: existing Intents, incremental institutional routing and AI protocol-linked cash."/><ul className="lab-legend"><li style={{color:GREEN}}>Existing Intents</li><li style={{color:BLUE}}>Institutional routing</li><li style={{color:AMBER}}>AI protocol cash</li></ul></div>
     <figcaption>Annualized REV at each monthly step. Institutional routing and AI billing ramp to their selected exit levels. ETF holdings do not enter this revenue series.</figcaption>
    </figure>
+   <figure className="lab-card is-wide lab-uncertainty"><div className="lab-card-head"><div className="lab-card-meta">{label} · growth volatility</div><h3>The same case under historical volatility.</h3><p className="lab-card-headline"><strong>{price(band.terminal.q10)} – {price(band.terminal.q90)}</strong><span>10th–90th percentile conditional token value when monthly growth keeps the selected mean but moves with the observed volatility (σ = {(SIGMA_MONTHLY*100).toFixed(1)}% per month, {band.paths.toLocaleString('en-US')} seeded paths).</span></p></div>
+    <div className="lab-card-chart"><DitherCanvas draw={fan} animate height={260} label="Ten-to-ninety percent band of annualized capturable REV under seeded growth volatility, with the deterministic case path."/><ul className="lab-legend"><li style={{color:GREEN}}>Deterministic case path</li><li style={{color:INK}}>10–90% growth band · median dashed</li></ul></div>
+    <figcaption>Volatility is the only randomized input: fees, capture, institutional ramp, AI ramp, supply and the multiple stay at their selected values, and the identical seed makes every rerun reproduce these exact bands. The walk-forward check below shows historical bands under-covered in jump months, so read the fan as indicative width, not probability.</figcaption>
+   </figure>
    <figure className="lab-card is-wide lab-price-bridge"><div className="lab-card-head"><div className="lab-card-meta">{label}</div><h3>Where the price comes from</h3><p>First capitalize revenue and divide by future total supply. Then inspect the separate ETF holdings adjustment.</p></div><div className="lab-card-chart"><DitherCanvas draw={bridge} height={150} label={`Future token value components: ${allContributions.map(c=>`${c.name} ${price(c.value)}`).join(', ')}; total ${price(r.terminal.futurePriceUsd)}.`}/></div><div className="lab-price-components">{allContributions.map(c=><div key={c.name}><span>{c.name}</span><strong style={{color:c.color}}>{price(c.value)}</strong><small>{c===holdingsContribution?'Conditional demand effect, not revenue':`${usd(c.rev)} annual capturable REV`}</small></div>)}</div>
     <div className="lab-holdings-inline"><h4>Adjust ETF holdings</h4><p className="lab-holdings-source">The tracked baseline is NRR’s {institutional.nrr.holdingsIssuerDate} inventory: {STARTING.institutionalHoldingsNear.toLocaleString('en-US',{maximumFractionDigits:0})} NEAR. The neutral setting preserves this token count.</p>
      <div className="lab-card-controls lab-holdings-controls"><CaseSlider name="institutionalHoldingsPct" inputs={inputs} onChange={onChange}/><CaseSlider name="holdingsElasticity" inputs={inputs} onChange={onChange}/></div>
      <p className="lab-holdings-source">Higher elasticity means a smaller price response. The target implies {r.terminal.institutionalHeldNear.toLocaleString('en-US',{maximumFractionDigits:0})} NEAR held at exit, a {new Intl.NumberFormat('en-US',{maximumFractionDigits:0,signDisplay:'always'}).format(r.terminal.institutionalHeldNear-STARTING.institutionalHoldingsNear)} NEAR inventory change.</p>
      <dl className="lab-holdings-results"><div><dt>REV-based token value</dt><dd>{price(r.terminal.revenuePriceUsd)}</dd></div><div><dt>ETF holdings adjustment</dt><dd>{r.terminal.holdingsImpactUsd>=0?'+':''}{price(r.terminal.holdingsImpactUsd)}</dd></div><div><dt>Conditional token value</dt><dd>{price(r.terminal.futurePriceUsd)}</dd></div><div><dt>Discounted reference today</dt><dd>{price(r.terminal.presentPriceUsd)}</dd></div></dl>
      <details className="lab-inline-method"><summary>Holdings assumptions and source</summary><p><a href="https://nrretf.com/">NRR issuer snapshot</a>, dated {institutional.nrr.holdingsIssuerDate}. This single-product inventory is not a census of institutional ownership; holdings and supply have different cutoffs. Target holdings and other-holder elasticity are scenario inputs. Custody does not burn tokens or create protocol revenue. The selected elasticity is not an estimated NEAR coefficient, and the REV multiple may already reflect capital demand; this is a counterfactual with the multiple held fixed.</p></details>
-    </div><figcaption>The first three components sum to the REV anchor: annual capturable REV × multiple ÷ future total supply. The ETF holdings adjustment is separate; all four sum to the conditional token value.</figcaption>
+    </div><figcaption>The first three components sum to the REV anchor: annual capturable REV × multiple ÷ future total supply. The ETF holdings adjustment is separate; all four sum to the conditional token value. At the fee-capturing peer median of {fairMultiple}× trailing revenue, the same exit REV supports {price(baselinePriceUsd)}; the selected {Number(inputs.multiple)}× multiple contributes the remaining {price(wedgeUsd)} as a growth premium above today’s market pricing of comparable cash flows.</figcaption>
    </figure>
   </div>
   <section className="lab-sensitivities lab-method" aria-labelledby="lab-sensitivities-title"><h3 id="lab-sensitivities-title" className="lab-sensitivities-title">Valuation sensitivities</h3><div className="lab-grid">
