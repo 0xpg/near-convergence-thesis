@@ -23,7 +23,7 @@ export default function ValuationPanel({inputs,onChange,caseName}:{inputs:Valuat
  const r=runValuation(inputs,STARTING),cases=buildValuationCases(STARTING,inputs.exitDate);
  const selected=cases.find(c=>(Object.keys(inputs) as (keyof ValuationInputs)[]).every(key=>c.inputs[key]===inputs[key]));
  const maximum=cases.find(c=>c.id==='maximum')!;
- const label=caseName||selected?.label||'Custom case';
+ const label=caseName||(selected?`${selected.label.split(' · ')[0]} Scenario`:'Custom Scenario');
  const draw=(pen:CanvasRenderingContext2D,w:number,h:number)=>{
   const left=50,bottom=h-30,top=18,max=Math.max(...r.rows.map(x=>x.totalUsd),1)*1.12,x=(i:number)=>left+i/(r.rows.length-1)*(w-left-12),y=(v:number)=>bottom-v/max*(bottom-top);
   [0,max/2,max].forEach(v=>{rule(pen,left,y(v),w,y(v));text(pen,usd(v),0,y(v)+4,{size:10});});
@@ -98,7 +98,7 @@ export default function ValuationPanel({inputs,onChange,caseName}:{inputs:Valuat
    </figure>
   </details>
   <div className="lab-grid">
-   <figure className="lab-card is-wide lab-revenue-path"><div className="lab-card-head"><div className="lab-card-meta">{label} · {inputs.exitDate}</div><h3>The capturable REV path</h3><p className="lab-card-headline"><strong>{usd(r.terminal.totalUsd)}</strong><span>annual protocol-capturable REV at exit. This chart measures revenue, before the valuation multiple, supply denominator and ETF holdings adjustment.</span></p></div>
+   <figure className="lab-card is-wide lab-revenue-path"><div className="lab-card-head"><div className="lab-card-meta">{label}</div><h3>The capturable REV path</h3><p className="lab-card-headline"><strong>{usd(r.terminal.totalUsd)}</strong><span>annual protocol-capturable REV at exit. This chart measures revenue, before the valuation multiple, supply denominator and ETF holdings adjustment.</span></p></div>
     <div className="lab-card-chart"><DitherCanvas draw={draw} height={260} label="Projected annualized capturable REV: existing Intents, incremental institutional routing and AI protocol-linked cash."/><ul className="lab-legend"><li style={{color:GREEN}}>Existing Intents</li><li style={{color:BLUE}}>Institutional routing</li><li style={{color:AMBER}}>AI protocol cash</li></ul></div>
     <figcaption>Annualized REV at each monthly step. Institutional routing and AI billing ramp to their selected exit levels. ETF holdings do not enter this revenue series.</figcaption>
    </figure>

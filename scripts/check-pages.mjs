@@ -22,7 +22,7 @@ try{
  assert(rendered['lab.html'].includes('calibrated upside hypothesis'),'Maximum calibration must be explicit');
  assert(!rendered['lab.html'].includes('Mock data'));
  assert(!rendered['lab.html'].match(/<footer[\s\S]*Sources &amp; methodology/),'Lab footer must not retain methodology link');
- for(const label of ['The economics behind the price.','Selected-case variables and evidence status','30D / 90D operating cross-check','Maximum reference at','https://arxiv.org/abs/2403.04914','https://docs.near-intents.org/resources/fees'])assert(rendered['lab.html'].includes(label),'Visible valuation framework missing '+label);
+ for(const label of ['The economics<br/>behind the price.','Selected-case variables and evidence status','30D / 90D operating cross-check','Maximum reference at','https://arxiv.org/abs/2403.04914','https://docs.near-intents.org/resources/fees'])assert(rendered['lab.html'].includes(label),'Visible valuation framework missing '+label);
  assert(rendered['lab.html'].includes('2026-11-10')&&rendered['lab.html'].includes('224353535'),'Lab evidence cutoffs must be visible');
  const {default:CaseLab}=await server.ssrLoadModule('/src/lab/LabExperience.tsx');
  const {STARTING:caseStarting,VAL_DEFAULTS:caseDefaults,heatColors,HOLDINGS_BASELINE_ID:holdingsBaselineId}=await server.ssrLoadModule('/src/lab/ValuationPanel.tsx');
@@ -85,12 +85,12 @@ try{
   assert(renderToStaticMarkup(createElement(CaseLab)).includes(casePrice(referenceCases[1].result.terminal.revenuePriceUsd)),'Legacy v3 links migrate to neutral holdings');
   const modified={...referenceCases[1].inputs,institutionalHoldingsPct:5,discountPct:26.3};
   Object.defineProperty(globalThis,'location',{configurable:true,value:{hash:'#s='+encodeURIComponent(JSON.stringify({model:caseVersion,baseline:caseBaseline.version,holdingsBaseline:holdingsBaselineId,referenceCase:'base',valuation:modified}))}});
-  const modifiedHtml=renderToStaticMarkup(createElement(CaseLab));assert(modifiedHtml.includes('Base · modified')&&modifiedHtml.includes('Changes from Base'),'Shared model retains reference lineage');
+  const modifiedHtml=renderToStaticMarkup(createElement(CaseLab));assert(modifiedHtml.includes('Base Scenario · modified')&&modifiedHtml.includes('Changes from Base'),'Shared model retains reference lineage');
   assert(modifiedHtml.includes(casePrice(caseRun(modified,caseStarting).terminal.futurePriceUsd)),'Lineage metadata does not change arithmetic');
   Object.defineProperty(globalThis,'location',{configurable:true,value:{hash:'#s='+encodeURIComponent(JSON.stringify({model:caseVersion,baseline:caseBaseline.version,holdingsBaseline:holdingsBaselineId,referenceCase:'not-a-case',valuation:modified}))}});
   assert(renderToStaticMarkup(createElement(CaseLab)).includes(casePrice(caseRun(modified,caseStarting).terminal.futurePriceUsd)),'Invalid lineage cannot change valid numerical inputs');
   Object.defineProperty(globalThis,'location',{configurable:true,value:{hash:'#s='+encodeURIComponent(JSON.stringify({model:caseVersion,baseline:caseBaseline.version,holdingsBaseline:holdingsBaselineId,referenceCase:null,valuation:referenceCases[1].inputs}))}});
-  assert(renderToStaticMarkup(createElement(CaseLab)).includes('Custom case ·'),'Explicit unknown lineage must not invent a starting case on reload');
+  assert(renderToStaticMarkup(createElement(CaseLab)).includes('Custom Scenario'),'Explicit unknown lineage must not invent a starting case on reload');
  }finally{if(oldLocation)Object.defineProperty(globalThis,'location',oldLocation);else delete globalThis.location;}
  for(let i=0;i<=200;i++)assert(heatColors(i/200).contrast>=4.5,'Heatmap label contrast');
  for(const [page,html] of Object.entries(rendered)){

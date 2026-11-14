@@ -45,7 +45,7 @@ export default function ValuationFramework({inputs:a,result:r,starting:s}:{input
   ['r · Required annual return',percent(a.discountPct),'Selected opportunity-cost hurdle. It is held separate from the exit multiple and is not an independently estimated crypto CAPM.','discount']
  ];
  return <section className="lab-models lab-framework" aria-labelledby="lab-framework-title">
-  <header><h2 id="lab-framework-title">The economics behind the price.</h2><p>A common accounting bridge connects operating activity to protocol-capturable revenue, dilution and token value. The equations below substitute the selected case’s inputs and rerun with every change.</p></header>
+  <header><h2 id="lab-framework-title">The economics<br/>behind the price.</h2><p>A common accounting bridge connects operating activity to protocol-capturable revenue, dilution and token value. The equations below substitute the selected case’s inputs and rerun with every change.</p></header>
   <div className="lab-grid">
    <article className="lab-card is-wide"><div className="lab-card-head"><h3>Value accrual, before valuation.</h3></div>
     <div className="lab-framework-copy"><p>Transaction notional is not revenue. Gross fees are multiplied by the protocol capture share, then reduced by execution costs. AI contributes service cash after its own margin and protocol allocation. Only then is the combined annual run rate capitalized.</p>
