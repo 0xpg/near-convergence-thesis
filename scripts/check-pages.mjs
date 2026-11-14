@@ -25,14 +25,15 @@ try{
  for(const label of ['The economics<br/>behind the price.','Selected-case variables and evidence status','30D / 90D operating cross-check','Maximum reference at','https://arxiv.org/abs/2403.04914','https://docs.near-intents.org/resources/fees'])assert(rendered['lab.html'].includes(label),'Visible valuation framework missing '+label);
  assert(rendered['lab.html'].includes('2026-11-10')&&rendered['lab.html'].includes('224353535'),'Lab evidence cutoffs must be visible');
  const {default:CaseLab}=await server.ssrLoadModule('/src/lab/LabExperience.tsx');
- const {STARTING:caseStarting,VAL_DEFAULTS:caseDefaults,heatColors,HOLDINGS_BASELINE_ID:holdingsBaselineId}=await server.ssrLoadModule('/src/lab/ValuationPanel.tsx');
+ const {heatColors}=await server.ssrLoadModule('/src/lab/ValuationPanel.tsx');
+ const {STARTING:caseStarting,VAL_DEFAULTS:caseDefaults,HOLDINGS_BASELINE_ID:holdingsBaselineId}=await server.ssrLoadModule('/src/lab/baseline.ts');
  const {MODEL_VERSION:caseVersion,buildValuationCases:makeCases,runValuation:caseRun}=await server.ssrLoadModule('/src/lab/valuation.ts');
  const {transmissionMetrics,commitAssumptionValue}=await server.ssrLoadModule('/src/lab/Transmission.tsx');
  const {assumptionGroups}=await server.ssrLoadModule('/src/lab/AssumptionControls.tsx');
  for(const marker of ['Where the growth cases sit in the record.','Fees have not compressed; capture has risen.','The multiple and the hurdle against outside evidence.','Realized vs Base, 3 months after each origin','Out of sample, centred but too narrow.','The same case under historical volatility.','data/lab-rigor.json','10–90% growth band'])assert(rendered['lab.html'].includes(marker),'Rigor layer missing '+marker);
  const {simulateBand,SIGMA_MONTHLY:bandSigma}=await server.ssrLoadModule('/src/lab/uncertainty.ts');
  {
-  const reference=(await server.ssrLoadModule('/src/lab/valuation.ts')).runValuation((await server.ssrLoadModule('/src/lab/ValuationPanel.tsx')).VAL_DEFAULTS,(await server.ssrLoadModule('/src/lab/ValuationPanel.tsx')).STARTING);
+  const reference=(await server.ssrLoadModule('/src/lab/valuation.ts')).runValuation(caseDefaults,caseStarting);
   const band=simulateBand(reference.inputs,reference.starting);
   assert.equal(band.months,reference.rows.length-1,'Band aligns with the model path');
   assert(bandSigma>0&&band.sigma===bandSigma);
@@ -45,6 +46,20 @@ try{
   const bear=simulateBand({...reference.inputs,growthPct:-1},reference.starting);
   assert(bear.terminal.q50<band.terminal.q50,'Band responds to the growth input');
  }
+ const {modelHash,readModelHash,modelExport}=await server.ssrLoadModule('/src/lab/model-state.ts');
+ const rawBaseline=JSON.parse(readFileSync('data/lab-baseline.json','utf8'));
+ const rawInstitutional=JSON.parse(readFileSync('data/institutional-demand.json','utf8'));
+ for(const c of makeCases(caseStarting)){
+  const model={valuation:c.inputs,referenceCase:c.id};
+  const expectedHash='#s='+encodeURIComponent(JSON.stringify({model:caseVersion,baseline:rawBaseline.version,holdingsBaseline:holdingsBaselineId,referenceCase:c.id,valuation:c.inputs}));
+  assert.equal(modelHash(model),expectedHash,'Share URLs retain their exact serialized format');
+  assert.deepEqual(readModelHash(expectedHash),model,'Every case round-trips without changed inputs');
+  const result=caseRun(c.inputs,caseStarting),metrics=transmissionMetrics(result),cases=makeCases(caseStarting),exportedAt='2026-11-14T00:00:00.000Z';
+  const expected={exportedAt,model:caseVersion,baseline:rawBaseline,institutionalHoldingsBaseline:{source:'https://nrretf.com/',snapshot:rawInstitutional.version,issuerDate:rawInstitutional.nrr.holdingsIssuerDate,nearHeld:rawInstitutional.nrr.nearHeld,scope:'NRR tracked fund inventory, not total institutional ownership'},referenceCase:c.id,selectedCase:c.id,valuation:c.inputs,valuationOutputs:result,transmission:metrics,valuationCases:cases};
+  assert.equal(JSON.stringify(modelExport(model,result,metrics,cases,c.id,exportedAt)),JSON.stringify(expected),'Export values and property order remain compatible');
+ }
+ for(const hash of ['', '#s=%', '#s=null', '#s='+encodeURIComponent(JSON.stringify({model:caseVersion,baseline:'wrong'}))])assert.equal(readModelHash(hash),null,'Untrusted malformed or incompatible links fall back safely');
+
  const nonHoldings=Object.keys(caseDefaults).filter(k=>!['exitDate','institutionalHoldingsPct','holdingsElasticity'].includes(k));
  assert.deepEqual(assumptionGroups.flatMap(g=>[...g.fields]).sort(),nonHoldings.sort(),'Every non-ETF assumption has one primary group');
  assert.equal(commitAssumptionValue('26.3','discountPct',caseDefaults).discountPct,26.3);

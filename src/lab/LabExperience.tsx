@@ -1,8 +1,10 @@
 import {useEffect,useLayoutEffect,useMemo,useRef,useState} from 'react';
 import baseline from '../../data/lab-baseline.json' with {type:'json'};
 import institutional from '../../data/institutional-demand.json' with {type:'json'};
-import ValuationPanel,{STARTING,VAL_DEFAULTS,HOLDINGS_BASELINE_ID} from './ValuationPanel.tsx';
-import {MODEL_VERSION,VALUATION_PRESETS,cleanValuation,runValuation,buildValuationCases,exitDateBounds,type ValuationInputs} from './valuation.ts';
+import ValuationPanel from './ValuationPanel.tsx';
+import {STARTING,VAL_DEFAULTS} from './baseline.ts';
+import {readModelHash,modelHash,modelExport,type CaseId} from './model-state.ts';
+import {runValuation,buildValuationCases,exitDateBounds,type ValuationInputs} from './valuation.ts';
 import Transmission,{transmissionMetrics,assumptionLabels,formatAssumptionValue} from './Transmission.tsx';
 import AssumptionControls from './AssumptionControls.tsx';
 import ConsoleDither from './ConsoleDither.tsx';
@@ -11,30 +13,14 @@ import {startScenarioField} from './scenario-field.ts';
 import {startTypeDither} from '../overview/type-dither.ts';
 import {formatPrice as price,formatUsdCompact as money} from '../format.ts';
 import {dataHistory} from './history.ts';
-type CaseId=keyof typeof VALUATION_PRESETS;
 const inputKeys=Object.keys(VAL_DEFAULTS) as (keyof ValuationInputs)[];
 function changedValue(key:keyof ValuationInputs,value:string|number,other:string|number){
  if(key==='exitDate')return String(value);
  const formatted=formatAssumptionValue(key,Number(value));
  return value!==other&&formatted===formatAssumptionValue(key,Number(other))?String(value):formatted;
 }
-function inferReference(valuation:ValuationInputs):CaseId|null{
- return buildValuationCases(STARTING,valuation.exitDate).find(c=>inputKeys.every(key=>['institutionalHoldingsPct','holdingsElasticity'].includes(key)||c.inputs[key]===valuation[key]))?.id??null;
-}
-function readHash(){
- try{
-  const match=location.hash.match(/^#s=(.+)$/);if(!match)return null;
-  const x=JSON.parse(decodeURIComponent(match[1]));
-  if(![MODEL_VERSION,'near-lab-v3'].includes(x.model)||x.baseline!==baseline.version||(x.model===MODEL_VERSION&&x.holdingsBaseline!==HOLDINGS_BASELINE_ID))return null;
-  let valuation=cleanValuation(x.valuation,VAL_DEFAULTS);
-  if(x.model==='near-lab-v3')valuation=runValuation({...valuation,institutionalHoldingsPct:undefined},STARTING).inputs;
-  else runValuation(valuation,STARTING);
-  const referenceCase:CaseId|null=x.referenceCase===null?null:typeof x.referenceCase==='string'&&Object.hasOwn(VALUATION_PRESETS,x.referenceCase)?x.referenceCase:inferReference(valuation);
-  return {valuation,referenceCase};
- }catch{return null;}
-}
 export default function LabExperience(){
- const [model,setModel]=useState(()=>readHash()||{valuation:{...VAL_DEFAULTS},referenceCase:'base' as CaseId|null}),[copied,setCopied]=useState(false);
+ const [model,setModel]=useState(()=>readModelHash(typeof location==='undefined'?'':location.hash)||{valuation:{...VAL_DEFAULTS},referenceCase:'base' as CaseId|null}),[copied,setCopied]=useState(false);
  const {valuation,referenceCase}=model;
  const setValuation=(next:ValuationInputs)=>setModel(current=>({...current,valuation:next}));
  const result=useMemo(()=>runValuation(valuation,STARTING),[valuation]),cases=useMemo(()=>buildValuationCases(STARTING,valuation.exitDate),[valuation.exitDate]);
@@ -49,8 +35,8 @@ export default function LabExperience(){
  useEffect(()=>startScenarioField(field.current),[]);
  useLayoutEffect(()=>canvas.current&&heading.current?startTypeDither(canvas.current,heading.current):undefined,[]);
  useEffect(()=>{if(location.hash.startsWith('#s='))history.replaceState(null,'',location.pathname+location.search);},[]);
- const share=async()=>{try{const link=location.origin+location.pathname+'#s='+encodeURIComponent(JSON.stringify({model:MODEL_VERSION,baseline:baseline.version,holdingsBaseline:HOLDINGS_BASELINE_ID,referenceCase,valuation}));await navigator.clipboard.writeText(link);setCopied(true);setTimeout(()=>setCopied(false),1600);}catch{setCopied(false);}};
- const exportScenario=()=>{const output={exportedAt:new Date().toISOString(),model:MODEL_VERSION,baseline,institutionalHoldingsBaseline:{source:'https://nrretf.com/',snapshot:institutional.version,issuerDate:institutional.nrr.holdingsIssuerDate,nearHeld:institutional.nrr.nearHeld,scope:'NRR tracked fund inventory, not total institutional ownership'},referenceCase,selectedCase:selected?.id||'custom',valuation,valuationOutputs:result,transmission:m,valuationCases:cases};const url=URL.createObjectURL(new Blob([JSON.stringify(output,null,2)],{type:'application/json'}));const link=document.createElement('a');link.href=url;link.download='near-scenario.json';link.click();setTimeout(()=>URL.revokeObjectURL(url),1000);};
+ const share=async()=>{try{const link=location.origin+location.pathname+modelHash({valuation,referenceCase});await navigator.clipboard.writeText(link);setCopied(true);setTimeout(()=>setCopied(false),1600);}catch{setCopied(false);}};
+ const exportScenario=()=>{const output=modelExport({valuation,referenceCase},result,m,cases,selected?.id,new Date().toISOString());const url=URL.createObjectURL(new Blob([JSON.stringify(output,null,2)],{type:'application/json'}));const link=document.createElement('a');link.href=url;link.download='near-scenario.json';link.click();setTimeout(()=>URL.revokeObjectURL(url),1000);};
  return <>
   <section className="lab-hero" aria-labelledby="lab-title"><div className="lab-hero-copy">
    <div className="thesis-resolve"><canvas ref={canvas} aria-hidden="true"/><h1 id="lab-title" ref={heading} aria-label="What makes value endure?"><span>What makes</span> <span>value endure?</span></h1></div>

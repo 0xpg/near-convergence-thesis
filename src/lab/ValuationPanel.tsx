@@ -1,5 +1,6 @@
 import {useRef} from 'react';
 import baseline from '../../data/lab-baseline.json' with {type:'json'};
+import {STARTING} from './baseline.ts';
 import institutional from '../../data/institutional-demand.json' with {type:'json'};
 import {runValuation,buildValuationCases,type ValuationInputs} from './valuation.ts';
 import {CaseSlider} from './Transmission.tsx';
@@ -9,7 +10,6 @@ import rigor from '../../data/lab-rigor.json' with {type:'json'};
 import {formatPrice as price,formatUsdCompact} from '../format.ts';
 const usd=(v:number|null)=>v===null||!Number.isFinite(v)?'Not reachable':formatUsdCompact(v);
 const pct=(v:number)=>`${v.toFixed(1)}%`;
-export const HOLDINGS_BASELINE_ID=`nrr:${institutional.nrr.holdingsIssuerDate}:${institutional.nrr.nearHeld}`;
 export function heatColors(value:number){
  const t=Math.min(1,Math.max(0,value)),rgb=[244,248,244].map((v,i)=>Math.round(v+([23,59,48][i]-v)*t));
  let light=rgb.map(v=>Math.min(255,v+6));
@@ -18,8 +18,6 @@ export function heatColors(value:number){
  if(Math.max(whiteContrast,darkContrast)<4.5){light=[...rgb];whiteContrast=1.05/(luminance(light)+.05);}
  return {light:`rgb(${light.join(',')})`,dark:`rgb(${rgb.join(',')})`,ink:whiteContrast>darkContrast?'#ffffff':'#000000',contrast:Math.max(whiteContrast,darkContrast)};
 }
-export const STARTING={asOf:baseline.supply.blockUtc.slice(0,10),annualVolumeUsd:baseline.operating.windows[0].volumeUsd*365/30,annualReceiptsUsd:baseline.operating.windows[0].annualizedCapturedUsd,supplyNear:baseline.supply.supplyNear,spotPriceUsd:baseline.market.priceUsd,institutionalHoldingsNear:institutional.nrr.nearHeld,grossBps:baseline.operating.windows[0].grossBps,capturePct:baseline.operating.windows[0].cashCapturePct};
-export const VAL_DEFAULTS={...buildValuationCases(STARTING).find(c=>c.id==='base')!.inputs};
 export default function ValuationPanel({inputs,onChange,caseName}:{inputs:ValuationInputs,onChange:(a:ValuationInputs)=>void,caseName?:string}){
  const heatShown=useRef(new Map<string,number>()),holdingsShown=useRef(new Map<string,number>());
  const r=runValuation(inputs,STARTING),cases=buildValuationCases(STARTING,inputs.exitDate);
