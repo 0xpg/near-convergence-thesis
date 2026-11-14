@@ -16,19 +16,21 @@ Live: [near-convergence-thesis.pages.dev](https://near-convergence-thesis.pages.
 
 ## Scenario Lab
 
-The lab turns four drivers into a NEAR price at an exit date: Intents execution, institutional routing, AI services and institutional demand. Bear, Base and Bull are fixed input sets. Maximum is reverse-solved: it finds the AI billing needed to reach $400 by the exit date. Every case can be edited, and the link carries the edited state.
+The lab asks a simple question: if NEAR keeps earning revenue from the activity it settles, what could the token be worth? It builds that answer from four sources of demand: trading through NEAR Intents, institutions routing orders, AI services, and institutions holding the token.
 
-Each input shows its evidence:
+There are four reference cases. Bear, Base and Bull each describe a different future. Maximum works backwards from an ambitious price target to show what would have to be true to reach it. Every input can be changed, and a shared link keeps your version.
 
-- **Starting point.** Volume, gross fee rate and cash capture come from the last 30 days on Dune.
-- **Growth cases.** Placed against the 3, 6 and 9 month growth record, with a robustness check across start dates.
-- **Fees and capture.** Fee compression tested by regression with Newey-West errors. Capture before and after the fee switch compared with a Welch t-test.
-- **Multiple.** Compared with revenue multiples across DefiLlama peer protocols and chains.
-- **Discount rate.** 26.3% is kept as the default. A required return is shown beside it, derived from NEAR's beta to BTC and BTC+ETH since the US spot ETF launch, plus published crypto risk premia.
-- **Uncertainty band.** 1,000 seeded paths (seed 20261114), using the volatility measured from monthly volume.
-- **Backtest.** Walk-forward from earlier cutoffs. It reports where realized volume fell against the case envelope, including the months it missed.
+Each assumption is shown next to the evidence for it:
 
-The case model is deterministic and unchanged. The evidence layer sits beside it, so both can be rerun independently.
+- **Where we start.** Today's activity, fees and revenue, taken from public onchain data.
+- **How fast it grows.** Each case's growth is compared with what NEAR Intents has actually done so far.
+- **Fees and revenue kept.** Checks whether fees fall as activity grows, and how much of each fee the protocol keeps.
+- **What the market pays for revenue.** NEAR is compared with other crypto protocols and chains, alongside the historical record of what happens to unusually high valuations over time.
+- **The return an investor should demand.** The rate used to bring future value back to today is set against published crypto valuations and venture-stage benchmarks.
+- **How wide the range is.** A band shows how much results could swing with realistic volatility.
+- **Whether it has held up.** The cases are tested against what actually happened since launch, including where they missed.
+
+The project is young and the history is short, so every result is a hypothesis to test, not a forecast. The case model and the evidence behind it are kept separate, and both can be rerun from the archived data.
 
 ## Data
 
