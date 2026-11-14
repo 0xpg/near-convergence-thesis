@@ -252,6 +252,35 @@
    },
    "caveat": "Capture was rising before the fee switch, so the pre/post split measures a continuing trend, not a clean step; attribution to the switch is confounded and the test assumes iid on a trending series."
   },
+  "feeRollout": {
+   "months": [
+    {
+     "month": "2025-06",
+     "grossBps": 5.2
+    },
+    {
+     "month": "2025-07",
+     "grossBps": 9.2
+    },
+    {
+     "month": "2025-08",
+     "grossBps": 12.7
+    },
+    {
+     "month": "2025-09",
+     "grossBps": 14.7
+    },
+    {
+     "month": "2025-10",
+     "grossBps": 14.5
+    },
+    {
+     "month": "2025-11",
+     "grossBps": 21.2
+    }
+   ],
+   "note": "DefiLlama gross fees before the Dune window. The fee rate climbed while fees were being switched on, so these months measure the rollout and are kept out of the fee-compression test."
+  },
   "note": "Eleven complete months and ten growth observations; every statistic is noisy and the bootstrap intervals are honest about it."
  },
  "calibration": {
@@ -1388,48 +1417,105 @@
    "long": 34.2,
    "longStart": "2020-10-14"
   },
+  "weeklyAnchors": {
+   "note": "Weekly returns depend on which weekday a week starts. Betas are averaged over all seven start days; the earlier single anchor gave the lowest BTC beta of the seven.",
+   "btc": {
+    "mean": 1.54,
+    "min": 1.39,
+    "max": 1.79
+   },
+   "blend": {
+    "mean": 1.37,
+    "min": 1.26,
+    "max": 1.5
+   }
+  },
   "requiredReturnTable": [
    {
     "label": "Realized BTC, post-ETF window",
     "premiumPct": 10.5,
     "basis": "Geometric annualized BTC return minus the window-average five-year Treasury yield, computed from the archived series.",
-    "rBtcBetaPct": 19.6,
-    "rBlendBetaPct": 18.1
+    "rBtcBetaPct": 21.1,
+    "rBlendBetaPct": 19.3
    },
    {
     "label": "Realized BTC since 2020",
     "premiumPct": 30.1,
     "basis": "Long-window realized return; inflated by early-cycle growth and backward-looking.",
-    "rBtcBetaPct": 46.9,
-    "rBlendBetaPct": 42.8
+    "rBtcBetaPct": 51.3,
+    "rBlendBetaPct": 46.1
    },
    {
     "label": "Brigida latent-factor estimate",
     "premiumPct": 24.5,
-    "basis": "arXiv:2601.07664, three-pass latent-factor price of crypto market risk, annualized 24.5% (p = 0.062).",
-    "rBtcBetaPct": 39.1,
-    "rBlendBetaPct": 35.7
+    "basis": "arXiv:2601.07664 v3, Sec. 2.2 p.7 and Table 3 p.8: 0.471% a week on the total-crypto-market factor, annualized 24.5% (p = 0.062, called suggestive). Estimated on 105 weeks of 2023-2024, when that market returned about 74% a year; the author calls the results exploratory. Applied here to a BTC beta as a proxy for the market beta.",
+    "url": "https://arxiv.org/abs/2601.07664",
+    "sensitivity": "upper",
+    "rBtcBetaPct": 42.7,
+    "rBlendBetaPct": 38.4
    },
    {
     "label": "Brigida Fama-MacBeth estimate",
     "premiumPct": 6,
-    "basis": "arXiv:2601.07664, 0.116% per week annualized (p < 0.001); the paper shows this naive estimate is biased by omitted factors.",
-    "rBtcBetaPct": 13.3,
-    "rBlendBetaPct": 12.5
+    "basis": "arXiv:2601.07664 v3, Sec. 2.2 p.7: 0.116% a week annualized (p < 0.001); the paper shows this naive estimate is biased by omitted factors.",
+    "url": "https://arxiv.org/abs/2601.07664",
+    "sensitivity": "lower",
+    "rBtcBetaPct": 14.2,
+    "rBlendBetaPct": 13.1
    },
    {
-    "label": "Borri et al. 2022 estimate",
+    "label": "Borri et al. 2022, as cited by Brigida",
     "premiumPct": 26,
-    "basis": "As quoted in arXiv:2601.07664: a similar annualized crypto market premium of 26%.",
-    "rBtcBetaPct": 41.2,
-    "rBlendBetaPct": 37.6
+    "basis": "Quoted in arXiv:2601.07664 v3, Sec. 2.2 p.7 as a similar annualized crypto market premium of 26% (Borri, Massacci, Rubin and Ruzzi, Crypto Risk Premia, SSRN 4154627). The primary paper could not be retrieved, so this figure is second-hand.",
+    "url": "https://arxiv.org/abs/2601.07664",
+    "sensitivity": "upper",
+    "rBtcBetaPct": 45,
+    "rBlendBetaPct": 40.5
    }
   ],
-  "reading": "Formal cross-sectional premium estimates give a required return near 36-41%; the selected 26.3% hurdle sits at the bottom of that defensible range and inside the 25-35% bridge-stage venture band.",
+  "practitioner": [
+   {
+    "source": "VanEck, ETH 2030 model",
+    "ratePct": [
+     12,
+     12
+    ],
+    "role": "Hurdle to the exit price, from ETH beta",
+    "url": "https://www.vaneck.com/us/en/blogs/digital-assets/matthew-sigel-ethereum-price-prediction-118k-by-2030/"
+   },
+   {
+    "source": "CoinShares, Hyperliquid framework",
+    "ratePct": [
+     12,
+     18
+    ],
+    "role": "Whole-life DCF cost of equity with 5% terminal growth (Section 6)",
+    "url": "https://coinshares.com/insights/research-data/hyperliquid-primer-and-5-year-valuation-framework/"
+   },
+   {
+    "source": "Bitwise, NEAR investment case",
+    "ratePct": [
+     15,
+     25
+    ],
+    "role": "Hurdle on 2030 NEAR scenarios with a 50x multiple (p.33)",
+    "url": "https://bitwiseinvestments.eu/blog/special-reports/the-investment-case-for-near/pdf/Near_investment_case_ENG.pdf"
+   },
+   {
+    "source": "Damodaran, bridge/IPO venture targets",
+    "ratePct": [
+     25,
+     35
+    ],
+    "role": "Target rates with survival risk built in (Table 2, p.15)",
+    "url": "https://pages.stern.nyu.edu/~adamodar/pdfiles/papers/younggrowth.pdf"
+   }
+  ],
+  "reading": "Published valuations discount crypto exit prices at 12-25%, and bridge-stage venture targets are 25-35%. The selected 26.3% sits where the two meet. The higher figures from total-crypto-market premia rest on one exploratory 2023-2024 bull-market sample applied to a BTC beta, so they are an upper sensitivity, not the central estimate.",
   "caveats": [
    "BTC understates total-crypto-market beta; the BTC+ETH blend only partly mitigates this.",
    "Short-window realized premia are noise-dominated; long-window realized premia are inflated by early-cycle hypergrowth. The spread across variants is the finding.",
-   "Weekly returns are sampled in seven-day blocks back from the last complete candle."
+   "Weekly betas are averaged over all seven possible week start days."
   ]
  },
  "sources": [
@@ -1437,6 +1523,11 @@
    "file": "data/glance-daily.json",
    "sha256": "5092c25bebca04c0288a5bd030ca063b5970434a0a5fa8072a8d3ef1297b08c6",
    "url": "https://dune.com/queries/9114284"
+  },
+  {
+   "file": "analysis/lab-rigor/sources/volume/fees_near-intents.json",
+   "sha256": "0979ccdc7e9033edfb586a75c9efbd2989ea806f04c88f4f0f436a979229381a",
+   "url": "https://api.llama.fi/summary/fees/near-intents?dataType=dailyFees&excludeTotalDataChartBreakdown=true"
   },
   {
    "file": "analysis/lab-rigor/sources/volume/dexs_near-intents.json",

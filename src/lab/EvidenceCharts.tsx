@@ -106,10 +106,10 @@ function drawPeers(pen:Pen,w:number,h:number){
 }
 
 function drawRates(pen:Pen,w:number,h:number){
-  const rowsData=rigor.rate.requiredReturnTable,left=170,right=w-12,top=22,bottom=h-26,lo=0,hi=50;
+  const rowsData=rigor.rate.requiredReturnTable,left=170,right=w-12,top=34,bottom=h-26,lo=0,hi=50;
   const x=(v:number)=>left+(Math.min(hi,v)-lo)/(hi-lo)*(right-left),rowH=(bottom-top)/rowsData.length;
-  ditherRect(pen,x(25),top,x(35)-x(25),bottom-top,.22,AMBER);text(pen,'Damodaran 25–35%',x(30),top-6,{align:'center',size:9,color:AMBER});
-  ditherRect(pen,x(12),top,x(18)-x(12),bottom-top,.16,BLUE);text(pen,'CoinShares 12–18%',x(15),top-6,{align:'center',size:9,color:BLUE});
+  ditherRect(pen,x(25),top,x(35)-x(25),bottom-top,.22,AMBER);text(pen,'Damodaran 25–35%',x(30),top-18,{align:'center',size:9,color:AMBER});
+  ditherRect(pen,x(12),top,x(25)-x(12),bottom-top,.16,BLUE);text(pen,'Published crypto 12–25%',x(18.5),top-6,{align:'center',size:9,color:BLUE});
   [0,10,20,30,40,50].forEach(v=>{rule(pen,x(v),top,x(v),bottom);text(pen,`${v}%`,x(v),bottom+16,{align:'center',size:9});});
   rowsData.forEach((r,i)=>{
     const cy=top+(i+.5)*rowH,a=Math.min(r.rBlendBetaPct,r.rBtcBetaPct),b=Math.max(r.rBlendBetaPct,r.rBtcBetaPct);
@@ -160,7 +160,7 @@ export default function EvidenceCharts(){
    <article className="lab-card is-wide"><div className="lab-card-head"><h3>The multiple and the hurdle against outside evidence.</h3><p>Market capitalization over trailing-year DefiLlama revenue for {rigor.peers.protocols.length+rigor.peers.chains.length} assets on {rigor.peers.retrievedAt}, and the required return implied by NEAR’s beta under each published or realized crypto market premium.</p></div>
     <div className="lab-evidence-pair">
      <div><DitherCanvas draw={drawPeers} height={250} label="Peer market-capitalization-to-revenue multiples on a log scale, with the case multiple range and NEAR's current multiple on captured receipts."/><p className="lab-evidence-caption">Every case multiple falls in the empty gap between fee-capturing protocols and base layers. On captured Intents receipts NEAR already trades near the Base 200×; on DefiLlama’s burn-only revenue it would read {times(rigor.peers.nearSpecific.burnDefinitionMultiple1y)}.</p></div>
-     <div><DitherCanvas draw={drawRates} height={250} label="Required annual return ranges implied by NEAR's beta under five market premium variants, against the selected 26.3% hurdle."/><p className="lab-evidence-caption">Bars span NEAR’s beta of {rigor.rate.beta.blendWeekly.beta.toFixed(2)} (BTC+ETH) to {rigor.rate.beta.btcWeekly.beta.toFixed(2)} (BTC) over {rigor.rate.beta.btcWeekly.n} post-ETF weeks, with the {rigor.rate.riskFree.pct.toFixed(2)}% five-year Treasury as the risk-free rate. The spread between variants is the finding.</p></div>
+     <div><DitherCanvas draw={drawRates} height={250} label="Required annual return ranges implied by NEAR's beta under five market premium variants, against the selected 26.3% hurdle."/><p className="lab-evidence-caption">Bars span NEAR’s beta of {rigor.rate.weeklyAnchors.blend.mean.toFixed(2)} (BTC+ETH) to {rigor.rate.weeklyAnchors.btc.mean.toFixed(2)} (BTC), averaged over all seven week start days since the spot ETF launch, with the {rigor.rate.riskFree.pct.toFixed(2)}% five-year Treasury as the risk-free rate. Published crypto valuations use VanEck 12%, CoinShares 12–18% and Bitwise 15–25%. The spread between variants is the finding.</p></div>
     </div>
     <table className="tidal-sr"><caption>Peer multiples</caption><tbody>{[...rigor.peers.protocols,...rigor.peers.chains].map(p=><tr key={p.slug}><th>{p.name}</th><td>{times(p.multiple1y)}</td></tr>)}</tbody></table>
    </article>

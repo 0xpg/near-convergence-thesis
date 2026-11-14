@@ -223,6 +223,8 @@ const rollingOrigin={
     note:'DefiLlama monthly volume divided by the Dune series used elsewhere in the lab, over the months both cover.'}
 };
 backtest.rollingOrigin=rollingOrigin;
+const llamaFees=new Map(read('analysis/lab-rigor/sources/volume/fees_near-intents.json').totalDataChart.map(([t,v])=>[new Date(t*1000).toISOString().slice(0,10),v]));
+const feeRollout=fullMonths.filter(m=>m.month<months[0].month).map(m=>{let fees=0,volume=0,days=0;for(const [day,v] of llamaDay)if(day.startsWith(m.month)&&llamaFees.has(day)){fees+=llamaFees.get(day);volume+=v;days++;}return days===m.days&&fees>0?{month:m.month,grossBps:round(fees/volume*1e4,1)}:null;}).filter(Boolean);
 {
   const second=forecasts.filter(f=>f.regime==='secondYear'),origins=[...new Set(second.map(f=>f.origin))],rand=mulberry32(SEED+7),draws=[];
   const errorsByOrigin=new Map(origins.map(o=>[o,second.filter(f=>f.origin===o).map(f=>Math.log(f.realized/f.projected.base))]));
@@ -302,6 +304,9 @@ function weekly(returnsDaily){
   return out;
 }
 const wNear=weekly(dNear),wBtc=weekly(dBtc),wBlend=weekly(dBlend);
+const weeklyFrom=(returnsDaily,offset)=>{const out=[];for(let s=offset;s+7<=returnsDaily.length;s+=7)out.push(returnsDaily.slice(s,s+7).reduce((t,v)=>t+v,0));return out;};
+const anchorBetas=[0,1,2,3,4,5,6].map(offset=>({offset,btc:ols(weeklyFrom(dBtc,offset),weeklyFrom(dNear,offset)).slope,blend:ols(weeklyFrom(dBlend,offset),weeklyFrom(dNear,offset)).slope}));
+const betaBtcAnchors=mean(anchorBetas.map(a=>a.btc)),betaBlendAnchors=mean(anchorBetas.map(a=>a.blend));
 const betaBtcW=ols(wBtc,wNear),betaBlendW=ols(wBlend,wNear),betaBtcD=ols(dBtc,dNear),betaBlendD=ols(dBlend,dNear);
 const fred=readFileSync(new URL('analysis/lab-rigor/sources/rate/fred_dgs5.csv',root),'utf8').trim().split('\n').slice(1).map(line=>line.split(',')).filter(([,v])=>v!=='').map(([d,v])=>({day:d,yield:Number(v)}));
 const rfNow=fred.at(-1);
@@ -313,9 +318,9 @@ const btcLong=round(annualGeometric(logReturns(btcMap,longDays))*100,1);
 const premiums=[
   {label:'Realized BTC, post-ETF window',premiumPct:round(btcPostEtf-rfWindowMean,1),basis:'Geometric annualized BTC return minus the window-average five-year Treasury yield, computed from the archived series.'},
   {label:`Realized BTC since ${longDays[0].slice(0,4)}`,premiumPct:round(btcLong-rfWindowMean,1),basis:'Long-window realized return; inflated by early-cycle growth and backward-looking.'},
-  {label:'Brigida latent-factor estimate',premiumPct:24.5,basis:'arXiv:2601.07664, three-pass latent-factor price of crypto market risk, annualized 24.5% (p = 0.062).'},
-  {label:'Brigida Fama-MacBeth estimate',premiumPct:6.0,basis:'arXiv:2601.07664, 0.116% per week annualized (p < 0.001); the paper shows this naive estimate is biased by omitted factors.'},
-  {label:'Borri et al. 2022 estimate',premiumPct:26.0,basis:'As quoted in arXiv:2601.07664: a similar annualized crypto market premium of 26%.'}
+  {label:'Brigida latent-factor estimate',premiumPct:24.5,basis:'arXiv:2601.07664 v3, Sec. 2.2 p.7 and Table 3 p.8: 0.471% a week on the total-crypto-market factor, annualized 24.5% (p = 0.062, called suggestive). Estimated on 105 weeks of 2023-2024, when that market returned about 74% a year; the author calls the results exploratory. Applied here to a BTC beta as a proxy for the market beta.',url:'https://arxiv.org/abs/2601.07664',sensitivity:'upper'},
+  {label:'Brigida Fama-MacBeth estimate',premiumPct:6.0,basis:'arXiv:2601.07664 v3, Sec. 2.2 p.7: 0.116% a week annualized (p < 0.001); the paper shows this naive estimate is biased by omitted factors.',url:'https://arxiv.org/abs/2601.07664',sensitivity:'lower'},
+  {label:'Borri et al. 2022, as cited by Brigida',premiumPct:26.0,basis:'Quoted in arXiv:2601.07664 v3, Sec. 2.2 p.7 as a similar annualized crypto market premium of 26% (Borri, Massacci, Rubin and Ruzzi, Crypto Risk Premia, SSRN 4154627). The primary paper could not be retrieved, so this figure is second-hand.',url:'https://arxiv.org/abs/2601.07664',sensitivity:'upper'}
 ];
 const rate={asOf:near.at(-1).day,riskFree:{pct:rfNow.yield,date:rfNow.day,source:'FRED DGS5'},windowStart:'2024-01-11',
   beta:{btcWeekly:{beta:round(betaBtcW.slope,2),se:round(betaBtcW.olsSe,2),n:wBtc.length,r2:round(betaBtcW.r2,2)},
@@ -323,12 +328,21 @@ const rate={asOf:near.at(-1).day,riskFree:{pct:rfNow.yield,date:rfNow.day,source
     btcDaily:round(betaBtcD.slope,2),blendDaily:round(betaBlendD.slope,2)},
   annualizedVolPct:{near:round(sd(dNear)*Math.sqrt(365)*100,0),btc:round(sd(dBtc)*Math.sqrt(365)*100,0)},
   realizedBtcAnnualPct:{postEtf:btcPostEtf,long:btcLong,longStart:longDays[0]},
-  requiredReturnTable:premiums.map(p=>({...p,rBtcBetaPct:round(rfNow.yield+betaBtcW.slope*p.premiumPct,1),rBlendBetaPct:round(rfNow.yield+betaBlendW.slope*p.premiumPct,1)})),
-  reading:'Formal cross-sectional premium estimates give a required return near 36-41%; the selected 26.3% hurdle sits at the bottom of that defensible range and inside the 25-35% bridge-stage venture band.',
-  caveats:['BTC understates total-crypto-market beta; the BTC+ETH blend only partly mitigates this.','Short-window realized premia are noise-dominated; long-window realized premia are inflated by early-cycle hypergrowth. The spread across variants is the finding.','Weekly returns are sampled in seven-day blocks back from the last complete candle.']};
+  weeklyAnchors:{note:'Weekly returns depend on which weekday a week starts. Betas are averaged over all seven start days; the earlier single anchor gave the lowest BTC beta of the seven.',
+    btc:{mean:round(betaBtcAnchors,2),min:round(Math.min(...anchorBetas.map(a=>a.btc)),2),max:round(Math.max(...anchorBetas.map(a=>a.btc)),2)},
+    blend:{mean:round(betaBlendAnchors,2),min:round(Math.min(...anchorBetas.map(a=>a.blend)),2),max:round(Math.max(...anchorBetas.map(a=>a.blend)),2)}},
+  requiredReturnTable:premiums.map(p=>({...p,rBtcBetaPct:round(rfNow.yield+betaBtcAnchors*p.premiumPct,1),rBlendBetaPct:round(rfNow.yield+betaBlendAnchors*p.premiumPct,1)})),
+  practitioner:[
+    {source:'VanEck, ETH 2030 model',ratePct:[12,12],role:'Hurdle to the exit price, from ETH beta',url:'https://www.vaneck.com/us/en/blogs/digital-assets/matthew-sigel-ethereum-price-prediction-118k-by-2030/'},
+    {source:'CoinShares, Hyperliquid framework',ratePct:[12,18],role:'Whole-life DCF cost of equity with 5% terminal growth (Section 6)',url:'https://coinshares.com/insights/research-data/hyperliquid-primer-and-5-year-valuation-framework/'},
+    {source:'Bitwise, NEAR investment case',ratePct:[15,25],role:'Hurdle on 2030 NEAR scenarios with a 50x multiple (p.33)',url:'https://bitwiseinvestments.eu/blog/special-reports/the-investment-case-for-near/pdf/Near_investment_case_ENG.pdf'},
+    {source:'Damodaran, bridge/IPO venture targets',ratePct:[25,35],role:'Target rates with survival risk built in (Table 2, p.15)',url:'https://pages.stern.nyu.edu/~adamodar/pdfiles/papers/younggrowth.pdf'}],
+  reading:'Published valuations discount crypto exit prices at 12-25%, and bridge-stage venture targets are 25-35%. The selected 26.3% sits where the two meet. The higher figures from total-crypto-market premia rest on one exploratory 2023-2024 bull-market sample applied to a BTC beta, so they are an upper sensitivity, not the central estimate.',
+  caveats:['BTC understates total-crypto-market beta; the BTC+ETH blend only partly mitigates this.','Short-window realized premia are noise-dominated; long-window realized premia are inflated by early-cycle hypergrowth. The spread across variants is the finding.','Weekly betas are averaged over all seven possible week start days.']};
 
 const sources=[
   {file:'data/glance-daily.json',sha256:hash('data/glance-daily.json'),url:daily.queries.daily},
+  {file:'analysis/lab-rigor/sources/volume/fees_near-intents.json',sha256:hash('analysis/lab-rigor/sources/volume/fees_near-intents.json'),url:'https://api.llama.fi/summary/fees/near-intents?dataType=dailyFees&excludeTotalDataChartBreakdown=true'},
   {file:'analysis/lab-rigor/sources/volume/dexs_near-intents.json',sha256:hash('analysis/lab-rigor/sources/volume/dexs_near-intents.json'),url:'https://api.llama.fi/summary/dexs/near-intents?excludeTotalDataChartBreakdown=true'},
   ...readdirSync(new URL('analysis/lab-rigor/sources/peers/',root)).sort().map(f=>({file:'analysis/lab-rigor/sources/peers/'+f,sha256:hash('analysis/lab-rigor/sources/peers/'+f),url:f==='mcaps.json'?'https://coins.llama.fi/mcaps':`https://api.llama.fi/summary/fees/${f.replace(/^fees_(revenue|holders)_/,'').replace(/\.json$/,'').replace('pump_fun','pump.fun')}?dataType=${f.startsWith('fees_holders')?'dailyHoldersRevenue':'dailyRevenue'}&excludeTotalDataChart=true&excludeTotalDataChartBreakdown=true`})),
   ...readdirSync(new URL('analysis/lab-rigor/sources/rate/',root)).sort().map(f=>({file:'analysis/lab-rigor/sources/rate/'+f,sha256:hash('analysis/lab-rigor/sources/rate/'+f),url:f==='fred_dgs5.csv'?'https://fred.stlouisfed.org/graph/fredgraph.csv?id=DGS5':`https://data-api.binance.vision/api/v3/klines?symbol=${f.split('_')[1]}&interval=1d`}))
@@ -340,6 +354,7 @@ const output={version:'lab-rigor-1-'+hash('data/glance-daily.json').slice(0,12),
     cmgr:cmgrWindows,originSweep:{fits:originFits,minGrowth:Math.min(...originGrowths),maxGrowth:Math.max(...originGrowths),
       verdict:'The fitted trend ranges from 6.7% to 16.6% per month depending only on the start month; no single fitted growth rate is the trend.'},
     casePlacement,elasticity,capture,
+    feeRollout:{months:feeRollout,note:'DefiLlama gross fees before the Dune window. The fee rate climbed while fees were being switched on, so these months measure the rollout and are kept out of the fee-compression test.'},
     note:'Eleven complete months and ten growth observations; every statistic is noisy and the bootstrap intervals are honest about it.'},
   calibration,backtest,peers,rate,sources};
 

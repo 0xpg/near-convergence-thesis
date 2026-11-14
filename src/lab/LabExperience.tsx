@@ -56,7 +56,7 @@ export default function LabExperience(){
    <div className="thesis-resolve"><canvas ref={canvas} aria-hidden="true"/><h1 id="lab-title" ref={heading} aria-label="What makes value endure?"><span>What makes</span> <span>value endure?</span></h1></div>
    <p className="lab-deck">Not all activity creates value, and not all value accrues to the asset enabling it. Examine the conditions under which NEAR's growing execution network becomes a source of durable token demand.</p>
    <p className="lab-case-context">{caseName}</p>
-   <dl className="lab-hero-stats"><div><dt>Capturable REV at exit</dt><dd>{money(t.totalUsd)}</dd></div><div><dt>Conditional token value</dt><dd>{price(t.futurePriceUsd)}</dd></div><div><dt>Exit REV multiple</dt><dd>{valuation.multiple}×</dd></div></dl>
+   <dl className="lab-hero-stats"><div><dt>Capturable REV at exit</dt><dd>{money(t.totalUsd)}</dd></div><div><dt>Hypothesis token value</dt><dd>{price(t.futurePriceUsd)}</dd></div><div><dt>Exit REV multiple</dt><dd>{valuation.multiple}×</dd></div></dl>
   </div><figure className="lab-hero-field"><canvas ref={field} aria-hidden="true"/></figure></section>
   <section className="lab-models lab-working" aria-labelledby="working-case-title"><header><h2 id="working-case-title">Choose a case. Trace its value.</h2><p>One working model connects execution, institutional routing, AI services and Institutional Demand. Every result follows these shared inputs.</p></header>
    <section id="lab" className="lab-console lab-case-console" aria-label="Selected case controls">
@@ -66,7 +66,7 @@ export default function LabExperience(){
      <AssumptionControls inputs={valuation} onChange={setValuation}/>
      <div className="lab-console-actions"><button type="button" onClick={reset}>Reset {reference?.label||'Base'} assumptions</button><button type="button" onClick={exportScenario}>Export complete model</button><button type="button" onClick={share}>{copied?'Link copied':'Copy model link'}</button></div>
     </div>
-    <div className="lab-console-results" aria-live="polite"><ConsoleDither value={t.futurePriceUsd}/><p className="lab-console-label">{caseName}</p><p className="lab-console-big"><span>Conditional token value</span><strong>{price(t.futurePriceUsd)}</strong></p><dl>
+    <div className="lab-console-results" aria-live="polite"><ConsoleDither value={t.futurePriceUsd}/><p className="lab-console-label">{caseName}</p><p className="lab-console-big"><span>Hypothesis token value</span><strong>{price(t.futurePriceUsd)}</strong></p><dl>
      <div><dt>REV-based token value</dt><dd>{price(t.revenuePriceUsd)}</dd></div><div><dt>ETF holdings adjustment</dt><dd>{t.holdingsImpactUsd>=0?'+':''}{price(t.holdingsImpactUsd)}</dd></div><div><dt>Discounted reference today</dt><dd>{price(t.presentPriceUsd)}</dd></div><div><dt>Annual capturable REV</dt><dd>{money(t.totalUsd)}</dd></div><div><dt>Projected total supply</dt><dd>{(t.supplyNear/1e9).toFixed(3)}bn NEAR</dd></div>
     </dl>{reference&&<p className="lab-console-note">{delta>=0?'+':''}{price(delta)} versus {reference.label} at the same exit.</p>}<p className="lab-console-note">Early data: Intents launched in {dataHistory.launch}, fee data starts in {dataHistory.feesSince} and the fee switch went live in {dataHistory.feeSwitch}. Read results as directional, not as forecasts.</p>
     </div>
