@@ -178,6 +178,61 @@ backtest.conclusions=[
   `A lognormal 10-90% band around Base covered ${backtest.coverage.inside} of ${backtest.coverage.total} holdout months against an 80% nominal target (small sample, indicative only).`
 ];
 
+const llama=read('analysis/lab-rigor/sources/volume/dexs_near-intents.json');
+const llamaDay=new Map(llama.totalDataChart.map(([t,v])=>[new Date(t*1000).toISOString().slice(0,10),v]));
+const llamaMonths=[];
+for(const [day,v] of llamaDay){const key=day.slice(0,7);let m=llamaMonths.at(-1);if(!m||m.month!==key){m={month:key,days:0,volumeUsd:0};llamaMonths.push(m);}m.days++;m.volumeUsd+=v;}
+const fullMonths=llamaMonths.filter(m=>m.days===daysInMonth(m.month));
+assert(fullMonths.length>=22,'Expected the full DefiLlama history');
+const trailing30=endDay=>{const end=Date.parse(endDay+'T00:00:00Z');let v=0;for(let d=0;d<30;d++){const x=llamaDay.get(new Date(end-d*86400000).toISOString().slice(0,10));assert(x!==undefined,'Missing DefiLlama day '+endDay);v+=x;}return v/30;};
+const monthEnd=key=>key+'-'+String(daysInMonth(key)).padStart(2,'0');
+const LAUNCH_YEAR_END='2025-11';
+const regimeOf=key=>key<=LAUNCH_YEAR_END?'launchYear':'secondYear';
+const HORIZONS=[1,3,6],forecasts=[];
+fullMonths.forEach((origin,oi)=>{
+  if(oi===fullMonths.length-1)return;
+  const v0=trailing30(monthEnd(origin.month)),logs=fullMonths.slice(0,oi+1).map(m=>Math.log(m.volumeUsd/m.days));
+  const growthLogs=logs.slice(1).map((v,i)=>v-logs[i]),sigma=growthLogs.length>=3?sd(growthLogs):null;
+  for(let h=1;h<=6&&oi+h<fullMonths.length;h++){
+    const target=fullMonths[oi+h],realized=target.volumeUsd/target.days;
+    const projected=Object.fromEntries(Object.entries(CASES).map(([id,g])=>[id,v0*(1+g)**h]));
+    const width=sigma===null?null:Math.exp(1.28155*sigma*Math.sqrt(h));
+    forecasts.push({origin:origin.month,target:target.month,h,regime:regimeOf(origin.month),realized,projected,
+      position:realized>projected.max?'aboveMax':realized<projected.bear?'belowBear':'inside',
+      inBand:width===null?null:realized>=projected.base/width&&realized<=projected.base*width});
+  }
+});
+const summarize=list=>({n:list.length,aboveMax:list.filter(f=>f.position==='aboveMax').length,inside:list.filter(f=>f.position==='inside').length,belowBear:list.filter(f=>f.position==='belowBear').length,
+  medianLogErrorBase:list.length?round(quantile(list.map(f=>Math.log(f.realized/f.projected.base)),.5),3):null,
+  mapeBase:list.length?round(mean(list.map(f=>Math.abs(f.projected.base-f.realized)/f.realized)),3):null,
+  band:{n:list.filter(f=>f.inBand!==null).length,inside:list.filter(f=>f.inBand===true).length}});
+const overlap=months.map(m=>{const l=fullMonths.find(x=>x.month===m.month);return l?l.volumeUsd/m.volumeUsd:null;}).filter(r=>r!==null);
+const rollingOrigin={
+  source:'DefiLlama dexs/near-intents daily volume, first day '+[...llamaDay.keys()][0],
+  design:'Every complete month end is a forecast origin. The trailing 30-day average daily volume at the origin is projected forward under each fixed case growth rate and compared with realized average daily volume 1 to 6 months later. The 80% band uses only growth volatility observed up to the origin.',
+  regimes:{launchYear:'Origins through '+LAUNCH_YEAR_END+', the first twelve months after launch',secondYear:'Origins after '+LAUNCH_YEAR_END},
+  months:fullMonths.map(m=>({month:m.month,avgDailyVolumeUsd:round(m.volumeUsd/m.days,0)})),
+  origins:new Set(forecasts.map(f=>f.origin)).size,
+  all:summarize(forecasts),
+  byRegime:Object.fromEntries(['launchYear','secondYear'].map(r=>[r,summarize(forecasts.filter(f=>f.regime===r))])),
+  byHorizon:Object.fromEntries(HORIZONS.map(h=>[h,Object.fromEntries(['launchYear','secondYear'].map(r=>[r,summarize(forecasts.filter(f=>f.h===h&&f.regime===r))]))])),
+  threeMonth:forecasts.filter(f=>f.h===3).map(f=>({origin:f.origin,target:f.target,regime:f.regime,realized:round(f.realized,0),bear:round(f.projected.bear,0),base:round(f.projected.base,0),max:round(f.projected.max,0)})),
+  duneCrossCheck:{months:overlap.length,medianRatio:round(quantile(overlap,.5),3),min:round(Math.min(...overlap),3),max:round(Math.max(...overlap),3),
+    note:'DefiLlama monthly volume divided by the Dune series used elsewhere in the lab, over the months both cover.'}
+};
+backtest.rollingOrigin=rollingOrigin;
+{
+  const two=rollingOrigin.byRegime.secondYear,one=rollingOrigin.byRegime.launchYear,x=rollingOrigin.duneCrossCheck;
+  const signed=v=>(v>=0?'+':'')+(v*100).toFixed(1)+'%',secondOrigins=new Set(forecasts.filter(f=>f.regime==='secondYear').map(f=>f.origin)).size;
+  rollingOrigin.conclusions=[
+    `After the launch year, Base sat on the centre of what happened: across ${two.n} forecasts from ${secondOrigins} origins, realized volume landed a median ${signed(Math.exp(two.medianLogErrorBase)-1)} from the Base projection.`,
+    `The fixed cases were too narrow, not biased: only ${two.inside} of ${two.n} outcomes fell between Bear and Maximum, with ${two.aboveMax} above Maximum and ${two.belowBear} below Bear. Month-to-month swings are wider than the whole case range.`,
+    `The 80% volatility band, using only volatility known at each origin, covered ${two.band.inside} of ${two.band.n} second-year outcomes. It over-covers because launch-year volatility is still in the estimate, so it is a conservative band.`,
+    `In the launch year volume beat Maximum in ${one.aboveMax} of ${one.n} forecasts. That ramp from near zero is a different regime and is not evidence for or against the 2031 cases.`,
+    `DefiLlama, which supplies the full history, matches the Dune series used elsewhere in the lab to a median ratio of ${x.medianRatio.toFixed(3)} over ${x.months} shared months (range ${x.min.toFixed(2)}–${x.max.toFixed(2)}).`
+  ];
+}
+
 const PEERS={
   aerodrome:['Aerodrome','protocol'],gmx:['GMX','protocol'],'pump.fun':['Pump.fun','protocol'],sky:['Sky (Maker)','protocol'],lido:['Lido','protocol'],jupiter:['Jupiter','protocol'],pancakeswap:['PancakeSwap','protocol'],'curve-finance':['Curve','protocol'],raydium:['Raydium','protocol'],dydx:['dYdX','protocol'],aave:['Aave','protocol'],jito:['Jito','protocol'],hyperliquid:['Hyperliquid','protocol'],uniswap:['Uniswap','protocol'],'compound-finance':['Compound','protocol'],ethena:['Ethena','protocol'],morpho:['Morpho','protocol'],
   tron:['TRON','chain'],avalanche:['Avalanche','chain'],solana:['Solana','chain'],ethereum:['Ethereum','chain'],bsc:['BNB Chain','chain'],sui:['Sui','chain'],near:['NEAR','chain']
@@ -264,6 +319,7 @@ const rate={asOf:near.at(-1).day,riskFree:{pct:rfNow.yield,date:rfNow.day,source
 
 const sources=[
   {file:'data/glance-daily.json',sha256:hash('data/glance-daily.json'),url:daily.queries.daily},
+  {file:'analysis/lab-rigor/sources/volume/dexs_near-intents.json',sha256:hash('analysis/lab-rigor/sources/volume/dexs_near-intents.json'),url:'https://api.llama.fi/summary/dexs/near-intents?excludeTotalDataChartBreakdown=true'},
   ...readdirSync(new URL('analysis/lab-rigor/sources/peers/',root)).sort().map(f=>({file:'analysis/lab-rigor/sources/peers/'+f,sha256:hash('analysis/lab-rigor/sources/peers/'+f),url:f==='mcaps.json'?'https://coins.llama.fi/mcaps':`https://api.llama.fi/summary/fees/${f.replace(/^fees_(revenue|holders)_/,'').replace(/\.json$/,'').replace('pump_fun','pump.fun')}?dataType=${f.startsWith('fees_holders')?'dailyHoldersRevenue':'dailyRevenue'}&excludeTotalDataChart=true&excludeTotalDataChartBreakdown=true`})),
   ...readdirSync(new URL('analysis/lab-rigor/sources/rate/',root)).sort().map(f=>({file:'analysis/lab-rigor/sources/rate/'+f,sha256:hash('analysis/lab-rigor/sources/rate/'+f),url:f==='fred_dgs5.csv'?'https://fred.stlouisfed.org/graph/fredgraph.csv?id=DGS5':`https://data-api.binance.vision/api/v3/klines?symbol=${f.split('_')[1]}&interval=1d`}))
 ];

@@ -536,7 +536,411 @@
    "Error concentrates in jump months: case MAPE 1-15% in the calm month versus 28-40% pooled across jump months.",
    "A log-linear trend fitted at each cutoff beat no fixed case out of sample; it extrapolated flat exactly when the regime flipped.",
    "A lognormal 10-90% band around Base covered 6 of 9 holdout months against an 80% nominal target (small sample, indicative only)."
-  ]
+  ],
+  "rollingOrigin": {
+   "source": "DefiLlama dexs/near-intents daily volume, first day 2024-12-10",
+   "design": "Every complete month end is a forecast origin. The trailing 30-day average daily volume at the origin is projected forward under each fixed case growth rate and compared with realized average daily volume 1 to 6 months later. The 80% band uses only growth volatility observed up to the origin.",
+   "regimes": {
+    "launchYear": "Origins through 2025-11, the first twelve months after launch",
+    "secondYear": "Origins after 2025-11"
+   },
+   "months": [
+    {
+     "month": "2025-01",
+     "avgDailyVolumeUsd": 206629
+    },
+    {
+     "month": "2025-02",
+     "avgDailyVolumeUsd": 471230
+    },
+    {
+     "month": "2025-03",
+     "avgDailyVolumeUsd": 756672
+    },
+    {
+     "month": "2025-04",
+     "avgDailyVolumeUsd": 1510731
+    },
+    {
+     "month": "2025-05",
+     "avgDailyVolumeUsd": 2926988
+    },
+    {
+     "month": "2025-06",
+     "avgDailyVolumeUsd": 6137387
+    },
+    {
+     "month": "2025-07",
+     "avgDailyVolumeUsd": 7610752
+    },
+    {
+     "month": "2025-08",
+     "avgDailyVolumeUsd": 10695492
+    },
+    {
+     "month": "2025-09",
+     "avgDailyVolumeUsd": 16126373
+    },
+    {
+     "month": "2025-10",
+     "avgDailyVolumeUsd": 55583937
+    },
+    {
+     "month": "2025-11",
+     "avgDailyVolumeUsd": 122035160
+    },
+    {
+     "month": "2025-12",
+     "avgDailyVolumeUsd": 64831778
+    },
+    {
+     "month": "2026-01",
+     "avgDailyVolumeUsd": 87886088
+    },
+    {
+     "month": "2026-02",
+     "avgDailyVolumeUsd": 84937896
+    },
+    {
+     "month": "2026-03",
+     "avgDailyVolumeUsd": 67086937
+    },
+    {
+     "month": "2026-04",
+     "avgDailyVolumeUsd": 63184683
+    },
+    {
+     "month": "2026-05",
+     "avgDailyVolumeUsd": 64377032
+    },
+    {
+     "month": "2026-06",
+     "avgDailyVolumeUsd": 78489734
+    },
+    {
+     "month": "2026-07",
+     "avgDailyVolumeUsd": 71147733
+    },
+    {
+     "month": "2026-08",
+     "avgDailyVolumeUsd": 89591202
+    },
+    {
+     "month": "2026-09",
+     "avgDailyVolumeUsd": 160103146
+    },
+    {
+     "month": "2026-10",
+     "avgDailyVolumeUsd": 128569084
+    }
+   ],
+   "origins": 21,
+   "all": {
+    "n": 111,
+    "aboveMax": 75,
+    "inside": 15,
+    "belowBear": 21,
+    "medianLogErrorBase": 0.529,
+    "mapeBase": 0.542,
+    "band": {
+     "n": 93,
+     "inside": 53
+    }
+   },
+   "byRegime": {
+    "launchYear": {
+     "n": 66,
+     "aboveMax": 57,
+     "inside": 3,
+     "belowBear": 6,
+     "medianLogErrorBase": 1.482,
+     "mapeBase": 0.725,
+     "band": {
+      "n": 48,
+      "inside": 8
+     }
+    },
+    "secondYear": {
+     "n": 45,
+     "aboveMax": 18,
+     "inside": 12,
+     "belowBear": 15,
+     "medianLogErrorBase": 0.001,
+     "mapeBase": 0.272,
+     "band": {
+      "n": 45,
+      "inside": 45
+     }
+    }
+   },
+   "byHorizon": {
+    "1": {
+     "launchYear": {
+      "n": 11,
+      "aboveMax": 10,
+      "inside": 0,
+      "belowBear": 1,
+      "medianLogErrorBase": 0.622,
+      "mapeBase": 0.481,
+      "band": {
+       "n": 8,
+       "inside": 0
+      }
+     },
+     "secondYear": {
+      "n": 10,
+      "aboveMax": 4,
+      "inside": 1,
+      "belowBear": 5,
+      "medianLogErrorBase": -0.058,
+      "mapeBase": 0.2,
+      "band": {
+       "n": 10,
+       "inside": 10
+      }
+     }
+    },
+    "3": {
+     "launchYear": {
+      "n": 11,
+      "aboveMax": 10,
+      "inside": 0,
+      "belowBear": 1,
+      "medianLogErrorBase": 1.499,
+      "mapeBase": 0.723,
+      "band": {
+       "n": 8,
+       "inside": 2
+      }
+     },
+     "secondYear": {
+      "n": 8,
+      "aboveMax": 3,
+      "inside": 3,
+      "belowBear": 2,
+      "medianLogErrorBase": 0.016,
+      "mapeBase": 0.274,
+      "band": {
+       "n": 8,
+       "inside": 8
+      }
+     }
+    },
+    "6": {
+     "launchYear": {
+      "n": 11,
+      "aboveMax": 9,
+      "inside": 1,
+      "belowBear": 1,
+      "medianLogErrorBase": 2.202,
+      "mapeBase": 0.874,
+      "band": {
+       "n": 8,
+       "inside": 2
+      }
+     },
+     "secondYear": {
+      "n": 5,
+      "aboveMax": 2,
+      "inside": 2,
+      "belowBear": 1,
+      "medianLogErrorBase": -0.007,
+      "mapeBase": 0.331,
+      "band": {
+       "n": 5,
+       "inside": 5
+      }
+     }
+    }
+   },
+   "threeMonth": [
+    {
+     "origin": "2025-01",
+     "target": "2025-04",
+     "regime": "launchYear",
+     "realized": 1510731,
+     "bear": 206026,
+     "base": 238845,
+     "max": 267477
+    },
+    {
+     "origin": "2025-02",
+     "target": "2025-05",
+     "regime": "launchYear",
+     "realized": 2926988,
+     "bear": 433813,
+     "base": 502917,
+     "max": 563207
+    },
+    {
+     "origin": "2025-03",
+     "target": "2025-06",
+     "regime": "launchYear",
+     "realized": 6137387,
+     "bear": 727783,
+     "base": 843716,
+     "max": 944861
+    },
+    {
+     "origin": "2025-04",
+     "target": "2025-07",
+     "regime": "launchYear",
+     "realized": 7610752,
+     "bear": 1465860,
+     "base": 1699366,
+     "max": 1903085
+    },
+    {
+     "origin": "2025-05",
+     "target": "2025-08",
+     "regime": "launchYear",
+     "realized": 10695492,
+     "bear": 2791830,
+     "base": 3236558,
+     "max": 3624554
+    },
+    {
+     "origin": "2025-06",
+     "target": "2025-09",
+     "regime": "launchYear",
+     "realized": 16126373,
+     "bear": 5955101,
+     "base": 6903726,
+     "max": 7731340
+    },
+    {
+     "origin": "2025-07",
+     "target": "2025-10",
+     "regime": "launchYear",
+     "realized": 55583937,
+     "bear": 7449283,
+     "base": 8635926,
+     "max": 9671196
+    },
+    {
+     "origin": "2025-08",
+     "target": "2025-11",
+     "regime": "launchYear",
+     "realized": 122035160,
+     "bear": 10195192,
+     "base": 11819247,
+     "max": 13236131
+    },
+    {
+     "origin": "2025-09",
+     "target": "2025-12",
+     "regime": "launchYear",
+     "realized": 64831778,
+     "bear": 15647403,
+     "base": 18139976,
+     "max": 20314585
+    },
+    {
+     "origin": "2025-10",
+     "target": "2026-01",
+     "regime": "launchYear",
+     "realized": 87886088,
+     "bear": 54105936,
+     "base": 62724809,
+     "max": 70244221
+    },
+    {
+     "origin": "2025-11",
+     "target": "2026-02",
+     "regime": "launchYear",
+     "realized": 84937896,
+     "bear": 118410594,
+     "base": 137272958,
+     "max": 153729155
+    },
+    {
+     "origin": "2025-12",
+     "target": "2026-03",
+     "regime": "secondYear",
+     "realized": 67086937,
+     "bear": 60635257,
+     "base": 70294227,
+     "max": 78721055
+    },
+    {
+     "origin": "2026-01",
+     "target": "2026-04",
+     "regime": "secondYear",
+     "realized": 63184683,
+     "bear": 87144079,
+     "base": 101025805,
+     "max": 113136716
+    },
+    {
+     "origin": "2026-02",
+     "target": "2026-05",
+     "regime": "secondYear",
+     "realized": 64377032,
+     "bear": 83018691,
+     "base": 96243258,
+     "max": 107780840
+    },
+    {
+     "origin": "2026-03",
+     "target": "2026-06",
+     "regime": "secondYear",
+     "realized": 78489734,
+     "bear": 65674058,
+     "base": 76135690,
+     "max": 85262789
+    },
+    {
+     "origin": "2026-04",
+     "target": "2026-07",
+     "regime": "secondYear",
+     "realized": 71147733,
+     "bear": 61308035,
+     "base": 71074176,
+     "max": 79594504
+    },
+    {
+     "origin": "2026-05",
+     "target": "2026-08",
+     "regime": "secondYear",
+     "realized": 89591202,
+     "bear": 62761607,
+     "base": 72759296,
+     "max": 81481636
+    },
+    {
+     "origin": "2026-06",
+     "target": "2026-09",
+     "regime": "secondYear",
+     "realized": 160103146,
+     "bear": 76158510,
+     "base": 88290276,
+     "max": 98874460
+    },
+    {
+     "origin": "2026-07",
+     "target": "2026-10",
+     "regime": "secondYear",
+     "realized": 128569084,
+     "bear": 68131948,
+     "base": 78985113,
+     "max": 88453799
+    }
+   ],
+   "duneCrossCheck": {
+    "months": 11,
+    "medianRatio": 0.999,
+    "min": 0.867,
+    "max": 1.02,
+    "note": "DefiLlama monthly volume divided by the Dune series used elsewhere in the lab, over the months both cover."
+   },
+   "conclusions": [
+    "After the launch year, Base sat on the centre of what happened: across 45 forecasts from 10 origins, realized volume landed a median +0.1% from the Base projection.",
+    "The fixed cases were too narrow, not biased: only 12 of 45 outcomes fell between Bear and Maximum, with 18 above Maximum and 15 below Bear. Month-to-month swings are wider than the whole case range.",
+    "The 80% volatility band, using only volatility known at each origin, covered 45 of 45 second-year outcomes. It over-covers because launch-year volatility is still in the estimate, so it is a conservative band.",
+    "In the launch year volume beat Maximum in 57 of 66 forecasts. That ramp from near zero is a different regime and is not evidence for or against the 2031 cases.",
+    "DefiLlama, which supplies the full history, matches the Dune series used elsewhere in the lab to a median ratio of 0.999 over 11 shared months (range 0.87–1.02)."
+   ]
+  }
  },
  "peers": {
   "retrievedAt": "2026-11-14",
@@ -991,6 +1395,11 @@
    "file": "data/glance-daily.json",
    "sha256": "5092c25bebca04c0288a5bd030ca063b5970434a0a5fa8072a8d3ef1297b08c6",
    "url": "https://dune.com/queries/9114284"
+  },
+  {
+   "file": "analysis/lab-rigor/sources/volume/dexs_near-intents.json",
+   "sha256": "2a2c27e41896770770d5c9f2a7c53dc5e881550554d4a6093d762520b7820bf9",
+   "url": "https://api.llama.fi/summary/dexs/near-intents?excludeTotalDataChartBreakdown=true"
   },
   {
    "file": "analysis/lab-rigor/sources/peers/fees_holders_aave.json",
