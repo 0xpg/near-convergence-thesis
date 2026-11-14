@@ -38,7 +38,11 @@ try{
  const {heatColors}=await server.ssrLoadModule('/src/lab/ValuationPanel.tsx');
  const {STARTING:caseStarting,VAL_DEFAULTS:caseDefaults,HOLDINGS_BASELINE_ID:holdingsBaselineId}=await server.ssrLoadModule('/src/lab/baseline.ts');
  const {MODEL_VERSION:caseVersion,buildValuationCases:makeCases,runValuation:caseRun}=await server.ssrLoadModule('/src/lab/valuation.ts');
- const {transmissionMetrics,commitAssumptionValue}=await server.ssrLoadModule('/src/lab/Transmission.tsx');
+ const {transmissionMetrics,commitAssumptionValue,formatAssumptionValue,CaseSlider}=await server.ssrLoadModule('/src/lab/Transmission.tsx');
+ assert.equal(formatAssumptionValue('capturePct',24.2953020134228),'24.3%');
+ assert.equal(formatAssumptionValue('institutionalVolumeAnnualUsd',361728474),'$361.7M');
+ const cleanSlider=renderToStaticMarkup(createElement(CaseSlider,{name:'capturePct',inputs:{...caseDefaults,capturePct:24.2953020134228},onChange:()=>{}}));
+ assert(cleanSlider.includes('value="24.3%"'),'Idle slider entry is rounded without changing the model input');
  const {assumptionGroups}=await server.ssrLoadModule('/src/lab/AssumptionControls.tsx');
  for(const marker of ['Where the growth cases sit in the record.','Fees have not compressed; capture has risen.','The multiple and the hurdle against outside evidence.','Realized vs Base, 3 months after each origin','Out of sample, centred but too narrow.','The same case under forecast uncertainty.','data/lab-rigor.json','10–90% scenario band'])assert(rendered['lab.html'].includes(marker),'Rigor layer missing '+marker);
  const {simulateBand,SIGMA_MONTHLY:bandSigma}=await server.ssrLoadModule('/src/lab/uncertainty.ts');
@@ -114,7 +118,7 @@ try{
    assert(html.includes('ETF holdings adjustment')&&html.includes(casePrice(t.holdingsImpactUsd)),'Price bridge must include positive and negative holdings effects');
    assert.equal((html.match(/aria-label="Valuation cases"/g)||[]).length,1,'One case selector');
    assert.equal((html.match(/type="range"/g)||[]).length,nonHoldings.length+2,'One slider per numeric assumption');
-   assert.equal((html.match(/type="number"/g)||[]).length,nonHoldings.length+2,'One exact entry per numeric assumption');
+   assert.equal((html.match(/class="lab-exact-value"/g)||[]).length,nonHoldings.length+2,'One exact entry per numeric assumption');
    assert(!html.includes('Transmission cases')&&!html.includes('Capital that chooses to stay.'),'Independent ETF panel and duplicate selector removed');
    assert(html.indexOf('id="lab"')<html.indexOf('id="valuation-title"'),'Working controls precede results');
    assert(html.indexOf('Where the price comes from')<html.indexOf('Adjust ETF holdings'),'ETF adjustment follows price bridge');
