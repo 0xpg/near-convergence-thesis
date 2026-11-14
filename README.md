@@ -4,7 +4,7 @@
 
 **Intent Is All You Need.** An investment research site on where NEAR sits between two emerging sources of demand, autonomous economic activity and institutional order flow, and how much revenue its infrastructure can capture from both.
 
-Live: [near-convergence-thesis]([https://near-evidence.pages.dev](https://near-convergence-thesis.pages.dev/))
+Live: [near-convergence-thesis.pages.dev](https://near-convergence-thesis.pages.dev/)
 
 ## Pages
 
@@ -38,8 +38,11 @@ npm run preview    # http://127.0.0.1:4173
 
 ## Deploy
 
+Every push to `main` runs the checks and deploys to Cloudflare Pages through GitHub Actions. Manual deploy:
+
 ```bash
-npx wrangler pages deploy dist --project-name near-evidence --branch main
+npm run build:public
+npx wrangler pages deploy dist-public --project-name near-convergence-thesis --branch main
 ```
 
 ## Structure
