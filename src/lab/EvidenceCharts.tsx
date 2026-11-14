@@ -1,11 +1,13 @@
 import ResearchCard from './ResearchCard.tsx';
+import {VALUATION_PRESETS} from './valuation.ts';
 import rigor from '../../data/lab-rigor.json' with {type:'json'};
 import baseline from '../../data/lab-baseline.json' with {type:'json'};
 import {DitherCanvas,ditherLine,ditherRect,text,rule,INK,MUTED,GREEN,RED,AMBER,BLUE,PAPER} from './dither.tsx';
 import {formatUsdCompact as usd} from '../format.ts';
 
 type Pen=CanvasRenderingContext2D;
-const CASES=[{id:'bear',label:'Bear',growth:-1,color:RED},{id:'base',label:'Base',growth:4,color:GREEN},{id:'bull',label:'Bull',growth:6,color:BLUE},{id:'max',label:'Maximum',growth:8,color:AMBER}] as const;
+const CASES=[{id:'bear',label:'Bear',growth:VALUATION_PRESETS.bear.inputs.growthPct,color:RED},{id:'base',label:'Base',growth:VALUATION_PRESETS.base.inputs.growthPct,color:GREEN},{id:'bull',label:'Bull',growth:VALUATION_PRESETS.bull.inputs.growthPct,color:BLUE},{id:'max',label:'Maximum',growth:VALUATION_PRESETS.maximum.inputs.growthPct,color:AMBER}] as const;
+const caseMultiples=Object.values(VALUATION_PRESETS).map(c=>c.inputs.multiple),minMultiple=Math.min(...caseMultiples),maxMultiple=Math.max(...caseMultiples);
 const pct=(v:number,digits=1)=>`${v>0?'+':''}${v.toFixed(digits)}%`;
 const monthLabel=(m:string)=>new Date(m+'-01T00:00:00Z').toLocaleString('en-US',{month:'short',timeZone:'UTC'});
 const times=(v:number)=>`${v>=100?Math.round(v).toLocaleString('en-US'):v.toFixed(1)}×`;
@@ -91,8 +93,8 @@ function drawPeers(pen:Pen,w:number,h:number){
   const left=96,right=w-12,top=26,bottom=h-28,lo=Math.log10(2),hi=Math.log10(10000);
   const x=(v:number)=>left+(Math.log10(v)-lo)/(hi-lo)*(right-left);
   [1,10,100,1000,10000].forEach(v=>{if(v>=2){rule(pen,x(v),top,x(v),bottom);text(pen,times(v),x(v),bottom+16,{align:'center',size:9});}});
-  ditherRect(pen,x(100),top,x(250)-x(100),bottom-top,.3,AMBER);
-  text(pen,'Case multiples 100–250×',(x(100)+x(250))/2,top-8,{align:'center',size:9,color:AMBER});
+  ditherRect(pen,x(minMultiple),top,x(maxMultiple)-x(minMultiple),bottom-top,.3,AMBER);
+  text(pen,`Case multiples ${minMultiple}–${maxMultiple}×`,(x(minMultiple)+x(maxMultiple))/2,top-8,{align:'center',size:9,color:AMBER});
   const rows=[{label:'Fee-capturing',items:rigor.peers.protocols,color:GREEN,yy:top+(bottom-top)*.32},{label:'Base-layer chains',items:rigor.peers.chains,color:BLUE,yy:top+(bottom-top)*.72}];
   for(const row of rows){
     text(pen,row.label,0,row.yy+4,{size:10});
@@ -133,20 +135,20 @@ function drawBacktest(pen:Pen,w:number,h:number){
   labelOn(pen,'From launch-year origins',left+4,top+8,MUTED);labelOn(pen,'From second-year origins',(x(split)+x(split-1))/2+6,top+8,GREEN);
   ticks.forEach(v=>{if(v>lo&&v<hi){rule(pen,left,y(v),right,y(v),v===0?'#293b3266':undefined);text(pen,pct((Math.exp(v)-1)*100,0),0,y(v)+4,{size:10});}});
   ditherRect(pen,left,y(max),right-left,y(bear)-y(max),.35,GREEN);
-  labelOn(pen,'Bear–Maximum range',right,y(max)-5,GREEN,'right');
+  labelOn(pen,'Archived −1% to 8% growth benchmark',right,y(max)-5,GREEN,'right');
   list.forEach((m,i)=>{if(i%3===0||i===list.length-1)text(pen,monthLabel(m)+' '+m.slice(2,4),x(i),bottom+16,{align:i===list.length-1?'right':'center',size:9});});
   ditherLine(pen,error.map((v,i)=>[x(i),y(v)]),'#293b3255',1);
   points.forEach((f,i)=>dot(pen,x(i),y(error[i]),3.2,f.regime==='launchYear'?MUTED:INK));
 }
 
 export function BacktestChart(){
-  return <div className="lab-card-chart"><DitherCanvas draw={drawBacktest} height={280} label="How far realized Intents volume landed from the Base projection made three months earlier, for every month-end origin since launch, against the Bear-to-Maximum range."/><ul className="lab-legend"><li style={{color:INK}}>Realized vs Base, 3 months after each origin</li><li style={{color:GREEN}}>Range the four cases cover</li><li style={{color:MUTED}}>Launch-year origins</li></ul></div>;
+  return <div className="lab-card-chart"><DitherCanvas draw={drawBacktest} height={280} label="How far realized Intents volume landed from the Base projection made three months earlier, for every month-end origin since launch, against the archived minus-one to eight percent monthly growth benchmark."/><ul className="lab-legend"><li style={{color:INK}}>Realized vs Base, 3 months after each origin</li><li style={{color:GREEN}}>Archived −1% to 8% growth benchmark</li><li style={{color:MUTED}}>Launch-year origins</li></ul></div>;
 }
 
 export default function EvidenceCharts(){
   const growth=econ.growth;
   return <>
-   <ResearchCard title="Where the growth cases sit in the record." takeaway="Growth estimates change materially with the measurement window." wide><div className="lab-research-intro"><p>Ten month-over-month observations from the archived Dune series, then the trailing compound rates with seeded bootstrap intervals and the trend implied by every possible start month. The dashed lines are the four case rates.</p></div>
+   <ResearchCard title="Where the growth cases sit in the record." takeaway="Growth estimates change materially with the measurement window." wide><div className="lab-research-intro"><p>Ten month-over-month observations from the archived Dune series, then the trailing compound rates with seeded bootstrap intervals and the trend implied by every possible start month. The dashed lines use the current reference-case execution growth rates; Base, Bull and Maximum share the same incumbent execution assumption.</p></div>
     <div className="lab-evidence-pair">
      <div><DitherCanvas draw={drawMoM} height={250} label="Monthly growth of average daily Intents volume with the four case growth rates marked."/><ul className="lab-legend">{CASES.map(c=><li key={c.id} style={{color:c.color}}>{c.label} {c.growth}% a month</li>)}</ul><p className="lab-evidence-caption">Median {pct(growth.median*100)}, mean {pct(growth.mean*100)}, standard deviation {(growth.sdMoM*100).toFixed(1)}%. The record is bimodal: flat or falling months, then +30% surges.</p></div>
      <div><DitherCanvas draw={drawIntervals} height={250} label="Trailing three, six and nine month compound growth with bootstrap intervals, and fitted trend growth by start month."/><ul className="lab-legend">{CASES.map(c=><li key={c.id} style={{color:c.color}}>{c.label} {c.growth}% a month</li>)}</ul><p className="lab-evidence-caption">{econ.originSweep.verdict} Base 4% sits near the middle of the 9-month interval but below the 6-month one.</p></div>
@@ -154,7 +156,7 @@ export default function EvidenceCharts(){
    </ResearchCard>
    <ResearchCard title="Fees have not compressed; capture has risen." takeaway="Compression remains an assumption; capture has risen in the record." wide><div className="lab-research-intro"><p>Monthly gross fee rate against volume, and the share of gross fees captured as receipts, from the same archived series.</p></div>
     <div className="lab-evidence-pair">
-     <div><DitherCanvas draw={drawFees} height={250} label="Monthly gross fee basis points against average daily volume on a log scale, with the fitted elasticity line."/><p className="lab-evidence-caption">The fitted slope is statistically indistinguishable from zero (n = {econ.elasticity.monthly.n}). Any compression in Bull and Maximum is an assumption the record neither confirms nor rejects.</p></div>
+     <div><DitherCanvas draw={drawFees} height={250} label="Monthly gross fee basis points against average daily volume on a log scale, with the fitted elasticity line."/><p className="lab-evidence-caption">The fitted slope is statistically indistinguishable from zero (n = {econ.elasticity.monthly.n}). The regression does not establish a fee-compression coefficient; Base, Bull and Maximum retain the observed aggregate fee.</p></div>
      <div><DitherCanvas draw={drawCapture} height={250} label="Monthly capture share of gross fees, with the fee switch date and the model starting capture marked."/><p className="lab-evidence-caption">Capture was already rising before the switch (Welch p = {econ.capture.welch.p.toFixed(2)}), so the step cannot be cleanly attributed to it. The model’s 30.5% matches recent months, above the year’s pooled {econ.capture.lifetimePooledPct.toFixed(1)}%.</p></div>
     </div>
    </ResearchCard>

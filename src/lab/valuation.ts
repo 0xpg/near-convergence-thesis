@@ -1,4 +1,4 @@
-export const MODEL_VERSION='near-lab-v4';
+export const MODEL_VERSION='near-lab-v5';
 export const VALUATION_DEFAULTS={
  exitDate:'2031-12-31',growthPct:4,capturePct:30.492086110791426,grossBps:15.862722163309982,
  compression:0,costPct:0,multiple:200,discountPct:26.3,issuancePct:2.5,
@@ -17,10 +17,25 @@ export const VALUATION_LIMITS={
 } as const;
 export const VALUATION_PRESETS={
  bear:{label:'Bear',inputs:{growthPct:-1,capturePct:20,grossBps:12,costPct:15,multiple:100}},
- base:{label:'Base',inputs:{growthPct:4,costPct:10,multiple:200,institutionalVolumeAnnualUsd:250e9,institutionalFeeBps:3,institutionalCapturePct:35,aiRevenueAnnualUsd:200e6,aiMarginPct:25,aiTokenLinkPct:25}},
- bull:{label:'Bull',inputs:{growthPct:6,grossBps:14,capturePct:40,compression:.1,costPct:10,multiple:250,institutionalVolumeAnnualUsd:1e12,institutionalFeeBps:3,institutionalCapturePct:40,aiRevenueAnnualUsd:2e9,aiMarginPct:35,aiTokenLinkPct:50}},
- maximum:{label:'Maximum · $400 requirements',inputs:{growthPct:8,grossBps:12,capturePct:45,compression:.1,costPct:10,multiple:250,institutionalVolumeAnnualUsd:2e12,institutionalFeeBps:3,institutionalCapturePct:45,aiMarginPct:40,aiTokenLinkPct:50}}
+ base:{label:'Base',inputs:{growthPct:4,costPct:10,multiple:200,institutionalCapturePct:35,aiMarginPct:20,aiTokenLinkPct:40}},
+ bull:{label:'Bull',inputs:{growthPct:4,costPct:10,multiple:200,institutionalCapturePct:50,aiMarginPct:25,aiTokenLinkPct:50}},
+ maximum:{label:'Maximum',inputs:{growthPct:4,costPct:10,multiple:200,institutionalCapturePct:60,aiMarginPct:30,aiTokenLinkPct:60}}
 };
+export const AI_PRICING_REFERENCE={source:'https://near.ai/pricing',asOf:'2026-11-14',inputUsdPerMillion:.30,outputUsdPerMillion:1.20,inputTokens:10_000,outputTokens:1_000,annualPriceDecline:.10};
+export const INSTITUTIONAL_ROUTE_MIX={source:'https://docs.near-intents.org/resources/fees',stableShare:.90,stableFeeBps:1,crossAssetFeeBps:20};
+export const CASE_OPERATING_DRIVERS={
+ base:{paidActiveUsers:10e6,requestsPerDay:20,enterpriseClients:1000,enterpriseAnnualSpendUsd:1e6,institutionalClients:1000,institutionalEligibleAnnualNotionalPerClientUsd:5e9,institutionalRouteShare:.2},
+ bull:{paidActiveUsers:50e6,requestsPerDay:20,enterpriseClients:3000,enterpriseAnnualSpendUsd:1e6,institutionalClients:3000,institutionalEligibleAnnualNotionalPerClientUsd:5e9,institutionalRouteShare:.2},
+ maximum:{paidActiveUsers:100e6,requestsPerDay:30,enterpriseClients:10000,enterpriseAnnualSpendUsd:1e6,institutionalClients:6000,institutionalEligibleAnnualNotionalPerClientUsd:5e9,institutionalRouteShare:.2}
+};
+export function aiBillingAtExit(id:keyof typeof CASE_OPERATING_DRIVERS,years:number){
+ if(!Number.isFinite(years)||years<=0||years>15)throw Error('AI billing horizon must be positive and at most 15 years');
+ const p=AI_PRICING_REFERENCE,d=CASE_OPERATING_DRIVERS[id];
+ const requestPriceUsd=(p.inputTokens*p.inputUsdPerMillion+p.outputTokens*p.outputUsdPerMillion)/1e6*(1-p.annualPriceDecline)**years;
+ const meteredUsd=365*d.paidActiveUsers*d.requestsPerDay*requestPriceUsd,enterpriseUsd=d.enterpriseClients*d.enterpriseAnnualSpendUsd;
+ // Enterprise spend is an exit assumption for contracts excluding already metered invoices.
+ return {requestPriceUsd,meteredUsd,enterpriseUsd,totalUsd:meteredUsd+enterpriseUsd};
+}
 function date(value:string){
  const n=Date.parse(value+'T00:00:00Z');
  if(!/^\d{4}-\d{2}-\d{2}$/.test(value)||!Number.isFinite(n)||new Date(n).toISOString().slice(0,10)!==value)throw Error('Invalid model date');
@@ -68,23 +83,18 @@ export function runValuation(input:Partial<ValuationInputs>,starting:Starting){
 
 export function buildValuationCases(starting:Starting,exitDate=VALUATION_DEFAULTS.exitDate){
  const defaults={...VALUATION_DEFAULTS,exitDate};
- defaults.institutionalHoldingsPct=(starting.institutionalHoldingsNear??0)/(starting.supplyNear*(1+defaults.issuancePct/100)**((date(exitDate)-date(starting.asOf))/86400000/365))*100;
+ const years=(date(exitDate)-date(starting.asOf))/86400000/365;
+ defaults.institutionalHoldingsPct=(starting.institutionalHoldingsNear??0)/(starting.supplyNear*(1+defaults.issuancePct/100)**years)*100;
  if(starting.grossBps!==undefined){if(!Number.isFinite(starting.grossBps)||starting.grossBps<=0||starting.grossBps>60)throw Error('Invalid observed gross fee rate');defaults.grossBps=starting.grossBps;}
  if(starting.capturePct!==undefined){if(!Number.isFinite(starting.capturePct)||starting.capturePct<0||starting.capturePct>100)throw Error('Invalid observed cash capture');defaults.capturePct=starting.capturePct;}
  return (Object.entries(VALUATION_PRESETS) as [keyof typeof VALUATION_PRESETS,typeof VALUATION_PRESETS[keyof typeof VALUATION_PRESETS]][]).map(([id,preset])=>{
-  let inputs:ValuationInputs={...defaults,...preset.inputs};
-  const uncalibrated=runValuation(inputs,starting);
-  if(id!=='maximum')return {id,label:preset.label,inputs,result:uncalibrated,calibration:null};
-  const targetFuturePriceUsd=400,requiredAnnualReceiptsUsd=targetFuturePriceUsd*uncalibrated.terminal.supplyNear/inputs.multiple;
-  const incrementalAiReceipts=Math.max(0,requiredAnnualReceiptsUsd-uncalibrated.terminal.intentsUsd-uncalibrated.terminal.institutionalUsd);
-  const requiredAiRevenueAnnualUsd=incrementalAiReceipts/(inputs.aiMarginPct/100*inputs.aiTokenLinkPct/100);
-  // Only AI billing is solved to the stated hypothesis; the resulting price is never capped.
-  inputs=cleanValuation({...inputs,aiRevenueAnnualUsd:requiredAiRevenueAnnualUsd});
-  const result=runValuation(inputs,starting),withoutIncremental=runValuation({...inputs,aiTokenLinkPct:0,institutionalVolumeAnnualUsd:0},starting);
-  const status=uncalibrated.terminal.futurePriceUsd>targetFuturePriceUsd?'already-above-target':requiredAiRevenueAnnualUsd>VALUATION_LIMITS.aiRevenueAnnualUsd[1]?'outside-input-range':'calibrated';
-  return {id,label:preset.label,inputs,result,calibration:{targetFuturePriceUsd,solvedInput:'aiRevenueAnnualUsd',requiredAnnualReceiptsUsd,requiredAiRevenueAnnualUsd,
-   unlinkedFuturePriceUsd:uncalibrated.terminal.futurePriceUsd,withoutIncrementalFuturePriceUsd:withoutIncremental.terminal.futurePriceUsd,
-   achievedFuturePriceUsd:result.terminal.futurePriceUsd,targetGapUsd:result.terminal.futurePriceUsd-targetFuturePriceUsd,status,
-   assumptionStatus:'target-calibrated, not independently estimated'}};
+  const inputs:ValuationInputs={...defaults,...preset.inputs};
+  if(id!=='bear'){
+   const d=CASE_OPERATING_DRIVERS[id],mix=INSTITUTIONAL_ROUTE_MIX;
+   inputs.aiRevenueAnnualUsd=aiBillingAtExit(id,years).totalUsd;
+   inputs.institutionalVolumeAnnualUsd=d.institutionalClients*d.institutionalEligibleAnnualNotionalPerClientUsd*d.institutionalRouteShare;
+   inputs.institutionalFeeBps=mix.stableShare*mix.stableFeeBps+(1-mix.stableShare)*mix.crossAssetFeeBps;
+  }
+  return {id,label:preset.label,inputs,result:runValuation(inputs,starting),calibration:null};
  });
 }

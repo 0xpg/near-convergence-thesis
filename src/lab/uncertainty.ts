@@ -4,6 +4,7 @@ import {runValuation,type Starting,type ValuationInputs} from './valuation.ts';
 export const SIGMA_MONTHLY=rigor.calibration.sigma.rawAllMonths;
 export const BAND_SEED=rigor.seed;
 const PATHS=1000,QUANTS=[.1,.5,.9] as const;
+export const COMMERCIALIZATION_RANGE=[.5,2] as const;
 
 function mulberry32(seed:number){
   let a=seed>>>0;
@@ -27,12 +28,13 @@ export type Band={months:number,rev:{q10:number[],q50:number[],q90:number[]},ter
 const cache=new Map<string,Band>();
 
 export function simulateBand(inputs:ValuationInputs,starting:Starting,sigma=SIGMA_MONTHLY,seed=BAND_SEED):Band{
-  const key=JSON.stringify([inputs,starting.asOf,sigma,seed]);
+  if(!Number.isFinite(sigma)||sigma<0)throw Error('Finite nonnegative growth volatility required');
+  const key=JSON.stringify([inputs,starting,sigma,seed]);
   const cached=cache.get(key);
   if(cached)return cached;
   const reference=runValuation(inputs,starting),months=reference.rows.length-1,years=reference.years;
   const a=reference.inputs,mu=Math.log(1+a.growthPct/100);
-  const noise=gaussians(seed,PATHS*months);
+  const noise=gaussians(seed,PATHS*months),commercial=mulberry32(seed^0xA17C0DE);
   const institutionalGross=a.institutionalVolumeAnnualUsd*a.institutionalFeeBps/10000;
   const institutionalReceipts=institutionalGross*a.institutionalCapturePct/100*(1-a.costPct/100);
   const aiReceipts=a.aiRevenueAnnualUsd*a.aiMarginPct/100*a.aiTokenLinkPct/100;
@@ -42,14 +44,17 @@ export function simulateBand(inputs:ValuationInputs,starting:Starting,sigma=SIGM
   if(months===0)terminalPrice.fill(terminalRow.futurePriceUsd);
   for(let p=0;p<PATHS;p++){
     let logScale=0;
+    // Selected scenario ranges, not fitted adoption distributions; shared demand links the two sectors.
+    const common=2*commercial()-1,institutionalShock=Math.log(COMMERCIALIZATION_RANGE[1])*(common+2*commercial()-1)/2,aiShock=Math.log(COMMERCIALIZATION_RANGE[1])*(common+2*commercial()-1)/2;
     revByMonth[0][p]=reference.rows[0].totalUsd;
     for(let m=1;m<=months;m++){
-      logScale+=mu+sigma*noise[p*months+m-1];
-      const t=Math.min(m/12,years),ramp=t/years,scale=Math.exp(logScale);
+      const t=Math.min(m/12,years),previous=Math.min((m-1)/12,years),dt=(t-previous)*12;
+      logScale+=mu*dt+sigma*Math.sqrt(dt)*noise[p*months+m-1];
+      const ramp=t/years,scale=Math.exp(logScale);
       const volume=starting.annualVolumeUsd*scale;
       const effectiveBps=a.grossBps*(scale>1?scale**-a.compression:1);
       const intentsUsd=volume*effectiveBps/10000*a.capturePct/100*(1-a.costPct/100);
-      const totalUsd=intentsUsd+institutionalReceipts*ramp+aiReceipts*ramp;
+      const totalUsd=intentsUsd+institutionalReceipts*ramp*Math.exp(institutionalShock*ramp)+aiReceipts*ramp*Math.exp(aiShock*ramp);
       revByMonth[m][p]=totalUsd;
       if(m===months)terminalPrice[p]=totalUsd*a.multiple/terminalRow.supplyNear*terminalRow.holdingsMultiplier;
     }

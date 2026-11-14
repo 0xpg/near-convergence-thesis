@@ -3,7 +3,7 @@ import baseline from '../../data/lab-baseline.json' with {type:'json'};
 import institutional from '../../data/institutional-demand.json' with {type:'json'};
 import ValuationPanel from './ValuationPanel.tsx';
 import {STARTING,VAL_DEFAULTS} from './baseline.ts';
-import {readModelHash,modelHash,modelExport,type CaseId} from './model-state.ts';
+import {readModelHash,modelHash,modelExport,modelAtExit,type CaseId} from './model-state.ts';
 import {runValuation,buildValuationCases,exitDateBounds,type ValuationInputs} from './valuation.ts';
 import Transmission,{transmissionMetrics,assumptionLabels,formatAssumptionValue} from './Transmission.tsx';
 import AssumptionControls from './AssumptionControls.tsx';
@@ -27,7 +27,7 @@ export default function LabExperience(){
  const changes=reference?inputKeys.filter(key=>reference.inputs[key]!==valuation[key]):[];
  const caseName=reference?`${reference.label.split(' · ')[0]} Scenario${changes.length?' · modified':''}`:'Custom Scenario',t=result.terminal,m=transmissionMetrics(result);
  const bounds=exitDateBounds(STARTING.asOf),delta=reference?t.futurePriceUsd-reference.result.terminal.futurePriceUsd:0;
- const setExitDate=(exitDate:string)=>{if(exitDate>=bounds.min&&exitDate<=bounds.max)setValuation({...valuation,exitDate});};
+ const setExitDate=(exitDate:string)=>{if(exitDate>=bounds.min&&exitDate<=bounds.max)setModel(current=>modelAtExit(current,exitDate));};
  const chooseCase=(id:CaseId)=>setModel(current=>({referenceCase:id,valuation:{...buildValuationCases(STARTING,current.valuation.exitDate).find(c=>c.id===id)!.inputs,institutionalHoldingsPct:current.valuation.institutionalHoldingsPct,holdingsElasticity:current.valuation.holdingsElasticity}}));
  const reset=()=>setModel(current=>{const id=current.referenceCase??'base';return {referenceCase:id,valuation:{...buildValuationCases(STARTING,current.valuation.exitDate).find(c=>c.id===id)!.inputs}};});
  const field=useRef<HTMLCanvasElement>(null),heading=useRef<HTMLHeadingElement>(null),canvas=useRef<HTMLCanvasElement>(null);

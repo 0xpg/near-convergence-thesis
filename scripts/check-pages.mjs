@@ -27,7 +27,7 @@ try{
  assert(rendered['lab.html'].indexOf('class="lab-footer"')>rendered['lab.html'].indexOf('id="lab-finale-title"')&&rendered['lab.html'].includes('Dated observations, explicit assumptions and reproducible valuation sensitivities.'),'Original footer identity remains below the wordmark');
  for(const label of ['Choose a case. Trace its value.','Bear','Base','Bull','Maximum','Operating assumptions to token value','Where the price comes from','Export complete model'])assert(rendered['lab.html'].includes(label),'Lab model missing '+label);
  assert(!rendered['lab.html'].includes('What would $400–$500 require?'));
- assert(rendered['lab.html'].includes('target-based upside forecast'),'Maximum calibration must be explicit');
+ assert(rendered['lab.html'].includes('Forward operating cases')&&!rendered['lab.html'].includes('The $400 case is a reverse valuation'),'Operating cases must not imply a target-price solve');
  assert(!rendered['lab.html'].includes('Mock data'));
  assert(!rendered['lab.html'].match(/<footer[\s\S]*Sources &amp; methodology/),'Lab footer must not retain methodology link');
  for(const label of ['The economics<br/>behind the price.','Selected-case variables and evidence status','30D / 90D operating cross-check','Maximum reference at','https://arxiv.org/abs/2403.04914','https://docs.near-intents.org/resources/fees'])assert(rendered['lab.html'].includes(label),'Visible valuation framework missing '+label);
@@ -38,7 +38,7 @@ try{
  const {MODEL_VERSION:caseVersion,buildValuationCases:makeCases,runValuation:caseRun}=await server.ssrLoadModule('/src/lab/valuation.ts');
  const {transmissionMetrics,commitAssumptionValue}=await server.ssrLoadModule('/src/lab/Transmission.tsx');
  const {assumptionGroups}=await server.ssrLoadModule('/src/lab/AssumptionControls.tsx');
- for(const marker of ['Where the growth cases sit in the record.','Fees have not compressed; capture has risen.','The multiple and the hurdle against outside evidence.','Realized vs Base, 3 months after each origin','Out of sample, centred but too narrow.','The same case under historical volatility.','data/lab-rigor.json','10–90% growth band'])assert(rendered['lab.html'].includes(marker),'Rigor layer missing '+marker);
+ for(const marker of ['Where the growth cases sit in the record.','Fees have not compressed; capture has risen.','The multiple and the hurdle against outside evidence.','Realized vs Base, 3 months after each origin','Out of sample, centred but too narrow.','The same case under forecast uncertainty.','data/lab-rigor.json','10–90% scenario band'])assert(rendered['lab.html'].includes(marker),'Rigor layer missing '+marker);
  const {simulateBand,SIGMA_MONTHLY:bandSigma}=await server.ssrLoadModule('/src/lab/uncertainty.ts');
  {
   const reference=(await server.ssrLoadModule('/src/lab/valuation.ts')).runValuation(caseDefaults,caseStarting);
@@ -54,7 +54,7 @@ try{
   const bear=simulateBand({...reference.inputs,growthPct:-1},reference.starting);
   assert(bear.terminal.q50<band.terminal.q50,'Band responds to the growth input');
  }
- const {modelHash,readModelHash,modelExport}=await server.ssrLoadModule('/src/lab/model-state.ts');
+ const {modelHash,readModelHash,modelExport,modelAtExit,PRESET_ASSUMPTIONS}=await server.ssrLoadModule('/src/lab/model-state.ts');
  const rawBaseline=JSON.parse(readFileSync('data/lab-baseline.json','utf8'));
  const rawInstitutional=JSON.parse(readFileSync('data/institutional-demand.json','utf8'));
  for(const c of makeCases(caseStarting)){
@@ -63,11 +63,20 @@ try{
   assert.equal(modelHash(model),expectedHash,'Share URLs retain their exact serialized format');
   assert.deepEqual(readModelHash(expectedHash),model,'Every case round-trips without changed inputs');
   const result=caseRun(c.inputs,caseStarting),metrics=transmissionMetrics(result),cases=makeCases(caseStarting),exportedAt='2026-11-14T00:00:00.000Z';
-  const expected={exportedAt,model:caseVersion,baseline:rawBaseline,institutionalHoldingsBaseline:{source:'https://nrretf.com/',snapshot:rawInstitutional.version,issuerDate:rawInstitutional.nrr.holdingsIssuerDate,nearHeld:rawInstitutional.nrr.nearHeld,scope:'NRR tracked fund inventory, not total institutional ownership'},referenceCase:c.id,selectedCase:c.id,valuation:c.inputs,valuationOutputs:result,transmission:metrics,valuationCases:cases};
+  const expected={exportedAt,model:caseVersion,baseline:rawBaseline,presetAssumptions:PRESET_ASSUMPTIONS,institutionalHoldingsBaseline:{source:'https://nrretf.com/',snapshot:rawInstitutional.version,issuerDate:rawInstitutional.nrr.holdingsIssuerDate,nearHeld:rawInstitutional.nrr.nearHeld,scope:'NRR tracked fund inventory, not total institutional ownership'},referenceCase:c.id,selectedCase:c.id,valuation:c.inputs,valuationOutputs:result,transmission:metrics,valuationCases:cases};
   assert.equal(JSON.stringify(modelExport(model,result,metrics,cases,c.id,exportedAt)),JSON.stringify(expected),'Export values and property order remain compatible');
  }
  for(const hash of ['', '#s=%', '#s=null', '#s='+encodeURIComponent(JSON.stringify({model:caseVersion,baseline:'wrong'}))])assert.equal(readModelHash(hash),null,'Untrusted malformed or incompatible links fall back safely');
 
+ const priorBase={exitDate:'2031-12-31',growthPct:4,capturePct:30.492086110791426,grossBps:15.862722163309982,compression:0,costPct:10,multiple:200,discountPct:26.3,issuancePct:2.5,institutionalVolumeAnnualUsd:250e9,institutionalFeeBps:3,institutionalCapturePct:35,institutionalHoldingsPct:caseDefaults.institutionalHoldingsPct,holdingsElasticity:1,aiRevenueAnnualUsd:200e6,aiMarginPct:25,aiTokenLinkPct:25};
+ const oldHash='#s='+encodeURIComponent(JSON.stringify({model:'near-lab-v4',baseline:rawBaseline.version,holdingsBaseline:holdingsBaselineId,referenceCase:'base',valuation:priorBase}));
+ const restored=readModelHash(oldHash);assert.deepEqual(restored.valuation,priorBase);assert.equal(restored.referenceCase,null,'Previous presets retain numerical inputs without being relabeled as the new Base');
+ assert(Math.abs(caseRun(restored.valuation,caseStarting).terminal.futurePriceUsd-34.81076688534578)<1e-9,'Old v4 model reproduces its original price');
+ const dated=modelAtExit({valuation:caseDefaults,referenceCase:'base'},'2030-12-31'),newReference=makeCases(caseStarting,'2030-12-31').find(c=>c.id==='base');
+ assert.equal(dated.valuation.aiRevenueAnnualUsd,newReference.inputs.aiRevenueAnnualUsd,'Default AI billing follows the changed horizon');
+ assert.equal(dated.valuation.institutionalHoldingsPct,newReference.inputs.institutionalHoldingsPct,'Neutral inventory stays neutral when the horizon changes');
+ const edited=modelAtExit({valuation:{...caseDefaults,aiRevenueAnnualUsd:123e6,institutionalHoldingsPct:5},referenceCase:'base'},'2030-12-31');
+ assert.equal(edited.valuation.aiRevenueAnnualUsd,123e6);assert.equal(edited.valuation.institutionalHoldingsPct,5,'Date changes preserve user-edited inputs');
  const nonHoldings=Object.keys(caseDefaults).filter(k=>!['exitDate','institutionalHoldingsPct','holdingsElasticity'].includes(k));
  assert.deepEqual(assumptionGroups.flatMap(g=>[...g.fields]).sort(),nonHoldings.sort(),'Every non-ETF assumption has one primary group');
  assert.equal(commitAssumptionValue('26.3','discountPct',caseDefaults).discountPct,26.3);

@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
-import {VALUATION_DEFAULTS,VALUATION_LIMITS,runValuation,cleanValuation,exitDateBounds,buildValuationCases} from '../src/lab/valuation.ts';
+import {VALUATION_DEFAULTS,VALUATION_LIMITS,runValuation,cleanValuation,exitDateBounds,buildValuationCases,aiBillingAtExit,AI_PRICING_REFERENCE,CASE_OPERATING_DRIVERS,INSTITUTIONAL_ROUTE_MIX} from '../src/lab/valuation.ts';
 const b=JSON.parse(readFileSync('data/lab-baseline.json')),w=b.operating.windows[0];
 const start={asOf:b.supply.blockUtc.slice(0,10),annualVolumeUsd:w.volumeUsd*365/30,annualReceiptsUsd:w.annualizedCapturedUsd,supplyNear:b.supply.supplyNear,spotPriceUsd:b.market.priceUsd,grossBps:w.grossBps,capturePct:w.cashCapturePct};
 const a={...VALUATION_DEFAULTS,grossBps:w.grossBps,capturePct:w.cashCapturePct};
@@ -41,12 +41,36 @@ for(const c of cases){
  assert.equal(c.result.rows.at(-1).date,c.inputs.exitDate);
 }
 const maximum=cases.at(-1);
-assert.equal(maximum.calibration.status,'calibrated');assert.equal(maximum.calibration.solvedInput,'aiRevenueAnnualUsd');
-close(maximum.result.terminal.futurePriceUsd,400);
-close(maximum.calibration.requiredAnnualReceiptsUsd,400*maximum.result.terminal.supplyNear/maximum.inputs.multiple);
-assert(maximum.result.terminal.presentPriceUsd<400,'Future maximum is not a $400 value today');
-assert(runValuation({...maximum.inputs,aiRevenueAnnualUsd:maximum.inputs.aiRevenueAnnualUsd*2},start).terminal.futurePriceUsd>400,'No hidden price cap');
-assert.equal(buildValuationCases(start,exitDateBounds(start.asOf).max).at(-1).calibration.status,'already-above-target');
+assert(cases.every(c=>c.calibration===null),'Cases are forward operating forecasts, never price-target solves');
+const expectedPrices=[.33724642074775313,54.89363198285809,147.9074696622679,462.7060940057663];
+cases.forEach((c,i)=>close(c.result.terminal.futurePriceUsd,expectedPrices[i]));
+const expectedWorkloads={base:[10e6,20,1000,1e6,1e12,35,20,40],bull:[50e6,20,3000,1e6,3e12,50,25,50],maximum:[100e6,30,10000,1e6,6e12,60,30,60]};
+close((10_000*.30+1_000*1.20)/1e6,.0042);
+close(INSTITUTIONAL_ROUTE_MIX.stableShare*1+(1-INSTITUTIONAL_ROUTE_MIX.stableShare)*20,2.9);
+assert.equal(AI_PRICING_REFERENCE.asOf,'2026-11-14');
+for(const c of cases.filter(c=>c.id!=='bear')){
+ const [users,requests,enterprise,spend,volume,capture,margin,allocation]=expectedWorkloads[c.id];
+ const years=(Date.parse(c.inputs.exitDate)-Date.parse(start.asOf))/86400000/365;
+ const requestPrice=.0042*.9**years;
+ const metered=365*users*requests*requestPrice,enterpriseBilling=enterprise*spend;
+ close(c.inputs.aiRevenueAnnualUsd,metered+enterpriseBilling);
+ close(c.inputs.institutionalVolumeAnnualUsd,volume);close(c.inputs.institutionalFeeBps,2.9);
+ close(c.result.terminal.aiUsd,(metered+enterpriseBilling)*margin/100*allocation/100);
+ close(c.result.terminal.institutionalUsd,volume*2.9/1e4*capture/100*.9);
+ assert.equal(c.inputs.growthPct,4);assert.equal(c.inputs.compression,0);assert.equal(c.inputs.multiple,200);
+ close(c.inputs.grossBps,w.grossBps);close(c.inputs.capturePct,w.cashCapturePct);
+ const exported=aiBillingAtExit(c.id,years);close(exported.requestPriceUsd,requestPrice);close(exported.meteredUsd,metered);close(exported.enterpriseUsd,enterpriseBilling);
+ assert.equal(CASE_OPERATING_DRIVERS[c.id].enterpriseClients,enterprise);
+ const otherDate=buildValuationCases(start,'2028-11-13').find(other=>other.id===c.id);
+ const otherYears=731/365;
+ close(otherDate.inputs.aiRevenueAnnualUsd,365*users*requests*.0042*.9**otherYears+enterpriseBilling);
+ assert(otherDate.inputs.aiRevenueAnnualUsd>c.inputs.aiRevenueAnnualUsd,'Longer horizon erodes metered prices, not enterprise exit spend');
+}
+assert(cases[2].result.terminal.aiUsd+cases[2].result.terminal.institutionalUsd>cases[2].result.terminal.totalUsd*.75,'Bull is led by AI and institutional receipts');
+assert(maximum.result.terminal.aiUsd+maximum.result.terminal.institutionalUsd>maximum.result.terminal.totalUsd*.90,'Maximum is led by AI and institutions');
+assert(maximum.result.terminal.futurePriceUsd>400,'Maximum is an unconstrained forward result');
+assert(runValuation({...maximum.inputs,aiRevenueAnnualUsd:maximum.inputs.aiRevenueAnnualUsd*2},start).terminal.futurePriceUsd>maximum.result.terminal.futurePriceUsd,'No hidden price cap');
+for(const years of [0,-1,16,NaN,Infinity])assert.throws(()=>aiBillingAtExit('base',years));
 const changed=buildValuationCases({...start,grossBps:10,capturePct:20});assert.equal(changed[1].inputs.grossBps,10);assert.equal(changed[1].inputs.capturePct,20);
 assert.equal(cleanValuation({growthPct:null}).growthPct,VALUATION_DEFAULTS.growthPct);
 assert.equal(cleanValuation({growthPct:true}).growthPct,VALUATION_DEFAULTS.growthPct);
@@ -72,4 +96,4 @@ assert.throws(()=>runValuation(heldBase.inputs,{...heldStart,institutionalHoldin
 assert.throws(()=>runValuation(heldBase.inputs,{...heldStart,institutionalHoldingsNear:heldStart.supplyNear}));
 assert.deepEqual(runValuation(JSON.parse(JSON.stringify(holdFive.inputs)),heldStart),holdFive);
 console.log(JSON.stringify({holdingsChecks:'neutral anchor, independent clearing equation, redemptions, monotonic accumulation, elasticity damping, zero REV, no revenue or supply inflation, input guards and export roundtrip',base:heldBase.result.terminal.futurePriceUsd,fivePercent:held.futurePriceUsd,tenPercent:holdTen.terminal.futurePriceUsd,etaTwo:elastic.terminal.futurePriceUsd,redemptions:redeemed.terminal.futurePriceUsd}));
-console.log(JSON.stringify({checks:'Observed baseline, common-horizon cases, independent segment reconstruction, single AI calibration to $400 future price, no price cap, ACT/365, dilution, discount, costs once, zero token linkage, input guards and JSON roundtrip',cases:cases.map(c=>({case:c.label,futurePriceUsd:c.result.terminal.futurePriceUsd,presentPriceUsd:c.result.terminal.presentPriceUsd,annualReceiptsUsd:c.result.terminal.totalUsd,aiGrossBillingUsd:c.inputs.aiRevenueAnnualUsd}))}));
+console.log(JSON.stringify({checks:'Observed baseline, common-horizon cases, independent segment reconstruction, independent paid-workload billing and route-fee mix, no target solve or price cap, ACT/365, dilution, discount, costs once, zero token linkage, input guards and JSON roundtrip',cases:cases.map(c=>({case:c.label,futurePriceUsd:c.result.terminal.futurePriceUsd,presentPriceUsd:c.result.terminal.presentPriceUsd,annualReceiptsUsd:c.result.terminal.totalUsd,aiGrossBillingUsd:c.inputs.aiRevenueAnnualUsd}))}));
