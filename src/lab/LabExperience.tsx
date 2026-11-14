@@ -1,4 +1,4 @@
-import {useEffect,useMemo,useRef,useState} from 'react';
+import {useEffect,useLayoutEffect,useMemo,useRef,useState} from 'react';
 import baseline from '../../data/lab-baseline.json' with {type:'json'};
 import institutional from '../../data/institutional-demand.json' with {type:'json'};
 import ValuationPanel from './ValuationPanel.tsx';
@@ -10,6 +10,7 @@ import AssumptionControls from './AssumptionControls.tsx';
 import ConsoleDither from './ConsoleDither.tsx';
 import ValuationFramework from './ValuationFramework.tsx';
 import {startScenarioField} from './scenario-field.ts';
+import {startTypeDither} from '../overview/type-dither.ts';
 import {formatPrice as price,formatUsdCompact as money} from '../format.ts';
 import {dataHistory} from './history.ts';
 const inputKeys=Object.keys(VAL_DEFAULTS) as (keyof ValuationInputs)[];
@@ -30,14 +31,15 @@ export default function LabExperience(){
  const setExitDate=(exitDate:string)=>{if(exitDate>=bounds.min&&exitDate<=bounds.max)setValuation({...valuation,exitDate});};
  const chooseCase=(id:CaseId)=>setModel(current=>({referenceCase:id,valuation:{...buildValuationCases(STARTING,current.valuation.exitDate).find(c=>c.id===id)!.inputs,institutionalHoldingsPct:current.valuation.institutionalHoldingsPct,holdingsElasticity:current.valuation.holdingsElasticity}}));
  const reset=()=>setModel(current=>{const id=current.referenceCase??'base';return {referenceCase:id,valuation:{...buildValuationCases(STARTING,current.valuation.exitDate).find(c=>c.id===id)!.inputs}};});
- const field=useRef<HTMLCanvasElement>(null);
+ const field=useRef<HTMLCanvasElement>(null),heading=useRef<HTMLHeadingElement>(null),canvas=useRef<HTMLCanvasElement>(null);
  useEffect(()=>startScenarioField(field.current),[]);
+ useLayoutEffect(()=>canvas.current&&heading.current?startTypeDither(canvas.current,heading.current):undefined,[]);
  useEffect(()=>{if(location.hash.startsWith('#s='))history.replaceState(null,'',location.pathname+location.search);},[]);
  const share=async()=>{try{const link=location.origin+location.pathname+modelHash({valuation,referenceCase});await navigator.clipboard.writeText(link);setCopied(true);setTimeout(()=>setCopied(false),1600);}catch{setCopied(false);}};
  const exportScenario=()=>{const output=modelExport({valuation,referenceCase},result,m,cases,selected?.id,new Date().toISOString());const url=URL.createObjectURL(new Blob([JSON.stringify(output,null,2)],{type:'application/json'}));const link=document.createElement('a');link.href=url;link.download='near-scenario.json';link.click();setTimeout(()=>URL.revokeObjectURL(url),1000);};
  return <>
   <section className="lab-hero" aria-labelledby="lab-title"><div className="lab-hero-copy">
-   <div className="thesis-resolve"><h1 id="lab-title" aria-label="What makes value endure?"><span>What makes</span> <span>value endure?</span></h1></div>
+   <div className="thesis-resolve"><canvas ref={canvas} aria-hidden="true"/><h1 id="lab-title" ref={heading} aria-label="What makes value endure?"><span>What makes</span> <span>value endure?</span></h1></div>
    <p className="lab-deck">Not all activity creates value, and not all value accrues to the asset enabling it. Examine the conditions under which NEAR's growing execution network becomes a source of durable token demand.</p>
    <p className="lab-case-context">{caseName}</p>
    <dl className="lab-hero-stats"><div><dt>Capturable REV at exit</dt><dd>{money(t.totalUsd)}</dd></div><div><dt>Hypothesis token value</dt><dd>{price(t.futurePriceUsd)}</dd></div><div><dt>Exit REV multiple</dt><dd>{valuation.multiple}×</dd></div></dl>

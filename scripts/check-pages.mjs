@@ -17,7 +17,7 @@ try{
  for(const legacy of ['/explore','/report','/research','/methodology'])assert.equal(resolveRoute(legacy).redirect,'/thesis');
  assert.equal(resolveRoute('/lab').redirect,'/scenario-labs');assert.equal(resolveRoute('/lab.html').redirect,'/scenario-labs');
  const rendered=Object.fromEntries(Object.entries(components).map(([file,Component])=>[file,renderToStaticMarkup(createElement(Component))]));
- assert(rendered['lab.html'].includes('<div class="thesis-resolve"><h1 id="lab-title"'),'Scenario Lab heading is plain visible text, independent of canvas animation');
+ assert(rendered['lab.html'].includes('<canvas aria-hidden="true"></canvas><h1 id="lab-title"'),'Scenario Lab retains its animated heading canvas');
  assert.equal((rendered['lab.html'].match(/class="lab-card lab-research-card/g)||[]).length,13,'Thirteen research cards retain their evidence in native disclosures');
  assert.equal((rendered['lab.html'].match(/class="lab-research-takeaway"/g)||[]).length,13,'Each compact card has a readable takeaway');
  assert(rendered['lab.html'].includes('<footer class="thesis-finale" aria-labelledby="lab-finale-title">')&&rendered['lab.html'].includes('<span>Convergence</span>'),'Scenario Lab closes with the shared Convergence wordmark');
