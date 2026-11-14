@@ -17,6 +17,7 @@ try{
  for(const legacy of ['/explore','/report','/research','/methodology'])assert.equal(resolveRoute(legacy).redirect,'/thesis');
  assert.equal(resolveRoute('/lab').redirect,'/scenario-labs');assert.equal(resolveRoute('/lab.html').redirect,'/scenario-labs');
  const rendered=Object.fromEntries(Object.entries(components).map(([file,Component])=>[file,renderToStaticMarkup(createElement(Component))]));
+ assert(rendered['lab.html'].includes('<footer class="thesis-finale" aria-labelledby="lab-finale-title">')&&rendered['lab.html'].includes('<span>Convergence</span>'),'Scenario Lab closes with the shared Convergence wordmark');
  for(const label of ['Choose a case. Trace its value.','Bear','Base','Bull','Maximum','Operating assumptions to token value','Where the price comes from','Export complete model'])assert(rendered['lab.html'].includes(label),'Lab model missing '+label);
  assert(!rendered['lab.html'].includes('What would $400–$500 require?'));
  assert(rendered['lab.html'].includes('calibrated upside hypothesis'),'Maximum calibration must be explicit');

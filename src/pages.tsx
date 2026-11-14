@@ -1,13 +1,16 @@
-import {useLayoutEffect} from 'react';
+import {useLayoutEffect,useRef} from 'react';
+import {startTypeDither} from './overview/type-dither.ts';
 import LabExperience from './lab/LabExperience.tsx';
 import './lab.css';
 import {startCinematic} from './cinematic.ts';
 export function Landing(){useLayoutEffect(()=>startCinematic(),[]);return <><a className="skip" href="#main">{"Skip to content"}</a>{"\n"}<header className="shell"><a className="brand" href="/" aria-label="NEAR research home">{"NEAR"}</a><nav aria-label="Main navigation"><a href="/thesis">{"Thesis"}</a><a href="/scenario-labs">{"Scenario lab"}</a></nav><a className="header-read" href="/thesis">{"Explore"}</a></header>{"\n"}<main id="main" className="shell"><section className="cinematic" aria-label="Illustrative field of activity and economic connections">{"\n"}<div className="field-stage" id="field-stage" style={{"position": "relative", "overflow": "hidden"}}><canvas id="activity-field" style={{"position": "absolute", "inset": "0", "width": "100%", "height": "100%"}} aria-hidden="true"></canvas>{"\n"}<a className="focus-node activity" href="/thesis" data-focus="0"><span>{"Human"}</span><small>{"Express intent"}</small></a>{"\n"}<a className="focus-node distribution" href="/thesis" data-focus="1"><span>{"Agent"}</span><small>{"Coordinate actions"}</small></a>{"\n"}<a className="focus-node capture" href="/scenario-labs" data-focus="2"><span>{"NEAR"}</span><small>{"Settlement network"}</small></a>{"\n"}<a className="focus-node institution" href="/scenario-labs" data-focus="3"><span>{"Institution"}</span><small>{"Deploy capital"}</small></a>{"\n"}</div>{"\n"}<div className="cover-copy"><div className="cover-heading"><h1 id="title">{"Intent Is All You Need."}</h1><p className="cover-subtitle">{"Intelligence becomes autonomous. Capital becomes borderless."}</p></div><div className="cover-summary"><p>{"As information and resources become increasingly machine-readable, AI creates limitless abundance while crypto defines scarcity. As institutional capital moves onchain, fragmented liquidity converges into existing trading workflows. Explore how NEAR connects autonomous economies and institutional finance through a shared execution layer."}</p><div className="actions"><a className="primary" href="/thesis">{"Start the visual story"}</a></div></div></div></section>{"\n"}</main>{"\n"}</>;}
 export function Lab(){
+  const closing=useRef<HTMLHeadingElement>(null),closingCanvas=useRef<HTMLCanvasElement>(null);
+  useLayoutEffect(()=>closingCanvas.current&&closing.current?startTypeDither(closingCanvas.current,closing.current):undefined,[]);
   return <div className="thesis-page lab-page">
     <a className="tidal-skip" href="#lab">Skip to scenario lab</a>
     <header className="tidal-header thesis-header"><a className="tidal-brand" href="/" aria-label="NEAR research home">NEAR</a><nav aria-label="Main navigation"><a href="/thesis">Thesis</a><a href="/scenario-labs" aria-current="page">Scenario lab</a></nav><a className="tidal-close" href="/">Home</a></header>
     <main id="main"><LabExperience/></main>
-    <footer className="lab-footer"><a className="tidal-brand" href="/">NEAR</a><p>Near Convergence Thesis.<br/>Dated observations, explicit assumptions and reproducible valuation sensitivities.</p></footer>
+    <footer className="thesis-finale" aria-labelledby="lab-finale-title"><div className="thesis-finale-type"><div className="thesis-resolve"><canvas ref={closingCanvas} aria-hidden="true"/><h2 id="lab-finale-title" ref={closing}><span>Convergence</span></h2></div></div></footer>
   </div>;
 }

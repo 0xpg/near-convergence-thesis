@@ -32,10 +32,11 @@ export function startScenarioField(canvas:HTMLCanvasElement|null){
     pen.fillStyle='#fafaf8';pen.beginPath();pen.arc(cx,cy,9,0,Math.PI*2);pen.fill();
     pen.fillStyle='#a55561';pen.beginPath();pen.arc(cx,cy,4.5,0,Math.PI*2);pen.fill();
     const value=surface(cursor.x,cursor.y,time*.35);
-    pen.font='500 11px Saans, Arial, sans-serif';pen.textBaseline='middle';pen.textAlign=cx>width-150?'right':'left';
-    const label=value>=threshold?'Clears the hurdle':'Below the hurdle',offset=cx>width-150?-16:16;
-    pen.fillStyle='#fafaf8';const measured=pen.measureText(label).width;pen.fillRect(cx+(offset<0?offset-measured-6:offset-6),cy-10,measured+12,20);
-    pen.fillStyle=value>=threshold?'#20372d':'#5c6861';pen.fillText(label,cx+offset,cy);
+    pen.font='500 11px Saans, Arial, sans-serif';pen.textBaseline='middle';const labelY=Math.max(32,Math.min(height-28,cy));
+    const label=value>=threshold?'Clears the hurdle':'Below the hurdle';
+    pen.fillStyle='#fafaf8';const measured=pen.measureText(label).width;
+    const labelX=Math.max(8,Math.min(width-measured-8,cx+16));pen.textAlign='left';pen.fillRect(labelX-6,labelY-10,measured+12,20);
+    pen.fillStyle=value>=threshold?'#20372d':'#5c6861';pen.fillText(label,labelX,labelY);
     pen.font='400 11px Saans, Arial, sans-serif';pen.textBaseline='alphabetic';pen.fillStyle='#5c6861';
     pen.textAlign='left';pen.fillText('Retention ↑',8,16);pen.textAlign='right';pen.fillText('Volume →',width-8,height-8);
     if(!motion.matches&&visible&&!document.hidden&&!pointer)frame=requestAnimationFrame(tick);
