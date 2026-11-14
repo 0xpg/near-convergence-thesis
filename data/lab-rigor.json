@@ -645,6 +645,10 @@
     "band": {
      "n": 93,
      "inside": 53
+    },
+    "fan": {
+     "n": 111,
+     "inside": 49
     }
    },
    "byRegime": {
@@ -658,6 +662,10 @@
      "band": {
       "n": 48,
       "inside": 8
+     },
+     "fan": {
+      "n": 66,
+      "inside": 9
      }
     },
     "secondYear": {
@@ -670,6 +678,10 @@
      "band": {
       "n": 45,
       "inside": 45
+     },
+     "fan": {
+      "n": 45,
+      "inside": 40
      }
     }
    },
@@ -685,6 +697,10 @@
       "band": {
        "n": 8,
        "inside": 0
+      },
+      "fan": {
+       "n": 11,
+       "inside": 2
       }
      },
      "secondYear": {
@@ -697,6 +713,10 @@
       "band": {
        "n": 10,
        "inside": 10
+      },
+      "fan": {
+       "n": 10,
+       "inside": 9
       }
      }
     },
@@ -711,6 +731,10 @@
       "band": {
        "n": 8,
        "inside": 2
+      },
+      "fan": {
+       "n": 11,
+       "inside": 2
       }
      },
      "secondYear": {
@@ -723,6 +747,10 @@
       "band": {
        "n": 8,
        "inside": 8
+      },
+      "fan": {
+       "n": 8,
+       "inside": 7
       }
      }
     },
@@ -737,6 +765,10 @@
       "band": {
        "n": 8,
        "inside": 2
+      },
+      "fan": {
+       "n": 11,
+       "inside": 1
       }
      },
      "secondYear": {
@@ -747,6 +779,10 @@
       "medianLogErrorBase": -0.007,
       "mapeBase": 0.331,
       "band": {
+       "n": 5,
+       "inside": 5
+      },
+      "fan": {
        "n": 5,
        "inside": 5
       }
@@ -933,10 +969,16 @@
     "max": 1.02,
     "note": "DefiLlama monthly volume divided by the Dune series used elsewhere in the lab, over the months both cover."
    },
+   "secondYearMedianErrorCi90": [
+    -0.172,
+    0.219
+   ],
+   "bootstrap": "Medians recomputed on 5,000 resamples of whole origins, because forecasts from one origin share a baseline and overlapping horizons; seeded with the lab seed plus 7.",
+   "fanSigma": 0.2362,
    "conclusions": [
-    "After the launch year, Base sat on the centre of what happened: across 45 forecasts from 10 origins, realized volume landed a median +0.1% from the Base projection.",
-    "The fixed cases were too narrow, not biased: only 12 of 45 outcomes fell between Bear and Maximum, with 18 above Maximum and 15 below Bear. Month-to-month swings are wider than the whole case range.",
-    "The 80% volatility band, using only volatility known at each origin, covered 45 of 45 second-year outcomes. It over-covers because launch-year volatility is still in the estimate, so it is a conservative band.",
+    "After the launch year the Base path showed no detectable bias: across 45 forecasts from 10 origins, realized volume landed a median +0.1% from Base. Forecasts from one origin overlap, so the honest sample is 10 origins, and resampling whole origins gives a 90% interval of −17.2% to +21.9%.",
+    "The fixed cases were too narrow: only 12 of 45 outcomes fell between Bear and Maximum, with 18 above Maximum and 15 below Bear. Month-to-month swings are wider than the whole case range.",
+    "The uncertainty band the lab draws (σ = 0.2362 a month) covered 40 of 45 second-year outcomes against an 80% target. Its σ is measured over these same months, so this is an in-sample check. A band using only volatility known at each origin covered 45 of 45, because launch-year swings inflate it.",
     "In the launch year volume beat Maximum in 57 of 66 forecasts. That ramp from near zero is a different regime and is not evidence for or against the 2031 cases.",
     "DefiLlama, which supplies the full history, matches the Dune series used elsewhere in the lab to a median ratio of 0.999 over 11 shared months (range 0.87–1.02)."
    ]

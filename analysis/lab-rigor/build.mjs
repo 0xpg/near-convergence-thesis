@@ -196,16 +196,18 @@ fullMonths.forEach((origin,oi)=>{
   for(let h=1;h<=6&&oi+h<fullMonths.length;h++){
     const target=fullMonths[oi+h],realized=target.volumeUsd/target.days;
     const projected=Object.fromEntries(Object.entries(CASES).map(([id,g])=>[id,v0*(1+g)**h]));
-    const width=sigma===null?null:Math.exp(1.28155*sigma*Math.sqrt(h));
+    const width=sigma===null?null:Math.exp(1.28155*sigma*Math.sqrt(h)),fanWidth=Math.exp(1.28155*sigmaRaw*Math.sqrt(h));
     forecasts.push({origin:origin.month,target:target.month,h,regime:regimeOf(origin.month),realized,projected,
       position:realized>projected.max?'aboveMax':realized<projected.bear?'belowBear':'inside',
-      inBand:width===null?null:realized>=projected.base/width&&realized<=projected.base*width});
+      inBand:width===null?null:realized>=projected.base/width&&realized<=projected.base*width,
+      inFan:realized>=projected.base/fanWidth&&realized<=projected.base*fanWidth});
   }
 });
 const summarize=list=>({n:list.length,aboveMax:list.filter(f=>f.position==='aboveMax').length,inside:list.filter(f=>f.position==='inside').length,belowBear:list.filter(f=>f.position==='belowBear').length,
   medianLogErrorBase:list.length?round(quantile(list.map(f=>Math.log(f.realized/f.projected.base)),.5),3):null,
   mapeBase:list.length?round(mean(list.map(f=>Math.abs(f.projected.base-f.realized)/f.realized)),3):null,
-  band:{n:list.filter(f=>f.inBand!==null).length,inside:list.filter(f=>f.inBand===true).length}});
+  band:{n:list.filter(f=>f.inBand!==null).length,inside:list.filter(f=>f.inBand===true).length},
+  fan:{n:list.length,inside:list.filter(f=>f.inFan).length}});
 const overlap=months.map(m=>{const l=fullMonths.find(x=>x.month===m.month);return l?l.volumeUsd/m.volumeUsd:null;}).filter(r=>r!==null);
 const rollingOrigin={
   source:'DefiLlama dexs/near-intents daily volume, first day '+[...llamaDay.keys()][0],
@@ -222,12 +224,20 @@ const rollingOrigin={
 };
 backtest.rollingOrigin=rollingOrigin;
 {
+  const second=forecasts.filter(f=>f.regime==='secondYear'),origins=[...new Set(second.map(f=>f.origin))],rand=mulberry32(SEED+7),draws=[];
+  const errorsByOrigin=new Map(origins.map(o=>[o,second.filter(f=>f.origin===o).map(f=>Math.log(f.realized/f.projected.base))]));
+  for(let b=0;b<5000;b++){const pick=[];for(let k=0;k<origins.length;k++)pick.push(...errorsByOrigin.get(origins[Math.floor(rand()*origins.length)]));draws.push(quantile(pick,.5));}
+  rollingOrigin.secondYearMedianErrorCi90=[round(Math.exp(quantile(draws,.05))-1,3),round(Math.exp(quantile(draws,.95))-1,3)];
+  rollingOrigin.bootstrap='Medians recomputed on 5,000 resamples of whole origins, because forecasts from one origin share a baseline and overlapping horizons; seeded with the lab seed plus 7.';
+  rollingOrigin.fanSigma=round(sigmaRaw);
+}
+{
   const two=rollingOrigin.byRegime.secondYear,one=rollingOrigin.byRegime.launchYear,x=rollingOrigin.duneCrossCheck;
-  const signed=v=>(v>=0?'+':'')+(v*100).toFixed(1)+'%',secondOrigins=new Set(forecasts.filter(f=>f.regime==='secondYear').map(f=>f.origin)).size;
+  const signed=v=>(v>=0?'+':'−')+Math.abs(v*100).toFixed(1)+'%',secondOrigins=new Set(forecasts.filter(f=>f.regime==='secondYear').map(f=>f.origin)).size;
   rollingOrigin.conclusions=[
-    `After the launch year, Base sat on the centre of what happened: across ${two.n} forecasts from ${secondOrigins} origins, realized volume landed a median ${signed(Math.exp(two.medianLogErrorBase)-1)} from the Base projection.`,
-    `The fixed cases were too narrow, not biased: only ${two.inside} of ${two.n} outcomes fell between Bear and Maximum, with ${two.aboveMax} above Maximum and ${two.belowBear} below Bear. Month-to-month swings are wider than the whole case range.`,
-    `The 80% volatility band, using only volatility known at each origin, covered ${two.band.inside} of ${two.band.n} second-year outcomes. It over-covers because launch-year volatility is still in the estimate, so it is a conservative band.`,
+    `After the launch year the Base path showed no detectable bias: across ${two.n} forecasts from ${secondOrigins} origins, realized volume landed a median ${signed(Math.exp(two.medianLogErrorBase)-1)} from Base. Forecasts from one origin overlap, so the honest sample is ${secondOrigins} origins, and resampling whole origins gives a 90% interval of ${signed(rollingOrigin.secondYearMedianErrorCi90[0])} to ${signed(rollingOrigin.secondYearMedianErrorCi90[1])}.`,
+    `The fixed cases were too narrow: only ${two.inside} of ${two.n} outcomes fell between Bear and Maximum, with ${two.aboveMax} above Maximum and ${two.belowBear} below Bear. Month-to-month swings are wider than the whole case range.`,
+    `The uncertainty band the lab draws (σ = ${rollingOrigin.fanSigma} a month) covered ${two.fan.inside} of ${two.fan.n} second-year outcomes against an 80% target. Its σ is measured over these same months, so this is an in-sample check. A band using only volatility known at each origin covered ${two.band.inside} of ${two.band.n}, because launch-year swings inflate it.`,
     `In the launch year volume beat Maximum in ${one.aboveMax} of ${one.n} forecasts. That ramp from near zero is a different regime and is not evidence for or against the 2031 cases.`,
     `DefiLlama, which supplies the full history, matches the Dune series used elsewhere in the lab to a median ratio of ${x.medianRatio.toFixed(3)} over ${x.months} shared months (range ${x.min.toFixed(2)}–${x.max.toFixed(2)}).`
   ];
