@@ -15,6 +15,15 @@ export function ditherRect(pen:Pen,x:number,y:number,width:number,height:number,
   for(let row=top;row<=bottom;row++)for(let column=left;column<=right;column++)if(BAYER[(row&3)*4+(column&3)]<density)pen.fillRect(column*STEP,row*STEP,DOT,DOT);
 }
 
+export function ditherField(pen:Pen,x:number,y:number,width:number,height:number,density:(px:number,py:number)=>number,color:string){
+  if(!(width>0&&height>0))return;
+  pen.fillStyle=color;
+  const left=Math.ceil(x/STEP),right=Math.ceil((x+width)/STEP)-1,top=Math.ceil(y/STEP),bottom=Math.ceil((y+height)/STEP)-1;
+  for(let row=top;row<=bottom;row++)for(let column=left;column<=right;column++)if(BAYER[(row&3)*4+(column&3)]<density(column*STEP,row*STEP))pen.fillRect(column*STEP,row*STEP,DOT,DOT);
+}
+
+export const prefersReducedMotion=()=>typeof matchMedia==='function'&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+
 export function ditherArea(pen:Pen,points:Point[],baseline:number,density:number,color:string){
   if(points.length<2)return;
   pen.fillStyle=color;
@@ -51,29 +60,34 @@ export function handle(pen:Pen,x:number,y:number,color=INK){
 export const clamp=(value:number,min:number,max:number)=>Math.min(max,Math.max(min,value));
 export const logScale=(min,max)=>({to:(value,length)=>Math.log(value/min)/Math.log(max/min)*length,from:(position,length)=>min*(max/min)**clamp(position/length,0,1)});
 
-export type Draw=(pen:CanvasRenderingContext2D,width:number,height:number)=>void;
+export type Draw=(pen:CanvasRenderingContext2D,width:number,height:number,time:number)=>void;
 export type Drag=(x:number,y:number,width:number,height:number,phase:'start'|'move'|'end')=>void;
 
-export function DitherCanvas({draw,height,label,onDrag}:{draw:Draw,height:number|string,label:string,onDrag?:Drag}){
-  const ref=useRef<HTMLCanvasElement>(null),drawRef=useRef(draw),dragRef=useRef(onDrag),scheduleRef=useRef(()=>{});
-  drawRef.current=draw;dragRef.current=onDrag;
+export function DitherCanvas({draw,height,label,onDrag,animate=false}:{draw:Draw,height:number|string,label:string,onDrag?:Drag,animate?:boolean}){
+  const ref=useRef<HTMLCanvasElement>(null),drawRef=useRef(draw),dragRef=useRef(onDrag),animateRef=useRef(animate),scheduleRef=useRef(()=>{});
+  drawRef.current=draw;dragRef.current=onDrag;animateRef.current=animate;
   useEffect(()=>{
     const element=ref.current,context=element?.getContext('2d');
     if(!element||!context)return;
     const canvas:HTMLCanvasElement=element,pen:CanvasRenderingContext2D=context;
-    let frame=0,active=true;
-    const paint=()=>{
+    let frame=0,active=true,visible=true,last=0;
+    const started=performance.now(),looping=()=>animateRef.current&&visible&&!prefersReducedMotion();
+    const paint=(now:number)=>{
       frame=0;if(!active)return;
+      if(looping()&&now-last<32){frame=requestAnimationFrame(paint);return;}
+      last=now;
       const width=canvas.clientWidth,heightPx=canvas.clientHeight,dpr=Math.min(devicePixelRatio||1,2);
       if(canvas.width!==Math.round(width*dpr)||canvas.height!==Math.round(heightPx*dpr)){canvas.width=Math.round(width*dpr);canvas.height=Math.round(heightPx*dpr);}
       pen.setTransform(dpr,0,0,dpr,0,0);pen.clearRect(0,0,width,heightPx);
-      if(width>0)drawRef.current(pen,width,heightPx);
+      if(width>0)drawRef.current(pen,width,heightPx,prefersReducedMotion()?0:(now-started)/1000);
+      if(looping())frame=requestAnimationFrame(paint);
     };
     const schedule=()=>{if(!frame)frame=requestAnimationFrame(paint);};
     scheduleRef.current=schedule;schedule();
     const observer=new ResizeObserver(schedule);observer.observe(canvas);
+    const viewport=typeof IntersectionObserver==='function'?new IntersectionObserver(([entry])=>{visible=entry.isIntersecting;if(visible)schedule();}):null;viewport?.observe(canvas);
     document.fonts?.ready.then(schedule);
-    return()=>{active=false;cancelAnimationFrame(frame);observer.disconnect();};
+    return()=>{active=false;cancelAnimationFrame(frame);observer.disconnect();viewport?.disconnect();};
   },[]);
   useEffect(()=>scheduleRef.current());
   const point=(canvas:HTMLCanvasElement,event:PointerEvent):[number,number,number,number]=>{const box=canvas.getBoundingClientRect();return [event.clientX-box.left,event.clientY-box.top,box.width,box.height];};

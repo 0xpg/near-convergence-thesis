@@ -1,8 +1,9 @@
+import {useRef} from 'react';
 import baseline from '../../data/lab-baseline.json' with {type:'json'};
 import institutional from '../../data/institutional-demand.json' with {type:'json'};
 import {runValuation,buildValuationCases,type ValuationInputs} from './valuation.ts';
 import {CaseSlider} from './Transmission.tsx';
-import {DitherCanvas,ditherArea,ditherLine,ditherRect,text,rule,INK,GREEN,AMBER,BLUE} from './dither.tsx';
+import {DitherCanvas,ditherArea,ditherField,ditherLine,ditherRect,text,rule,prefersReducedMotion,INK,GREEN,AMBER,BLUE} from './dither.tsx';
 const usd=(v:number|null)=>v===null||!Number.isFinite(v)?'Not reachable':new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',notation:'compact',maximumFractionDigits:1}).format(v);
 const price=(v:number)=>new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',maximumFractionDigits:2}).format(v);
 const pct=(v:number)=>`${v.toFixed(1)}%`;
@@ -18,6 +19,7 @@ export function heatColors(value:number){
 export const STARTING={asOf:baseline.supply.blockUtc.slice(0,10),annualVolumeUsd:baseline.operating.windows[0].volumeUsd*365/30,annualReceiptsUsd:baseline.operating.windows[0].annualizedCapturedUsd,supplyNear:baseline.supply.supplyNear,spotPriceUsd:baseline.market.priceUsd,institutionalHoldingsNear:institutional.nrr.nearHeld,grossBps:baseline.operating.windows[0].grossBps,capturePct:baseline.operating.windows[0].cashCapturePct};
 export const VAL_DEFAULTS={...buildValuationCases(STARTING).find(c=>c.id==='base')!.inputs};
 export default function ValuationPanel({inputs,onChange,caseName}:{inputs:ValuationInputs,onChange:(a:ValuationInputs)=>void,caseName?:string}){
+ const heatShown=useRef(new Map<string,number>()),holdingsShown=useRef(new Map<string,number>());
  const r=runValuation(inputs,STARTING),cases=buildValuationCases(STARTING,inputs.exitDate);
  const selected=cases.find(c=>(Object.keys(inputs) as (keyof ValuationInputs)[]).every(key=>c.inputs[key]===inputs[key]));
  const maximum=cases.find(c=>c.id==='maximum')!;
@@ -35,20 +37,20 @@ export default function ValuationPanel({inputs,onChange,caseName}:{inputs:Valuat
  const cells=multiples.map(m=>growths.map(g=>runValuation({...inputs,growthPct:g,multiple:m},STARTING).terminal.futurePriceUsd));
  const holdingsShares=[...new Set([0,2,5,10,inputs.institutionalHoldingsPct])].sort((a,b)=>a-b),elasticities=[...new Set([.5,1,2,4,inputs.holdingsElasticity])].sort((a,b)=>a-b);
  const holdingsCells=elasticities.map(e=>holdingsShares.map(h=>runValuation({...inputs,institutionalHoldingsPct:h,holdingsElasticity:e},STARTING).terminal.futurePriceUsd));
- const drawHeat=(pen:CanvasRenderingContext2D,w:number,h:number,growths:number[],multiples:number[],cells:number[][],holdings=false)=>{
-  const left=48,top=24,cw=(w-left)/growths.length,ch=(h-top-28)/multiples.length,min=Math.min(...cells.flat()),max=Math.max(...cells.flat());
+ const drawHeat=(pen:CanvasRenderingContext2D,w:number,h:number,time:number,shown:Map<string,number>,growths:number[],multiples:number[],cells:number[][],holdings=false)=>{
+  const still=prefersReducedMotion(),left=48,top=24,cw=(w-left)/growths.length,ch=(h-top-28)/multiples.length,min=Math.min(...cells.flat()),max=Math.max(...cells.flat());
   growths.forEach((g,i)=>text(pen,`${holdings?Number(g.toFixed(2)):g}%`,left+(i+.5)*cw,14,{align:'center',size:10}));
   multiples.forEach((m,j)=>{text(pen,holdings?`${m} η`:`${m}x`,0,top+(j+.5)*ch+4,{size:10});cells[j].forEach((v,i)=>{
-   const x=left+i*cw,y=top+j*ch,t=max>min?(v-min)/(max-min):0,colors=heatColors(t),gradient=pen.createLinearGradient(x,y,x+cw,y+ch);
+   const x=left+i*cw,y=top+j*ch,target=max>min?(v-min)/(max-min):0,key=`${multiples.length}x${growths.length}:${j}:${i}`,previous=shown.get(key),t=still||previous===undefined?target:previous+(target-previous)*.16,colors=heatColors(t);shown.set(key,Math.abs(t-target)<.002?target:t);const gradient=pen.createLinearGradient(x,y,x+cw,y+ch);
    gradient.addColorStop(0,colors.light);gradient.addColorStop(1,colors.dark);pen.fillStyle=gradient;pen.fillRect(x,y,cw-3,ch-3);
-   pen.save();pen.globalAlpha=.12;const edge=Math.min(8,ch*.14);ditherRect(pen,x+2,y+2,cw-7,edge,.3,colors.ink);ditherRect(pen,x+2,y+ch-edge-5,cw-7,edge,.3,colors.ink);pen.restore();
+   pen.save();pen.globalAlpha=.2;ditherField(pen,x+2,y+2,cw-7,ch-7,(px,py)=>.1+.32*(.5+.5*Math.sin(px*.032+py*.047-time*1.05))*(.6+.4*Math.sin(px*.011-py*.019+time*.6)),colors.ink);pen.restore();
    text(pen,v>=1000?usd(v):price(v),x+cw/2,y+ch/2+4,{align:'center',size:10,color:colors.ink});
    if(growths[i]===(holdings?inputs.institutionalHoldingsPct:inputs.growthPct)&&m===(holdings?inputs.holdingsElasticity:inputs.multiple)){pen.save();pen.strokeStyle=colors.ink;pen.lineWidth=1.5;pen.strokeRect(x+3,y+3,cw-9,ch-9);pen.restore();}
   });});
   text(pen,holdings?'Tracked ETF holdings share · conditional price':'Monthly existing Intents growth · future price',w,h-3,{align:'right',size:10});
  };
- const heat=(pen:CanvasRenderingContext2D,w:number,h:number)=>drawHeat(pen,w,h,growths,multiples,cells);
- const holdingsHeat=(pen:CanvasRenderingContext2D,w:number,h:number)=>drawHeat(pen,w,h,holdingsShares,elasticities,holdingsCells,true);
+ const heat=(pen:CanvasRenderingContext2D,w:number,h:number,time:number)=>drawHeat(pen,w,h,time,heatShown.current,growths,multiples,cells);
+ const holdingsHeat=(pen:CanvasRenderingContext2D,w:number,h:number,time:number)=>drawHeat(pen,w,h,time,holdingsShown.current,holdingsShares,elasticities,holdingsCells,true);
  const contributions=[{name:'Existing Intents',rev:r.terminal.intentsUsd,color:GREEN},{name:'Institutional routing',rev:r.terminal.institutionalUsd,color:BLUE},{name:'AI protocol-linked cash',rev:r.terminal.aiUsd,color:AMBER}].map(c=>({...c,value:c.rev*inputs.multiple/r.terminal.supplyNear}));
  const holdingsContribution={name:'ETF holdings adjustment',rev:0,color:INK,value:r.terminal.holdingsImpactUsd};
  const allContributions=[...contributions,holdingsContribution];
@@ -109,10 +111,10 @@ export default function ValuationPanel({inputs,onChange,caseName}:{inputs:Valuat
     </div><figcaption>The first three components sum to the REV anchor: annual capturable REV × multiple ÷ future total supply. The ETF holdings adjustment is separate; all four sum to the conditional token value.</figcaption>
    </figure>
   </div>
-  <details className="lab-sensitivities lab-method"><summary>Explore valuation sensitivities</summary><div className="lab-grid">
-   <figure className="lab-card"><div className="lab-card-head"><h3>Growth and the exit multiple</h3><p>Conditional price across existing Intents growth and REV multiples. Institutional routing, AI and ETF holdings assumptions stay fixed.</p></div><div className="lab-card-chart"><DitherCanvas draw={heat} height={300} label="Future token price sensitivity across the four cases’ growth rates and multiples, including the selected custom values."/></div><figcaption>Rows vary the exit multiple; columns vary existing Intents growth. The outlined cell is the working case.</figcaption><table className="tidal-sr"><caption>Future price sensitivity</caption><tbody>{multiples.map((m,j)=><tr key={m}><th>{m}x</th>{cells[j].map((v,i)=><td key={i}>{growths[i]}% growth: {price(v)}</td>)}</tr>)}</tbody></table></figure>
-   <figure className="lab-card"><div className="lab-card-head"><h3>Holdings and market absorption</h3><p>Conditional price across ETF holdings shares and other-holder elasticity. Revenue, supply and the multiple stay fixed.</p></div><div className="lab-card-chart"><DitherCanvas draw={holdingsHeat} height={300} label="Conditional token price sensitivity across tracked ETF target holdings share and other-holder demand elasticity."/></div><figcaption>Columns vary the tracked share of future supply; rows vary elasticity. The outline marks the working assumptions. This is a demand adjustment, not extra revenue.</figcaption><table className="tidal-sr"><caption>Holdings and elasticity conditional price sensitivity</caption><tbody>{elasticities.map((e,j)=><tr key={e}><th>Elasticity {e}</th>{holdingsCells[j].map((v,i)=><td key={i}>{pct(holdingsShares[i])} holdings: {price(v)}</td>)}</tr>)}</tbody></table></figure>
-  </div></details>
+  <section className="lab-sensitivities lab-method" aria-labelledby="lab-sensitivities-title"><h3 id="lab-sensitivities-title" className="lab-sensitivities-title">Valuation sensitivities</h3><div className="lab-grid">
+   <figure className="lab-card"><div className="lab-card-head"><h3>Growth and the exit multiple</h3><p>Conditional price across existing Intents growth and REV multiples. Institutional routing, AI and ETF holdings assumptions stay fixed.</p></div><div className="lab-card-chart"><DitherCanvas draw={heat} animate height={300} label="Future token price sensitivity across the four cases’ growth rates and multiples, including the selected custom values."/></div><figcaption>Rows vary the exit multiple; columns vary existing Intents growth. The outlined cell is the working case.</figcaption><table className="tidal-sr"><caption>Future price sensitivity</caption><tbody>{multiples.map((m,j)=><tr key={m}><th>{m}x</th>{cells[j].map((v,i)=><td key={i}>{growths[i]}% growth: {price(v)}</td>)}</tr>)}</tbody></table></figure>
+   <figure className="lab-card"><div className="lab-card-head"><h3>Holdings and market absorption</h3><p>Conditional price across ETF holdings shares and other-holder elasticity. Revenue, supply and the multiple stay fixed.</p></div><div className="lab-card-chart"><DitherCanvas draw={holdingsHeat} animate height={300} label="Conditional token price sensitivity across tracked ETF target holdings share and other-holder demand elasticity."/></div><figcaption>Columns vary the tracked share of future supply; rows vary elasticity. The outline marks the working assumptions. This is a demand adjustment, not extra revenue.</figcaption><table className="tidal-sr"><caption>Holdings and elasticity conditional price sensitivity</caption><tbody>{elasticities.map((e,j)=><tr key={e}><th>Elasticity {e}</th>{holdingsCells[j].map((v,i)=><td key={i}>{pct(holdingsShares[i])} holdings: {price(v)}</td>)}</tr>)}</tbody></table></figure>
+  </div></section>
   <details className="lab-method"><summary>Observed baseline, equations and reproducibility</summary><dl>
    <dt>Operating cutoff</dt><dd>{baseline.operating.windows[0].start} to {baseline.operating.sourceCutoff}; <a href={baseline.market.url}>executed Dune source</a>. Volume {usd(baseline.operating.windows[0].volumeUsd)}, fees {usd(baseline.operating.windows[0].grossFeesUsd)}, receipts {usd(baseline.operating.windows[0].capturedUsd)}.</dd>
    <dt>Window sensitivity</dt><dd>30D annualized receipts {usd(baseline.operating.windows[0].annualizedCapturedUsd)}; 90D {usd(baseline.operating.windows[1].annualizedCapturedUsd)}. Neither is forecast revenue.</dd>

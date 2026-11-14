@@ -230,3 +230,7 @@
 .lab-evidence{margin:8px 0 0;color:#5c6861;font-size:12.5px;line-height:1.55}
 .lab-evidence a{color:inherit;text-decoration:underline;text-underline-offset:2px;text-decoration-color:#293b3266}
 .lab-evidence-status{display:inline-block;margin-right:8px;padding:1px 7px;border:1px solid #293b3226;border-radius:999px;font-size:11px;color:#20372d;white-space:nowrap}
+.lab-console-results{position:relative;overflow:hidden;isolation:isolate}
+.lab-console-dither{position:absolute;inset:0;z-index:-1;display:block;width:100%;height:100%;pointer-events:none}
+.lab-sensitivities{padding-bottom:28px}
+.lab-sensitivities-title{margin:0;padding:22px 0;font:400 14px/1.4 Saans,Arial,sans-serif;color:#436851}

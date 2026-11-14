@@ -5,6 +5,7 @@ import ValuationPanel,{STARTING,VAL_DEFAULTS,HOLDINGS_BASELINE_ID} from './Valua
 import {MODEL_VERSION,VALUATION_PRESETS,cleanValuation,runValuation,buildValuationCases,exitDateBounds,type ValuationInputs} from './valuation.ts';
 import Transmission,{transmissionMetrics,assumptionLabels,formatAssumptionValue} from './Transmission.tsx';
 import AssumptionControls from './AssumptionControls.tsx';
+import ConsoleDither from './ConsoleDither.tsx';
 import ValuationFramework from './ValuationFramework.tsx';
 import {startScenarioField} from './scenario-field.ts';
 import {startTypeDither} from '../overview/type-dither.ts';
@@ -66,7 +67,7 @@ export default function LabExperience(){
      <AssumptionControls inputs={valuation} onChange={setValuation}/>
      <div className="lab-console-actions"><button type="button" onClick={reset}>Reset {reference?.label||'Base'} assumptions</button><button type="button" onClick={exportScenario}>Export complete model</button><button type="button" onClick={share}>{copied?'Link copied':'Copy model link'}</button></div>
     </div>
-    <div className="lab-console-results" aria-live="polite"><p className="lab-console-label">{caseName} · exit {valuation.exitDate}</p><p className="lab-console-big"><span>Conditional token value</span><strong>{price(t.futurePriceUsd)}</strong></p><dl>
+    <div className="lab-console-results" aria-live="polite"><ConsoleDither value={t.futurePriceUsd}/><p className="lab-console-label">{caseName} · exit {valuation.exitDate}</p><p className="lab-console-big"><span>Conditional token value</span><strong>{price(t.futurePriceUsd)}</strong></p><dl>
      <div><dt>REV-based token value</dt><dd>{price(t.revenuePriceUsd)}</dd></div><div><dt>ETF holdings adjustment</dt><dd>{t.holdingsImpactUsd>=0?'+':''}{price(t.holdingsImpactUsd)}</dd></div><div><dt>Discounted reference today</dt><dd>{price(t.presentPriceUsd)}</dd></div><div><dt>Annual capturable REV</dt><dd>{money(t.totalUsd)}</dd></div><div><dt>Projected total supply</dt><dd>{(t.supplyNear/1e9).toFixed(3)}bn NEAR</dd></div>
     </dl>{reference&&<p className="lab-console-note">{delta>=0?'+':''}{price(delta)} versus {reference.label} at the same exit.</p>}
     </div>
