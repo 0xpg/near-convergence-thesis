@@ -67,7 +67,7 @@ try{
    assert(!html.includes('Transmission cases')&&!html.includes('Capital that chooses to stay.'),'Independent ETF panel and duplicate selector removed');
    assert(html.indexOf('id="lab"')<html.indexOf('id="valuation-title"'),'Working controls precede results');
    assert(html.indexOf('Where the price comes from')<html.indexOf('Adjust ETF holdings'),'ETF adjustment follows price bridge');
-   assert(html.includes('<details class="lab-deep-dive">')&&!html.includes('<details class="lab-deep-dive" open'),'Full framework is secondary');
+   assert(html.includes('<div class="lab-deep-dive">')&&!html.includes('<details class="lab-deep-dive"'),'Full framework is shown without a toggle');
    assert(html.includes('<details class="lab-reference lab-method">'),'Reference table is clearly separate and collapsed');
    assert(!lower.includes('type="range"')&&!lower.includes('type="number"'),'Transmission charts do not duplicate controls');
    caseClose(m.coreGrossUsd,m.uncapturedUsd+m.costsUsd+m.coreCapturedUsd);

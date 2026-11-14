@@ -75,6 +75,6 @@ export default function LabExperience(){
   </section>
   <ValuationPanel inputs={valuation} onChange={setValuation} caseName={caseName}/>
   <Transmission result={result} inputs={valuation}/>
-  <details className="lab-deep-dive"><summary>Inspect equations, evidence and reproduction</summary><ValuationFramework inputs={valuation} result={result} starting={STARTING}/></details>
+  <div className="lab-deep-dive"><ValuationFramework inputs={valuation} result={result} starting={STARTING}/></div>
  </>;
 }

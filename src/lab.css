@@ -224,6 +224,6 @@
 .lab-inline-method p{max-width:1000px}
 .lab-deep-dive{margin:0 max(48px,calc((100vw - 1344px)/2)) 64px;border-top:1px solid #293b3220;padding-top:24px}
 .lab-deep-dive>summary{font:400 22px/1.4 Saans,Arial,sans-serif;color:#20372d;cursor:pointer}
-.lab-deep-dive>.lab-framework{padding:32px 0 0}
+.lab-deep-dive>.lab-framework{padding:8px 0 0}
 @media(max-width:1100px){.lab-working .lab-console-results{position:static}}
 @media(max-width:760px){.lab-holdings-inline{margin-left:20px;margin-right:20px}.lab-card.is-wide .lab-holdings-controls{grid-template-columns:1fr}.lab-deep-dive{margin-left:16px;margin-right:16px}.lab-changes{padding:16px}.lab-changes li{flex-direction:column;gap:2px}.lab-changes strong{text-align:left}.lab-exact-entry{max-width:50%}.lab-working>header h2{max-width:500px}}
