@@ -48,6 +48,139 @@
     "url": "https://rpc.mainnet.near.org",
     "status": "Finalized total native supply; annual issuance is the protocol maximum, not measured future issuance or circulating supply."
   },
+  "benchmarks": {
+    "growth": {
+      "source": "https://dune.com/queries/9114284",
+      "method": "Compound monthly growth of average daily Intents volume between complete calendar months.",
+      "windows": [
+        {
+          "intervals": 3,
+          "start": "2026-07",
+          "end": "2026-10",
+          "startDailyVolumeUsd": 77570769.21203128,
+          "endDailyVolumeUsd": 128569083.87929095,
+          "monthlyGrowthPct": 18.343974437278355
+        },
+        {
+          "intervals": 6,
+          "start": "2026-04",
+          "end": "2026-10",
+          "startDailyVolumeUsd": 64652289.72203203,
+          "endDailyVolumeUsd": 128569083.87929095,
+          "monthlyGrowthPct": 12.13954074226482
+        },
+        {
+          "intervals": 9,
+          "start": "2026-01",
+          "end": "2026-10",
+          "startDailyVolumeUsd": 86176661.76109667,
+          "endDailyVolumeUsd": 128569083.87929095,
+          "monthlyGrowthPct": 4.545467540341042
+        }
+      ],
+      "fees": [
+        {
+          "month": "2025-12",
+          "grossBps": 20.46841256278825
+        },
+        {
+          "month": "2026-01",
+          "grossBps": 16.508537417070468
+        },
+        {
+          "month": "2026-02",
+          "grossBps": 17.386728342625275
+        },
+        {
+          "month": "2026-03",
+          "grossBps": 17.260468660210147
+        },
+        {
+          "month": "2026-04",
+          "grossBps": 16.53592375350959
+        },
+        {
+          "month": "2026-05",
+          "grossBps": 14.473868584238408
+        },
+        {
+          "month": "2026-06",
+          "grossBps": 11.833737896980063
+        },
+        {
+          "month": "2026-07",
+          "grossBps": 13.60635993651989
+        },
+        {
+          "month": "2026-08",
+          "grossBps": 11.98366831823385
+        },
+        {
+          "month": "2026-09",
+          "grossBps": 15.252234127273296
+        },
+        {
+          "month": "2026-10",
+          "grossBps": 16.027723113855632
+        }
+      ]
+    },
+    "multiples": {
+      "retrievedAt": "2026-11-14",
+      "provider": "DefiLlama public API",
+      "method": "Market capitalization divided by trailing 365-day DefiLlama revenue.",
+      "rows": [
+        {
+          "name": "Hyperliquid",
+          "slug": "hyperliquid",
+          "marketCapUsd": 16540617717.223423,
+          "revenue365dUsd": 679339876,
+          "multiple": 24.34807421377311,
+          "url": "https://defillama.com/protocol/hyperliquid"
+        },
+        {
+          "name": "Uniswap",
+          "slug": "uniswap",
+          "marketCapUsd": 3411289738.333371,
+          "revenue365dUsd": 65013927,
+          "multiple": 52.470138257197895,
+          "url": "https://defillama.com/protocol/uniswap"
+        },
+        {
+          "name": "TRON",
+          "slug": "tron",
+          "marketCapUsd": 29735469089.517113,
+          "revenue365dUsd": 332245877,
+          "multiple": 89.49838402213524,
+          "url": "https://defillama.com/protocol/tron"
+        },
+        {
+          "name": "Solana",
+          "slug": "solana",
+          "marketCapUsd": 44818533906.32022,
+          "revenue365dUsd": 25159979,
+          "multiple": 1781.3422621028508,
+          "url": "https://defillama.com/protocol/solana"
+        },
+        {
+          "name": "Ethereum",
+          "slug": "ethereum",
+          "marketCapUsd": 232999325084.5026,
+          "revenue365dUsd": 47624394,
+          "multiple": 4892.436533355209,
+          "url": "https://defillama.com/protocol/ethereum"
+        },
+        {
+          "name": "NEAR",
+          "slug": "near",
+          "marketCapUsd": 4440154726.067286,
+          "revenue365dUsd": 805807,
+          "multiple": 5510.196270406295,
+          "url": "https://defillama.com/protocol/near"
+        }
+      ]
+    }
+  },
   "sources": [
     {
       "file": "data/glance-daily.json",
@@ -86,6 +219,48 @@
         "block_id": 224353535
       },
       "cutoff": "2026-11-13T10:53:57.994Z"
+    },
+    {
+      "file": "analysis/lab-sources/benchmarks/defillama-mcaps.json",
+      "sha256": "0d498d78f5040c8a2c64d68c3d700f1cb01044f58443ae20be987d07f5d2ddf5",
+      "url": "https://coins.llama.fi/mcaps",
+      "cutoff": "2026-11-14"
+    },
+    {
+      "file": "analysis/lab-sources/benchmarks/defillama-revenue-ethereum.json",
+      "sha256": "a1c7264d7901eae5a6e0e30cebacb065c253991af745457115d3c2f420c04685",
+      "url": "https://api.llama.fi/summary/fees/ethereum?dataType=dailyRevenue&excludeTotalDataChart=true&excludeTotalDataChartBreakdown=true",
+      "cutoff": "2026-11-14"
+    },
+    {
+      "file": "analysis/lab-sources/benchmarks/defillama-revenue-hyperliquid.json",
+      "sha256": "6f03418b2db09fcadcde86ba73febf6174151121d1a217121ceb859dfd44b4bb",
+      "url": "https://api.llama.fi/summary/fees/hyperliquid?dataType=dailyRevenue&excludeTotalDataChart=true&excludeTotalDataChartBreakdown=true",
+      "cutoff": "2026-11-14"
+    },
+    {
+      "file": "analysis/lab-sources/benchmarks/defillama-revenue-near.json",
+      "sha256": "76ddacaf4a2ca26c910e50f03fb16596f206746e3bc7b776456456a21f0c0d70",
+      "url": "https://api.llama.fi/summary/fees/near?dataType=dailyRevenue&excludeTotalDataChart=true&excludeTotalDataChartBreakdown=true",
+      "cutoff": "2026-11-14"
+    },
+    {
+      "file": "analysis/lab-sources/benchmarks/defillama-revenue-solana.json",
+      "sha256": "556a8febc5dee250713c3b0f0da2e1e908739cc6fbe62f580d968270e6916160",
+      "url": "https://api.llama.fi/summary/fees/solana?dataType=dailyRevenue&excludeTotalDataChart=true&excludeTotalDataChartBreakdown=true",
+      "cutoff": "2026-11-14"
+    },
+    {
+      "file": "analysis/lab-sources/benchmarks/defillama-revenue-tron.json",
+      "sha256": "6083276df0f40a376516a6ffbd9afc572321dd93417613fb39a9538bf0ac8de2",
+      "url": "https://api.llama.fi/summary/fees/tron?dataType=dailyRevenue&excludeTotalDataChart=true&excludeTotalDataChartBreakdown=true",
+      "cutoff": "2026-11-14"
+    },
+    {
+      "file": "analysis/lab-sources/benchmarks/defillama-revenue-uniswap.json",
+      "sha256": "53ca64660d0b0698578740ea8b0e6f0ffd86aad3cedb590d795334e9c849126d",
+      "url": "https://api.llama.fi/summary/fees/uniswap?dataType=dailyRevenue&excludeTotalDataChart=true&excludeTotalDataChartBreakdown=true",
+      "cutoff": "2026-11-14"
     }
   ],
   "limitations": [

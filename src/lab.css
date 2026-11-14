@@ -227,3 +227,6 @@
 .lab-deep-dive>.lab-framework{padding:8px 0 0}
 @media(max-width:1100px){.lab-working .lab-console-results{position:static}}
 @media(max-width:760px){.lab-holdings-inline{margin-left:20px;margin-right:20px}.lab-card.is-wide .lab-holdings-controls{grid-template-columns:1fr}.lab-deep-dive{margin-left:16px;margin-right:16px}.lab-changes{padding:16px}.lab-changes li{flex-direction:column;gap:2px}.lab-changes strong{text-align:left}.lab-exact-entry{max-width:50%}.lab-working>header h2{max-width:500px}}
+.lab-evidence{margin:8px 0 0;color:#5c6861;font-size:12.5px;line-height:1.55}
+.lab-evidence a{color:inherit;text-decoration:underline;text-underline-offset:2px;text-decoration-color:#293b3266}
+.lab-evidence-status{display:inline-block;margin-right:8px;padding:1px 7px;border:1px solid #293b3226;border-radius:999px;font-size:11px;color:#20372d;white-space:nowrap}
