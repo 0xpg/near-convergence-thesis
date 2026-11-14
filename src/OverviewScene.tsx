@@ -21,7 +21,7 @@ export default function OverviewScene(){
   useLayoutEffect(()=>{if(!canvas.current)return;const scene=startAbsorption(canvas.current,1,setSelected);animation.current=scene;return()=>{animation.current=null;scene.destroy();};},[]);
   function choose(index:number,pin=false){animation.current?.select(index,pin);}
   return <div className={'tidal-page '+(selected>=0?'is-focused':'')} onKeyDown={event=>{if(event.key==='Escape'&&!event.defaultPrevented)choose(-1,true);}}>
-    <header className="tidal-header"><a className="tidal-brand" href="/" aria-label="NEAR research home">NEAR</a><nav aria-label="Main navigation"><a href="/thesis" aria-current="page">Thesis</a><a href="/lab">Scenario lab</a></nav><a className="tidal-close" href="/">Home</a></header>
+    <header className="tidal-header"><a className="tidal-brand" href="/" aria-label="NEAR research home">NEAR</a><nav aria-label="Main navigation"><a href="/thesis" aria-current="page">Thesis</a><a href="/scenario-labs">Scenario lab</a></nav><a className="tidal-close" href="/">Home</a></header>
     <div className="tidal-editorial tidal-editorial-start"><h2>The systems <br/>behind the promise.</h2><p>Execution, coordination, liquidity and settlement shape how NEAR could serve autonomous agents and institutional markets alike.</p></div>
     <section id="tidal-main" className="tidal-main"><h2 className="tidal-sr">NEAR overview</h2><div className="tidal-field" ref={field}>
       <canvas ref={canvas} tabIndex={0} aria-label="Animated NEAR category map. Hover to preview a category. Click or tap to keep it open. Left and right keys select categories; Escape restores the overview."/>

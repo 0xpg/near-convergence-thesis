@@ -49,14 +49,28 @@ const supplyNear=amount(exactSupply);assert(supplyNear>0);
 const [numerator,denominator]=protocol.max_inflation_rate;assert(Number.isSafeInteger(numerator)&&Number.isSafeInteger(denominator)&&denominator>0);
 const blockUtc=new Date(Number(BigInt(block.timestamp_nanosec)/1000000n)).toISOString();
 const quote=source.get(daily.sourceCutoff);const priceUsd=amount(quote.price_usd);assert(priceUsd>0);const priceDate=daily.sourceCutoff;
+const monthTotals=new Map();
+for(const row of daily.rows){const key=row.day.slice(0,7),entry=monthTotals.get(key)||{month:key,days:0,volumeUsd:0,grossFeesUsd:0};entry.days++;entry.volumeUsd+=amount(row.volumeUsd);entry.grossFeesUsd+=amount(row.grossFeesUsd);monthTotals.set(key,entry);}
+const fullMonths=[...monthTotals.values()].filter(m=>m.days===new Date(Date.UTC(Number(m.month.slice(0,4)),Number(m.month.slice(5,7)),0)).getUTCDate());
+assert(fullMonths.length>=10,'Need ten complete months for growth benchmarks');
+for(let i=1;i<fullMonths.length;i++){const [y,m]=fullMonths[i-1].month.split('-').map(Number);assert.equal(fullMonths[i].month,new Date(Date.UTC(y,m,1)).toISOString().slice(0,7),'Complete months must be consecutive');}
+const perDay=m=>m.volumeUsd/m.days,lastMonth=fullMonths.at(-1);
+const growth=[3,6,9].map(intervals=>{const first=fullMonths.at(-1-intervals);return {intervals,start:first.month,end:lastMonth.month,startDailyVolumeUsd:perDay(first),endDailyVolumeUsd:perDay(lastMonth),monthlyGrowthPct:((perDay(lastMonth)/perDay(first))**(1/intervals)-1)*100};});
+const feeMonths=fullMonths.map(m=>({month:m.month,grossBps:m.grossFeesUsd/m.volumeUsd*10000}));
+const benchPath='analysis/lab-sources/benchmarks/',bench=read(benchPath+'manifest.json');
+for(const request of bench.requests)assert.equal(hash(benchPath+request.file),request.sha256,'Benchmark source changed');
+const caps=read(benchPath+'defillama-mcaps.json');
+const multiples=bench.requests.filter(r=>r.slug).map(r=>{const body=read(benchPath+r.file),cap=caps['coingecko:'+body.gecko_id];assert(cap&&cap.mcap>0,'Missing market cap '+r.slug);const revenue=amount(body.total1y);assert(revenue>0);return {name:{tron:'TRON',near:'NEAR'}[r.slug]??body.name,slug:r.slug,marketCapUsd:cap.mcap,revenue365dUsd:revenue,multiple:cap.mcap/revenue,url:'https://defillama.com/protocol/'+r.slug};}).sort((a,b)=>a.multiple-b.multiple);
+const benchmarks={growth:{source:daily.queries.daily,method:'Compound monthly growth of average daily Intents volume between complete calendar months.',windows:growth,fees:feeMonths},multiples:{retrievedAt:bench.retrievedAt,provider:bench.provider,method:'Market capitalization divided by trailing 365-day DefiLlama revenue.',rows:multiples}};
 const sources=[
   {file:'data/glance-daily.json',sha256:hash('data/glance-daily.json'),url:daily.queries.daily,cutoff:daily.sourceCutoff},
   {...lineage},
   {file:rpcPath+'manifest.json',sha256:hash(rpcPath+'manifest.json'),url:rpc.endpoint,cutoff:blockUtc},
   ...rpc.requests.map(request=>({file:rpcPath+request.file,sha256:request.sha256,url:rpc.endpoint,method:request.method,params:request.params,cutoff:blockUtc})),
+  ...bench.requests.map(request=>({file:benchPath+request.file,sha256:request.sha256,url:request.url,cutoff:bench.retrievedAt})),
 
 ];
-const output={version:'near-lab-'+hash('data/glance-daily.json').slice(0,12)+'-'+block.height,modelStatus:'Measured historical starting observations; every projection and discretionary policy remains an assumption.',operating:{sourceCutoff:daily.sourceCutoff,defaultDays:30,windows},market:{priceUsd,sourceDate:priceDate,url:daily.queries.daily,status:'Dated reference quote; not a live price or synchronized operating cutoff.'},supply:{supplyNear,exactSupplyNear:exactSupply,issuancePct:numerator/denominator*100,blockHeight:block.height,blockHash:block.hash,blockUtc,protocolVersion:protocol.protocol_version,url:rpc.endpoint,status:'Finalized total native supply; annual issuance is the protocol maximum, not measured future issuance or circulating supply.'},sources,limitations:[
+const output={version:'near-lab-'+hash('data/glance-daily.json').slice(0,12)+'-'+block.height,modelStatus:'Measured historical starting observations; every projection and discretionary policy remains an assumption.',operating:{sourceCutoff:daily.sourceCutoff,defaultDays:30,windows},market:{priceUsd,sourceDate:priceDate,url:daily.queries.daily,status:'Dated reference quote; not a live price or synchronized operating cutoff.'},supply:{supplyNear,exactSupplyNear:exactSupply,issuancePct:numerator/denominator*100,blockHeight:block.height,blockHash:block.hash,blockUtc,protocolVersion:protocol.protocol_version,url:rpc.endpoint,status:'Finalized total native supply; annual issuance is the protocol maximum, not measured future issuance or circulating supply.'},benchmarks,sources,limitations:[
   'Captured Intents receipts are cash observations, not accrued net income, a verified partner payout residual or legally enforceable tokenholder distributions.',
   'Daily fees and receipts have different collection timing. Ratios of matched window sums are descriptive; they do not identify a contractual take rate.',
   '30-day and 90-day annualization describe scale, not a forecast. Projection assumptions are separate from these observed inputs.',

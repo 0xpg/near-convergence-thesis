@@ -1,0 +1,70 @@
+{
+  "retrievedAt": "2026-11-14",
+  "provider": "DefiLlama public API",
+  "requests": [
+    {
+      "file": "defillama-mcaps.json",
+      "sha256": "0d498d78f5040c8a2c64d68c3d700f1cb01044f58443ae20be987d07f5d2ddf5",
+      "method": "POST",
+      "url": "https://coins.llama.fi/mcaps",
+      "body": {
+        "coins": [
+          "coingecko:tron",
+          "coingecko:hyperliquid",
+          "coingecko:uniswap",
+          "coingecko:ethereum",
+          "coingecko:solana",
+          "coingecko:near"
+        ]
+      }
+    },
+    {
+      "file": "defillama-revenue-ethereum.json",
+      "sha256": "a1c7264d7901eae5a6e0e30cebacb065c253991af745457115d3c2f420c04685",
+      "method": "GET",
+      "slug": "ethereum",
+      "coingeckoId": "ethereum",
+      "url": "https://api.llama.fi/summary/fees/ethereum?dataType=dailyRevenue&excludeTotalDataChart=true&excludeTotalDataChartBreakdown=true"
+    },
+    {
+      "file": "defillama-revenue-hyperliquid.json",
+      "sha256": "6f03418b2db09fcadcde86ba73febf6174151121d1a217121ceb859dfd44b4bb",
+      "method": "GET",
+      "slug": "hyperliquid",
+      "coingeckoId": "hyperliquid",
+      "url": "https://api.llama.fi/summary/fees/hyperliquid?dataType=dailyRevenue&excludeTotalDataChart=true&excludeTotalDataChartBreakdown=true"
+    },
+    {
+      "file": "defillama-revenue-near.json",
+      "sha256": "76ddacaf4a2ca26c910e50f03fb16596f206746e3bc7b776456456a21f0c0d70",
+      "method": "GET",
+      "slug": "near",
+      "coingeckoId": "near",
+      "url": "https://api.llama.fi/summary/fees/near?dataType=dailyRevenue&excludeTotalDataChart=true&excludeTotalDataChartBreakdown=true"
+    },
+    {
+      "file": "defillama-revenue-solana.json",
+      "sha256": "556a8febc5dee250713c3b0f0da2e1e908739cc6fbe62f580d968270e6916160",
+      "method": "GET",
+      "slug": "solana",
+      "coingeckoId": "solana",
+      "url": "https://api.llama.fi/summary/fees/solana?dataType=dailyRevenue&excludeTotalDataChart=true&excludeTotalDataChartBreakdown=true"
+    },
+    {
+      "file": "defillama-revenue-tron.json",
+      "sha256": "6083276df0f40a376516a6ffbd9afc572321dd93417613fb39a9538bf0ac8de2",
+      "method": "GET",
+      "slug": "tron",
+      "coingeckoId": "tron",
+      "url": "https://api.llama.fi/summary/fees/tron?dataType=dailyRevenue&excludeTotalDataChart=true&excludeTotalDataChartBreakdown=true"
+    },
+    {
+      "file": "defillama-revenue-uniswap.json",
+      "sha256": "53ca64660d0b0698578740ea8b0e6f0ffd86aad3cedb590d795334e9c849126d",
+      "method": "GET",
+      "slug": "uniswap",
+      "coingeckoId": "uniswap",
+      "url": "https://api.llama.fi/summary/fees/uniswap?dataType=dailyRevenue&excludeTotalDataChart=true&excludeTotalDataChartBreakdown=true"
+    }
+  ]
+}

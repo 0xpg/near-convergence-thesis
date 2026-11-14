@@ -1,0 +1,175 @@
+{
+  "dropped": [],
+  "gecko_ids": [
+    "aave",
+    "aero",
+    "avalanche-2",
+    "binancecoin",
+    "compound-governance-token",
+    "curve-dao-token",
+    "dydx-chain",
+    "ethena",
+    "ethereum",
+    "gmx",
+    "hyperliquid",
+    "jito-governance-token",
+    "jupiter-exchange-solana",
+    "lido-dao",
+    "morpho",
+    "near",
+    "pancakeswap-token",
+    "pump-fun",
+    "raydium",
+    "sky",
+    "solana",
+    "sui",
+    "tron",
+    "uniswap"
+  ],
+  "resolved": {
+    "Aave": {
+      "file": "fees_revenue_aave.json",
+      "gecko_id": "aave",
+      "holders_file": "fees_holders_aave.json",
+      "slug": "aave"
+    },
+    "Aerodrome": {
+      "file": "fees_revenue_aerodrome.json",
+      "gecko_id": "aero",
+      "holders_file": "fees_holders_aerodrome.json",
+      "slug": "aerodrome"
+    },
+    "Avalanche": {
+      "file": "fees_revenue_avalanche.json",
+      "gecko_id": "avalanche-2",
+      "holders_file": "fees_holders_avalanche.json",
+      "slug": "avalanche"
+    },
+    "BNB Chain": {
+      "file": "fees_revenue_bsc.json",
+      "gecko_id": "binancecoin",
+      "holders_file": "fees_holders_bsc.json",
+      "slug": "bsc"
+    },
+    "Compound": {
+      "file": "fees_revenue_compound-finance.json",
+      "gecko_id": "compound-governance-token",
+      "holders_file": "fees_holders_compound-finance.json",
+      "slug": "compound-finance"
+    },
+    "Curve": {
+      "file": "fees_revenue_curve-finance.json",
+      "gecko_id": "curve-dao-token",
+      "holders_file": "fees_holders_curve-finance.json",
+      "slug": "curve-finance"
+    },
+    "Ethena": {
+      "file": "fees_revenue_ethena.json",
+      "gecko_id": "ethena",
+      "holders_file": null,
+      "slug": "ethena"
+    },
+    "Ethereum": {
+      "file": "fees_revenue_ethereum.json",
+      "gecko_id": "ethereum",
+      "holders_file": "fees_holders_ethereum.json",
+      "slug": "ethereum"
+    },
+    "GMX": {
+      "file": "fees_revenue_gmx.json",
+      "gecko_id": "gmx",
+      "holders_file": "fees_holders_gmx.json",
+      "slug": "gmx"
+    },
+    "Hyperliquid": {
+      "file": "fees_revenue_hyperliquid.json",
+      "gecko_id": "hyperliquid",
+      "holders_file": "fees_holders_hyperliquid.json",
+      "slug": "hyperliquid"
+    },
+    "Jito": {
+      "file": "fees_revenue_jito.json",
+      "gecko_id": "jito-governance-token",
+      "holders_file": "fees_holders_jito.json",
+      "slug": "jito"
+    },
+    "Jupiter": {
+      "file": "fees_revenue_jupiter.json",
+      "gecko_id": "jupiter-exchange-solana",
+      "holders_file": "fees_holders_jupiter.json",
+      "slug": "jupiter"
+    },
+    "Lido": {
+      "file": "fees_revenue_lido.json",
+      "gecko_id": "lido-dao",
+      "holders_file": "fees_holders_lido.json",
+      "slug": "lido"
+    },
+    "Morpho": {
+      "file": "fees_revenue_morpho.json",
+      "gecko_id": "morpho",
+      "holders_file": "fees_holders_morpho.json",
+      "slug": "morpho"
+    },
+    "NEAR": {
+      "file": "fees_revenue_near.json",
+      "gecko_id": "near",
+      "holders_file": "fees_holders_near.json",
+      "slug": "near"
+    },
+    "PancakeSwap": {
+      "file": "fees_revenue_pancakeswap.json",
+      "gecko_id": "pancakeswap-token",
+      "holders_file": "fees_holders_pancakeswap.json",
+      "slug": "pancakeswap"
+    },
+    "Pump.fun": {
+      "file": "fees_revenue_pump_fun.json",
+      "gecko_id": "pump-fun",
+      "holders_file": "fees_holders_pump_fun.json",
+      "slug": "pump.fun"
+    },
+    "Raydium": {
+      "file": "fees_revenue_raydium.json",
+      "gecko_id": "raydium",
+      "holders_file": "fees_holders_raydium.json",
+      "slug": "raydium"
+    },
+    "Sky (Maker)": {
+      "file": "fees_revenue_sky.json",
+      "gecko_id": "sky",
+      "holders_file": "fees_holders_sky.json",
+      "slug": "sky"
+    },
+    "Solana": {
+      "file": "fees_revenue_solana.json",
+      "gecko_id": "solana",
+      "holders_file": "fees_holders_solana.json",
+      "slug": "solana"
+    },
+    "Sui": {
+      "file": "fees_revenue_sui.json",
+      "gecko_id": "sui",
+      "holders_file": "fees_holders_sui.json",
+      "slug": "sui"
+    },
+    "TRON": {
+      "file": "fees_revenue_tron.json",
+      "gecko_id": "tron",
+      "holders_file": "fees_holders_tron.json",
+      "slug": "tron"
+    },
+    "Uniswap": {
+      "file": "fees_revenue_uniswap.json",
+      "gecko_id": "uniswap",
+      "holders_file": "fees_holders_uniswap.json",
+      "slug": "uniswap"
+    },
+    "dYdX": {
+      "file": "fees_revenue_dydx.json",
+      "gecko_id": "dydx-chain",
+      "holders_file": "fees_holders_dydx.json",
+      "slug": "dydx"
+    }
+  }
+}

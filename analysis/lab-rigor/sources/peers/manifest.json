@@ -1,0 +1,418 @@
+[
+  {
+    "bytes": 10146,
+    "fetched_at": "2026-11-14T07:25:02Z",
+    "file": "fees_revenue_hyperliquid.json",
+    "sha256": "6f03418b2db09fcadcde86ba73febf6174151121d1a217121ceb859dfd44b4bb",
+    "status": 200,
+    "url": "https://api.llama.fi/summary/fees/hyperliquid?dataType=dailyRevenue&excludeTotalDataChart=true&excludeTotalDataChartBreakdown=true"
+  },
+  {
+    "bytes": 10146,
+    "fetched_at": "2026-11-14T07:25:03Z",
+    "file": "fees_holders_hyperliquid.json",
+    "sha256": "6f03418b2db09fcadcde86ba73febf6174151121d1a217121ceb859dfd44b4bb",
+    "status": 200,
+    "url": "https://api.llama.fi/summary/fees/hyperliquid?dataType=dailyHoldersRevenue&excludeTotalDataChart=true&excludeTotalDataChartBreakdown=true"
+  },
+  {
+    "bytes": 15482,
+    "fetched_at": "2026-11-14T07:25:03Z",
+    "file": "fees_revenue_uniswap.json",
+    "sha256": "53ca64660d0b0698578740ea8b0e6f0ffd86aad3cedb590d795334e9c849126d",
+    "status": 200,
+    "url": "https://api.llama.fi/summary/fees/uniswap?dataType=dailyRevenue&excludeTotalDataChart=true&excludeTotalDataChartBreakdown=true"
+  },
+  {
+    "bytes": 15482,
+    "fetched_at": "2026-11-14T07:25:03Z",
+    "file": "fees_holders_uniswap.json",
+    "sha256": "53ca64660d0b0698578740ea8b0e6f0ffd86aad3cedb590d795334e9c849126d",
+    "status": 200,
+    "url": "https://api.llama.fi/summary/fees/uniswap?dataType=dailyHoldersRevenue&excludeTotalDataChart=true&excludeTotalDataChartBreakdown=true"
+  },
+  {
+    "bytes": 17481,
+    "fetched_at": "2026-11-14T07:25:04Z",
+    "file": "fees_revenue_aave.json",
+    "sha256": "c96872cac79ca1329217e0a795f353a539a4b9af652ad590c061e974f14434b3",
+    "status": 200,
+    "url": "https://api.llama.fi/summary/fees/aave?dataType=dailyRevenue&excludeTotalDataChart=true&excludeTotalDataChartBreakdown=true"
+  },
+  {
+    "bytes": 12478,
+    "fetched_at": "2026-11-14T07:25:04Z",
+    "file": "fees_holders_aave.json",
+    "sha256": "a61c9da87935f80025f7155f335ad15d65c2513b43b6e1b8d7da9cadd8285300",
+    "status": 200,
+    "url": "https://api.llama.fi/summary/fees/aave?dataType=dailyHoldersRevenue&excludeTotalDataChart=true&excludeTotalDataChartBreakdown=true"
+  },
+  {
+    "bytes": 32227,
+    "fetched_at": "2026-11-14T07:25:04Z",
+    "file": "fees_revenue_jupiter.json",
+    "sha256": "1b27a745c2926de8eda6a17eef09a2520c92ef48e397f5f6690608772ff9febb",
+    "status": 200,
+    "url": "https://api.llama.fi/summary/fees/jupiter?dataType=dailyRevenue&excludeTotalDataChart=true&excludeTotalDataChartBreakdown=true"
+  },
+  {
+    "bytes": 32126,
+    "fetched_at": "2026-11-14T07:25:05Z",
+    "file": "fees_holders_jupiter.json",
+    "sha256": "9ffe4eafa2a1c2bd51712f636f49ed3a9cd05008743e6a7c2918cd62e42ee9f1",
+    "status": 200,
+    "url": "https://api.llama.fi/summary/fees/jupiter?dataType=dailyHoldersRevenue&excludeTotalDataChart=true&excludeTotalDataChartBreakdown=true"
+  },
+  {
+    "bytes": 14867,
+    "fetched_at": "2026-11-14T07:25:05Z",
+    "file": "fees_revenue_pancakeswap.json",
+    "sha256": "0aa32f69a1d0f3b8c9b60146fca5880cb34e1add18ed5a2ee15053706d93c9b6",
+    "status": 200,
+    "url": "https://api.llama.fi/summary/fees/pancakeswap?dataType=dailyRevenue&excludeTotalDataChart=true&excludeTotalDataChartBreakdown=true"
+  },
+  {
+    "bytes": 14733,
+    "fetched_at": "2026-11-14T07:25:05Z",
+    "file": "fees_holders_pancakeswap.json",
+    "sha256": "17e438241cfb5e68f2c3ceabc3ae6e37d8ce3b2cb9a901924f8e3ff3af163c0d",
+    "status": 200,
+    "url": "https://api.llama.fi/summary/fees/pancakeswap?dataType=dailyHoldersRevenue&excludeTotalDataChart=true&excludeTotalDataChartBreakdown=true"
+  },
+  {
+    "bytes": 5850,
+    "fetched_at": "2026-11-14T07:25:06Z",
+    "file": "fees_revenue_lido.json",
+    "sha256": "b68d2c5cd7a5694c9a581fadea72eaeb4d07439336362bf37f600aeaed0d0486",
+    "status": 200,
+    "url": "https://api.llama.fi/summary/fees/lido?dataType=dailyRevenue&excludeTotalDataChart=true&excludeTotalDataChartBreakdown=true"
+  },
+  {
+    "bytes": 5719,
+    "fetched_at": "2026-11-14T07:25:06Z",
+    "file": "fees_holders_lido.json",
+    "sha256": "69f975c2ede449c36b43f4b9bcabc4b98afa7811a04000efcd83e6bf23df2c5e",
+    "status": 200,
+    "url": "https://api.llama.fi/summary/fees/lido?dataType=dailyHoldersRevenue&excludeTotalDataChart=true&excludeTotalDataChartBreakdown=true"
+  },
+  {
+    "bytes": 5396,
+    "fetched_at": "2026-11-14T07:25:06Z",
+    "file": "fees_revenue_sky.json",
+    "sha256": "3a62f540b3db6e94e69c36fe325ae47a4555b4063bbe8826a2764e552cea376f",
+    "status": 200,
+    "url": "https://api.llama.fi/summary/fees/sky?dataType=dailyRevenue&excludeTotalDataChart=true&excludeTotalDataChartBreakdown=true"
+  },
+  {
+    "bytes": 5393,
+    "fetched_at": "2026-11-14T07:25:07Z",
+    "file": "fees_holders_sky.json",
+    "sha256": "46e555c8fca6b4c50e501e0f5615a2773f01007a7f72dd0df6ff6081c306e64a",
+    "status": 200,
+    "url": "https://api.llama.fi/summary/fees/sky?dataType=dailyHoldersRevenue&excludeTotalDataChart=true&excludeTotalDataChartBreakdown=true"
+  },
+  {
+    "bytes": 4596,
+    "fetched_at": "2026-11-14T07:25:07Z",
+    "file": "fees_revenue_raydium.json",
+    "sha256": "d330d4cde6630132faff73c850743f4284e0bd35189d2506baf4ab708eb74c2c",
+    "status": 200,
+    "url": "https://api.llama.fi/summary/fees/raydium?dataType=dailyRevenue&excludeTotalDataChart=true&excludeTotalDataChartBreakdown=true"
+  },
+  {
+    "bytes": 4595,
+    "fetched_at": "2026-11-14T07:25:07Z",
+    "file": "fees_holders_raydium.json",
+    "sha256": "7a5998b9b00af709f65b86bd83d040310ba9164ccd557a55c8686410672f1205",
+    "status": 200,
+    "url": "https://api.llama.fi/summary/fees/raydium?dataType=dailyHoldersRevenue&excludeTotalDataChart=true&excludeTotalDataChartBreakdown=true"
+  },
+  {
+    "bytes": 4543,
+    "fetched_at": "2026-11-14T07:25:08Z",
+    "file": "fees_revenue_pump_fun.json",
+    "sha256": "79cc1e325dc4497cb1d319791c7a1878bd51872f59b49d7046a3dbca0d46d1a2",
+    "status": 200,
+    "url": "https://api.llama.fi/summary/fees/pump.fun?dataType=dailyRevenue&excludeTotalDataChart=true&excludeTotalDataChartBreakdown=true"
+  },
+  {
+    "bytes": 4546,
+    "fetched_at": "2026-11-14T07:25:08Z",
+    "file": "fees_holders_pump_fun.json",
+    "sha256": "3165d0ff189e8798aa0aacf90dbcd9375640dbad9eace72030086355891beb58",
+    "status": 200,
+    "url": "https://api.llama.fi/summary/fees/pump.fun?dataType=dailyHoldersRevenue&excludeTotalDataChart=true&excludeTotalDataChartBreakdown=true"
+  },
+  {
+    "bytes": 22402,
+    "fetched_at": "2026-11-14T07:25:08Z",
+    "file": "fees_revenue_aerodrome.json",
+    "sha256": "03835370ff3fb89108fe907436289553cddb45412ef38e9300a57cd0ab604b8b",
+    "status": 200,
+    "url": "https://api.llama.fi/summary/fees/aerodrome?dataType=dailyRevenue&excludeTotalDataChart=true&excludeTotalDataChartBreakdown=true"
+  },
+  {
+    "bytes": 21823,
+    "fetched_at": "2026-11-14T07:25:08Z",
+    "file": "fees_holders_aerodrome.json",
+    "sha256": "499a8e8f4ae276687c9c79d716882962dcc8d2704a64e3e17649dd4247bbbb66",
+    "status": 200,
+    "url": "https://api.llama.fi/summary/fees/aerodrome?dataType=dailyHoldersRevenue&excludeTotalDataChart=true&excludeTotalDataChartBreakdown=true"
+  },
+  {
+    "bytes": 11012,
+    "fetched_at": "2026-11-14T07:25:09Z",
+    "file": "fees_revenue_gmx.json",
+    "sha256": "d97fdf7689a7f48e35a94445b1df60d32cf6dc790ca7708d5e8b4cd4b3abdf2f",
+    "status": 200,
+    "url": "https://api.llama.fi/summary/fees/gmx?dataType=dailyRevenue&excludeTotalDataChart=true&excludeTotalDataChartBreakdown=true"
+  },
+  {
+    "bytes": 10989,
+    "fetched_at": "2026-11-14T07:25:09Z",
+    "file": "fees_holders_gmx.json",
+    "sha256": "42a24f5acc8e9961a450dd4b6c1da91ae3ee85a843b2097851910b488c13af1d",
+    "status": 200,
+    "url": "https://api.llama.fi/summary/fees/gmx?dataType=dailyHoldersRevenue&excludeTotalDataChart=true&excludeTotalDataChartBreakdown=true"
+  },
+  {
+    "bytes": 3115,
+    "fetched_at": "2026-11-14T07:25:10Z",
+    "file": "fees_revenue_dydx.json",
+    "sha256": "546a53cc71c6ef4a1aaa34db850821f5d3fcbebe80f8f1122ffbaf945556f422",
+    "status": 200,
+    "url": "https://api.llama.fi/summary/fees/dydx?dataType=dailyRevenue&excludeTotalDataChart=true&excludeTotalDataChartBreakdown=true"
+  },
+  {
+    "bytes": 3041,
+    "fetched_at": "2026-11-14T07:25:10Z",
+    "file": "fees_holders_dydx.json",
+    "sha256": "132369d6ba2040a76cb0629df47db0d005e6fd7f1251dab2827d3fc26b09dc62",
+    "status": 200,
+    "url": "https://api.llama.fi/summary/fees/dydx?dataType=dailyHoldersRevenue&excludeTotalDataChart=true&excludeTotalDataChartBreakdown=true"
+  },
+  {
+    "bytes": 6333,
+    "fetched_at": "2026-11-14T07:25:10Z",
+    "file": "fees_revenue_jito.json",
+    "sha256": "de14dc08bb0609edec9efbe51811a585e1b960594ec36a4ae8c926ac5370ba41",
+    "status": 200,
+    "url": "https://api.llama.fi/summary/fees/jito?dataType=dailyRevenue&excludeTotalDataChart=true&excludeTotalDataChartBreakdown=true"
+  },
+  {
+    "bytes": 6211,
+    "fetched_at": "2026-11-14T07:25:10Z",
+    "file": "fees_holders_jito.json",
+    "sha256": "4624b3828bce32bcd327b77768139942bb408ba0dfdd0b9c57477b9b9c623a1b",
+    "status": 200,
+    "url": "https://api.llama.fi/summary/fees/jito?dataType=dailyHoldersRevenue&excludeTotalDataChart=true&excludeTotalDataChartBreakdown=true"
+  },
+  {
+    "bytes": 2976,
+    "fetched_at": "2026-11-14T07:25:11Z",
+    "file": "fees_revenue_ethena.json",
+    "sha256": "a0d1443b9fc8d9d1bb857e8e1fd65ae9c9b361e807345caebfa92920cfa63b5e",
+    "status": 200,
+    "url": "https://api.llama.fi/summary/fees/ethena?dataType=dailyRevenue&excludeTotalDataChart=true&excludeTotalDataChartBreakdown=true"
+  },
+  {
+    "bytes": 81,
+    "fetched_at": "2026-11-14T07:25:11Z",
+    "file": "fees_holders_ethena.json",
+    "sha256": "1a36735e7df6bcd05d241cd5050ab9ea743fdb82415511a6fc2560fe596f8969",
+    "status": 400,
+    "url": "https://api.llama.fi/summary/fees/ethena?dataType=dailyHoldersRevenue&excludeTotalDataChart=true&excludeTotalDataChartBreakdown=true"
+  },
+  {
+    "bytes": 15937,
+    "fetched_at": "2026-11-14T07:25:12Z",
+    "file": "fees_revenue_curve-finance.json",
+    "sha256": "7b7932214900f769b0c5f84ffd49f5a283960bf950ed4aef7a37e908669302b7",
+    "status": 200,
+    "url": "https://api.llama.fi/summary/fees/curve-finance?dataType=dailyRevenue&excludeTotalDataChart=true&excludeTotalDataChartBreakdown=true"
+  },
+  {
+    "bytes": 15865,
+    "fetched_at": "2026-11-14T07:25:12Z",
+    "file": "fees_holders_curve-finance.json",
+    "sha256": "0ec5858bd6c3004662cd9fa2f45e9265b7cefe46cd01a6acf8e4f4f44d2fb6d5",
+    "status": 200,
+    "url": "https://api.llama.fi/summary/fees/curve-finance?dataType=dailyHoldersRevenue&excludeTotalDataChart=true&excludeTotalDataChartBreakdown=true"
+  },
+  {
+    "bytes": 8061,
+    "fetched_at": "2026-11-14T07:25:12Z",
+    "file": "fees_revenue_compound-finance.json",
+    "sha256": "1a176310bc4e6d051f37ee1ca41835b13666d490b9c33ee1722826517fc768a5",
+    "status": 200,
+    "url": "https://api.llama.fi/summary/fees/compound-finance?dataType=dailyRevenue&excludeTotalDataChart=true&excludeTotalDataChartBreakdown=true"
+  },
+  {
+    "bytes": 5932,
+    "fetched_at": "2026-11-14T07:25:12Z",
+    "file": "fees_holders_compound-finance.json",
+    "sha256": "a76bcb666919065f6f1fdfab0bdd8bc9a96b5f890d60ace7aa48642c058914fa",
+    "status": 200,
+    "url": "https://api.llama.fi/summary/fees/compound-finance?dataType=dailyHoldersRevenue&excludeTotalDataChart=true&excludeTotalDataChartBreakdown=true"
+  },
+  {
+    "bytes": 9996,
+    "fetched_at": "2026-11-14T07:25:13Z",
+    "file": "fees_revenue_morpho.json",
+    "sha256": "e4fc3c157e298b4d08d188a7d0ea755d3f4de01b66120e51dd4aa774d817cf99",
+    "status": 200,
+    "url": "https://api.llama.fi/summary/fees/morpho?dataType=dailyRevenue&excludeTotalDataChart=true&excludeTotalDataChartBreakdown=true"
+  },
+  {
+    "bytes": 9996,
+    "fetched_at": "2026-11-14T07:25:13Z",
+    "file": "fees_holders_morpho.json",
+    "sha256": "e4fc3c157e298b4d08d188a7d0ea755d3f4de01b66120e51dd4aa774d817cf99",
+    "status": 200,
+    "url": "https://api.llama.fi/summary/fees/morpho?dataType=dailyHoldersRevenue&excludeTotalDataChart=true&excludeTotalDataChartBreakdown=true"
+  },
+  {
+    "bytes": 1583,
+    "fetched_at": "2026-11-14T07:25:14Z",
+    "file": "fees_revenue_tron.json",
+    "sha256": "6083276df0f40a376516a6ffbd9afc572321dd93417613fb39a9538bf0ac8de2",
+    "status": 200,
+    "url": "https://api.llama.fi/summary/fees/tron?dataType=dailyRevenue&excludeTotalDataChart=true&excludeTotalDataChartBreakdown=true"
+  },
+  {
+    "bytes": 1583,
+    "fetched_at": "2026-11-14T07:25:14Z",
+    "file": "fees_holders_tron.json",
+    "sha256": "2b60bda5c029a86170f56e436b5775f5b77039f7d9259d359a61aea9a1f13f2f",
+    "status": 200,
+    "url": "https://api.llama.fi/summary/fees/tron?dataType=dailyHoldersRevenue&excludeTotalDataChart=true&excludeTotalDataChartBreakdown=true"
+  },
+  {
+    "bytes": 2078,
+    "fetched_at": "2026-11-14T07:25:14Z",
+    "file": "fees_revenue_solana.json",
+    "sha256": "556a8febc5dee250713c3b0f0da2e1e908739cc6fbe62f580d968270e6916160",
+    "status": 200,
+    "url": "https://api.llama.fi/summary/fees/solana?dataType=dailyRevenue&excludeTotalDataChart=true&excludeTotalDataChartBreakdown=true"
+  },
+  {
+    "bytes": 2078,
+    "fetched_at": "2026-11-14T07:25:14Z",
+    "file": "fees_holders_solana.json",
+    "sha256": "556a8febc5dee250713c3b0f0da2e1e908739cc6fbe62f580d968270e6916160",
+    "status": 200,
+    "url": "https://api.llama.fi/summary/fees/solana?dataType=dailyHoldersRevenue&excludeTotalDataChart=true&excludeTotalDataChartBreakdown=true"
+  },
+  {
+    "bytes": 2423,
+    "fetched_at": "2026-11-14T07:25:15Z",
+    "file": "fees_revenue_ethereum.json",
+    "sha256": "435e7ef3d75640341ec981a6f82d1917aea96fb00cbfbfe27a90a7dd42219609",
+    "status": 200,
+    "url": "https://api.llama.fi/summary/fees/ethereum?dataType=dailyRevenue&excludeTotalDataChart=true&excludeTotalDataChartBreakdown=true"
+  },
+  {
+    "bytes": 2423,
+    "fetched_at": "2026-11-14T07:25:15Z",
+    "file": "fees_holders_ethereum.json",
+    "sha256": "435e7ef3d75640341ec981a6f82d1917aea96fb00cbfbfe27a90a7dd42219609",
+    "status": 200,
+    "url": "https://api.llama.fi/summary/fees/ethereum?dataType=dailyHoldersRevenue&excludeTotalDataChart=true&excludeTotalDataChartBreakdown=true"
+  },
+  {
+    "bytes": 1618,
+    "fetched_at": "2026-11-14T07:25:16Z",
+    "file": "fees_revenue_bsc.json",
+    "sha256": "7353ff962c5a7833c9c1d91b1f2c975777c0bc3a58abd11200d27692083e3008",
+    "status": 200,
+    "url": "https://api.llama.fi/summary/fees/bsc?dataType=dailyRevenue&excludeTotalDataChart=true&excludeTotalDataChartBreakdown=true"
+  },
+  {
+    "bytes": 1616,
+    "fetched_at": "2026-11-14T07:25:16Z",
+    "file": "fees_holders_bsc.json",
+    "sha256": "25934bac7599041a1a5e05bf58fbc2faf6acd472f7ef70012a73c503dcc5c1e0",
+    "status": 200,
+    "url": "https://api.llama.fi/summary/fees/bsc?dataType=dailyHoldersRevenue&excludeTotalDataChart=true&excludeTotalDataChartBreakdown=true"
+  },
+  {
+    "bytes": 2260,
+    "fetched_at": "2026-11-14T07:25:16Z",
+    "file": "fees_revenue_near.json",
+    "sha256": "76ddacaf4a2ca26c910e50f03fb16596f206746e3bc7b776456456a21f0c0d70",
+    "status": 200,
+    "url": "https://api.llama.fi/summary/fees/near?dataType=dailyRevenue&excludeTotalDataChart=true&excludeTotalDataChartBreakdown=true"
+  },
+  {
+    "bytes": 2272,
+    "fetched_at": "2026-11-14T07:25:16Z",
+    "file": "fees_holders_near.json",
+    "sha256": "c9e8e0534159890dffad523cf5af726b2daf96ac21b2c09523665d7f622e6623",
+    "status": 200,
+    "url": "https://api.llama.fi/summary/fees/near?dataType=dailyHoldersRevenue&excludeTotalDataChart=true&excludeTotalDataChartBreakdown=true"
+  },
+  {
+    "bytes": 1988,
+    "fetched_at": "2026-11-14T07:25:17Z",
+    "file": "fees_revenue_sui.json",
+    "sha256": "45df283f474dfbba132f2e883c96acf510143699b5e6c2c4f20e18080b63d500",
+    "status": 200,
+    "url": "https://api.llama.fi/summary/fees/sui?dataType=dailyRevenue&excludeTotalDataChart=true&excludeTotalDataChartBreakdown=true"
+  },
+  {
+    "bytes": 1988,
+    "fetched_at": "2026-11-14T07:25:17Z",
+    "file": "fees_holders_sui.json",
+    "sha256": "45df283f474dfbba132f2e883c96acf510143699b5e6c2c4f20e18080b63d500",
+    "status": 200,
+    "url": "https://api.llama.fi/summary/fees/sui?dataType=dailyHoldersRevenue&excludeTotalDataChart=true&excludeTotalDataChartBreakdown=true"
+  },
+  {
+    "bytes": 1653,
+    "fetched_at": "2026-11-14T07:25:18Z",
+    "file": "fees_revenue_avalanche.json",
+    "sha256": "9750eb1b32a46c060a8a0d1271946c9eb7aedd9102ce51cbaa1ab1bf70b0a1c4",
+    "status": 200,
+    "url": "https://api.llama.fi/summary/fees/avalanche?dataType=dailyRevenue&excludeTotalDataChart=true&excludeTotalDataChartBreakdown=true"
+  },
+  {
+    "bytes": 1653,
+    "fetched_at": "2026-11-14T07:25:18Z",
+    "file": "fees_holders_avalanche.json",
+    "sha256": "317c36348e5855df5af9dcca8998876080a23877528a0bde2da9a34b5b314975",
+    "status": 200,
+    "url": "https://api.llama.fi/summary/fees/avalanche?dataType=dailyHoldersRevenue&excludeTotalDataChart=true&excludeTotalDataChartBreakdown=true"
+  },
+  {
+    "bytes": 1743,
+    "fetched_at": "2026-11-14T07:25:18Z",
+    "file": "mcaps.json",
+    "sha256": "fa7fd904566430e64d83b6092023f1da616f22d00a66033d60902d3462ddcff4",
+    "status": 200,
+    "url": "https://coins.llama.fi/mcaps [POST coins=24]"
+  },
+  {
+    "bytes": 42129,
+    "fetched_at": "2026-11-14T07:25:19Z",
+    "file": "arxiv_2210.16846_abs.html",
+    "sha256": "797a3bb3b91942c81e83359d498d0228efcdeacc5829e44525c9e8aba5748527",
+    "status": 200,
+    "url": "https://arxiv.org/abs/2210.16846"
+  },
+  {
+    "bytes": 394321,
+    "fetched_at": "2026-11-14T07:25:19Z",
+    "file": "arxiv_2210.16846.pdf",
+    "sha256": "dbe819f190367f24f8084d6532c95679fd8afa3b8e158cf44690b3f5653baa2b",
+    "status": 200,
+    "url": "https://arxiv.org/pdf/2210.16846"
+  },
+  {
+    "bytes": 4582,
+    "fetched_at": "2026-11-14T07:25:19Z",
+    "file": "fetch_index.json",
+    "sha256": "94599a2017a2c787946cfc67ab77b009f72d40a32495bb88a0faa176f399500e",
+    "status": null,
+    "url": null
+  }
+]

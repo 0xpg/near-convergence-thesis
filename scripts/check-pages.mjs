@@ -8,26 +8,43 @@ try{
  const pages=await server.ssrLoadModule('/src/pages.tsx');
  const {default:Story}=await server.ssrLoadModule('/src/ThesisPage.tsx');
  const {topics}=await server.ssrLoadModule('/src/OverviewScene.tsx');
- const components={'index.html':pages.Landing,'lab.html':pages.Lab,'research.html':pages.Research,'methodology.html':pages.Methodology,'thesis.html':Story};
- const routeFiles={'/':'index.html','/thesis':'thesis.html','/lab':'lab.html','/research':'research.html','/methodology':'methodology.html'};
+ const components={'index.html':pages.Landing,'lab.html':pages.Lab,'thesis.html':Story};
+ const routeFiles={'/':'index.html','/thesis':'thesis.html','/scenario-labs':'lab.html'};
  const {routes,resolveRoute}=await server.ssrLoadModule('/src/routes.ts');
  assert.deepEqual(Object.keys(routes).sort(),Object.keys(routeFiles).sort());
  for(const route of Object.values(routes))assert(route.title.includes('Near Convergence Thesis'),'Website title must use renamed project');
- for(const [legacy,path] of [['/thesis.html','/thesis'],['/index.html','/'],['/lab/','/lab'],['/','/']])assert.equal(resolveRoute(legacy).path,path);
- assert.equal(resolveRoute('/explore').redirect,'/research#explore');
+ for(const [legacy,path] of [['/thesis.html','/thesis'],['/index.html','/'],['/scenario-labs/','/scenario-labs'],['/','/']])assert.equal(resolveRoute(legacy).path,path);
+ for(const legacy of ['/explore','/report','/research','/methodology'])assert.equal(resolveRoute(legacy).redirect,'/thesis');
+ assert.equal(resolveRoute('/lab').redirect,'/scenario-labs');assert.equal(resolveRoute('/lab.html').redirect,'/scenario-labs');
  const rendered=Object.fromEntries(Object.entries(components).map(([file,Component])=>[file,renderToStaticMarkup(createElement(Component))]));
  for(const label of ['Choose a case. Trace its value.','Bear','Base','Bull','Maximum','Operating assumptions to token value','Where the price comes from','Export complete model'])assert(rendered['lab.html'].includes(label),'Lab model missing '+label);
  assert(!rendered['lab.html'].includes('What would $400–$500 require?'));
  assert(rendered['lab.html'].includes('calibrated upside hypothesis'),'Maximum calibration must be explicit');
  assert(!rendered['lab.html'].includes('Mock data'));
  assert(!rendered['lab.html'].match(/<footer[\s\S]*Sources &amp; methodology/),'Lab footer must not retain methodology link');
- for(const label of ['The economics behind the price.','Selected-case variables and evidence status','30D / 90D operating cross-check','Maximum reference at','https://arxiv.org/abs/2403.04914','https://docs.near-intents.org/resources/fees'])assert(rendered['lab.html'].includes(label),'Visible valuation framework missing '+label);
+ for(const label of ['The economics<br/>behind the price.','Selected-case variables and evidence status','30D / 90D operating cross-check','Maximum reference at','https://arxiv.org/abs/2403.04914','https://docs.near-intents.org/resources/fees'])assert(rendered['lab.html'].includes(label),'Visible valuation framework missing '+label);
  assert(rendered['lab.html'].includes('2026-11-10')&&rendered['lab.html'].includes('224353535'),'Lab evidence cutoffs must be visible');
  const {default:CaseLab}=await server.ssrLoadModule('/src/lab/LabExperience.tsx');
  const {STARTING:caseStarting,VAL_DEFAULTS:caseDefaults,heatColors,HOLDINGS_BASELINE_ID:holdingsBaselineId}=await server.ssrLoadModule('/src/lab/ValuationPanel.tsx');
  const {MODEL_VERSION:caseVersion,buildValuationCases:makeCases,runValuation:caseRun}=await server.ssrLoadModule('/src/lab/valuation.ts');
  const {transmissionMetrics,commitAssumptionValue}=await server.ssrLoadModule('/src/lab/Transmission.tsx');
  const {assumptionGroups}=await server.ssrLoadModule('/src/lab/AssumptionControls.tsx');
+ for(const marker of ['Where the growth cases sit in the record.','Fees have not compressed; capture has risen.','The multiple and the hurdle against outside evidence.','Realized monthly volume','Out of sample, the envelope broke upward.','The same case under historical volatility.','data/lab-rigor.json','10–90% growth band'])assert(rendered['lab.html'].includes(marker),'Rigor layer missing '+marker);
+ const {simulateBand,SIGMA_MONTHLY:bandSigma}=await server.ssrLoadModule('/src/lab/uncertainty.ts');
+ {
+  const reference=(await server.ssrLoadModule('/src/lab/valuation.ts')).runValuation((await server.ssrLoadModule('/src/lab/ValuationPanel.tsx')).VAL_DEFAULTS,(await server.ssrLoadModule('/src/lab/ValuationPanel.tsx')).STARTING);
+  const band=simulateBand(reference.inputs,reference.starting);
+  assert.equal(band.months,reference.rows.length-1,'Band aligns with the model path');
+  assert(bandSigma>0&&band.sigma===bandSigma);
+  for(let m=0;m<=band.months;m++)assert(band.rev.q10[m]<=band.rev.q50[m]+1e-9&&band.rev.q50[m]<=band.rev.q90[m]+1e-9,'Quantiles ordered');
+  assert(band.terminal.q10<band.terminal.q50&&band.terminal.q50<band.terminal.q90,'Terminal quantiles ordered');
+  assert(Math.abs(band.rev.q50[band.months]/reference.terminal.totalUsd-1)<.12,'Median path tracks the deterministic case');
+  assert(band.rev.q90[band.months]>band.rev.q50[band.months]*1.2,'Band is materially wide at the horizon');
+  const again=simulateBand({...reference.inputs},reference.starting);
+  assert.deepEqual(again,band,'Seeded band is reproducible');
+  const bear=simulateBand({...reference.inputs,growthPct:-1},reference.starting);
+  assert(bear.terminal.q50<band.terminal.q50,'Band responds to the growth input');
+ }
  const nonHoldings=Object.keys(caseDefaults).filter(k=>!['exitDate','institutionalHoldingsPct','holdingsElasticity'].includes(k));
  assert.deepEqual(assumptionGroups.flatMap(g=>[...g.fields]).sort(),nonHoldings.sort(),'Every non-ETF assumption has one primary group');
  assert.equal(commitAssumptionValue('26.3','discountPct',caseDefaults).discountPct,26.3);
@@ -67,7 +84,7 @@ try{
    assert(!html.includes('Transmission cases')&&!html.includes('Capital that chooses to stay.'),'Independent ETF panel and duplicate selector removed');
    assert(html.indexOf('id="lab"')<html.indexOf('id="valuation-title"'),'Working controls precede results');
    assert(html.indexOf('Where the price comes from')<html.indexOf('Adjust ETF holdings'),'ETF adjustment follows price bridge');
-   assert(html.includes('<details class="lab-deep-dive">')&&!html.includes('<details class="lab-deep-dive" open'),'Full framework is secondary');
+   assert(html.includes('<div class="lab-deep-dive">')&&!html.includes('<details class="lab-deep-dive"'),'Full framework is shown without a toggle');
    assert(html.includes('<details class="lab-reference lab-method">'),'Reference table is clearly separate and collapsed');
    assert(!lower.includes('type="range"')&&!lower.includes('type="number"'),'Transmission charts do not duplicate controls');
    caseClose(m.coreGrossUsd,m.uncapturedUsd+m.costsUsd+m.coreCapturedUsd);
@@ -84,12 +101,12 @@ try{
   assert(renderToStaticMarkup(createElement(CaseLab)).includes(casePrice(referenceCases[1].result.terminal.revenuePriceUsd)),'Legacy v3 links migrate to neutral holdings');
   const modified={...referenceCases[1].inputs,institutionalHoldingsPct:5,discountPct:26.3};
   Object.defineProperty(globalThis,'location',{configurable:true,value:{hash:'#s='+encodeURIComponent(JSON.stringify({model:caseVersion,baseline:caseBaseline.version,holdingsBaseline:holdingsBaselineId,referenceCase:'base',valuation:modified}))}});
-  const modifiedHtml=renderToStaticMarkup(createElement(CaseLab));assert(modifiedHtml.includes('Base · modified')&&modifiedHtml.includes('Changes from Base'),'Shared model retains reference lineage');
+  const modifiedHtml=renderToStaticMarkup(createElement(CaseLab));assert(modifiedHtml.includes('Base Scenario · modified')&&modifiedHtml.includes('Changes from Base'),'Shared model retains reference lineage');
   assert(modifiedHtml.includes(casePrice(caseRun(modified,caseStarting).terminal.futurePriceUsd)),'Lineage metadata does not change arithmetic');
   Object.defineProperty(globalThis,'location',{configurable:true,value:{hash:'#s='+encodeURIComponent(JSON.stringify({model:caseVersion,baseline:caseBaseline.version,holdingsBaseline:holdingsBaselineId,referenceCase:'not-a-case',valuation:modified}))}});
   assert(renderToStaticMarkup(createElement(CaseLab)).includes(casePrice(caseRun(modified,caseStarting).terminal.futurePriceUsd)),'Invalid lineage cannot change valid numerical inputs');
   Object.defineProperty(globalThis,'location',{configurable:true,value:{hash:'#s='+encodeURIComponent(JSON.stringify({model:caseVersion,baseline:caseBaseline.version,holdingsBaseline:holdingsBaselineId,referenceCase:null,valuation:referenceCases[1].inputs}))}});
-  assert(renderToStaticMarkup(createElement(CaseLab)).includes('Custom case ·'),'Explicit unknown lineage must not invent a starting case on reload');
+  assert(renderToStaticMarkup(createElement(CaseLab)).includes('Custom Scenario'),'Explicit unknown lineage must not invent a starting case on reload');
  }finally{if(oldLocation)Object.defineProperty(globalThis,'location',oldLocation);else delete globalThis.location;}
  for(let i=0;i<=200;i++)assert(heatColors(i/200).contrast>=4.5,'Heatmap label contrast');
  for(const [page,html] of Object.entries(rendered)){
@@ -215,7 +232,6 @@ try{
  assert(rendered['thesis.html'].includes('NEAR at a glance'));
  assert(rendered['thesis.html'].indexOf('id="thesis-proposition-title"')<rendered['thesis.html'].indexOf('id="network"'));
  assert.equal(new Set(topics.map(topic=>topic.title)).size,10);
- assert(rendered['research.html'].includes('id="model-controls"'));
  assert(rendered['thesis.html'].includes('NEAR overview'));
  assert(rendered['thesis.html'].includes('Intelligence'));
  assert(rendered['thesis.html'].includes('meets execution.'));

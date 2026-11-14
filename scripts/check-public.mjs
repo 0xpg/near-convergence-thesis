@@ -6,7 +6,7 @@ execFileSync(process.execPath,['scripts/build.mjs','--public'],{stdio:'inherit'}
 for(const file of ['stale-check.txt','ambient.mjs','assets/audio/quiet-infrastructure.mp3','assets/vendor/p5-2.3.3.min.js','.git','.env','.wrangler','node_modules','src','app.mjs','story.mjs'])assert(!existsSync('dist-public/'+file),file+' must not be published');
 assert(readFileSync('dist-public/styles/fonts.css','utf8').includes('@font-face'));
 for(const font of ['Saans-TRIAL-Regular.otf','Saans-TRIAL-Medium.otf','Saans-TRIAL-SemiBold.otf','SaansMono-TRIAL-Regular.otf'])assert.deepEqual(readFileSync('dist-public/assets/fonts/'+font),readFileSync('assets/fonts/'+font));
-assert.deepEqual(readFileSync('dist-public/report.pdf'),readFileSync('report.pdf'));
+assert(!existsSync('dist-public/report.pdf'),'Retired report must not be published');
 assert(!existsSync('dist-public/analysis/coverage-expansion'),'Internal research working files must not be published');
 const coverage=JSON.parse(readFileSync('dist-public/data/glance-coverage.json','utf8'));
 assert(!JSON.stringify(coverage).toLowerCase().includes('bitwise'),'Internal reference excluded from public research');
@@ -23,9 +23,9 @@ assert(!('records' in institutional.duneExecution.find(row=>row.id==='investment
 assert.equal(institutional.nrr.verifiedNetFlowUsd,null);
 assert.equal(institutional.european.verifiedInstitutionalOwnershipPct,null);
 assert(!existsSync('dist-public/analysis/institutional-demand'),'Archived issuer documents remain internal working sources');
-console.log('Clean public output, supplied font integrity and PDF integrity passed.');
+console.log('Clean public output, supplied font integrity and retired report removal passed.');
 
 const html=readFileSync('dist-public/index.html','utf8');assert(html.includes('id="root"'));assert(!html.includes('/src/main.tsx'));assert(/assets\/index-[^"]+\.js/.test(html));
-for(const page of ['thesis','lab','research','methodology'])assert(!existsSync('dist-public/'+page+'.html'),'Pages are routed from index.html');
-const redirects=readFileSync('dist-public/_redirects','utf8');for(const page of ['thesis','lab','research','methodology'])assert(redirects.includes('/'+page+'.html /'+page+' 301')&&redirects.includes('/'+page+' / 200'));
+for(const page of ['thesis','lab','scenario-labs','research','methodology'])assert(!existsSync('dist-public/'+page+'.html'),'Pages are routed from index.html');
+const redirects=readFileSync('dist-public/_redirects','utf8');assert(redirects.includes('/thesis.html /thesis 301')&&redirects.includes('/thesis / 200')&&redirects.includes('/scenario-labs / 200'));assert(redirects.includes('/lab.html /scenario-labs 301')&&redirects.includes('/lab /scenario-labs 301'));for(const page of ['research','methodology'])assert(redirects.includes('/'+page+' /thesis 301'));
 assert(!/^\/index\.html\s+\/\s+301$/m.test(redirects),'Do not redirect the SPA rewrite target back to the homepage');

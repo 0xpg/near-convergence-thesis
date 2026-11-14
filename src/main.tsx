@@ -1,12 +1,13 @@
 import React,{Component,type ComponentType,type ReactNode} from 'react';
 import {createRoot} from 'react-dom/client';
 import {resolveRoute,routes} from './routes.ts';
+import {revealPage,startPageTransitions} from './page-transition.ts';
 import './root.css';
 
 class ErrorBoundary extends Component<{children:ReactNode},{failed:boolean}> {
   state={failed:false};
   static getDerivedStateFromError(){return {failed:true};}
-  render(){return this.state.failed?<main className="app-error"><h1>This page could not load.</h1><p>Reload to try again. The saved research report remains available.</p><a href="/report.pdf" download>Download PDF</a></main>:this.props.children;}
+  render(){return this.state.failed?<main className="app-error"><h1>This page could not load.</h1><p>Reload to try again.</p><a href="/">Return home</a></main>:this.props.children;}
 }
 
 function NotFound(){return <main className="app-error"><h1>Page not found</h1><a href="/">Return home</a></main>;}
@@ -19,8 +20,9 @@ function loadStyles(hrefs:string[]){
 }
 
 async function start(){
+  startPageTransitions();
   const target=resolveRoute(location.pathname);
-  if(target.redirect!==undefined){location.replace(target.redirect);return;}
+  if(target.redirect!==undefined){location.replace(target.redirect+(target.redirect.includes('#')?'':location.hash));return;}
   const path=target.path;
   if(path!==location.pathname)history.replaceState(null,'',path+location.search+location.hash);
   const route=routes[path];
@@ -32,6 +34,7 @@ async function start(){
     Page=component;
   }
   createRoot(document.getElementById('root') as HTMLElement).render(<React.StrictMode><ErrorBoundary><Page/></ErrorBoundary></React.StrictMode>);
+  revealPage();
 }
 
-start();
+start().catch(()=>document.body.classList.add('page-in'));
