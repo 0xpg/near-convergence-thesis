@@ -16,7 +16,7 @@ try{
  for(const [legacy,path] of [['/thesis.html','/thesis'],['/index.html','/'],['/lab/','/lab'],['/','/']])assert.equal(resolveRoute(legacy).path,path);
  assert.equal(resolveRoute('/explore').redirect,'/research#explore');
  const rendered=Object.fromEntries(Object.entries(components).map(([file,Component])=>[file,renderToStaticMarkup(createElement(Component))]));
- for(const label of ['Four paths to value.','Bear','Base','Bull','Maximum','Operating assumptions to token value','Where the price comes from','Export complete model'])assert(rendered['lab.html'].includes(label),'Lab model missing '+label);
+ for(const label of ['Choose a case. Trace its value.','Bear','Base','Bull','Maximum','Operating assumptions to token value','Where the price comes from','Export complete model'])assert(rendered['lab.html'].includes(label),'Lab model missing '+label);
  assert(!rendered['lab.html'].includes('What would $400–$500 require?'));
  assert(rendered['lab.html'].includes('calibrated upside hypothesis'),'Maximum calibration must be explicit');
  assert(!rendered['lab.html'].includes('Mock data'));
@@ -26,7 +26,14 @@ try{
  const {default:CaseLab}=await server.ssrLoadModule('/src/lab/LabExperience.tsx');
  const {STARTING:caseStarting,VAL_DEFAULTS:caseDefaults,heatColors,HOLDINGS_BASELINE_ID:holdingsBaselineId}=await server.ssrLoadModule('/src/lab/ValuationPanel.tsx');
  const {MODEL_VERSION:caseVersion,buildValuationCases:makeCases,runValuation:caseRun}=await server.ssrLoadModule('/src/lab/valuation.ts');
- const {transmissionMetrics}=await server.ssrLoadModule('/src/lab/Transmission.tsx');
+ const {transmissionMetrics,commitAssumptionValue}=await server.ssrLoadModule('/src/lab/Transmission.tsx');
+ const {assumptionGroups}=await server.ssrLoadModule('/src/lab/AssumptionControls.tsx');
+ const nonHoldings=Object.keys(caseDefaults).filter(k=>!['exitDate','institutionalHoldingsPct','holdingsElasticity'].includes(k));
+ assert.deepEqual(assumptionGroups.flatMap(g=>[...g.fields]).sort(),nonHoldings.sort(),'Every non-ETF assumption has one primary group');
+ assert.equal(commitAssumptionValue('26.3','discountPct',caseDefaults).discountPct,26.3);
+ assert.equal(commitAssumptionValue('15.862722163309982','grossBps',caseDefaults).grossBps,15.862722163309982);
+ for(const raw of ['',' ','NaN','Infinity'])assert.equal(commitAssumptionValue(raw,'discountPct',caseDefaults),caseDefaults,'Invalid exact entry keeps prior assumptions');
+ assert.equal(commitAssumptionValue('1000','institutionalHoldingsPct',caseDefaults).institutionalHoldingsPct,80);
  const caseBaseline=JSON.parse(readFileSync('data/lab-baseline.json','utf8'));
  const oldLocation=Object.getOwnPropertyDescriptor(globalThis,'location');
  const caseMoney=n=>new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',notation:'compact',maximumFractionDigits:1}).format(n);
@@ -53,7 +60,16 @@ try{
    assert(hero.includes(`${input.multiple}×`));
    for(const value of [t.intentsUsd,t.institutionalUsd,t.aiUsd])assert(lower.includes(caseMoney(value)),'Lower charts must reflect selected components');
    assert(framework.includes(casePrice(t.revenuePriceUsd))&&framework.includes('Holdings demand factor'),'Formula map must separate REV anchor from holdings demand');
-   assert(html.includes('Tracked ETF holdings effect')&&html.includes(casePrice(t.holdingsImpactUsd)),'Price bridge must include positive and negative holdings effects');
+   assert(html.includes('ETF holdings adjustment')&&html.includes(casePrice(t.holdingsImpactUsd)),'Price bridge must include positive and negative holdings effects');
+   assert.equal((html.match(/aria-label="Valuation cases"/g)||[]).length,1,'One case selector');
+   assert.equal((html.match(/type="range"/g)||[]).length,nonHoldings.length+2,'One slider per numeric assumption');
+   assert.equal((html.match(/type="number"/g)||[]).length,nonHoldings.length+2,'One exact entry per numeric assumption');
+   assert(!html.includes('Transmission cases')&&!html.includes('Capital that chooses to stay.'),'Independent ETF panel and duplicate selector removed');
+   assert(html.indexOf('id="lab"')<html.indexOf('id="valuation-title"'),'Working controls precede results');
+   assert(html.indexOf('Where the price comes from')<html.indexOf('Adjust ETF holdings'),'ETF adjustment follows price bridge');
+   assert(html.includes('<details class="lab-deep-dive">')&&!html.includes('<details class="lab-deep-dive" open'),'Full framework is secondary');
+   assert(html.includes('<details class="lab-reference lab-method">'),'Reference table is clearly separate and collapsed');
+   assert(!lower.includes('type="range"')&&!lower.includes('type="number"'),'Transmission charts do not duplicate controls');
    caseClose(m.coreGrossUsd,m.uncapturedUsd+m.costsUsd+m.coreCapturedUsd);
    caseClose(m.coreCapturedUsd+t.aiUsd,t.totalUsd);
    caseClose(m.volumeUsd,t.volumeUsd+t.institutionalVolumeUsd);
@@ -66,6 +82,14 @@ try{
   const legacy={...referenceCases[1].inputs};delete legacy.institutionalHoldingsPct;delete legacy.holdingsElasticity;
   Object.defineProperty(globalThis,'location',{configurable:true,value:{hash:'#s='+encodeURIComponent(JSON.stringify({model:'near-lab-v3',baseline:caseBaseline.version,valuation:legacy}))}});
   assert(renderToStaticMarkup(createElement(CaseLab)).includes(casePrice(referenceCases[1].result.terminal.revenuePriceUsd)),'Legacy v3 links migrate to neutral holdings');
+  const modified={...referenceCases[1].inputs,institutionalHoldingsPct:5,discountPct:26.3};
+  Object.defineProperty(globalThis,'location',{configurable:true,value:{hash:'#s='+encodeURIComponent(JSON.stringify({model:caseVersion,baseline:caseBaseline.version,holdingsBaseline:holdingsBaselineId,referenceCase:'base',valuation:modified}))}});
+  const modifiedHtml=renderToStaticMarkup(createElement(CaseLab));assert(modifiedHtml.includes('Base · modified')&&modifiedHtml.includes('Changes from Base'),'Shared model retains reference lineage');
+  assert(modifiedHtml.includes(casePrice(caseRun(modified,caseStarting).terminal.futurePriceUsd)),'Lineage metadata does not change arithmetic');
+  Object.defineProperty(globalThis,'location',{configurable:true,value:{hash:'#s='+encodeURIComponent(JSON.stringify({model:caseVersion,baseline:caseBaseline.version,holdingsBaseline:holdingsBaselineId,referenceCase:'not-a-case',valuation:modified}))}});
+  assert(renderToStaticMarkup(createElement(CaseLab)).includes(casePrice(caseRun(modified,caseStarting).terminal.futurePriceUsd)),'Invalid lineage cannot change valid numerical inputs');
+  Object.defineProperty(globalThis,'location',{configurable:true,value:{hash:'#s='+encodeURIComponent(JSON.stringify({model:caseVersion,baseline:caseBaseline.version,holdingsBaseline:holdingsBaselineId,referenceCase:null,valuation:referenceCases[1].inputs}))}});
+  assert(renderToStaticMarkup(createElement(CaseLab)).includes('Custom case ·'),'Explicit unknown lineage must not invent a starting case on reload');
  }finally{if(oldLocation)Object.defineProperty(globalThis,'location',oldLocation);else delete globalThis.location;}
  for(let i=0;i<=200;i++)assert(heatColors(i/200).contrast>=4.5,'Heatmap label contrast');
  for(const [page,html] of Object.entries(rendered)){

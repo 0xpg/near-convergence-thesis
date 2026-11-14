@@ -19,7 +19,7 @@ export const VALUATION_PRESETS={
  bear:{label:'Bear',inputs:{growthPct:-1,capturePct:20,grossBps:12,costPct:15,multiple:100}},
  base:{label:'Base',inputs:{growthPct:4,costPct:10,multiple:200,institutionalVolumeAnnualUsd:250e9,institutionalFeeBps:3,institutionalCapturePct:35,aiRevenueAnnualUsd:200e6,aiMarginPct:25,aiTokenLinkPct:25}},
  bull:{label:'Bull',inputs:{growthPct:6,grossBps:14,capturePct:40,compression:.1,costPct:10,multiple:250,institutionalVolumeAnnualUsd:1e12,institutionalFeeBps:3,institutionalCapturePct:40,aiRevenueAnnualUsd:2e9,aiMarginPct:35,aiTokenLinkPct:50}},
- maximum:{label:'Maximum ($400)',inputs:{growthPct:8,grossBps:12,capturePct:45,compression:.1,costPct:10,multiple:250,institutionalVolumeAnnualUsd:2e12,institutionalFeeBps:3,institutionalCapturePct:45,aiMarginPct:40,aiTokenLinkPct:50}}
+ maximum:{label:'Maximum · $400 requirements',inputs:{growthPct:8,grossBps:12,capturePct:45,compression:.1,costPct:10,multiple:250,institutionalVolumeAnnualUsd:2e12,institutionalFeeBps:3,institutionalCapturePct:45,aiMarginPct:40,aiTokenLinkPct:50}}
 };
 function date(value:string){
  const n=Date.parse(value+'T00:00:00Z');
