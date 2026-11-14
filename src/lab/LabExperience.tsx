@@ -10,6 +10,7 @@ import ValuationFramework from './ValuationFramework.tsx';
 import {startScenarioField} from './scenario-field.ts';
 import {startTypeDither} from '../overview/type-dither.ts';
 import {formatPrice as price,formatUsdCompact as money} from '../format.ts';
+import {dataHistory} from './history.ts';
 type CaseId=keyof typeof VALUATION_PRESETS;
 const inputKeys=Object.keys(VAL_DEFAULTS) as (keyof ValuationInputs)[];
 function changedValue(key:keyof ValuationInputs,value:string|number,other:string|number){
@@ -67,7 +68,7 @@ export default function LabExperience(){
     </div>
     <div className="lab-console-results" aria-live="polite"><ConsoleDither value={t.futurePriceUsd}/><p className="lab-console-label">{caseName}</p><p className="lab-console-big"><span>Conditional token value</span><strong>{price(t.futurePriceUsd)}</strong></p><dl>
      <div><dt>REV-based token value</dt><dd>{price(t.revenuePriceUsd)}</dd></div><div><dt>ETF holdings adjustment</dt><dd>{t.holdingsImpactUsd>=0?'+':''}{price(t.holdingsImpactUsd)}</dd></div><div><dt>Discounted reference today</dt><dd>{price(t.presentPriceUsd)}</dd></div><div><dt>Annual capturable REV</dt><dd>{money(t.totalUsd)}</dd></div><div><dt>Projected total supply</dt><dd>{(t.supplyNear/1e9).toFixed(3)}bn NEAR</dd></div>
-    </dl>{reference&&<p className="lab-console-note">{delta>=0?'+':''}{price(delta)} versus {reference.label} at the same exit.</p>}
+    </dl>{reference&&<p className="lab-console-note">{delta>=0?'+':''}{price(delta)} versus {reference.label} at the same exit.</p>}<p className="lab-console-note">Early data: Intents launched in {dataHistory.launch}, fee data starts in {dataHistory.feesSince} and the fee switch went live in {dataHistory.feeSwitch}. Read results as directional, not as forecasts.</p>
     </div>
    </section>
    {changes.length>0&&reference&&<details className="lab-changes" open><summary>Changes from {reference.label}</summary><ul>{changes.map(key=><li key={key}><span>{key==='exitDate'?'Exit date':assumptionLabels[key]}</span><strong>{changedValue(key,reference.inputs[key],valuation[key])} → {changedValue(key,valuation[key],reference.inputs[key])}</strong></li>)}</ul></details>}

@@ -4,6 +4,7 @@ import baseline from '../../data/lab-baseline.json' with {type:'json'};
 import rigor from '../../data/lab-rigor.json' with {type:'json'};
 import EvidenceCharts,{BacktestChart} from './EvidenceCharts.tsx';
 import {formatPrice as price,formatUsdCompact} from '../format.ts';
+import {dataHistory} from './history.ts';
 
 const money=(n:number)=>formatUsdCompact(n,2);
 const percent=(n:number)=>`${n.toFixed(2)}%`;
@@ -96,6 +97,9 @@ export default function ValuationFramework({inputs:a,result:r,starting:s}:{input
     <div className="lab-equation" role="math" aria-label="Present reference price equals exit price divided by one plus required return to the power years"><var>P</var><sub>0</sub> = <var>P</var><sub>T</sub> / (1 + <var>r</var>)<sup>T</sup></div>
     <p className="lab-equation-work">{price(t.futurePriceUsd)} / (1 + {percent(a.discountPct)})<sup>{r.years.toFixed(3)}</sup> = {price(t.presentPriceUsd)}</p>
     <p>Total supply keeps locked and newly issued tokens in the denominator. A revenue multiple prices future durability, growth and risk together; it does not establish that protocol receipts are legally distributable tokenholder cash flow.</p>
+   </div></article>
+   <article className="lab-card is-wide"><div className="lab-card-head"><h3>How much history there is.</h3></div><div className="lab-framework-copy">
+    <p>NEAR Intents is young. Volume has {dataHistory.volumeMonths} complete months of history since {dataHistory.volumeSince}, and the first twelve were a launch ramp from near zero. Fee and capture data cover {dataHistory.feeMonths} complete months from {dataHistory.feesSince}, and the fee switch has been live only since {dataHistory.feeSwitch}. Some results below are borderline: the rise in capture after the fee switch has p = {dataHistory.captureP.toFixed(2)}. Read every estimate on this page as directional evidence, not proof, and expect it to move as months are added.</p>
    </div></article>
    <EvidenceCharts/>
    <article className="lab-card is-wide"><div className="lab-card-head"><h3>What is measured, and what the case asks to become true.</h3></div><div className="lab-frontier-table lab-case-table"><table><caption>Selected-case variables and evidence status</caption><thead><tr><th scope="col">Variable</th><th scope="col">Selected value</th><th scope="col">Definition, basis and source</th></tr></thead><tbody>{variables.map(([name,value,basis,key])=><tr key={name}><th scope="row">{name}</th><td>{value}</td><td>{basis}<p className="lab-evidence"><span className="lab-evidence-status">{evidence[key][0]}</span>{evidence[key][1]}</p></td></tr>)}</tbody></table></div>
